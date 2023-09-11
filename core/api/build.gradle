@@ -1,0 +1,25 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+}
+
+apply from: "${project.rootDir}/buildscripts/android-library.gradle"
+
+android {
+    namespace 'ru.stersh.youamp.core.api'
+}
+
+dependencies {
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.moshi)
+
+    implementation(libs.bundles.kotlin.coroutines)
+
+    implementation(libs.bundles.koin)
+
+    implementation(libs.moshi.core)
+    implementation(libs.moshi.adapters)
+    ksp(libs.moshi.codegen)
+}

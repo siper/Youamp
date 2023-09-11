@@ -1,0 +1,28 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "YouAmp"
+
+include ':core:api'
+include ':core:utils'
+include ':core:ui'
+include ':core:room'
+include ':shared:player'
+include ':feature:albums'
+include ':feature:album'
+include ':feature:main'
+include ':feature:player'
+include ':feature:server:create'
+include ':app'
+include ':source:apiprovider'

@@ -1,0 +1,104 @@
+[versions]
+android-plugin = "8.3.1"
+appcompat = "1.6.1"
+detekt = "1.21.0"
+fragment = "1.6.2"
+koin = "3.5.0"
+kotlin = "1.9.23"
+kotlin-coroutines = "1.7.3"
+lifecycle = "2.7.0"
+room = "2.6.1"
+timber = "5.0.1"
+toml-checker = "0.42.0"
+toml-updater = "0.5.3"
+moshi = "1.15.0"
+coil = "2.2.2"
+spotless = "6.17.0"
+androidx-navigation = "2.5.1"
+retrofit = "2.9.0"
+media = "1.3.0"
+compose-compiler = "1.5.11"
+junit = "4.13.2"
+androidx-junit = "1.1.5"
+espresso-core = "3.5.1"
+material = "1.11.0"
+
+[libraries]
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
+kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-std-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
+moshi-core = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+logging-interceptor = "com.squareup.okhttp3:logging-interceptor:4.4.0"
+coil-compose = { module = "io.coil-kt:coil-compose", version = "2.4.0" }
+androidx-preferences = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
+androidx-core = { module = "androidx.core:core-ktx", version = "1.12.0" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.8.2" }
+media-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media" }
+media-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "media" }
+media-exoplayer-workmanager = { module = "androidx.media3:media3-exoplayer-workmanager", version.ref = "media" }
+media-session = { module = "androidx.media3:media3-session", version.ref = "media" }
+media-extractor = { module = "androidx.media3:media3-extractor", version.ref = "media" }
+media-datasource = { module = "androidx.media3:media3-datasource", version.ref = "media" }
+media-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "media" }
+room-core = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+compose-bom = "androidx.compose:compose-bom:2024.03.00"
+compose-ui-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+
+[bundles]
+koin = [
+    "koin-android",
+    "koin-core",
+    "koin-compose"
+]
+kotlin-coroutines = [
+    "kotlin-coroutines-android",
+    "kotlin-coroutines-core"
+]
+compose = [
+    "compose-ui-ui",
+    "compose-ui-graphics",
+    "compose-ui-tooling-preview",
+    "compose-material3",
+    "compose-material-icons-core",
+    "compose-material-icons-extended"
+]
+lifecycle = [
+    "lifecycle-viewmodel",
+    "lifecycle-runtime"
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.19" }
+toml-checker = { id = "com.github.ben-manes.versions", version.ref = "toml-checker" }
+toml-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "toml-updater" }

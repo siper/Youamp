@@ -1,0 +1,27 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
+
+apply from: "${project.rootDir}/buildscripts/android-library.gradle"
+
+android {
+    namespace 'ru.stersh.youamp.core.ui'
+
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
+    }
+}
+
+dependencies {
+    api platform(libs.compose.bom)
+    api(libs.bundles.compose)
+    implementation(libs.androidx.core)
+    implementation(libs.coil.compose)
+
+    debugApi(libs.compose.ui.tooling)
+    debugApi(libs.compose.ui.test.manifest)
+}

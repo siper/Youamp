@@ -1,0 +1,28 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
+
+apply from: "${project.rootDir}/buildscripts/android-library.gradle"
+
+android {
+    namespace 'ru.stersh.youamp.player'
+}
+
+dependencies {
+    implementation project(':core:api')
+    implementation project(':core:utils')
+
+    implementation(libs.kotlin.coroutines.android)
+    implementation(libs.bundles.koin)
+    implementation(libs.timber)
+
+    api(libs.media.exoplayer)
+    api(libs.media.exoplayer.hls)
+    api(libs.media.exoplayer.hls)
+    api(libs.media.exoplayer.workmanager)
+    api(libs.media.datasource)
+    api(libs.media.datasource.okhttp)
+    api(libs.media.session)
+    api(libs.media.extractor)
+}

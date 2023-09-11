@@ -1,0 +1,66 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+}
+
+android {
+    namespace "ru.stresh.youamp"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "ru.stresh.youamp"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+        allWarningsAsErrors = false
+        freeCompilerArgs += [
+                "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
+        ]
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+
+dependencies {
+
+    implementation project(":core:api")
+    implementation project(":core:ui")
+    implementation project(":core:room")
+    implementation project(":feature:albums")
+    implementation project(":feature:album")
+    implementation project(":feature:main")
+    implementation project(":feature:player")
+    implementation project(":feature:server:create")
+    implementation project(":shared:player")
+    implementation(libs.bundles.koin)
+    implementation(libs.navigation.compose)
+}
