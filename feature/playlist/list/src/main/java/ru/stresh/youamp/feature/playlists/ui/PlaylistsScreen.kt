@@ -1,5 +1,6 @@
-package ru.stresh.youamp.feature.artists.ui
+package ru.stresh.youamp.feature.playlists.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,12 +15,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,7 +27,6 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,25 +43,25 @@ import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
 @Composable
-fun ArtistsScreen(onArtistClick: (id: String) -> Unit) {
-    val viewModel: ArtistsViewModel = koinViewModel()
+fun PlaylistsScreen(onPlaylistClick: (id: String) -> Unit) {
+    val viewModel: PlaylistsViewModel = koinViewModel()
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    ArtistsScreen(
+    PlaylistsScreen(
         state = state,
         onRefresh = viewModel::refresh,
         onBottomReached = viewModel::loadMore,
-        onArtistClick = onArtistClick
+        onPlaylistClick = onPlaylistClick
     )
 }
 
 @Composable
-private fun ArtistsScreen(
-    state: ArtistsViewModel.StateUi,
+private fun PlaylistsScreen(
+    state: PlaylistsViewModel.StateUi,
     onRefresh: () -> Unit,
     onBottomReached: () -> Unit,
-    onArtistClick: (id: String) -> Unit
+    onPlaylistClick: (id: String) -> Unit
 ) {
     val isRefreshing by rememberSaveable { mutableStateOf(false) }
     val pullRefreshState = rememberPullToRefreshState(
@@ -87,10 +85,10 @@ private fun ArtistsScreen(
                 .nestedScroll(pullRefreshState.nestedScrollConnection)
                 .padding(padding)
         ) {
-            when(state) {
-                is ArtistsViewModel.StateUi.Content -> {
+            when (state) {
+                is PlaylistsViewModel.StateUi.Content -> {
                     LazyVerticalGrid(
-                        columns = GridCells.Fixed(3),
+                        columns = GridCells.Fixed(2),
                         state = listState,
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -99,10 +97,10 @@ private fun ArtistsScreen(
                     {
                         items(
                             items = state.items
-                        ) { album ->
-                            ArtistItem(
-                                artist = album,
-                                onAlbumClick = onArtistClick
+                        ) { playlist ->
+                            PlaylistItem(
+                                playlist = playlist,
+                                onPlaylistClick = onPlaylistClick
                             )
                         }
                     }
@@ -111,7 +109,8 @@ private fun ArtistsScreen(
                         state = pullRefreshState,
                     )
                 }
-                is ArtistsViewModel.StateUi.Progress -> {
+
+                is PlaylistsViewModel.StateUi.Progress -> {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator()
                     }
@@ -126,82 +125,71 @@ private fun ArtistsScreen(
 }
 
 @Composable
-private fun ArtistItem(
-    artist: ArtistUi,
-    onAlbumClick: (id: String) -> Unit
+private fun PlaylistItem(
+    playlist: PlaylistUi,
+    onPlaylistClick: (id: String) -> Unit
 ) {
-    val selectableShape = remember { RoundedCornerShape(36.dp) }
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .clip(selectableShape)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable {
-                onAlbumClick(artist.id)
+                onPlaylistClick(playlist.id)
             },
     ) {
-        val circleShape = remember { CircleShape }
         SubcomposeAsyncImage(
-            model = artist.artworkUrl,
+            model = playlist.artworkUrl,
             contentDescription = "Album image",
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(circleShape)
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = circleShape
-                ),
+                .aspectRatio(1f),
             loading = {
-                Icon(
-                    imageVector = Icons.Rounded.Person,
-                    contentDescription = "placeholder",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                Image(
+                    imageVector = Icons.Rounded.MusicNote,
+                    contentDescription = "placeholder"
                 )
             }
         )
         Text(
-            text = artist.name,
+            text = playlist.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp, start = 12.dp, end = 12.dp),
-            textAlign = TextAlign.Center,
-            minLines = 2,
-            maxLines = 2,
-            style = MaterialTheme.typography.titleMedium
+                .padding(12.dp),
+            textAlign = TextAlign.Left,
+            minLines = 1,
+            maxLines = 1,
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }
 
 @Composable
 @Preview
-private fun ArtistsScreenPreview() {
+private fun PlaylistsScreenPreview() {
     YouAmpPlayerTheme {
         val items = listOf(
-            ArtistUi(
+            PlaylistUi(
                 id = "1",
                 name = "Test",
-                albumCount = 2,
                 artworkUrl = null
             ),
-            ArtistUi(
+            PlaylistUi(
                 id = "2",
                 name = "Test 2",
-                albumCount = 10,
                 artworkUrl = null
             ),
-            ArtistUi(
+            PlaylistUi(
                 id = "3",
                 name = "Test 3",
-                albumCount = 3,
                 artworkUrl = null
             )
         )
-        val state = ArtistsViewModel.StateUi.Content(isRefreshing = true, items)
-        ArtistsScreen(
+        val state = PlaylistsViewModel.StateUi.Content(isRefreshing = true, items)
+        PlaylistsScreen(
             state = state,
-            onRefresh = {  },
-            onBottomReached = {  },
-            onArtistClick = {  }
+            onRefresh = { },
+            onBottomReached = { },
+            onPlaylistClick = { }
         )
     }
 }

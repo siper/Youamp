@@ -24,6 +24,9 @@ interface Api {
         @Query("id") id: String,
     ): PlaylistResponse
 
+    @GET("rest/getPlaylists")
+    suspend fun getPlaylists(): PlaylistsResponse
+
     @GET("rest/getArtists")
     suspend fun getArtists(): ArtistsResponse
 

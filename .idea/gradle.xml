@@ -23,6 +23,8 @@
             <option value="$PROJECT_DIR$/feature/artist/list" />
             <option value="$PROJECT_DIR$/feature/main" />
             <option value="$PROJECT_DIR$/feature/player" />
+            <option value="$PROJECT_DIR$/feature/playlist" />
+            <option value="$PROJECT_DIR$/feature/playlist/list" />
             <option value="$PROJECT_DIR$/feature/server" />
             <option value="$PROJECT_DIR$/feature/server/create" />
             <option value="$PROJECT_DIR$/feature/server/list" />

@@ -26,6 +26,7 @@ fun MainScreen(
     miniPlayer: @Composable () -> Unit,
     albumsScreen: @Composable () -> Unit,
     artistsScreen: @Composable () -> Unit,
+    playlistsScreen: @Composable () -> Unit,
     onProfileClick: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -45,7 +46,7 @@ fun MainScreen(
                             contentDescription = "Back"
                         )
                     }
-                }
+                },
             )
         },
         bottomBar = {
@@ -67,7 +68,7 @@ fun MainScreen(
                 artistsScreen()
             }
             composable(BottomNavigation.Playlists.destination) {
-                Text(text = "Playlists screen")
+                playlistsScreen()
             }
         }
     }

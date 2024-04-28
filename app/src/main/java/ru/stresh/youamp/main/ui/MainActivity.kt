@@ -26,6 +26,7 @@ import ru.stresh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.big.ui.PlayerScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
+import ru.stresh.youamp.feature.playlists.ui.PlaylistsScreen
 import ru.stresh.youamp.feature.server.create.ui.ServerScreen
 import ru.stresh.youamp.feature.server.list.ui.ServerListScreen
 
@@ -33,8 +34,9 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         actionBar?.hide()
+        super.onCreate(savedInstanceState)
+
         setContent {
             YouAmpPlayerTheme {
                 val rootNavController = rememberNavController()
@@ -71,6 +73,13 @@ class MainActivity : ComponentActivity() {
                             artistsScreen = {
                                 ArtistsScreen(
                                     onArtistClick = {
+                                    }
+                                )
+                            },
+                            playlistsScreen = {
+                                PlaylistsScreen(
+                                    onPlaylistClick = {
+
                                     }
                                 )
                             },

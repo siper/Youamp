@@ -47,7 +47,9 @@ class SubsonicApi(
 
     suspend fun getAlbum(id: String): Album = api.getAlbum(id).album
 
-    suspend fun getPlaylist(id: String): PlaylistResponse.Playlist = api.getPlaylist(id).playlist
+    suspend fun getPlaylist(id: String): Playlist = api.getPlaylist(id).playlist
+
+    suspend fun getPlaylists(): List<Playlist> = api.getPlaylists().playlists.playlist
 
     suspend fun getAlbumList(
         type: ListType,
