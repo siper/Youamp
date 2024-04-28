@@ -12,6 +12,7 @@ import ru.stresh.youamp.feature.album.albumInfoModule
 import ru.stresh.youamp.feature.albums.albumsModule
 import ru.stresh.youamp.feature.artists.artistsModule
 import ru.stresh.youamp.feature.player.playerFeatureModule
+import ru.stresh.youamp.feature.playlists.playlistListModule
 import ru.stresh.youamp.feature.server.create.serverCreateModule
 import ru.stresh.youamp.feature.server.list.serverListModule
 import ru.stresh.youamp.main.data.ServerExistRepositoryImpl
@@ -39,7 +40,8 @@ private val feature = listOf(
     albumsModule,
     artistsModule,
     serverCreateModule,
-    serverListModule
+    serverListModule,
+    playlistListModule
 )
 
 private val impl = module {

@@ -18,7 +18,7 @@ import ru.stersh.youamp.shared.player.utils.MEDIA_SONG_ID
 import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
 import ru.stersh.youamp.shared.player.utils.toMediaItem
 import ru.stersh.youamp.shared.player.utils.withPlayer
-import ru.stresh.youamp.core.api.PlaylistResponse
+import ru.stresh.youamp.core.api.PlaylistEntry
 import ru.stresh.youamp.core.api.provider.ApiProvider
 
 internal class PlayerQueueAudioSourceManagerImpl(
@@ -114,10 +114,11 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .getApi()
             .getPlaylist(source.id)
             .entry
-            .map { it.toMediaItem() }
+            ?.map { it.toMediaItem() }
+            ?: emptyList()
     }
 
-    private suspend fun PlaylistResponse.Entry.toMediaItem(): MediaItem {
+    private suspend fun PlaylistEntry.toMediaItem(): MediaItem {
         val songUri = apiProvider
             .getApi()
             .downloadUrl(id)
