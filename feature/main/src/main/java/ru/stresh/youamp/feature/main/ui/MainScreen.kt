@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 fun MainScreen(
     miniPlayer: @Composable () -> Unit,
     albumsScreen: @Composable () -> Unit,
+    artistsScreen: @Composable () -> Unit,
     onProfileClick: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -60,10 +61,10 @@ fun MainScreen(
             modifier = Modifier.padding(padding)
         ) {
             composable(BottomNavigation.Albums.destination) {
-                albumsScreen.invoke()
+                albumsScreen()
             }
             composable(BottomNavigation.Artists.destination) {
-                Text(text = "Artists screen")
+                artistsScreen()
             }
             composable(BottomNavigation.Playlists.destination) {
                 Text(text = "Playlists screen")

@@ -22,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 import ru.stresh.youamp.feature.album.ui.AlbumInfoScreen
 import ru.stresh.youamp.feature.albums.ui.AlbumsScreen
+import ru.stresh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.big.ui.PlayerScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
@@ -64,6 +65,12 @@ class MainActivity : ComponentActivity() {
                                 AlbumsScreen(
                                     onAlbumClick = {
                                         rootNavController.navigate("album/$it")
+                                    }
+                                )
+                            },
+                            artistsScreen = {
+                                ArtistsScreen(
+                                    onArtistClick = {
                                     }
                                 )
                             },

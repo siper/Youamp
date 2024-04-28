@@ -19,6 +19,8 @@
             <option value="$PROJECT_DIR$/feature/album" />
             <option value="$PROJECT_DIR$/feature/album/info" />
             <option value="$PROJECT_DIR$/feature/album/list" />
+            <option value="$PROJECT_DIR$/feature/artist" />
+            <option value="$PROJECT_DIR$/feature/artist/list" />
             <option value="$PROJECT_DIR$/feature/main" />
             <option value="$PROJECT_DIR$/feature/player" />
             <option value="$PROJECT_DIR$/feature/server" />
@@ -26,8 +28,6 @@
             <option value="$PROJECT_DIR$/feature/server/list" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/player" />
-            <option value="$PROJECT_DIR$/source" />
-            <option value="$PROJECT_DIR$/source/apiprovider" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

@@ -1,6 +1,5 @@
 package ru.stresh.youamp.core.api
 
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -26,7 +25,7 @@ interface Api {
     ): PlaylistResponse
 
     @GET("rest/getArtists")
-    suspend fun getArtists(): Response<ArtistsResponse>
+    suspend fun getArtists(): ArtistsResponse
 
     @GET("rest/getAlbumList")
     suspend fun getAlbumList(
