@@ -22,6 +22,7 @@
             <option value="$PROJECT_DIR$/feature/player" />
             <option value="$PROJECT_DIR$/feature/server" />
             <option value="$PROJECT_DIR$/feature/server/create" />
+            <option value="$PROJECT_DIR$/feature/server/list" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/player" />
             <option value="$PROJECT_DIR$/source" />

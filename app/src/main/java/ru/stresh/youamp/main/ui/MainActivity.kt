@@ -26,6 +26,7 @@ import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.big.ui.PlayerScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
 import ru.stresh.youamp.feature.server.create.ui.ServerScreen
+import ru.stresh.youamp.feature.server.list.ui.ServerListScreen
 
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModel()
@@ -65,6 +66,9 @@ class MainActivity : ComponentActivity() {
                                         rootNavController.navigate("album/$it")
                                     }
                                 )
+                            },
+                            onProfileClick = {
+                                rootNavController.navigate("server_list")
                             }
                         )
                     }
@@ -85,6 +89,12 @@ class MainActivity : ComponentActivity() {
                         ServerScreen(
                             onBackClick = { rootNavController.popBackStack() },
                             onCloseScreen = { rootNavController.navigate("main") }
+                        )
+                    }
+                    composable("server_list") {
+                        ServerListScreen(
+                            onBackClick = { rootNavController.popBackStack() },
+                            onAddServerClick = { rootNavController.navigate("add_server") }
                         )
                     }
                     composable("load") {

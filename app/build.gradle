@@ -60,6 +60,7 @@ dependencies {
     implementation project(":feature:main")
     implementation project(":feature:player")
     implementation project(":feature:server:create")
+    implementation project(":feature:server:list")
     implementation project(":shared:player")
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)
