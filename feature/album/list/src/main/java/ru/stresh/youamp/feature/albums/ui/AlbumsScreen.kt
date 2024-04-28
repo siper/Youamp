@@ -8,110 +8,118 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
+import ru.stresh.youamp.core.ui.OnBottomReached
+import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
 @Composable
 fun AlbumsScreen(onAlbumClick: (id: String) -> Unit) {
-    AlbumsScreen(koinViewModel(), onAlbumClick)
+    val viewModel: AlbumsViewModel = koinViewModel()
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    AlbumsScreen(
+        state = state,
+        onRefresh = viewModel::refresh,
+        onBottomReached = viewModel::loadMore,
+        onAlbumClick = onAlbumClick
+    )
 }
 
 @Composable
 private fun AlbumsScreen(
-    viewModel: AlbumsViewModel,
+    state: AlbumsViewModel.StateUi,
+    onRefresh: () -> Unit,
+    onBottomReached: () -> Unit,
     onAlbumClick: (id: String) -> Unit
 ) {
-    val albums: List<AlbumUi> by viewModel.albums.collectAsStateWithLifecycle()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullToRefreshState(enabled = { !isRefreshing })
+    val isRefreshing by rememberSaveable { mutableStateOf(false) }
+    val pullRefreshState = rememberPullToRefreshState(
+        enabled = { isRefreshing }
+    )
 
     if (pullRefreshState.isRefreshing) {
-        viewModel.refresh()
+        onRefresh()
     }
 
-    Scaffold {
-        val listState = rememberLazyGridState()
+    if (pullRefreshState.isRefreshing && !isRefreshing) {
+        pullRefreshState.endRefresh()
+    }
+
+    val listState = rememberLazyGridState()
+    Scaffold(
+        modifier = Modifier.nestedScroll(pullRefreshState.nestedScrollConnection)
+    ) { padding ->
         Box(
             modifier = Modifier
                 .nestedScroll(pullRefreshState.nestedScrollConnection)
-                .padding(it)
+                .padding(padding)
         ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                state = listState,
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            )
-            {
-                items(albums) { album ->
-                    AlbumItem(
-                        album = album,
-                        onAlbumClick = onAlbumClick
+            when(state) {
+                is AlbumsViewModel.StateUi.Content -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        state = listState,
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    )
+                    {
+                        items(
+                            items = state.items
+                        ) { album ->
+                            AlbumItem(
+                                album = album,
+                                onAlbumClick = onAlbumClick
+                            )
+                        }
+                    }
+                    PullToRefreshContainer(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        state = pullRefreshState,
                     )
                 }
+                is AlbumsViewModel.StateUi.Progress -> {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator()
+                    }
+                }
             }
-            PullToRefreshContainer(
-                modifier = Modifier.align(Alignment.TopCenter),
-                state = pullRefreshState,
-            )
         }
 
         listState.OnBottomReached {
-            viewModel.loadMore()
+            onBottomReached()
         }
-    }
-}
-
-@Composable
-private fun LazyGridState.OnBottomReached(
-    loadMore: () -> Unit
-) {
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
-
-            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
-        }
-    }
-
-    LaunchedEffect(shouldLoadMore) {
-        snapshotFlow { shouldLoadMore.value }
-            .collect { loadMore ->
-                if (loadMore) {
-                    loadMore()
-                }
-            }
     }
 }
 
@@ -160,6 +168,40 @@ private fun AlbumItem(
             minLines = 1,
             maxLines = 1,
             style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun AlbumsScreenPreview() {
+    YouAmpPlayerTheme {
+        val items = listOf(
+            AlbumUi(
+                id = "1",
+                title = "Test",
+                artist = "Test artist",
+                artworkUrl = null
+            ),
+            AlbumUi(
+                id = "2",
+                title = "Test 2",
+                artist = "Test artist 2 ",
+                artworkUrl = null
+            ),
+            AlbumUi(
+                id = "3",
+                title = "Test 3",
+                artist = "Test artist 3",
+                artworkUrl = null
+            )
+        )
+        val state = AlbumsViewModel.StateUi.Content(isRefreshing = true, items)
+        AlbumsScreen(
+            state = state,
+            onRefresh = {  },
+            onBottomReached = {  },
+            onAlbumClick = {  }
         )
     }
 }
