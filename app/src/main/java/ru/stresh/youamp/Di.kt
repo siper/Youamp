@@ -7,11 +7,13 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import ru.stresh.youamp.core.api.provider.ApiProvider
 import ru.stresh.youamp.core.room.roomModule
-import ru.stresh.youamp.main.data.ServerExistRepositoryImpl
-import ru.stresh.youamp.main.domain.ServerExistRepository
 import ru.stresh.youamp.feature.album.albumInfoModule
+import ru.stresh.youamp.feature.albums.albumsModule
 import ru.stresh.youamp.feature.player.playerFeatureModule
 import ru.stresh.youamp.feature.server.create.serverCreateModule
+import ru.stresh.youamp.feature.server.list.serverListModule
+import ru.stresh.youamp.main.data.ServerExistRepositoryImpl
+import ru.stresh.youamp.main.domain.ServerExistRepository
 import ru.stresh.youamp.main.ui.MainViewModel
 
 internal fun setupDi(application: Application) {
@@ -32,7 +34,9 @@ private val shared = listOf(
 private val feature = listOf(
     playerFeatureModule,
     albumInfoModule,
-    serverCreateModule
+    albumsModule,
+    serverCreateModule,
+    serverListModule
 )
 
 private val impl = module {

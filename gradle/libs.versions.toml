@@ -22,6 +22,7 @@ junit = "4.13.2"
 androidx-junit = "1.1.5"
 espresso-core = "3.5.1"
 material = "1.11.0"
+google-material = "1.11.0"
 
 [libraries]
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -70,6 +71,7 @@ compose-material-icons-extended = { module = "androidx.compose.material:material
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
 
 [bundles]
 koin = [

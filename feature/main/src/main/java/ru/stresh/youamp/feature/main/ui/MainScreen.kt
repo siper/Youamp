@@ -2,12 +2,15 @@ package ru.stresh.youamp.feature.main.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,17 +24,26 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun MainScreen(
     miniPlayer: @Composable () -> Unit,
-    albumsScreen: @Composable () -> Unit
+    albumsScreen: @Composable () -> Unit,
+    onProfileClick: () -> Unit
 ) {
     val navController = rememberNavController()
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "YouAMP"
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onProfileClick() }) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Back"
+                        )
+                    }
                 }
             )
         },

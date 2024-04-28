@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -35,13 +36,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.SubcomposeAsyncImage
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun AlbumsScreen(onAlbumClick: (id: String) -> Unit) {
-    AlbumsScreen(viewModel(), onAlbumClick)
+    AlbumsScreen(koinViewModel(), onAlbumClick)
 }
 
 @Composable
@@ -52,36 +53,42 @@ private fun AlbumsScreen(
     val albums: List<AlbumUi> by viewModel.albums.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullToRefreshState(enabled = { !isRefreshing })
-    val listState = rememberLazyGridState()
+
     if (pullRefreshState.isRefreshing) {
         viewModel.refresh()
     }
-    Box(
-        modifier = Modifier.nestedScroll(pullRefreshState.nestedScrollConnection)
-    ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            state = listState,
-            contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        )
-        {
-            items(albums) { album ->
-                AlbumItem(
-                    album = album,
-                    onAlbumClick = onAlbumClick
-                )
-            }
-        }
-        PullToRefreshContainer(
-            modifier = Modifier.align(Alignment.TopCenter),
-            state = pullRefreshState,
-        )
-    }
 
-    listState.OnBottomReached {
-        viewModel.loadMore()
+    Scaffold {
+        val listState = rememberLazyGridState()
+        Box(
+            modifier = Modifier
+                .nestedScroll(pullRefreshState.nestedScrollConnection)
+                .padding(it)
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = listState,
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            )
+            {
+                items(albums) { album ->
+                    AlbumItem(
+                        album = album,
+                        onAlbumClick = onAlbumClick
+                    )
+                }
+            }
+            PullToRefreshContainer(
+                modifier = Modifier.align(Alignment.TopCenter),
+                state = pullRefreshState,
+            )
+        }
+
+        listState.OnBottomReached {
+            viewModel.loadMore()
+        }
     }
 }
 

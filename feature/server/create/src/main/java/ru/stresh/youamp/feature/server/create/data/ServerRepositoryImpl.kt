@@ -7,17 +7,18 @@ import ru.stresh.youamp.feature.server.create.domain.ServerRepository
 
 internal class ServerRepositoryImpl(private val serverDao: SubsonicServerDao) : ServerRepository {
     override suspend fun addServer(server: Server) {
-        serverDao.insert(server.toData())
+        val isActive = serverDao.getActive() == null
+        serverDao.insert(server.toData(isActive))
     }
 
-    private fun Server.toData(): SubsonicServerDb {
+    private fun Server.toData(isActive: Boolean): SubsonicServerDb {
         return SubsonicServerDb(
             name = name,
             url = url,
             username = username,
             password = password,
             useLegacyAuth = useLegacyAuth,
-            isActive = true
+            isActive = isActive
         )
     }
 }
