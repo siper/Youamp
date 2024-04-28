@@ -4,7 +4,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ArtistsResponse(@Json(name = "artists") val artists: Artists)
+data class ArtistsResponse(
+    @Json(name = "artists") val artists: Artists
+)
 
 @JsonClass(generateAdapter = true)
 data class Artists(

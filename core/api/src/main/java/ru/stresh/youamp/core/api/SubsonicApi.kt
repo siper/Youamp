@@ -89,6 +89,14 @@ class SubsonicApi(
         ).albumList.albums ?: emptyList()
     }
 
+    suspend fun getArtists(): List<Artist> {
+        return api
+            .getArtists()
+            .artists
+            .indices
+            .flatMap { it.artists }
+    }
+
     suspend fun getPlayQueue(): PlayQueueResponse = api.getPlayQueue()
 
     suspend fun savePlayQueue(

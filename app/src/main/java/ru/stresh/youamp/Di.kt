@@ -5,10 +5,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import ru.stersh.youamp.shared.player.playerSharedModule
 import ru.stresh.youamp.core.api.provider.ApiProvider
 import ru.stresh.youamp.core.room.roomModule
 import ru.stresh.youamp.feature.album.albumInfoModule
 import ru.stresh.youamp.feature.albums.albumsModule
+import ru.stresh.youamp.feature.artists.artistsModule
 import ru.stresh.youamp.feature.player.playerFeatureModule
 import ru.stresh.youamp.feature.server.create.serverCreateModule
 import ru.stresh.youamp.feature.server.list.serverListModule
@@ -28,13 +30,14 @@ private val core = listOf(
 )
 
 private val shared = listOf(
-    ru.stersh.youamp.shared.player.playerSharedModule
+    playerSharedModule
 )
 
 private val feature = listOf(
     playerFeatureModule,
     albumInfoModule,
     albumsModule,
+    artistsModule,
     serverCreateModule,
     serverListModule
 )

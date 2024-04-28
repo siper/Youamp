@@ -57,6 +57,7 @@ dependencies {
     implementation project(":core:room")
     implementation project(':feature:album:list')
     implementation project(':feature:album:info')
+    implementation project(':feature:artist:list')
     implementation project(":feature:main")
     implementation project(":feature:player")
     implementation project(":feature:server:create")
