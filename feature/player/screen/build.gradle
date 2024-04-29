@@ -1,0 +1,19 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
+
+apply from: "${project.rootDir}/buildscripts/android-feature-module.gradle"
+
+android {
+    namespace 'ru.stersh.youamp.feature.player.big'
+}
+
+dependencies {
+    implementation project(":core:ui")
+    implementation project(":core:api")
+    implementation project(":shared:player")
+    implementation(libs.bundles.lifecycle)
+    implementation(libs.coil.compose)
+    implementation(libs.bundles.koin)
+}

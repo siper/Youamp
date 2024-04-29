@@ -2,9 +2,8 @@ package ru.stresh.youamp.main.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.stresh.youamp.main.domain.ServerExistRepository
 
@@ -12,20 +11,19 @@ internal class MainViewModel(
     private val serverExistRepository: ServerExistRepository
 ) : ViewModel() {
 
-    private val _navigation = Channel<Screen>()
-    val navigation: Flow<Screen>
-        get() = _navigation.receiveAsFlow()
+    private val _state = MutableStateFlow<StateUi>(StateUi.Progress)
+    val state: StateFlow<StateUi>
+        get() = _state
 
     init {
         checkServer()
     }
 
     private fun checkServer() = viewModelScope.launch {
-        val screen = if (serverExistRepository.hasServer()) {
-            Screen.Main
+        _state.value = if (serverExistRepository.hasServer()) {
+            StateUi.Content
         } else {
-            Screen.AddServer
+            StateUi.CreateNewServer
         }
-        _navigation.send(screen)
     }
 }

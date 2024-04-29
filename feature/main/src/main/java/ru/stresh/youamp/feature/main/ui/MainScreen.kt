@@ -1,26 +1,32 @@
 package ru.stresh.youamp.feature.main.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     miniPlayer: @Composable () -> Unit,
@@ -29,8 +35,6 @@ fun MainScreen(
     playlistsScreen: @Composable () -> Unit,
     onProfileClick: () -> Unit
 ) {
-    val navController = rememberNavController()
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -49,69 +53,56 @@ fun MainScreen(
                 },
             )
         },
-        bottomBar = {
-            MainNavigationBar(
-                miniPlayer = miniPlayer,
-                navController = navController
-            )
-        }
+        modifier = Modifier.fillMaxSize()
     ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = BottomNavigation.Albums.destination,
-            modifier = Modifier.padding(padding)
+        val tabData = arrayOf("Albums", "Artists", "Playlists")
+        val pagerState = rememberPagerState { tabData.size }
+        val scope = rememberCoroutineScope()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
-            composable(BottomNavigation.Albums.destination) {
-                albumsScreen()
+            ScrollableTabRow(
+                selectedTabIndex = pagerState.currentPage,
+                edgePadding = 0.dp,
+                indicator = { tabPositions ->
+                    TabRowDefaults.PrimaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                    )
+                },
+                divider = {},
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                tabData.forEachIndexed { index, s ->
+                    Tab(
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        text = {
+                            Text(text = s)
+                        }
+                    )
+                }
             }
-            composable(BottomNavigation.Artists.destination) {
-                artistsScreen()
+            HorizontalDivider()
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .clipToBounds()
+                    .weight(1f)
+            ) {
+                when (it) {
+                    0 -> albumsScreen()
+                    1 -> artistsScreen()
+                    2 -> playlistsScreen()
+                    else -> {}
+                }
             }
-            composable(BottomNavigation.Playlists.destination) {
-                playlistsScreen()
-            }
-        }
-    }
-}
-
-@Composable
-private fun MainNavigationBar(
-    miniPlayer: @Composable () -> Unit,
-    navController: NavHostController
-) {
-    val items = listOf(
-        BottomNavigation.Albums,
-        BottomNavigation.Artists,
-        BottomNavigation.Playlists
-    )
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-    Column {
-        miniPlayer.invoke()
-        NavigationBar {
-            items.forEach { navigationItem ->
-                val selected = currentRoute == navigationItem.destination
-                NavigationBarItem(
-                    selected = selected,
-                    onClick = { navController.navigate(navigationItem.destination) },
-                    label = {
-                        Text(
-                            text = navigationItem.title,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = if (selected) {
-                                navigationItem.icon.active
-                            } else {
-                                navigationItem.icon.idle
-                            },
-                            contentDescription = null,
-                        )
-                    }
-                )
-            }
+            miniPlayer()
         }
     }
 }
