@@ -20,6 +20,9 @@ interface SubsonicServerDao {
     @Query("SELECT COUNT(*) FROM server_subsonic")
     suspend fun getCount(): Int
 
+    @Query("SELECT * FROM server_subsonic WHERE id = :serverId")
+    suspend fun getServer(serverId: Long): SubsonicServerDb?
+
     @Query("SELECT * FROM server_subsonic WHERE isActive = 1")
     suspend fun getActive(): SubsonicServerDb?
 

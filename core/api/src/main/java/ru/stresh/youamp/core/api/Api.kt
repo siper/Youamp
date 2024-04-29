@@ -4,6 +4,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface Api {
+    @GET("rest/ping")
+    suspend fun ping(): PingResponse
+
     @GET("rest/getSong")
     suspend fun getSong(
         @Query("id") id: String,

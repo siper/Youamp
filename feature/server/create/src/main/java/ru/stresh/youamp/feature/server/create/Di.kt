@@ -8,5 +8,7 @@ import ru.stresh.youamp.feature.server.create.ui.ServerCreateViewModel
 
 val serverCreateModule = module {
     factory<ServerRepository> { ServerRepositoryImpl(get()) }
-    viewModel { ServerCreateViewModel(get()) }
+    viewModel { (serverId: Long) ->
+        ServerCreateViewModel(serverId, get())
+    }
 }

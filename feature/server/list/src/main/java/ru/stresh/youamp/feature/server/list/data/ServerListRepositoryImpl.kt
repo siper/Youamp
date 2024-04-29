@@ -24,4 +24,8 @@ internal class ServerListRepositoryImpl(private val serverDao: SubsonicServerDao
     override suspend fun setActiveServer(serverId: Long) {
         serverDao.setActive(serverId)
     }
+
+    override suspend fun deleteServer(serverId: Long) {
+        serverDao.delete(serverId)
+    }
 }

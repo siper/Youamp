@@ -2,6 +2,7 @@ package ru.stresh.youamp
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import ru.stresh.youamp.core.api.ApiDefaults
 import ru.stresh.youamp.core.api.SubsonicApi
 import ru.stresh.youamp.core.api.provider.ApiProvider
 import ru.stresh.youamp.core.api.provider.NoActiveServerSettingsFound
@@ -29,8 +30,8 @@ internal class ApiProviderImpl(
             url = subsonicServer.url,
             username = subsonicServer.username,
             password = subsonicServer.password,
-            apiVersion = API_VERSION,
-            clientId = CLIENT_ID,
+            apiVersion = ApiDefaults.API_VERSION,
+            clientId = ApiDefaults.CLIENT_ID,
             useLegacyAuth = subsonicServer.useLegacyAuth
         )
     }
@@ -41,10 +42,5 @@ internal class ApiProviderImpl(
                 currentApiSonic.password == subsonicServer.password &&
                 currentApiSonic.url == subsonicServer.url &&
                 currentApiSonic.useLegacyAuth == subsonicServer.useLegacyAuth
-    }
-
-    companion object {
-        private const val API_VERSION = "1.15.0"
-        private const val CLIENT_ID = "YouAMP"
     }
 }

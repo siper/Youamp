@@ -4,6 +4,14 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
+data class PingResponse(
+    @Json(name = "status")
+    val status: String,
+    @Json(name = "version")
+    val version: String
+)
+
+@JsonClass(generateAdapter = true)
 data class SongResponse(
     @Json(name = "song")
     val song: Song
