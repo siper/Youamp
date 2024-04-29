@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -33,6 +32,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
@@ -41,8 +41,11 @@ import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
 @Composable
-fun AlbumsScreen(onAlbumClick: (id: String) -> Unit) {
-    val viewModel: AlbumsViewModel = koinViewModel()
+fun AlbumsScreen(
+    viewModelStoreOwner: ViewModelStoreOwner,
+    onAlbumClick: (id: String) -> Unit
+) {
+    val viewModel: AlbumsViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -72,46 +75,43 @@ private fun AlbumsScreen(
     }
 
     val listState = rememberLazyGridState()
-    Scaffold(
-        modifier = Modifier.nestedScroll(pullRefreshState.nestedScrollConnection)
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .nestedScroll(pullRefreshState.nestedScrollConnection)
-                .padding(padding)
-        ) {
-            when(state) {
-                is StateUi.Content -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        state = listState,
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    )
-                    {
-                        items(
-                            items = state.items
-                        ) { album ->
-                            AlbumItem(
-                                album = album,
-                                onAlbumClick = onAlbumClick
-                            )
-                        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(pullRefreshState.nestedScrollConnection)
+    ) {
+        when (state) {
+            is StateUi.Content -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    state = listState,
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                )
+                {
+                    items(
+                        items = state.items
+                    ) { album ->
+                        AlbumItem(
+                            album = album,
+                            onAlbumClick = onAlbumClick
+                        )
                     }
-                    PullToRefreshContainer(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        state = pullRefreshState,
-                    )
                 }
+                PullToRefreshContainer(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    state = pullRefreshState,
+                )
+            }
 
-                is StateUi.Progress -> {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator()
-                    }
-                }
+            is StateUi.Progress -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
+
 
         listState.OnBottomReached {
             onBottomReached()
@@ -195,9 +195,9 @@ private fun AlbumsScreenPreview() {
         val state = StateUi.Content(isRefreshing = true, items)
         AlbumsScreen(
             state = state,
-            onRefresh = {  },
-            onBottomReached = {  },
-            onAlbumClick = {  }
+            onRefresh = { },
+            onBottomReached = { },
+            onAlbumClick = { }
         )
     }
 }

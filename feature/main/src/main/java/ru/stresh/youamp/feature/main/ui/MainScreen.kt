@@ -90,8 +90,9 @@ private fun MainNavigationBar(
         miniPlayer.invoke()
         NavigationBar {
             items.forEach { navigationItem ->
+                val selected = currentRoute == navigationItem.destination
                 NavigationBarItem(
-                    selected = currentRoute == navigationItem.destination,
+                    selected = selected,
                     onClick = { navController.navigate(navigationItem.destination) },
                     label = {
                         Text(
@@ -101,7 +102,11 @@ private fun MainNavigationBar(
                     },
                     icon = {
                         Icon(
-                            imageVector = navigationItem.icon,
+                            imageVector = if (selected) {
+                                navigationItem.icon.active
+                            } else {
+                                navigationItem.icon.idle
+                            },
                             contentDescription = null,
                         )
                     }

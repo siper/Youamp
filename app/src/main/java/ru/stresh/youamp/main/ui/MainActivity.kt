@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -50,9 +51,12 @@ class MainActivity : ComponentActivity() {
                         .launchIn(this)
                 }
 
+                val viewModelStoreOwner = requireNotNull(LocalViewModelStoreOwner.current)
+
                 NavHost(
                     navController = rootNavController,
-                    startDestination = "load"
+                    startDestination = "load",
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     composable("main") {
                         MainScreen(
@@ -65,6 +69,7 @@ class MainActivity : ComponentActivity() {
                             },
                             albumsScreen = {
                                 AlbumsScreen(
+                                    viewModelStoreOwner = viewModelStoreOwner,
                                     onAlbumClick = {
                                         rootNavController.navigate("album/$it")
                                     }
@@ -72,12 +77,14 @@ class MainActivity : ComponentActivity() {
                             },
                             artistsScreen = {
                                 ArtistsScreen(
+                                    viewModelStoreOwner = viewModelStoreOwner,
                                     onArtistClick = {
                                     }
                                 )
                             },
                             playlistsScreen = {
                                 PlaylistsScreen(
+                                    viewModelStoreOwner = viewModelStoreOwner,
                                     onPlaylistClick = {
 
                                     }
