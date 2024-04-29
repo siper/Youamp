@@ -1,5 +1,7 @@
 package ru.stresh.youamp
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import ru.stresh.youamp.core.api.ApiDefaults
@@ -17,12 +19,22 @@ internal class ApiProviderImpl(
 
     override suspend fun getApi(): SubsonicApi = mutex.withLock {
         val currentServerSettings = subsonicServerDao.getActive() ?: throw NoActiveServerSettingsFound()
-        return@withLock if (isSameSettings(currentServerSettings)) {
-            requireNotNull(apiSonic)
-        } else {
-            apiSonic = createNewApi(currentServerSettings)
-            requireNotNull(apiSonic)
+        return@withLock requireApi(currentServerSettings)
+    }
+
+    override fun flowApi(): Flow<SubsonicApi> {
+        return subsonicServerDao
+            .flowActive()
+            .mapNotNull {
+                requireApi(it ?: return@mapNotNull null)
+            }
+    }
+
+    private fun requireApi(subsonicServer: SubsonicServerDb): SubsonicApi {
+        if (!isSameSettings(subsonicServer)) {
+            apiSonic = createNewApi(subsonicServer)
         }
+        return requireNotNull(apiSonic)
     }
 
     private fun createNewApi(subsonicServer: SubsonicServerDb): SubsonicApi {

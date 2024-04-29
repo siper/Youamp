@@ -26,8 +26,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,12 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
-import ru.stresh.youamp.core.ui.OnBottomReached
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
 @Composable
-fun PlaylistsScreen(onPlaylistClick: (id: String) -> Unit) {
+fun PlaylistsScreen(
+    onPlaylistClick: (id: String) -> Unit
+) {
     val viewModel: PlaylistsViewModel = koinViewModel()
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -51,28 +50,24 @@ fun PlaylistsScreen(onPlaylistClick: (id: String) -> Unit) {
     PlaylistsScreen(
         state = state,
         onRefresh = viewModel::refresh,
-        onBottomReached = viewModel::loadMore,
         onPlaylistClick = onPlaylistClick
     )
 }
 
 @Composable
 private fun PlaylistsScreen(
-    state: PlaylistsViewModel.StateUi,
+    state: StateUi,
     onRefresh: () -> Unit,
-    onBottomReached: () -> Unit,
     onPlaylistClick: (id: String) -> Unit
 ) {
-    val isRefreshing by rememberSaveable { mutableStateOf(false) }
-    val pullRefreshState = rememberPullToRefreshState(
-        enabled = { isRefreshing }
-    )
+    val pullRefreshState = rememberPullToRefreshState()
 
     if (pullRefreshState.isRefreshing) {
         onRefresh()
     }
 
-    if (pullRefreshState.isRefreshing && !isRefreshing) {
+    val isRefreshingState = (state as? StateUi.Content)?.isRefreshing == true
+    if (pullRefreshState.isRefreshing && isRefreshingState) {
         pullRefreshState.endRefresh()
     }
 
@@ -86,7 +81,7 @@ private fun PlaylistsScreen(
                 .padding(padding)
         ) {
             when (state) {
-                is PlaylistsViewModel.StateUi.Content -> {
+                is StateUi.Content -> {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         state = listState,
@@ -110,16 +105,14 @@ private fun PlaylistsScreen(
                     )
                 }
 
-                is PlaylistsViewModel.StateUi.Progress -> {
+                is StateUi.Progress -> {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                 }
             }
-        }
-
-        listState.OnBottomReached {
-            onBottomReached()
         }
     }
 }
@@ -139,7 +132,7 @@ private fun PlaylistItem(
     ) {
         SubcomposeAsyncImage(
             model = playlist.artworkUrl,
-            contentDescription = "Album image",
+            contentDescription = "Playlist cover",
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),
@@ -184,11 +177,10 @@ private fun PlaylistsScreenPreview() {
                 artworkUrl = null
             )
         )
-        val state = PlaylistsViewModel.StateUi.Content(isRefreshing = true, items)
+        val state = StateUi.Content(isRefreshing = true, items)
         PlaylistsScreen(
             state = state,
             onRefresh = { },
-            onBottomReached = { },
             onPlaylistClick = { }
         )
     }

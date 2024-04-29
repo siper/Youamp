@@ -5,15 +5,20 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import ru.stresh.youamp.core.api.provider.ApiProvider
 import ru.stresh.youamp.core.utils.Paginator
 import ru.stresh.youamp.core.utils.data
 import ru.stresh.youamp.core.utils.mapItems
 import ru.stresh.youamp.core.utils.pageLoader
 import ru.stresh.youamp.feature.albums.domain.AlbumsRepository
 
-internal class AlbumsViewModel(private val albumsRepository: AlbumsRepository) : ViewModel() {
+internal class AlbumsViewModel(
+    private val albumsRepository: AlbumsRepository,
+    private val apiProvider: ApiProvider
+) : ViewModel() {
 
     private val paginator = pageLoader { page, pageSize ->
         albumsRepository.getAlbums(page, pageSize)
@@ -24,6 +29,19 @@ internal class AlbumsViewModel(private val albumsRepository: AlbumsRepository) :
         get() = _state
 
     init {
+        subscribeServerChange()
+        subscribeState()
+    }
+
+    fun loadMore() = viewModelScope.launch {
+        paginator.loadNextPage()
+    }
+
+    fun refresh() = viewModelScope.launch {
+        paginator.restart()
+    }
+
+    private fun subscribeState() {
         viewModelScope.launch {
             combine(
                 paginator
@@ -49,16 +67,14 @@ internal class AlbumsViewModel(private val albumsRepository: AlbumsRepository) :
         }
     }
 
-    fun loadMore() = viewModelScope.launch {
-        paginator.loadNextPage()
-    }
-
-    fun refresh() = viewModelScope.launch {
-        paginator.restart()
-    }
-
-    sealed interface StateUi {
-        data class Content(val isRefreshing: Boolean, val items: List<AlbumUi>) : StateUi
-        data object Progress : StateUi
+    private fun subscribeServerChange() {
+        viewModelScope.launch {
+            apiProvider
+                .flowApi()
+                .distinctUntilChanged()
+                .collect {
+                    paginator.restart()
+                }
+        }
     }
 }
