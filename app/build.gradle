@@ -68,4 +68,6 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.compose)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.material)
 }
