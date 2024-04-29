@@ -21,7 +21,6 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -37,6 +36,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
@@ -44,8 +44,11 @@ import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
 @Composable
-fun ArtistsScreen(onArtistClick: (id: String) -> Unit) {
-    val viewModel: ArtistsViewModel = koinViewModel()
+fun ArtistsScreen(
+    viewModelStoreOwner: ViewModelStoreOwner,
+    onArtistClick: (id: String) -> Unit
+) {
+    val viewModel: ArtistsViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -76,44 +79,38 @@ private fun ArtistsScreen(
     }
 
     val listState = rememberLazyGridState()
-    Scaffold(
-        modifier = Modifier.nestedScroll(pullRefreshState.nestedScrollConnection)
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .nestedScroll(pullRefreshState.nestedScrollConnection)
-                .padding(padding)
-        ) {
-            when(state) {
-                is StateUi.Content -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(3),
-                        state = listState,
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    )
-                    {
-                        items(
-                            items = state.items
-                        ) { album ->
-                            ArtistItem(
-                                artist = album,
-                                onAlbumClick = onArtistClick
-                            )
-                        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(pullRefreshState.nestedScrollConnection)
+    ) {
+        when (state) {
+            is StateUi.Content -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    state = listState,
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                )
+                {
+                    items(
+                        items = state.items
+                    ) { album ->
+                        ArtistItem(
+                            artist = album,
+                            onAlbumClick = onArtistClick
+                        )
                     }
-                    PullToRefreshContainer(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        state = pullRefreshState,
-                    )
                 }
+                PullToRefreshContainer(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    state = pullRefreshState,
+                )
+            }
 
-                is StateUi.Progress -> {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator()
-                    }
-                }
+            is StateUi.Progress -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }
@@ -193,8 +190,8 @@ private fun ArtistsScreenPreview() {
         val state = StateUi.Content(isRefreshing = true, items)
         ArtistsScreen(
             state = state,
-            onRefresh = {  },
-            onArtistClick = {  }
+            onRefresh = { },
+            onArtistClick = { }
         )
     }
 }

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -33,6 +32,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
@@ -41,9 +41,10 @@ import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 @Composable
 fun PlaylistsScreen(
+    viewModelStoreOwner: ViewModelStoreOwner,
     onPlaylistClick: (id: String) -> Unit
 ) {
-    val viewModel: PlaylistsViewModel = koinViewModel()
+    val viewModel: PlaylistsViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -72,46 +73,40 @@ private fun PlaylistsScreen(
     }
 
     val listState = rememberLazyGridState()
-    Scaffold(
-        modifier = Modifier.nestedScroll(pullRefreshState.nestedScrollConnection)
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .nestedScroll(pullRefreshState.nestedScrollConnection)
-                .padding(padding)
-        ) {
-            when (state) {
-                is StateUi.Content -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        state = listState,
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    )
-                    {
-                        items(
-                            items = state.items
-                        ) { playlist ->
-                            PlaylistItem(
-                                playlist = playlist,
-                                onPlaylistClick = onPlaylistClick
-                            )
-                        }
-                    }
-                    PullToRefreshContainer(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        state = pullRefreshState,
-                    )
-                }
-
-                is StateUi.Progress -> {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(pullRefreshState.nestedScrollConnection)
+    ) {
+        when (state) {
+            is StateUi.Content -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    state = listState,
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                )
+                {
+                    items(
+                        items = state.items
+                    ) { playlist ->
+                        PlaylistItem(
+                            playlist = playlist,
+                            onPlaylistClick = onPlaylistClick
                         )
                     }
                 }
+                PullToRefreshContainer(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    state = pullRefreshState,
+                )
+            }
+
+            is StateUi.Progress -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }
