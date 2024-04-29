@@ -41,6 +41,8 @@ class SubsonicApi(
         .build()
     private val api = retrofit.create(Api::class.java)
 
+    suspend fun ping(): PingResponse = api.ping()
+
     suspend fun getSong(id: String): Song = api.getSong(id).song
 
     suspend fun getArtist(id: String): Artist = api.getArtist(id).artist

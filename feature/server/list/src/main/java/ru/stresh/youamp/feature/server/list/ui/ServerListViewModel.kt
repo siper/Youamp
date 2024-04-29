@@ -37,6 +37,10 @@ internal class ServerListViewModel(
         }
     }
 
+    fun deleteServer(serverId: Long) = viewModelScope.launch {
+        serverListRepository.deleteServer(serverId)
+    }
+
     fun setActiveServer(serverId: Long) = viewModelScope.launch {
         serverListRepository.setActiveServer(serverId)
     }

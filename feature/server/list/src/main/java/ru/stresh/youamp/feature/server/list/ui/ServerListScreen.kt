@@ -1,6 +1,7 @@
 package ru.stresh.youamp.feature.server.list.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Dns
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -22,6 +25,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +39,8 @@ import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 @Composable
 fun ServerListScreen(
     onBackClick: () -> Unit,
-    onAddServerClick: () -> Unit
+    onAddServerClick: () -> Unit,
+    onEditServerClick: (serverId: Long) -> Unit
 ) {
     val viewModel: ServerListViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -42,7 +49,9 @@ fun ServerListScreen(
         state = state,
         onBackClick = onBackClick,
         onAddServerClick = onAddServerClick,
-        onActiveServer = viewModel::setActiveServer
+        onEditServer = onEditServerClick,
+        onActiveServer = viewModel::setActiveServer,
+        onDeleteServer = viewModel::deleteServer
     )
 }
 
@@ -51,7 +60,9 @@ private fun ServerListScreen(
     state: ServerListViewModel.StateUi,
     onBackClick: () -> Unit,
     onAddServerClick: () -> Unit,
-    onActiveServer: (serverId: Long) -> Unit
+    onEditServer: (serverId: Long) -> Unit,
+    onActiveServer: (serverId: Long) -> Unit,
+    onDeleteServer: (serverId: Long) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -84,7 +95,9 @@ private fun ServerListScreen(
                     for (server in state.items) {
                         ServerItem(
                             item = server,
-                            onActive = onActiveServer
+                            onActive = onActiveServer,
+                            onDelete = onDeleteServer,
+                            onEdit = onEditServer
                         )
                     }
                 }
@@ -104,8 +117,11 @@ private fun ServerListScreen(
 @Composable
 private fun ServerItem(
     item: ServerUi,
-    onActive: (serverId: Long) -> Unit
+    onActive: (serverId: Long) -> Unit,
+    onDelete: (serverId: Long) -> Unit,
+    onEdit: (serverId: Long) -> Unit,
 ) {
+    var menuExpanded by rememberSaveable { mutableStateOf(false) }
     ListItem(
         headlineContent = { Text(item.title) },
         supportingContent = { Text(item.url) },
@@ -123,10 +139,46 @@ private fun ServerItem(
             )
         },
         trailingContent = {
-            RadioButton(
-                selected = item.isActive,
-                onClick = { onActive(item.id) }
-            )
+            Box {
+                RadioButton(
+                    selected = item.isActive,
+                    onClick = { onActive(item.id) }
+                )
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false },
+                    modifier = Modifier.align(Alignment.Center)
+                ) {
+                    if (!item.isActive) {
+                        DropdownMenuItem(
+                            text = { Text(text = "Activate") },
+                            onClick = {
+                                menuExpanded = false
+                                onActive(item.id)
+                            }
+                        )
+                    }
+                    DropdownMenuItem(
+                        text = { Text(text = "Edit") },
+                        onClick = {
+                            menuExpanded = false
+                            onEdit(item.id)
+                        }
+                    )
+                    if (!item.isActive) {
+                        DropdownMenuItem(
+                            text = { Text(text = "Delete") },
+                            onClick = {
+                                menuExpanded = false
+                                onDelete(item.id)
+                            }
+                        )
+                    }
+                }
+            }
+        },
+        modifier = Modifier.clickable {
+            menuExpanded = true
         }
     )
 }
@@ -154,8 +206,10 @@ private fun ServerListScreenPreview() {
         ServerListScreen(
             state = state,
             onBackClick = {},
+            onEditServer = {},
             onAddServerClick = {},
-            onActiveServer = {}
+            onActiveServer = {},
+            onDeleteServer = {}
         )
     }
 }
@@ -168,8 +222,10 @@ private fun ServerListScreenProgressPreview() {
         ServerListScreen(
             state = state,
             onBackClick = {},
+            onEditServer = {},
             onAddServerClick = {},
-            onActiveServer = {}
+            onActiveServer = {},
+            onDeleteServer = {}
         )
     }
 }

@@ -107,10 +107,20 @@ class MainActivity : ComponentActivity() {
                             onCloseScreen = { rootNavController.navigate("main") }
                         )
                     }
+                    composable("edit_server/{serverId}") {
+                        ServerScreen(
+                            serverId = it.requireString("serverId").toLong(),
+                            onBackClick = { rootNavController.popBackStack() },
+                            onCloseScreen = { rootNavController.popBackStack() }
+                        )
+                    }
                     composable("server_list") {
                         ServerListScreen(
                             onBackClick = { rootNavController.popBackStack() },
-                            onAddServerClick = { rootNavController.navigate("add_server") }
+                            onAddServerClick = { rootNavController.navigate("add_server") },
+                            onEditServerClick = {
+                                rootNavController.navigate("edit_server/$it")
+                            }
                         )
                     }
                     composable("load") {
@@ -143,4 +153,8 @@ internal fun ScreenWithMiniPlayer(
 
 private fun NavBackStackEntry.requireString(key: String): String {
     return requireNotNull(arguments?.getString(key))
+}
+
+private fun NavBackStackEntry.requireLong(key: String): Long {
+    return requireNotNull(arguments?.getLong(key))
 }
