@@ -11,7 +11,8 @@ import ru.stresh.youamp.core.room.roomModule
 import ru.stresh.youamp.feature.album.albumInfoModule
 import ru.stresh.youamp.feature.albums.albumsModule
 import ru.stresh.youamp.feature.artists.artistsModule
-import ru.stresh.youamp.feature.player.playerFeatureModule
+import ru.stresh.youamp.feature.player.mini.playerMiniModule
+import ru.stresh.youamp.feature.player.screen.playerScreenModule
 import ru.stresh.youamp.feature.playlists.playlistListModule
 import ru.stresh.youamp.feature.server.create.serverCreateModule
 import ru.stresh.youamp.feature.server.list.serverListModule
@@ -35,7 +36,8 @@ private val shared = listOf(
 )
 
 private val feature = listOf(
-    playerFeatureModule,
+    playerMiniModule,
+    playerScreenModule,
     albumInfoModule,
     albumsModule,
     artistsModule,
