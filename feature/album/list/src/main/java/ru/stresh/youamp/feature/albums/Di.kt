@@ -8,5 +8,5 @@ import ru.stresh.youamp.feature.albums.ui.AlbumsViewModel
 
 val albumsModule = module {
     single<AlbumsRepository> { AlbumsRepositoryImpl(get()) }
-    viewModel { AlbumsViewModel(get()) }
+    viewModel { AlbumsViewModel(get(), get()) }
 }

@@ -26,8 +26,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,21 +56,18 @@ fun AlbumsScreen(onAlbumClick: (id: String) -> Unit) {
 
 @Composable
 private fun AlbumsScreen(
-    state: AlbumsViewModel.StateUi,
+    state: StateUi,
     onRefresh: () -> Unit,
     onBottomReached: () -> Unit,
     onAlbumClick: (id: String) -> Unit
 ) {
-    val isRefreshing by rememberSaveable { mutableStateOf(false) }
-    val pullRefreshState = rememberPullToRefreshState(
-        enabled = { isRefreshing }
-    )
+    val pullRefreshState = rememberPullToRefreshState()
 
     if (pullRefreshState.isRefreshing) {
         onRefresh()
     }
 
-    if (pullRefreshState.isRefreshing && !isRefreshing) {
+    if (pullRefreshState.isRefreshing && !state.isRefreshing) {
         pullRefreshState.endRefresh()
     }
 
@@ -86,7 +81,7 @@ private fun AlbumsScreen(
                 .padding(padding)
         ) {
             when(state) {
-                is AlbumsViewModel.StateUi.Content -> {
+                is StateUi.Content -> {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         state = listState,
@@ -109,7 +104,8 @@ private fun AlbumsScreen(
                         state = pullRefreshState,
                     )
                 }
-                is AlbumsViewModel.StateUi.Progress -> {
+
+                is StateUi.Progress -> {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator()
                     }
@@ -196,7 +192,7 @@ private fun AlbumsScreenPreview() {
                 artworkUrl = null
             )
         )
-        val state = AlbumsViewModel.StateUi.Content(isRefreshing = true, items)
+        val state = StateUi.Content(isRefreshing = true, items)
         AlbumsScreen(
             state = state,
             onRefresh = {  },

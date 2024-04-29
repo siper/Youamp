@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
-import ru.stresh.youamp.core.ui.OnBottomReached
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
@@ -53,16 +52,14 @@ fun ArtistsScreen(onArtistClick: (id: String) -> Unit) {
     ArtistsScreen(
         state = state,
         onRefresh = viewModel::refresh,
-        onBottomReached = viewModel::loadMore,
         onArtistClick = onArtistClick
     )
 }
 
 @Composable
 private fun ArtistsScreen(
-    state: ArtistsViewModel.StateUi,
+    state: StateUi,
     onRefresh: () -> Unit,
-    onBottomReached: () -> Unit,
     onArtistClick: (id: String) -> Unit
 ) {
     val isRefreshing by rememberSaveable { mutableStateOf(false) }
@@ -88,7 +85,7 @@ private fun ArtistsScreen(
                 .padding(padding)
         ) {
             when(state) {
-                is ArtistsViewModel.StateUi.Content -> {
+                is StateUi.Content -> {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(3),
                         state = listState,
@@ -111,16 +108,13 @@ private fun ArtistsScreen(
                         state = pullRefreshState,
                     )
                 }
-                is ArtistsViewModel.StateUi.Progress -> {
+
+                is StateUi.Progress -> {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator()
                     }
                 }
             }
-        }
-
-        listState.OnBottomReached {
-            onBottomReached()
         }
     }
 }
@@ -196,11 +190,10 @@ private fun ArtistsScreenPreview() {
                 artworkUrl = null
             )
         )
-        val state = ArtistsViewModel.StateUi.Content(isRefreshing = true, items)
+        val state = StateUi.Content(isRefreshing = true, items)
         ArtistsScreen(
             state = state,
             onRefresh = {  },
-            onBottomReached = {  },
             onArtistClick = {  }
         )
     }
