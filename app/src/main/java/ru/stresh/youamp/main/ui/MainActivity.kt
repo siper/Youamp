@@ -3,6 +3,7 @@ package ru.stresh.youamp.main.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -38,9 +39,8 @@ import ru.stresh.youamp.feature.server.list.ui.ServerListScreen
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        actionBar?.hide()
         super.onCreate(savedInstanceState)
-
+        enableEdgeToEdge()
         setContent {
             YouAmpPlayerTheme {
                 val viewModel: MainViewModel = koinViewModel()
@@ -78,7 +78,6 @@ class MainActivity : ComponentActivity() {
         rootNavController: NavHostController,
         viewModelStoreOwner: ViewModelStoreOwner
     ) {
-
         NavHost(
             navController = rootNavController,
             startDestination = "main",

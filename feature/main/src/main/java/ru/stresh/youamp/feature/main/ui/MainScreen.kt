@@ -1,10 +1,15 @@
 package ru.stresh.youamp.feature.main.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -13,6 +18,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -52,6 +58,15 @@ fun MainScreen(
                     }
                 },
             )
+        },
+        bottomBar = {
+            Box(
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
+                miniPlayer()
+            }
         },
         modifier = Modifier.fillMaxSize()
     ) { padding ->
@@ -102,7 +117,6 @@ fun MainScreen(
                     else -> {}
                 }
             }
-            miniPlayer()
         }
     }
 }
