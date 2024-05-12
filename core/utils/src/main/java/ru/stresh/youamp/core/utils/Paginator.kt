@@ -14,13 +14,15 @@ fun <D> pageLoader(
     var hasNextPage = true
 
     return Paginator(
-        startCounter = startPage,
+        startIdentifier = startPage,
         onLoadData = {
             val data = onLoadData(it, pageSize)
             hasNextPage = data.size >= pageSize
             data
         },
-        onNewIdentifier = { it.takeIf { hasNextPage } }
+        onNewIdentifier = { counter, _ ->
+            counter.inc().takeIf { hasNextPage }
+        }
     )
 }
 
@@ -41,12 +43,12 @@ fun <I> Paginator<*, I>.isRefreshing(): Flow<Boolean> {
 }
 
 class Paginator<D, I>(
-    private val startCounter: Int = 0,
+    private val startIdentifier: I,
     private val onLoadData: suspend (identifier: I) -> D,
-    private val onNewIdentifier: suspend (counter: Int) -> I?
+    private val onNewIdentifier: suspend (currentIdentifier: I, params: Any?) -> I?
 ) {
     private val mutex = Mutex()
-    private var currentCounter = startCounter
+    private var currentIdentifier = startIdentifier
     private val pages = MutableStateFlow<List<Page<I>>>(listOf())
     private val state = MutableStateFlow(State.Idle)
 
@@ -55,16 +57,15 @@ class Paginator<D, I>(
     fun state(): Flow<State> = state
 
     suspend fun restart() = mutex.withLock {
-        currentCounter = startCounter
-        val identifier = onNewIdentifier(currentCounter) ?: return@withLock
+        currentIdentifier = startIdentifier
         state.value = State.Restart
-        loadPage(identifier)
+        loadPage(currentIdentifier)
         state.value = State.Idle
     }
 
-    suspend fun loadNextPage() = mutex.withLock {
-        val identifier = onNewIdentifier(currentCounter) ?: return@withLock
-        currentCounter++
+    suspend fun loadNextPage(params: Any? = null) = mutex.withLock {
+        val identifier = onNewIdentifier(currentIdentifier, params) ?: return@withLock
+        currentIdentifier = identifier
         state.value = State.LoadPage
         loadPage(identifier)
         state.value = State.Idle

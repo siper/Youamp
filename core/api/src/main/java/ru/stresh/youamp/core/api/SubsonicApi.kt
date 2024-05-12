@@ -119,6 +119,16 @@ class SubsonicApi(
         submission: Boolean? = null,
     ) = api.scrobble(id, time, submission)
 
+    suspend fun search3(
+        query: String,
+        songCount: Int? = null,
+        songOffset: Int? = null,
+        albumCount: Int? = null,
+        albumOffset: Int? = null,
+        artistCount: Int? = null,
+        artistOffset: Int? = null
+    ) = api.search3(query, songCount, songOffset, albumCount, albumOffset, artistCount, artistOffset)
+
     fun getCoverArtUrl(
         id: String,
         size: Int? = null,
@@ -129,6 +139,10 @@ class SubsonicApi(
     fun downloadUrl(
         id: String,
     ): String = buildUrl("download", mapOf("id" to id))
+
+    fun avatarUrl(
+        username: String
+    ): String = buildUrl("getAvatar", mapOf("username" to username))
 
     fun availableListTypes(): List<String> {
         val types = mutableListOf("random", "newest", "highest", "frequent", "recent")
