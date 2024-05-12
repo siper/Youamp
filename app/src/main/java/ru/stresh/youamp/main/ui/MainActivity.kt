@@ -11,12 +11,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavBackStackEntry
@@ -33,6 +35,8 @@ import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
 import ru.stresh.youamp.feature.player.screen.ui.PlayerScreen
 import ru.stresh.youamp.feature.playlists.ui.PlaylistsScreen
+import ru.stresh.youamp.feature.search.ui.SearchScreen
+import ru.stresh.youamp.feature.search.ui.YouAmpSearchBar
 import ru.stresh.youamp.feature.server.create.ui.ServerScreen
 import ru.stresh.youamp.feature.server.list.ui.ServerListScreen
 
@@ -50,22 +54,23 @@ class MainActivity : ComponentActivity() {
                 val rootNavController = rememberNavController()
                 val viewModelStoreOwner = requireNotNull(LocalViewModelStoreOwner.current)
 
-                when (state) {
-                    StateUi.Content -> {
+                when (state.screen) {
+                    MainScreen.Main -> {
                         Content(
+                            avatarUrl = state.avatarUrl,
                             rootNavController = rootNavController,
                             viewModelStoreOwner = viewModelStoreOwner
                         )
                     }
 
-                    StateUi.CreateNewServer -> {
+                    MainScreen.AddServer -> {
                         ServerScreen(
                             onBackClick = { rootNavController.popBackStack() },
                             onCloseScreen = { rootNavController.navigate("main") }
                         )
                     }
 
-                    StateUi.Progress -> {
+                    MainScreen.Progress -> {
 
                     }
                 }
@@ -75,6 +80,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun Content(
+        avatarUrl: String?,
         rootNavController: NavHostController,
         viewModelStoreOwner: ViewModelStoreOwner
     ) {
@@ -94,7 +100,16 @@ class MainActivity : ComponentActivity() {
                     fadeOut()
                 },
             ) {
+
                 MainScreen(
+                    topBar = {
+                        YouAmpSearchBar(
+                            avatarUrl = avatarUrl,
+                            onClick = { rootNavController.navigate("search") },
+                            onAvatarClick = { rootNavController.navigate("server_list") },
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                    },
                     miniPlayer = {
                         MiniPlayer(
                             viewModelStoreOwner = viewModelStoreOwner,
@@ -125,9 +140,6 @@ class MainActivity : ComponentActivity() {
 
                             }
                         )
-                    },
-                    onProfileClick = {
-                        rootNavController.navigate("server_list")
                     }
                 )
             }
@@ -171,6 +183,12 @@ class MainActivity : ComponentActivity() {
                     onBackClick = { rootNavController.popBackStack() }
                 )
             }
+            composable("add_server") {
+                ServerScreen(
+                    onBackClick = { rootNavController.popBackStack() },
+                    onCloseScreen = { rootNavController.popBackStack() }
+                )
+            }
             composable("edit_server/{serverId}") {
                 ServerScreen(
                     serverId = it.requireString("serverId").toLong(),
@@ -184,6 +202,20 @@ class MainActivity : ComponentActivity() {
                     onAddServerClick = { rootNavController.navigate("add_server") },
                     onEditServerClick = {
                         rootNavController.navigate("edit_server/$it")
+                    }
+                )
+            }
+            composable("search") {
+                SearchScreen(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onBack = {
+                        rootNavController.popBackStack()
+                    },
+                    onOpenAlbumInfo = {
+                        rootNavController.navigate("album/$it")
+                    },
+                    onOpenArtistInfo = {
+                        rootNavController.navigate("artist/$it")
                     }
                 )
             }

@@ -14,9 +14,12 @@ import ru.stresh.youamp.feature.artists.artistsModule
 import ru.stresh.youamp.feature.player.mini.playerMiniModule
 import ru.stresh.youamp.feature.player.screen.playerScreenModule
 import ru.stresh.youamp.feature.playlists.playlistListModule
+import ru.stresh.youamp.feature.search.searchModule
 import ru.stresh.youamp.feature.server.create.serverCreateModule
 import ru.stresh.youamp.feature.server.list.serverListModule
+import ru.stresh.youamp.main.data.AvatarUrlRepositoryImpl
 import ru.stresh.youamp.main.data.ServerExistRepositoryImpl
+import ru.stresh.youamp.main.domain.AvatarUrlRepository
 import ru.stresh.youamp.main.domain.ServerExistRepository
 import ru.stresh.youamp.main.ui.MainViewModel
 
@@ -43,7 +46,8 @@ private val feature = listOf(
     artistsModule,
     serverCreateModule,
     serverListModule,
-    playlistListModule
+    playlistListModule,
+    searchModule
 )
 
 private val impl = module {
@@ -52,5 +56,6 @@ private val impl = module {
 
 private val main = module {
     factory<ServerExistRepository> { ServerExistRepositoryImpl(get()) }
-    viewModel { MainViewModel(get()) }
+    single<AvatarUrlRepository> { AvatarUrlRepositoryImpl(get()) }
+    viewModel { MainViewModel(get(), get()) }
 }

@@ -12,12 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
@@ -35,34 +30,20 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
+    topBar: @Composable () -> Unit,
     miniPlayer: @Composable () -> Unit,
     albumsScreen: @Composable () -> Unit,
     artistsScreen: @Composable () -> Unit,
-    playlistsScreen: @Composable () -> Unit,
-    onProfileClick: () -> Unit
+    playlistsScreen: @Composable () -> Unit
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "YouAMP"
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { onProfileClick() }) {
-                        Icon(
-                            imageVector = Icons.Filled.Person,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-            )
+            topBar()
         },
         bottomBar = {
             Box(
                 modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
                     .windowInsetsPadding(WindowInsets.navigationBars)
             ) {
                 miniPlayer()
@@ -92,6 +73,7 @@ fun MainScreen(
                 tabData.forEachIndexed { index, s ->
                     Tab(
                         selected = pagerState.currentPage == index,
+                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         onClick = {
                             scope.launch {
                                 pagerState.animateScrollToPage(index)

@@ -88,4 +88,15 @@ interface Api {
         @Query("time") time: Long?,
         @Query("submission") submission: Boolean?,
     )
+
+    @GET("rest/search3")
+    suspend fun search3(
+        @Query("query") query: String,
+        @Query("songCount") songCount: Int?,
+        @Query("songOffset") songOffset: Int?,
+        @Query("albumCount") albumCount: Int?,
+        @Query("albumOffset") albumOffset: Int?,
+        @Query("artistCount") artistCount: Int?,
+        @Query("artistOffset") artistOffset: Int?
+    ): SearchResult3Response
 }

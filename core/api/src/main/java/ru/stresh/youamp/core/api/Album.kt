@@ -56,3 +56,19 @@ data class Album(
     @Json(name = "year")
     val year: Int
 )
+
+@JsonClass(generateAdapter = true)
+data class SearchResult3Response(
+    @Json(name = "searchResult3")
+    val searchResult3: SearchResult3
+)
+
+@JsonClass(generateAdapter = true)
+data class SearchResult3(
+    @Json(name = "song")
+    val song: List<Song>?,
+    @Json(name = "album")
+    val album: List<Album>?,
+    @Json(name = "artist")
+    val artist: List<Artist>?
+)

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Pause
@@ -105,6 +106,7 @@ private fun MiniPlayer(
             ) {
                 Artwork(
                     artworkUrl = state.artworkUrl,
+                    placeholder = Icons.Rounded.Album,
                     modifier = Modifier
                         .size(88.dp)
                         .padding(12.dp)

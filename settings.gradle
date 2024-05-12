@@ -14,6 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "YouAmp"
 
+include ':app'
 include ':core:api'
 include ':core:utils'
 include ':core:ui'
@@ -28,4 +29,4 @@ include ':feature:server:create'
 include ':feature:server:list'
 include ':feature:artist:list'
 include ':feature:playlist:list'
-include ':app'
+include ':feature:search'

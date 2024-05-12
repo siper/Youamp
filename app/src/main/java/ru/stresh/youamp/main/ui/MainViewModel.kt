@@ -4,26 +4,39 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import ru.stresh.youamp.main.domain.AvatarUrlRepository
 import ru.stresh.youamp.main.domain.ServerExistRepository
 
 internal class MainViewModel(
-    private val serverExistRepository: ServerExistRepository
+    private val serverExistRepository: ServerExistRepository,
+    private val avatarUrlRepository: AvatarUrlRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<StateUi>(StateUi.Progress)
+    private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
         get() = _state
 
     init {
-        checkServer()
-    }
-
-    private fun checkServer() = viewModelScope.launch {
-        _state.value = if (serverExistRepository.hasServer()) {
-            StateUi.Content
-        } else {
-            StateUi.CreateNewServer
+        viewModelScope.launch {
+            combine(
+                flowOf(serverExistRepository.hasServer()),
+                avatarUrlRepository.getAvatarUrl()
+            ) { hasServer, avatarUrl ->
+                return@combine StateUi(
+                    screen = if (hasServer) {
+                        MainScreen.Main
+                    } else {
+                        MainScreen.AddServer
+                    },
+                    avatarUrl = avatarUrl
+                )
+            }
+                .collect {
+                    _state.value = it
+                }
         }
     }
 }

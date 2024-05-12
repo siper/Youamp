@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Repeat
@@ -94,6 +95,7 @@ private fun PlayerScreen(
             ) {
                 Artwork(
                     artworkUrl = artworkUrl.value,
+                    placeholder = Icons.Rounded.Album,
                     modifier = Modifier.padding(horizontal = 48.dp)
                 )
 
