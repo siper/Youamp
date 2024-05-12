@@ -7,7 +7,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 fun <D> pageLoader(
-    startPage: Int = 0,
+    startPage: Int = 1,
     pageSize: Int = 20,
     onLoadData: suspend (page: Int, pageSize: Int) -> List<D>
 ): Paginator<List<D>, Int> {
@@ -15,9 +15,9 @@ fun <D> pageLoader(
 
     return Paginator(
         startIdentifier = startPage,
-        onLoadData = {
-            val data = onLoadData(it, pageSize)
-            hasNextPage = data.size >= pageSize
+        onLoadData = { page ->
+            val data = onLoadData(page, pageSize)
+            hasNextPage = data.size == pageSize
             data
         },
         onNewIdentifier = { counter, _ ->
@@ -31,7 +31,8 @@ fun <D, I> Paginator<List<D>, I>.data(): Flow<List<D>> {
         .map { pages ->
             pages
                 .filterIsInstance<Content<List<D>, I>>()
-                .flatMap { it.content }
+                .map { it.content }
+                .flatten()
         }
 }
 
@@ -48,7 +49,6 @@ class Paginator<D, I>(
     private val onNewIdentifier: suspend (currentIdentifier: I, params: Any?) -> I?
 ) {
     private val mutex = Mutex()
-    private var currentIdentifier = startIdentifier
     private val pages = MutableStateFlow<List<Page<I>>>(listOf())
     private val state = MutableStateFlow(State.Idle)
 
@@ -57,15 +57,19 @@ class Paginator<D, I>(
     fun state(): Flow<State> = state
 
     suspend fun restart() = mutex.withLock {
-        currentIdentifier = startIdentifier
+        pages.value = emptyList()
         state.value = State.Restart
-        loadPage(currentIdentifier)
+        loadPage(startIdentifier)
         state.value = State.Idle
     }
 
     suspend fun loadNextPage(params: Any? = null) = mutex.withLock {
-        val identifier = onNewIdentifier(currentIdentifier, params) ?: return@withLock
-        currentIdentifier = identifier
+        val currentIdentifier = pages.value.lastOrNull()?.identifier
+        val identifier = if (currentIdentifier == null) {
+            startIdentifier
+        } else {
+            onNewIdentifier(currentIdentifier, params)
+        } ?: return@withLock
         state.value = State.LoadPage
         loadPage(identifier)
         state.value = State.Idle
