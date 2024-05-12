@@ -12,7 +12,7 @@ internal class AlbumsRepositoryImpl(private val apiProvider: ApiProvider) : Albu
             .getApi()
             .getAlbumList2(
                 type = ListType.ALPHABETICAL_BY_NAME,
-                offset = page * pageSize,
+                offset = if (page == 1) 0 else (page - 1) * pageSize,
                 size = pageSize
             )
             .mapNotNull { album ->
