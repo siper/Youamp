@@ -1,6 +1,5 @@
 package ru.stresh.youamp.feature.artists.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
@@ -38,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.SubcomposeAsyncImage
 import org.koin.androidx.compose.koinViewModel
+import ru.stresh.youamp.core.ui.Artwork
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 
@@ -131,24 +129,13 @@ private fun ArtistItem(
             },
     ) {
         val circleShape = remember { CircleShape }
-        SubcomposeAsyncImage(
-            model = artist.artworkUrl,
-            contentDescription = "Album image",
+        Artwork(
+            artworkUrl = artist.artworkUrl,
+            placeholder = Icons.Rounded.Person,
+            shape = circleShape,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(circleShape)
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = circleShape
-                ),
-            loading = {
-                Icon(
-                    imageVector = Icons.Rounded.Person,
-                    contentDescription = "placeholder",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
         )
         Text(
             text = artist.name,

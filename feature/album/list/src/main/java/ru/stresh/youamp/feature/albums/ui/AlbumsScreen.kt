@@ -121,6 +121,7 @@ private fun AlbumItem(
     onAlbumClick: (id: String) -> Unit
 ) {
     ElevatedCard(
+        shape = MaterialTheme.shapes.large,
         onClick = {
             onAlbumClick(album.id)
         }

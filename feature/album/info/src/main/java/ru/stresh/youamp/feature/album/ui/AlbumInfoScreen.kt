@@ -1,13 +1,13 @@
 package ru.stresh.youamp.feature.album.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Album
@@ -16,20 +16,23 @@ import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import ru.stersh.youamp.feature.album.R
 import ru.stresh.youamp.core.ui.Artwork
 import ru.stresh.youamp.core.ui.CONTENT_HORIZONTAL_MARGIN
 import ru.stresh.youamp.core.ui.HorizontalMediumSpacer
@@ -37,43 +40,50 @@ import ru.stresh.youamp.core.ui.VerticalBigSpacer
 import ru.stresh.youamp.core.ui.VerticalSmallSpacer
 
 
-@Preview(showBackground = true)
-@Composable
-private fun AlbumInfoScreenPreview() {
-    AlbumInfoScreen(
-        {  },
-        "57"
-    )
-}
-
 @Composable
 fun AlbumInfoScreen(
-    onBackClick: () -> Unit,
     id: String,
-    modifier: Modifier = Modifier
+    onBackClick: () -> Unit
 ) {
     val viewModel = koinViewModel<AlbumInfoViewModel> {
         parametersOf(id)
     }
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    AlbumInfoScreen(
+        state = state,
+        onPlayAll = viewModel::playAll,
+        onPlayShuffled = viewModel::playShuffled,
+        onPlaySong = viewModel::onPlaySong,
+        onBackClick = onBackClick
+    )
+}
 
+@Composable
+private fun AlbumInfoScreen(
+    state: AlbumInfoScreenState,
+    onPlayAll: () -> Unit,
+    onPlayShuffled: () -> Unit,
+    onPlaySong: (id: String) -> Unit,
+    onBackClick: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
                     }
                 }
             )
-        },
-        modifier = modifier
+        }
     ) {
-        when (val stateValue = state.value) {
+        when (state) {
             is AlbumInfoScreenState.Content -> ContentState(
-                state = stateValue,
-                viewModel = viewModel,
+                state = state,
+                onPlayAll = onPlayAll,
+                onPlayShuffled = onPlayShuffled,
+                onPlaySong = onPlaySong,
                 modifier = Modifier.padding(it)
             )
 
@@ -86,17 +96,25 @@ fun AlbumInfoScreen(
 @Composable
 private fun ContentState(
     state: AlbumInfoScreenState.Content,
-    viewModel: AlbumInfoViewModel,
+    onPlayAll: () -> Unit,
+    onPlayShuffled: () -> Unit,
+    onPlaySong: (id: String) -> Unit,
     modifier: Modifier
 ) {
+    val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier.verticalScroll(
+            state = scrollState
+        )
     ) {
         Artwork(
             artworkUrl = state.coverArtUrl,
             placeholder = Icons.Rounded.Album,
-            modifier = Modifier.padding(horizontal = 48.dp)
+            modifier = Modifier
+                .padding(horizontal = 48.dp)
+                .aspectRatio(1f)
+                .fillMaxWidth()
         )
 
         VerticalBigSpacer()
@@ -105,7 +123,9 @@ private fun ContentState(
             text = state.title,
             style = MaterialTheme.typography.titleLarge
         )
+
         VerticalSmallSpacer()
+
         val subtitle = if (state.year != null) {
             "${state.artist} · ${state.year}"
         } else {
@@ -125,19 +145,27 @@ private fun ContentState(
                 .padding(horizontal = CONTENT_HORIZONTAL_MARGIN)
         ) {
             Button(
-                onClick = { viewModel.playAll() },
+                onClick = onPlayAll,
                 modifier = Modifier.weight(0.5f)
             ) {
-                Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = "Play icon")
-                Text(text = "Play all")
+                Icon(
+                    imageVector = Icons.Rounded.PlayArrow,
+                    contentDescription = null
+                )
+                Text(text = stringResource(R.string.play_all_title))
             }
+
             HorizontalMediumSpacer()
+
             OutlinedButton(
-                onClick = { viewModel.playShuffled() },
+                onClick = onPlayShuffled,
                 modifier = Modifier.weight(0.5f)
             ) {
-                Icon(imageVector = Icons.Rounded.Shuffle, contentDescription = "Shuffle icon")
-                Text(text = "Shuffle")
+                Icon(
+                    imageVector = Icons.Rounded.Shuffle,
+                    contentDescription = null
+                )
+                Text(text = stringResource(R.string.shuffle_title))
             }
         }
 
@@ -146,17 +174,27 @@ private fun ContentState(
         state.songs.forEach {
             AlbumSongItem(
                 song = it,
-                onClick = { viewModel.onPlaySong(it.id) }
+                onClick = { onPlaySong(it.id) }
             )
         }
     }
 }
 
-internal data class AlbumSongUi(
-    val id: String,
-    val title: String,
-    val duration: String
-)
+@Composable
+private fun AlbumSongItem(
+    song: AlbumSongUi,
+    onClick: () -> Unit
+) {
+    ListItem(
+        headlineContent = {
+            Text(text = song.title)
+        },
+        trailingContent = {
+            Text(text = song.duration)
+        },
+        modifier = Modifier.clickable(onClick = onClick)
+    )
+}
 
 @Preview
 @Composable
@@ -166,39 +204,43 @@ private fun AlbumSongItemPreview() {
         title = "Coolest song in the world",
         duration = "12:00"
     )
-    AlbumSongItem(song) {
-
-    }
+    AlbumSongItem(
+        song = song,
+        onClick = {}
+    )
 }
 
+@Preview(showBackground = true)
 @Composable
-internal fun AlbumSongItem(
-    song: AlbumSongUi,
-    onClick: () -> Unit
-) {
-    Surface(
-        modifier = Modifier.clickable { onClick.invoke() }
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 14.dp, bottom = 14.dp)
-                .background(MaterialTheme.colorScheme.background),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.width(CONTENT_HORIZONTAL_MARGIN))
-            Text(
-                text = song.title,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = song.duration,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier
-            )
-            Spacer(modifier = Modifier.width(CONTENT_HORIZONTAL_MARGIN))
-        }
-    }
+private fun AlbumInfoScreenPreview() {
+    val songs = listOf(
+        AlbumSongUi(
+            id = "1",
+            title = "Test song",
+            duration = "2:11"
+        ),
+        AlbumSongUi(
+            id = "2",
+            title = "Test song 2",
+            duration = "6:23"
+        ),
+        AlbumSongUi(
+            id = "3",
+            title = "Test song 3",
+            duration = "5:11"
+        )
+    )
+    AlbumInfoScreen(
+        state = AlbumInfoScreenState.Content(
+            coverArtUrl = null,
+            title = "Test",
+            artist = "Test",
+            year = "2024",
+            songs = songs
+        ),
+        onPlayAll = {},
+        onPlayShuffled = {},
+        onPlaySong = {},
+        onBackClick = {}
+    )
 }
