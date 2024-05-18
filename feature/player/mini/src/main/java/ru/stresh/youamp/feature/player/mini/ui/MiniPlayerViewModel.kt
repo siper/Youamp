@@ -50,10 +50,6 @@ internal class MiniPlayerViewModel(
         }
     }
 
-    fun toggleFavorite(isFavorite: Boolean) = viewModelScope.launch {
-        playerControls.toggleFavorite(isFavorite)
-    }
-
     fun playPause() = viewModelScope.launch {
         if (playStateStore.isPlaying().first()) {
             playerControls.pause()

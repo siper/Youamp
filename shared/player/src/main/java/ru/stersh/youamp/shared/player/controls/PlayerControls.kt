@@ -6,6 +6,4 @@ interface PlayerControls {
     fun next()
     fun previous()
     fun seek(time: Long)
-
-    fun toggleFavorite(favorite: Boolean)
 }

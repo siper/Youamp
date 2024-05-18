@@ -24,7 +24,7 @@ import timber.log.Timber
 class MusicService : MediaLibraryService() {
 
     private val notificationManager: NotificationManager by inject()
-    private val apiSonicPlayQueueSyncer: ru.stersh.youamp.shared.player.android.ApiSonicPlayQueueSyncer by inject()
+    private val apiSonicPlayQueueSyncer: ApiSonicPlayQueueSyncer by inject()
 
     private lateinit var player: Player
     private lateinit var mediaSession: MediaLibrarySession

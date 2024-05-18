@@ -6,9 +6,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.shared.player.controls.PlayerControls
+import ru.stersh.youamp.shared.player.favorites.CurrentSongFavorites
 import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
+import ru.stersh.youamp.shared.player.mode.PlayerMode
 import ru.stersh.youamp.shared.player.progress.PlayerProgressStore
 import ru.stersh.youamp.shared.player.state.PlayStateStore
 
@@ -16,35 +19,14 @@ internal class PlayerScreenViewModel(
     private val currentSongInfoStore: CurrentSongInfoStore,
     private val playStateStore: PlayStateStore,
     private val playerControls: PlayerControls,
-    private val playerProgressStore: PlayerProgressStore
+    private val playerProgressStore: PlayerProgressStore,
+    private val currentSongFavorites: CurrentSongFavorites,
+    private val playerMode: PlayerMode
 ) : ViewModel() {
-    private val _artworkUrl = MutableStateFlow<String?>(null)
-    val artworkUrl: StateFlow<String?>
-        get() = _artworkUrl
 
-    private val _title = MutableStateFlow<String?>(null)
-    val title: StateFlow<String?>
-        get() = _title
-
-    private val _artist = MutableStateFlow<String?>(null)
-    val artist: StateFlow<String?>
-        get() = _artist
-
-    private val _isPlaying = MutableStateFlow(false)
-    val isPlaying: StateFlow<Boolean>
-        get() = _isPlaying
-
-    private val _progress = MutableStateFlow<Float>(0f)
-    val progress: StateFlow<Float>
-        get() = _progress
-
-    private val _currentTime = MutableStateFlow<String?>(null)
-    val currentTime: StateFlow<String?>
-        get() = _currentTime
-
-    private val _totalTime = MutableStateFlow<String?>(null)
-    val totalTime: StateFlow<String?>
-        get() = _totalTime
+    private val _state = MutableStateFlow(StateUi())
+    val state: StateFlow<StateUi>
+        get() = _state
 
     init {
         viewModelScope.launch {
@@ -52,26 +34,71 @@ internal class PlayerScreenViewModel(
                 .getCurrentSongInfo()
                 .filterNotNull()
                 .collect { songInfo ->
-                    _artworkUrl.value = songInfo.coverArtUrl
-                    _title.value = songInfo.title
-                    _artist.value = songInfo.artist
+                    _state.update {
+                        it.copy(
+                            artworkUrl = songInfo.coverArtUrl,
+                            title = songInfo.title,
+                            artist = songInfo.artist
+                        )
+                    }
                 }
         }
         viewModelScope.launch {
             playStateStore
                 .isPlaying()
-                .collect {
-                    _isPlaying.value = it
+                .collect { isPlaying ->
+                    _state.update {
+                        it.copy(
+                            isPlaying = isPlaying
+                        )
+                    }
                 }
         }
         viewModelScope.launch {
             playerProgressStore
                 .playerProgress()
                 .filterNotNull()
-                .collect {
-                    _progress.value = it.currentTimeMs.toFloat() / it.totalTimeMs
-                    _currentTime.value = it.currentTime
-                    _totalTime.value = it.totalTime
+                .collect { progress ->
+                    _state.update {
+                        it.copy(
+                            progress = progress.currentTimeMs.toFloat() / progress.totalTimeMs,
+                            currentTime = progress.currentTime,
+                            totalTime = progress.totalTime
+                        )
+                    }
+                }
+        }
+        viewModelScope.launch {
+            playerMode
+                .getRepeatMode()
+                .collect { repeatMode ->
+                    _state.update {
+                        it.copy(
+                            repeatMode = repeatMode.toUi()
+                        )
+                    }
+                }
+        }
+        viewModelScope.launch {
+            playerMode
+                .getShuffleMode()
+                .collect { shuffleMode ->
+                    _state.update {
+                        it.copy(
+                            shuffleMode = shuffleMode.toUi()
+                        )
+                    }
+                }
+        }
+        viewModelScope.launch {
+            currentSongFavorites
+                .isFavorite()
+                .collect { isFavorite ->
+                    _state.update {
+                        it.copy(
+                            isFavorite = isFavorite
+                        )
+                    }
                 }
         }
     }
@@ -94,14 +121,22 @@ internal class PlayerScreenViewModel(
     }
 
     fun toggleFavorite(isFavorite: Boolean) = viewModelScope.launch {
-        playerControls.toggleFavorite(isFavorite)
+        currentSongFavorites.toggleFavorite(isFavorite)
     }
 
     fun playPause() = viewModelScope.launch {
-        if (isPlaying.first()) {
+        if (_state.value.isPlaying) {
             playerControls.pause()
         } else {
             playerControls.play()
         }
+    }
+
+    fun shuffleModeChanged(shuffleMode: ShuffleModeUi) = viewModelScope.launch {
+        playerMode.setShuffleMode(shuffleMode.toDomain())
+    }
+
+    fun repeatModeChanged(repeatMode: RepeatModeUi) = viewModelScope.launch {
+        playerMode.setRepeatMode(repeatMode.toDomain())
     }
 }
