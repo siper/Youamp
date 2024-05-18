@@ -24,9 +24,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,16 +61,14 @@ private fun ArtistsScreen(
     onRefresh: () -> Unit,
     onArtistClick: (id: String) -> Unit
 ) {
-    val isRefreshing by rememberSaveable { mutableStateOf(false) }
-    val pullRefreshState = rememberPullToRefreshState(
-        enabled = { isRefreshing }
-    )
+    val pullRefreshState = rememberPullToRefreshState()
 
     if (pullRefreshState.isRefreshing) {
         onRefresh()
     }
 
-    if (pullRefreshState.isRefreshing && !isRefreshing) {
+    val isRefreshingState = (state as? StateUi.Content)?.isRefreshing == true
+    if (pullRefreshState.isRefreshing && isRefreshingState) {
         pullRefreshState.endRefresh()
     }
 
