@@ -14,9 +14,21 @@ Feature list required for first alpha release
 - [ ]  Artist info
 - [ ]  Playlist info
 - [ ]  Song queue
-- [ ]  Search
+- [x]  Search
 - [ ]  Error handling (network etc.)
 - [ ]  App icon
+
+## Screenshots
+
+<p float="left">
+  <img src="/screenshots/albums.png" width="200" />
+  <img src="/screenshots/artists.png" width="200" /> 
+  <img src="/screenshots/playlists.png" width="200" /> 
+  <img src="/screenshots/album_info.png" width="200" />
+  <img src="/screenshots/search.png" width="200" />
+  <img src="/screenshots/player.png" width="200" />
+  <img src="/screenshots/servers.png" width="200" />
+</p>
 
 ## License
 
