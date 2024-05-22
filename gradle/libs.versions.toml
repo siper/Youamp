@@ -1,41 +1,27 @@
 [versions]
 android-plugin = "8.3.2"
-appcompat = "1.6.1"
-detekt = "1.21.0"
-fragment = "1.7.0"
 koin = "3.5.0"
-kotlin = "1.9.23"
+kotlin = "2.0.0"
 kotlin-coroutines = "1.8.0"
 lifecycle = "2.7.0"
 room = "2.6.1"
 timber = "5.0.1"
-toml-checker = "0.51.0"
-toml-updater = "0.8.4"
 moshi = "1.15.0"
-coil = "2.2.2"
-spotless = "6.17.0"
-androidx-navigation = "2.5.1"
 retrofit = "2.9.0"
 media = "1.3.1"
-compose-compiler = "1.5.11"
 junit = "4.13.2"
 androidx-junit = "1.1.5"
 espresso-core = "3.5.1"
-material = "1.11.0"
 google-material = "1.12.0"
 
 [libraries]
-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
-kotlin-std-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
 moshi-core = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
@@ -45,7 +31,6 @@ retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "ret
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 logging-interceptor = "com.squareup.okhttp3:logging-interceptor:4.11.0"
 coil-compose = { module = "io.coil-kt:coil-compose", version = "2.6.0" }
-androidx-preferences = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
 androidx-core = { module = "androidx.core:core-ktx", version = "1.13.1" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.9.0" }
 media-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media" }
@@ -100,7 +85,5 @@ lifecycle = [
 android-application = { id = "com.android.application", version.ref = "android-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "1.9.23-1.0.20" }
-toml-checker = { id = "com.github.ben-manes.versions", version.ref = "toml-checker" }
-toml-updater = { id = "nl.littlerobots.version-catalog-update", version.ref = "toml-updater" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version = "2.0.0-1.0.21" }

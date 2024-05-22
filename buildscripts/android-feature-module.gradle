@@ -1,17 +1,12 @@
 apply from: "${project.rootDir}/buildscripts/android-library.gradle"
 
 android {
-    kotlinOptions {
-        allWarningsAsErrors = false
-        freeCompilerArgs += [
-                '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api',
-                '-opt-in=androidx.compose.material.ExperimentalMaterialApi'
-        ]
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.add('-opt-in=androidx.compose.material3.ExperimentalMaterial3Api')
+        }
     }
     buildFeatures {
         compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
 }

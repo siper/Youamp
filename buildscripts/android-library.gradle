@@ -11,19 +11,15 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
-    buildFeatures {
-        viewBinding true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '17'
-        allWarningsAsErrors = false
-        freeCompilerArgs += [
-                '-opt-in=androidx.compose.material.ExperimentalMaterial3Api',
-                '-opt-in=androidx.compose.material.ExperimentalMaterialApi'
-        ]
+    kotlin {
+        compilerOptions {
+            allWarningsAsErrors = false
+            freeCompilerArgs.add('-opt-in=kotlinx.coroutines.FlowPreview')
+            freeCompilerArgs.add('-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi')
+        }
     }
 }

@@ -33,7 +33,7 @@ class MusicService : MediaLibraryService() {
 
     private val playerListener = object : Player.Listener {
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-            onUpdateNotification(mediaSession)
+            onUpdateNotification(mediaSession, true)
             syncQueue()
         }
 
