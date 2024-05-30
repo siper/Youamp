@@ -23,7 +23,7 @@ Feature list required for first alpha release
 - [x]  Song queue
 - [x]  Search
 - [ ]  Error handling (network etc.)
-- [ ]  App icon
+- [x]  App icon
 
 ## Screenshots
 
