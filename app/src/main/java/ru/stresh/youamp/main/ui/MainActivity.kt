@@ -33,6 +33,7 @@ import ru.stresh.youamp.feature.albums.ui.AlbumsScreen
 import ru.stresh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
+import ru.stresh.youamp.feature.player.queue.ui.PlayerQueueScreen
 import ru.stresh.youamp.feature.player.screen.ui.PlayerScreen
 import ru.stresh.youamp.feature.playlists.ui.PlaylistsScreen
 import ru.stresh.youamp.feature.search.ui.SearchScreen
@@ -180,7 +181,8 @@ class MainActivity : ComponentActivity() {
                 }
             ) {
                 PlayerScreen(
-                    onBackClick = { rootNavController.popBackStack() }
+                    onBackClick = { rootNavController.popBackStack() },
+                    onPlayQueueClick = { rootNavController.navigate("play_queue") }
                 )
             }
             composable("add_server") {
@@ -217,6 +219,11 @@ class MainActivity : ComponentActivity() {
                     onOpenArtistInfo = {
                         rootNavController.navigate("artist/$it")
                     }
+                )
+            }
+            composable("play_queue") {
+                PlayerQueueScreen(
+                    onBackClick = { rootNavController.popBackStack() }
                 )
             }
         }

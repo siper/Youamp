@@ -1,9 +1,12 @@
 ## About
 
-YouAMP player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose, media3 and other modern android libraries. Developing is still in progress and many features are not available now.
+YouAMP player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,
+media3 and other modern android libraries. Developing is still in progress and many features are not available now.
 
 ## Features
+
 Feature list required for first alpha release
+
 - [x]  Albums
 - [x]  Artists
 - [x]  Playlist
@@ -13,7 +16,7 @@ Feature list required for first alpha release
 - [x]  Multiple server support
 - [ ]  Artist info
 - [ ]  Playlist info
-- [ ]  Song queue
+- [x]  Song queue
 - [x]  Search
 - [ ]  Error handling (network etc.)
 - [ ]  App icon
@@ -28,6 +31,7 @@ Feature list required for first alpha release
   <img src="/screenshots/search.png" width="200" />
   <img src="/screenshots/player.png" width="200" />
   <img src="/screenshots/servers.png" width="200" />
+  <img src="/screenshots/play_queue.png" width="200" />
 </p>
 
 ## License

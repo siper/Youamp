@@ -12,6 +12,7 @@ import ru.stresh.youamp.feature.album.albumInfoModule
 import ru.stresh.youamp.feature.albums.albumsModule
 import ru.stresh.youamp.feature.artists.artistsModule
 import ru.stresh.youamp.feature.player.mini.playerMiniModule
+import ru.stresh.youamp.feature.player.queue.playerQueueScreenModule
 import ru.stresh.youamp.feature.player.screen.playerScreenModule
 import ru.stresh.youamp.feature.playlists.playlistListModule
 import ru.stresh.youamp.feature.search.searchModule
@@ -41,6 +42,7 @@ private val shared = listOf(
 private val feature = listOf(
     playerMiniModule,
     playerScreenModule,
+    playerQueueScreenModule,
     albumInfoModule,
     albumsModule,
     artistsModule,

@@ -59,6 +59,7 @@ dependencies {
     implementation project(":feature:main")
     implementation project(":feature:player:mini")
     implementation project(':feature:player:screen')
+    implementation project(':feature:player:queue')
     implementation project(":feature:server:create")
     implementation project(":feature:server:list")
     implementation project(":feature:search")
