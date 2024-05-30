@@ -36,7 +36,10 @@ import ru.stresh.youamp.core.ui.Artwork
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 @Composable
-fun PlayerScreen(onBackClick: () -> Unit) {
+fun PlayerScreen(
+    onBackClick: () -> Unit,
+    onPlayQueueClick: () -> Unit
+) {
     val viewModel: PlayerScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -49,7 +52,8 @@ fun PlayerScreen(onBackClick: () -> Unit) {
         onPlayPause = viewModel::playPause,
         onPrevious = viewModel::previous,
         onNext = viewModel::next,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onPlayQueueClick = onPlayQueueClick
     )
 }
 
@@ -64,6 +68,7 @@ private fun PlayerScreen(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     onBackClick: () -> Unit,
+    onPlayQueueClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -73,6 +78,11 @@ private fun PlayerScreen(
                     IconButton(onClick = { onBackClick() }) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
                     }
+                },
+                actions = {
+                    PlayerQueueButton(
+                        onClick = onPlayQueueClick
+                    )
                 }
             )
         }
@@ -210,7 +220,8 @@ private fun PlayerScreenPreview() {
             onPlayPause = {},
             onPrevious = {},
             onNext = {},
-            onBackClick = {}
+            onBackClick = {},
+            onPlayQueueClick = {}
         )
     }
 }

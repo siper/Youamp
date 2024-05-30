@@ -90,6 +90,7 @@ internal class PlayerQueueManagerImpl(private val context: Context) : PlayerQueu
     override fun playPosition(position: Int) {
         mediaControllerFuture(context, MusicService::class.java).withPlayer(mainExecutor) {
             seekTo(position, 0L)
+            play()
         }
     }
 
