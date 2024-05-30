@@ -10,10 +10,12 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 import ru.stresh.youamp.feature.album.ui.AlbumInfoScreen
 import ru.stresh.youamp.feature.albums.ui.AlbumsScreen
+import ru.stresh.youamp.feature.artist.ui.ArtistInfoScreen
 import ru.stresh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
@@ -131,6 +134,7 @@ class MainActivity : ComponentActivity() {
                         ArtistsScreen(
                             viewModelStoreOwner = viewModelStoreOwner,
                             onArtistClick = {
+                                rootNavController.navigate("artist/$it")
                             }
                         )
                     },
@@ -226,6 +230,24 @@ class MainActivity : ComponentActivity() {
                     onBackClick = { rootNavController.popBackStack() }
                 )
             }
+            composable("artist/{artistId}") {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate("player")
+                    }
+                ) {
+                    ArtistInfoScreen(
+                        id = it.requireString("artistId"),
+                        onAlbumClick = { albumId ->
+                            rootNavController.navigate("album/$albumId")
+                        },
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        }
+                    )
+                }
+            }
         }
     }
 }
@@ -236,16 +258,15 @@ internal fun ScreenWithMiniPlayer(
     onMiniPlayerClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    Surface {
-        Column {
-            Box(modifier = Modifier.weight(1f)) {
-                content.invoke()
-            }
-            MiniPlayer(
-                viewModelStoreOwner = viewModelStoreOwner,
-                onClick = onMiniPlayerClick
-            )
+    Column {
+        Box(modifier = Modifier.weight(1f)) {
+            content.invoke()
         }
+        MiniPlayer(
+            viewModelStoreOwner = viewModelStoreOwner,
+            onClick = onMiniPlayerClick,
+            modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+        )
     }
 }
 

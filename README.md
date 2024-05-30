@@ -18,7 +18,7 @@ Feature list required for first alpha release
 - [x]  Small bottom player
 - [x]  Album info
 - [x]  Multiple server support
-- [ ]  Artist info
+- [x]  Artist info
 - [ ]  Playlist info
 - [x]  Song queue
 - [x]  Search

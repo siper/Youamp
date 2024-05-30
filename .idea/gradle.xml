@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/feature/album/info" />
             <option value="$PROJECT_DIR$/feature/album/list" />
             <option value="$PROJECT_DIR$/feature/artist" />
+            <option value="$PROJECT_DIR$/feature/artist/info" />
             <option value="$PROJECT_DIR$/feature/artist/list" />
             <option value="$PROJECT_DIR$/feature/main" />
             <option value="$PROJECT_DIR$/feature/player" />
