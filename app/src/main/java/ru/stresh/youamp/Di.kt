@@ -10,6 +10,7 @@ import ru.stresh.youamp.core.api.provider.ApiProvider
 import ru.stresh.youamp.core.room.roomModule
 import ru.stresh.youamp.feature.album.albumInfoModule
 import ru.stresh.youamp.feature.albums.albumsModule
+import ru.stresh.youamp.feature.artist.artistInfoModule
 import ru.stresh.youamp.feature.artists.artistsModule
 import ru.stresh.youamp.feature.player.mini.playerMiniModule
 import ru.stresh.youamp.feature.player.queue.playerQueueScreenModule
@@ -46,6 +47,7 @@ private val feature = listOf(
     albumInfoModule,
     albumsModule,
     artistsModule,
+    artistInfoModule,
     serverCreateModule,
     serverListModule,
     playlistListModule,

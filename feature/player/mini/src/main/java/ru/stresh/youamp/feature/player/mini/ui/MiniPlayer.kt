@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,7 +45,8 @@ import ru.stresh.youamp.core.ui.SingleLineText
 @Composable
 fun MiniPlayer(
     viewModelStoreOwner: ViewModelStoreOwner,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val viewModel: MiniPlayerViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -52,7 +54,8 @@ fun MiniPlayer(
     MiniPlayer(
         state = state,
         onClick = onClick,
-        onPlayPauseClick = viewModel::playPause
+        onPlayPauseClick = viewModel::playPause,
+        modifier = modifier
     )
 }
 
@@ -77,7 +80,8 @@ private fun MiniPlayerPreview() {
 private fun MiniPlayer(
     state: StateUi,
     onPlayPauseClick: () -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
         enter = expandVertically(
@@ -90,7 +94,10 @@ private fun MiniPlayer(
                 durationMillis = 100
             )
         ),
-        visible = state is StateUi.Content
+        visible = state is StateUi.Content,
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .then(modifier)
     ) {
         if (state !is StateUi.Content) {
             return@AnimatedVisibility
