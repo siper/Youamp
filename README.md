@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" height="128" />
+</p>
+
 ## About
 
 YouAMP player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,
