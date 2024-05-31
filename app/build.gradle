@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.compose.compiler)
 }
 
@@ -64,6 +65,7 @@ dependencies {
     implementation project(":feature:server:create")
     implementation project(":feature:server:list")
     implementation project(":feature:search")
+    implementation(libs.kotlin.serialization.core)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.compose)

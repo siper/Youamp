@@ -2,7 +2,7 @@
 android-plugin = "8.3.2"
 koin = "3.5.0"
 kotlin = "2.0.0"
-kotlin-coroutines = "1.8.0"
+kotlin-coroutines = "1.8.1"
 lifecycle = "2.7.0"
 room = "2.6.1"
 timber = "5.0.1"
@@ -20,10 +20,11 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3"
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
+navigation-compose = "androidx.navigation:navigation-compose:2.8.0-beta02"
 moshi-core = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
@@ -85,5 +86,6 @@ lifecycle = [
 android-application = { id = "com.android.application", version.ref = "android-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version = "2.0.0-1.0.21" }
