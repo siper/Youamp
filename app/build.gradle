@@ -5,16 +5,18 @@ plugins {
     alias(libs.plugins.kotlin.compose.compiler)
 }
 
+apply from: "${project.rootDir}/buildscripts/properties.gradle"
+
 android {
     namespace "ru.stresh.youamp"
-    compileSdk 34
+    compileSdk project.compileSdk
 
     defaultConfig {
         applicationId "ru.stresh.youamp"
-        minSdk 21
-        targetSdk 34
+        minSdk project.minSdk
+        targetSdk project.targetSdk
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0-alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
