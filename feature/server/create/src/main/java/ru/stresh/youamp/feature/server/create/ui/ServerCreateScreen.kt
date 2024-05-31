@@ -7,12 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -31,6 +27,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +36,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import ru.stersh.youamp.feature.server.create.R
+import ru.stresh.youamp.core.ui.BackNavigationButton
 
 @Composable
 fun ServerScreen(
@@ -50,6 +50,7 @@ fun ServerScreen(
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     LaunchedEffect("exit_navigation") {
         viewModel
@@ -64,9 +65,9 @@ fun ServerScreen(
             .testResult
             .onEach {
                 if (it == ServerTestResultUi.SUCCESS) {
-                    snackbarHostState.showSnackbar("Test success")
+                    snackbarHostState.showSnackbar(context.getString(R.string.server_test_success_message))
                 } else {
-                    snackbarHostState.showSnackbar("Test error")
+                    snackbarHostState.showSnackbar(context.getString(R.string.server_test_error_message))
                 }
             }
             .launchIn(this)
@@ -102,20 +103,15 @@ private fun ServerScreen(
                 title = {
                     Text(
                         text = if (isNewServer) {
-                            "New Subsonic server"
+                            stringResource(R.string.new_server_title)
                         } else {
-                            "Edit server"
+                            stringResource(R.string.edit_server_title)
                         }
                     )
                 },
                 navigationIcon = {
                     if (state.returnAvailable) {
-                        IconButton(onClick = { onBackClick() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
+                        BackNavigationButton(onClick = onBackClick)
                     }
                 }
             )
@@ -179,7 +175,7 @@ private fun ContentState(
         OutlinedTextField(
             value = name,
             label = {
-                Text(text = "Name")
+                Text(text = stringResource(R.string.server_name_title))
             },
             onValueChange = {
                 name = it
@@ -193,7 +189,7 @@ private fun ContentState(
         OutlinedTextField(
             value = url,
             label = {
-                Text(text = "Address")
+                Text(text = stringResource(R.string.server_address_title))
             },
             onValueChange = {
                 url = it
@@ -207,7 +203,7 @@ private fun ContentState(
         OutlinedTextField(
             value = username,
             label = {
-                Text(text = "Username")
+                Text(text = stringResource(R.string.server_username_title))
             },
             onValueChange = {
                 username = it
@@ -221,7 +217,7 @@ private fun ContentState(
         OutlinedTextField(
             value = password,
             label = {
-                Text(text = "Password")
+                Text(text = stringResource(R.string.server_password_title))
             },
             onValueChange = {
                 password = it
@@ -237,7 +233,7 @@ private fun ContentState(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Use legacy auth",
+                text = stringResource(R.string.server_use_legacy_auth_title),
                 modifier = Modifier.weight(1f)
             )
             Switch(
@@ -261,7 +257,7 @@ private fun ContentState(
                     .weight(0.5f)
                     .padding(end = 8.dp)
             ) {
-                Text(text = "Test")
+                Text(text = stringResource(R.string.server_test_title))
             }
             Button(
                 onClick = {
@@ -274,9 +270,9 @@ private fun ContentState(
             ) {
                 Text(
                     text = if (isNewServer) {
-                        "Add"
+                        stringResource(R.string.server_add_action_title)
                     } else {
-                        "Save"
+                        stringResource(R.string.server_save_action_title)
                     }
                 )
             }

@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -63,7 +64,7 @@ internal fun SongItem(
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = "More"
+                        contentDescription = stringResource(R.string.more_action_description)
                     )
                 }
                 DropdownMenu(
@@ -122,7 +123,7 @@ internal fun AlbumItem(
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = "More"
+                        contentDescription = stringResource(R.string.more_action_description)
                     )
                 }
                 DropdownMenu(
@@ -186,7 +187,7 @@ internal fun ArtistItem(
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = "More"
+                        contentDescription = stringResource(R.string.more_action_description)
                     )
                 }
                 DropdownMenu(
@@ -222,8 +223,10 @@ internal fun ArtistItem(
     )
 }
 
+@Immutable
 internal object SearchResultUi {
 
+    @Immutable
     data class Song(
         val id: String,
         val title: String,
@@ -231,6 +234,7 @@ internal object SearchResultUi {
         val artworkUrl: String?
     )
 
+    @Immutable
     data class Album(
         val id: String,
         val title: String,
@@ -238,6 +242,7 @@ internal object SearchResultUi {
         val artworkUrl: String?
     )
 
+    @Immutable
     data class Artist(
         val id: String,
         val name: String,

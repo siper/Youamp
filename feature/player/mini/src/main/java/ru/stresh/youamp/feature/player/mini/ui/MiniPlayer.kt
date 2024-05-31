@@ -15,30 +15,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.SkipNext
-import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import ru.stersh.youamp.feature.player.big.R
 import ru.stresh.youamp.core.ui.Artwork
 import ru.stresh.youamp.core.ui.SingleLineText
 
@@ -148,58 +143,6 @@ private fun MiniPlayer(
 }
 
 @Composable
-private fun PreviousButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = Icons.Rounded.SkipPrevious,
-            contentDescription = "Previous song",
-            tint = MaterialTheme.colorScheme.secondary
-        )
-    }
-}
-
-@Composable
-private fun NextButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    FilledTonalIconButton(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = Icons.Rounded.SkipNext,
-            contentDescription = "Next song"
-        )
-    }
-}
-
-@Composable
-private fun FavoriteButton(
-    isFavorite: State<Boolean>,
-    onIsFavoriteChanged: (isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconToggleButton(
-        checked = isFavorite.value,
-        onCheckedChange = onIsFavoriteChanged,
-        modifier = modifier
-    ) {
-        if (isFavorite.value) {
-            Icon(Icons.Rounded.Favorite, contentDescription = "Dislike button")
-        } else {
-            Icon(Icons.Rounded.FavoriteBorder, contentDescription = "Like button")
-        }
-    }
-}
-
-@Composable
 private fun PlayPauseButton(
     isPlaying: Boolean,
     onIsPlayedChanged: (isPlayed: Boolean) -> Unit,
@@ -213,12 +156,12 @@ private fun PlayPauseButton(
         if (isPlaying) {
             Icon(
                 imageVector = Icons.Rounded.Pause,
-                contentDescription = "Pause button"
+                contentDescription = stringResource(R.string.pause_button_description)
             )
         } else {
             Icon(
                 imageVector = Icons.Rounded.PlayArrow,
-                contentDescription = "Play button"
+                contentDescription = stringResource(R.string.play_button_description)
             )
         }
     }

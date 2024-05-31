@@ -51,7 +51,7 @@ private fun AvatarPlaceholder() {
     Box(modifier = Modifier.size(AvatarSize)) {
         Icon(
             imageVector = Icons.Rounded.Person,
-            contentDescription = "",
+            contentDescription = stringResource(R.string.user_avatar_title),
             tint = MaterialTheme.colorScheme.onSecondaryContainer,
             modifier = Modifier.align(Alignment.Center)
         )

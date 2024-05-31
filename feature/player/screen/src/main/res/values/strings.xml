@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_queue_description">Player queue</string>
+    <string name="shuffle_mode_description">Shuffle mode</string>
+    <string name="repeat_mode_description">Repeat mode</string>
+    <string name="favorite_song_secription">Favorite song</string>
+    <string name="pause_button_description">Pause button</string>
+    <string name="play_button_description">Play button</string>
+    <string name="previous_song_description">Previous song</string>
+    <string name="next_song_description">Next song</string>
+</resources>

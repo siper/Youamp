@@ -24,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.feature.main.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -51,7 +53,11 @@ fun MainScreen(
         },
         modifier = Modifier.fillMaxSize()
     ) { padding ->
-        val tabData = arrayOf("Albums", "Artists", "Playlists")
+        val tabData = arrayOf(
+            stringResource(R.string.albums_title),
+            stringResource(R.string.artists_title),
+            stringResource(R.string.playlists_title)
+        )
         val pagerState = rememberPagerState { tabData.size }
         val scope = rememberCoroutineScope()
         Column(
@@ -70,7 +76,7 @@ fun MainScreen(
                 divider = {},
                 modifier = Modifier.fillMaxWidth()
             ) {
-                tabData.forEachIndexed { index, s ->
+                tabData.forEachIndexed { index, tabTitle ->
                     Tab(
                         selected = pagerState.currentPage == index,
                         unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -80,7 +86,7 @@ fun MainScreen(
                             }
                         },
                         text = {
-                            Text(text = s)
+                            Text(text = tabTitle)
                         }
                     )
                 }

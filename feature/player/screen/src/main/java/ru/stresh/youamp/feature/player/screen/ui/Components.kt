@@ -22,7 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.stersh.youamp.feature.player.big.R
 
 @Composable
 internal fun PlayerQueueButton(
@@ -35,7 +37,7 @@ internal fun PlayerQueueButton(
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
-            contentDescription = "Player queue"
+            contentDescription = stringResource(R.string.player_queue_description)
         )
     }
 }
@@ -59,7 +61,7 @@ internal fun ShuffleButton(
     ) {
         Icon(
             imageVector = Icons.Rounded.Shuffle,
-            contentDescription = "Shuffle mode"
+            contentDescription = stringResource(R.string.shuffle_mode_description)
         )
     }
 }
@@ -90,7 +92,7 @@ internal fun RepeatButton(
         }
         Icon(
             imageVector = imageVector,
-            contentDescription = "Repeat mode"
+            contentDescription = stringResource(R.string.repeat_mode_description)
         )
     }
 }
@@ -113,7 +115,7 @@ internal fun FavoriteButton(
         }
         Icon(
             imageVector = imageVector,
-            contentDescription = "Favorite song"
+            contentDescription = stringResource(R.string.favorite_song_secription)
         )
     }
 }
@@ -132,12 +134,12 @@ internal fun PlayPauseButton(
         if (isPlayed) {
             Icon(
                 imageVector = Icons.Rounded.Pause,
-                contentDescription = "Pause button"
+                contentDescription = stringResource(R.string.pause_button_description)
             )
         } else {
             Icon(
                 imageVector = Icons.Rounded.PlayArrow,
-                contentDescription = "Play button"
+                contentDescription = stringResource(R.string.play_button_description)
             )
         }
     }

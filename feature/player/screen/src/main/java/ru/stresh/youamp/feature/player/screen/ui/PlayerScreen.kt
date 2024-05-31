@@ -11,13 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,13 +24,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import ru.stersh.youamp.feature.player.big.R
 import ru.stresh.youamp.core.ui.Artwork
+import ru.stresh.youamp.core.ui.BackNavigationButton
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 @Composable
@@ -75,9 +76,7 @@ private fun PlayerScreen(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
-                    }
+                    BackNavigationButton(onClick = onBackClick)
                 },
                 actions = {
                     PlayerQueueButton(
@@ -158,7 +157,7 @@ private fun PlayerScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.SkipPrevious,
-                        contentDescription = "Previous song"
+                        contentDescription = stringResource(R.string.previous_song_description)
                     )
                 }
 
@@ -173,7 +172,7 @@ private fun PlayerScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.SkipNext,
-                        contentDescription = "Next song"
+                        contentDescription = stringResource(R.string.next_song_description)
                     )
                 }
             }
