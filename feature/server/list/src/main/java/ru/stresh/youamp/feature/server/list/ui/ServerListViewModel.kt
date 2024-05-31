@@ -1,5 +1,6 @@
 package ru.stresh.youamp.feature.server.list.ui
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +46,7 @@ internal class ServerListViewModel(
         serverListRepository.setActiveServer(serverId)
     }
 
+    @Immutable
     sealed interface StateUi {
         data class Content(val items: List<ServerUi>) : StateUi
         data object Progress : StateUi

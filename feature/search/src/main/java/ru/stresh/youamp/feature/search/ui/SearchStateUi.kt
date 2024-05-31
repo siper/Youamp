@@ -1,5 +1,8 @@
 package ru.stresh.youamp.feature.search.ui
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 internal data class SearchStateUi(
     val progress: Boolean = true,
     val songs: List<SearchResultUi.Song> = emptyList(),

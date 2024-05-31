@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Dns
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,10 +29,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import ru.stersh.youamp.feature.server.list.R
+import ru.stresh.youamp.core.ui.BackNavigationButton
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 
 @Composable
@@ -68,23 +70,18 @@ private fun ServerListScreen(
         topBar = {
             LargeTopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
+                    BackNavigationButton(onClick = onBackClick)
                 },
                 actions = {
                     IconButton(onClick = { onAddServerClick() }) {
                         Icon(
                             imageVector = Icons.Rounded.Add,
-                            contentDescription = "Add"
+                            contentDescription = stringResource(R.string.add_server_title)
                         )
                     }
                 },
                 title = {
-                    Text(text = "Server screen")
+                    Text(text = stringResource(R.string.server_screen_title))
                 }
             )
         }
@@ -151,7 +148,7 @@ private fun ServerItem(
                 ) {
                     if (!item.isActive) {
                         DropdownMenuItem(
-                            text = { Text(text = "Activate") },
+                            text = { Text(text = stringResource(R.string.activate_server_title)) },
                             onClick = {
                                 menuExpanded = false
                                 onActive(item.id)
@@ -159,7 +156,7 @@ private fun ServerItem(
                         )
                     }
                     DropdownMenuItem(
-                        text = { Text(text = "Edit") },
+                        text = { Text(text = stringResource(R.string.edit_server_title)) },
                         onClick = {
                             menuExpanded = false
                             onEdit(item.id)
@@ -167,7 +164,7 @@ private fun ServerItem(
                     )
                     if (!item.isActive) {
                         DropdownMenuItem(
-                            text = { Text(text = "Delete") },
+                            text = { Text(text = stringResource(R.string.delete_server_title)) },
                             onClick = {
                                 menuExpanded = false
                                 onDelete(item.id)

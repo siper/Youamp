@@ -1,5 +1,8 @@
 package ru.stresh.youamp.feature.server.create.ui
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 internal sealed interface StateUi {
     data class Content(
         val buttonsEnabled: Boolean,

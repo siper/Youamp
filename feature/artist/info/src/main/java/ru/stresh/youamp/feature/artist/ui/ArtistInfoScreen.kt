@@ -12,15 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Shuffle
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -28,16 +21,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import ru.stersh.youamp.feature.artist.R
 import ru.stresh.youamp.core.ui.AlbumItem
 import ru.stresh.youamp.core.ui.AlbumUi
 import ru.stresh.youamp.core.ui.Artwork
+import ru.stresh.youamp.core.ui.BackNavigationButton
+import ru.stresh.youamp.core.ui.PlayAllButton
+import ru.stresh.youamp.core.ui.PlayShuffledButton
 import ru.stresh.youamp.core.ui.VerticalGrid
 
 
@@ -73,9 +67,7 @@ private fun ArtistInfoScreen(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
-                    }
+                    BackNavigationButton(onClick = onBackClick)
                 }
             )
         }
@@ -114,27 +106,14 @@ private fun ArtistInfoScreen(
                     .padding(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(
+                PlayAllButton(
                     onClick = onPlayAll,
                     modifier = Modifier.weight(0.5f)
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.PlayArrow,
-                        contentDescription = null
-                    )
-                    Text(text = stringResource(R.string.play_all_title))
-                }
-
-                OutlinedButton(
+                )
+                PlayShuffledButton(
                     onClick = onPlayShuffled,
                     modifier = Modifier.weight(0.5f)
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Shuffle,
-                        contentDescription = null
-                    )
-                    Text(text = stringResource(R.string.shuffle_title))
-                }
+                )
             }
 
             VerticalGrid(

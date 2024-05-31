@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigate_back_description">Navigate back</string>
+    <string name="shuffle_title">Shuffle</string>
+    <string name="play_all_title">Play all</string>
+</resources>
