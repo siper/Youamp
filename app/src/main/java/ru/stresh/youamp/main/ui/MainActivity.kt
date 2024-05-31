@@ -23,11 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import org.koin.androidx.compose.koinViewModel
 import ru.stresh.youamp.core.ui.YouAmpPlayerTheme
 import ru.stresh.youamp.feature.album.ui.AlbumInfoScreen
@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     MainScreen.AddServer -> {
                         ServerScreen(
                             onBackClick = { rootNavController.popBackStack() },
-                            onCloseScreen = { rootNavController.navigate("main") }
+                            onCloseScreen = { rootNavController.navigate(Main) }
                         )
                     }
 
@@ -90,13 +90,12 @@ class MainActivity : ComponentActivity() {
     ) {
         NavHost(
             navController = rootNavController,
-            startDestination = "main",
+            startDestination = Main,
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
-            composable(
-                route = "main",
+            composable<Main>(
                 popEnterTransition = {
                     fadeIn()
                 },
@@ -109,8 +108,8 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         YouAmpSearchBar(
                             avatarUrl = avatarUrl,
-                            onClick = { rootNavController.navigate("search") },
-                            onAvatarClick = { rootNavController.navigate("server_list") },
+                            onClick = { rootNavController.navigate(Search) },
+                            onAvatarClick = { rootNavController.navigate(ServerList) },
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
                     },
@@ -118,23 +117,23 @@ class MainActivity : ComponentActivity() {
                         MiniPlayer(
                             viewModelStoreOwner = viewModelStoreOwner,
                             onClick = {
-                                rootNavController.navigate("player")
+                                rootNavController.navigate(Player)
                             }
                         )
                     },
                     albumsScreen = {
                         AlbumsScreen(
                             viewModelStoreOwner = viewModelStoreOwner,
-                            onAlbumClick = {
-                                rootNavController.navigate("album/$it")
+                            onAlbumClick = { albumId ->
+                                rootNavController.navigate(AlbumInfo(albumId))
                             }
                         )
                     },
                     artistsScreen = {
                         ArtistsScreen(
                             viewModelStoreOwner = viewModelStoreOwner,
-                            onArtistClick = {
-                                rootNavController.navigate("artist/$it")
+                            onArtistClick = { artistId ->
+                                rootNavController.navigate(ArtistInfo(artistId))
                             }
                         )
                     },
@@ -148,21 +147,20 @@ class MainActivity : ComponentActivity() {
                     }
                 )
             }
-            composable("album/{albumId}") {
+            composable<AlbumInfo> { backStackEntry ->
                 ScreenWithMiniPlayer(
                     viewModelStoreOwner = viewModelStoreOwner,
                     onMiniPlayerClick = {
-                        rootNavController.navigate("player")
+                        rootNavController.navigate(Player)
                     }
                 ) {
                     AlbumInfoScreen(
                         onBackClick = { rootNavController.popBackStack() },
-                        id = it.requireString("albumId")
+                        id = backStackEntry.toRoute<AlbumInfo>().albumId
                     )
                 }
             }
-            composable(
-                route = "player",
+            composable<Player>(
                 popEnterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Up
@@ -186,61 +184,61 @@ class MainActivity : ComponentActivity() {
             ) {
                 PlayerScreen(
                     onBackClick = { rootNavController.popBackStack() },
-                    onPlayQueueClick = { rootNavController.navigate("play_queue") }
+                    onPlayQueueClick = { rootNavController.navigate(PlayQueue) }
                 )
             }
-            composable("add_server") {
+            composable<AddServer> {
                 ServerScreen(
                     onBackClick = { rootNavController.popBackStack() },
                     onCloseScreen = { rootNavController.popBackStack() }
                 )
             }
-            composable("edit_server/{serverId}") {
+            composable<ServerEditor> {
                 ServerScreen(
-                    serverId = it.requireString("serverId").toLong(),
+                    serverId = it.toRoute<ServerEditor>().serverId,
                     onBackClick = { rootNavController.popBackStack() },
                     onCloseScreen = { rootNavController.popBackStack() }
                 )
             }
-            composable("server_list") {
+            composable<ServerList> {
                 ServerListScreen(
                     onBackClick = { rootNavController.popBackStack() },
-                    onAddServerClick = { rootNavController.navigate("add_server") },
-                    onEditServerClick = {
-                        rootNavController.navigate("edit_server/$it")
+                    onAddServerClick = { rootNavController.navigate(AddServer) },
+                    onEditServerClick = { serverId ->
+                        rootNavController.navigate(ServerEditor(serverId))
                     }
                 )
             }
-            composable("search") {
+            composable<Search> {
                 SearchScreen(
                     viewModelStoreOwner = viewModelStoreOwner,
                     onBack = {
                         rootNavController.popBackStack()
                     },
-                    onOpenAlbumInfo = {
-                        rootNavController.navigate("album/$it")
+                    onOpenAlbumInfo = { albumId ->
+                        rootNavController.navigate(AlbumInfo(albumId))
                     },
-                    onOpenArtistInfo = {
-                        rootNavController.navigate("artist/$it")
+                    onOpenArtistInfo = { artistId ->
+                        rootNavController.navigate(ArtistInfo(artistId))
                     }
                 )
             }
-            composable("play_queue") {
+            composable<PlayQueue> {
                 PlayerQueueScreen(
                     onBackClick = { rootNavController.popBackStack() }
                 )
             }
-            composable("artist/{artistId}") {
+            composable<ArtistInfo> {
                 ScreenWithMiniPlayer(
                     viewModelStoreOwner = viewModelStoreOwner,
                     onMiniPlayerClick = {
-                        rootNavController.navigate("player")
+                        rootNavController.navigate(Player)
                     }
                 ) {
                     ArtistInfoScreen(
-                        id = it.requireString("artistId"),
+                        id = it.toRoute<ArtistInfo>().artistId,
                         onAlbumClick = { albumId ->
-                            rootNavController.navigate("album/$albumId")
+                            rootNavController.navigate(AlbumInfo(albumId))
                         },
                         onBackClick = {
                             rootNavController.popBackStack()
@@ -268,12 +266,4 @@ internal fun ScreenWithMiniPlayer(
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
         )
     }
-}
-
-private fun NavBackStackEntry.requireString(key: String): String {
-    return requireNotNull(arguments?.getString(key))
-}
-
-private fun NavBackStackEntry.requireLong(key: String): Long {
-    return requireNotNull(arguments?.getLong(key))
 }
