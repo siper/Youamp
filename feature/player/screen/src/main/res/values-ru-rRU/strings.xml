@@ -3,7 +3,7 @@
     <string name="play_queue_description">Play queue</string>
     <string name="shuffle_mode_description">Режим перемешивания</string>
     <string name="repeat_mode_description">Режим повтора</string>
-    <string name="favorite_song_secription">Любимая песня</string>
+    <string name="favorite_song_description">Любимая песня</string>
     <string name="pause_button_description">Кнопка \"Пауза\"</string>
     <string name="play_button_description">Кнопка \"Играть\"</string>
     <string name="previous_song_description">Предыдущая песня</string>
