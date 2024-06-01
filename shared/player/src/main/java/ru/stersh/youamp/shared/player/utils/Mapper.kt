@@ -6,8 +6,8 @@ import androidx.media3.common.HeartRating
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.StarRating
-import ru.stresh.youamp.core.api.Song
-import ru.stresh.youamp.core.api.provider.ApiProvider
+import ru.stersh.youamp.core.api.Song
+import ru.stersh.youamp.core.api.provider.ApiProvider
 
 internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
     val songUri = apiProvider

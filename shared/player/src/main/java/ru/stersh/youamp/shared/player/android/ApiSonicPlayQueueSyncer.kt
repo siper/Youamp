@@ -3,9 +3,9 @@ package ru.stersh.youamp.shared.player.android
 import androidx.media3.common.Player
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.shared.player.utils.mediaItems
 import ru.stersh.youamp.shared.player.utils.toMediaItem
-import ru.stresh.youamp.core.api.provider.ApiProvider
 import timber.log.Timber
 
 internal class ApiSonicPlayQueueSyncer(private val apiProvider: ApiProvider) {

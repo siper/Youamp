@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.youamp.core.utils.formatSongDuration
 import ru.stersh.youamp.shared.player.android.MusicService
 import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
 import ru.stersh.youamp.shared.player.utils.withPlayer
-import ru.stresh.youamp.core.api.provider.ApiProvider
-import ru.stresh.youamp.core.utils.formatSongDuration
 
 internal class PlayerProgressStoreImpl(
     private val context: Context,

@@ -11,6 +11,8 @@ import androidx.media3.common.StarRating
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import ru.stersh.youamp.core.api.PlaylistEntry
+import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.shared.player.android.MusicService
 import ru.stersh.youamp.shared.player.utils.MEDIA_ITEM_ALBUM_ID
 import ru.stersh.youamp.shared.player.utils.MEDIA_ITEM_DURATION
@@ -18,8 +20,6 @@ import ru.stersh.youamp.shared.player.utils.MEDIA_SONG_ID
 import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
 import ru.stersh.youamp.shared.player.utils.toMediaItem
 import ru.stersh.youamp.shared.player.utils.withPlayer
-import ru.stresh.youamp.core.api.PlaylistEntry
-import ru.stresh.youamp.core.api.provider.ApiProvider
 
 internal class PlayerQueueAudioSourceManagerImpl(
     private val context: Context,

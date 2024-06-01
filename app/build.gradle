@@ -8,7 +8,7 @@ plugins {
 apply from: "${project.rootDir}/buildscripts/properties.gradle"
 
 android {
-    namespace "ru.stresh.youamp"
+    namespace "ru.stersh.youamp"
     compileSdk project.compileSdk
 
     defaultConfig {
