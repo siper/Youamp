@@ -7,8 +7,7 @@ files:
     translation: /core/**/src/main/res/values-%android_code%/strings.xml
   - source: /shared/**/src/main/res/values/strings.xml
     translation: /shared/**/src/main/res/values-%android_code%/strings.xml
-  - source: /fastlane/metadata/android/**/*.txt
-    ignore:
-      - /fastlane/metadata/android/**/video.txt
-      - /fastlane/metadata/android/**/title.txt
-    translation: /fastlane/metadata/android/%locale%/*.txt
+  - source: /fastlane/metadata/android/en-US/full_description.txt
+    translation: /fastlane/metadata/android/%locale%/full_description.txt
+  - source: /fastlane/metadata/android/en-US/short_description.txt
+    translation: /fastlane/metadata/android/%locale%/short_description.txt
