@@ -4,7 +4,7 @@
 
 <p align="center">
   <img alt="Min sdk badge" src="https://img.shields.io/badge/21-grey?style=flat&logo=android&logoColor=minSdk&label=Min%20sdk&color=blue">
-  <img alt="Crowdin bage" src="https://img.shields.io/badge/Translate-grey?style=flat&logo=crowdin&link=https%3A%2F%2Fcrowdin.com%2Fproject%2Fyouamp%2Finvite%3Fh%3D8332eed99373a38dece2d0bebc46f1be2105154">
+  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/youamp"><img src="https://badges.crowdin.net/youamp/localized.svg"></a>
   <img alt="License bage" src="https://img.shields.io/badge/MIT-grey?style=flat&label=License&color=blue">
 </p>
 
