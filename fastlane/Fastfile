@@ -1,7 +1,8 @@
+opt_out_usage
 default_platform(:android)
 
 platform :android do
-  desc "Lane for distributing app using Github releases"
+  desc "Lane for distributing app with Github releases"
   lane :github do
     gradle(
       task: "assemble",
@@ -20,26 +21,19 @@ platform :android do
       tag_name: ENV['VERSION_TAG'],
       upload_assets: ["app/build/outputs/apk/release/app-release.apk"]
     )
-    track = 'release'
-    if ENV['VERSION_TAG'].include? 'alpha'
-      track = 'internal'
-    elsif ENV['VERSION_TAG'].include? 'beta'
-      track = 'beta'
-    else
-      track = 'release'
-    end
-    upload_to_play_store(track: 'beta')
   end
+
+  desc "Lane for distributing app with Play Store"
   lane :play_store do
     gradle(
-          task: "assemble",
-          build_type: "Release",
-          properties: {
-            "android.injected.signing.store.file" => "/home/runner/work/YouAMP/YouAMP/keystore.jks",
-            "android.injected.signing.store.password" => ENV['KEYSTORE_PASSWORD'],
-            "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
-            "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
-          }
+      task: "assemble",
+      build_type: "Release",
+      properties: {
+        "android.injected.signing.store.file" => "/home/runner/work/YouAMP/YouAMP/keystore.jks",
+        "android.injected.signing.store.password" => ENV['KEYSTORE_PASSWORD'],
+        "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
+        "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
+      }
     )
     track = 'release'
     if ENV['VERSION_TAG'].include? 'alpha'
