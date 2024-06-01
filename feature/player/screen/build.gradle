@@ -7,7 +7,7 @@ plugins {
 apply from: "${project.rootDir}/buildscripts/android-feature-module.gradle"
 
 android {
-    namespace 'ru.stersh.youamp.feature.player.big'
+    namespace 'ru.stersh.youamp.feature.player.screen'
 }
 
 dependencies {
