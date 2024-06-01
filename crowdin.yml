@@ -3,3 +3,7 @@ files:
     translation: /feature/**/src/main/res/values-%android_code%/strings.xml
   - source: /app/src/main/res/values/strings.xml
     translation: /app/src/main/res/values-%android_code%/strings.xml
+  - source: /core/**/src/main/res/values/strings.xml
+    translation: /core/**/src/main/res/values-%android_code%/strings.xml
+  - source: /shared/**/src/main/res/values/strings.xml
+    translation: /shared/**/src/main/res/values-%android_code%/strings.xml
