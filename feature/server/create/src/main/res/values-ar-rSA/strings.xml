@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_test_success_message">Test success</string>
+    <string name="server_test_error_message">Test error</string>
+    <string name="new_server_title">New Subsonic server</string>
+    <string name="edit_server_title">Edit server</string>
+    <string name="server_name_title">Name</string>
+    <string name="server_address_title">Address</string>
+    <string name="server_username_title">Username</string>
+    <string name="server_password_title">Password</string>
+    <string name="server_use_legacy_auth_title">Use legacy auth</string>
+    <string name="server_test_title">Test</string>
+    <string name="server_add_action_title">Add</string>
+    <string name="server_save_action_title">Save</string>
+</resources>

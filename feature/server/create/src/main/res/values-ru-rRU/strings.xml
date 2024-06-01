@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_test_success_message">Проверка прошла успешно</string>
+    <string name="server_test_error_message">Ошибка при проверке</string>
+    <string name="new_server_title">Новый Subsonic сервер</string>
+    <string name="edit_server_title">Редактировать сервер</string>
+    <string name="server_name_title">Название</string>
+    <string name="server_address_title">Адрес</string>
+    <string name="server_username_title">Имя пользователя</string>
+    <string name="server_password_title">Пароль</string>
+    <string name="server_use_legacy_auth_title">Использовать устаревшую авторизацию</string>
+    <string name="server_test_title">Тестирование</string>
+    <string name="server_add_action_title">Добавить</string>
+    <string name="server_save_action_title">Сохранить</string>
+</resources>
