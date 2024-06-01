@@ -39,9 +39,11 @@ internal class CurrentSongInfoStoreImpl(private val context: Context) : CurrentS
         }
 
         awaitClose {
-            callback?.let { player?.removeListener(it) }
-            callback = null
-            player = null
+            executor.execute {
+                callback?.let { player?.removeListener(it) }
+                callback = null
+                player = null
+            }
         }
     }.distinctUntilChanged()
 

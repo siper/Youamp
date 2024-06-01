@@ -3,7 +3,10 @@ package ru.stresh.youamp
 import android.app.Application
 import coil.Coil
 import coil.ImageLoader
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
+import org.koin.android.ext.android.get
+import ru.stresh.youamp.core.api.provider.ApiProvider
 
 class App : Application() {
 
@@ -14,6 +17,7 @@ class App : Application() {
     }
 
     private fun setupCoil() {
+        val apiProvider: ApiProvider = get()
         Coil.setImageLoader(
             ImageLoader
                 .Builder(this)
@@ -27,6 +31,24 @@ class App : Application() {
                                 .removeHeader("expires")
                                 .addHeader("cache-control", "public, max-age=604800, no-transform")
                                 .build()
+                        }
+                        .addInterceptor { chain ->
+                            val api = runBlocking { apiProvider.getApi() }
+
+                            val request = chain.request()
+                            val newUrl = api.appendAuth(
+                                request
+                                    .url
+                                    .toUri()
+                                    .toString()
+                            )
+
+                            chain.proceed(
+                                request
+                                    .newBuilder()
+                                    .url(newUrl)
+                                    .build()
+                            )
                         }
                         .build()
                 }

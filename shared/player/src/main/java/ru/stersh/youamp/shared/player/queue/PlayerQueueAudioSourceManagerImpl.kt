@@ -30,11 +30,20 @@ internal class PlayerQueueAudioSourceManagerImpl(
 
     override suspend fun playSource(source: AudioSource, shuffled: Boolean) {
         val newQueue = getMediaItemsFromSource(source)
+        val songId = getPlaySongIdFromSource(source)
+        val index = if (songId == null) {
+            -1
+        } else {
+            newQueue.indexOfFirst { it.mediaId == songId }
+        }
         mediaController.withPlayer(mainExecutor) {
             if (shuffled) {
                 setMediaItems(newQueue.shuffled())
             } else {
                 setMediaItems(newQueue)
+            }
+            if (index != -1) {
+                seekTo(index, 0)
             }
             prepare()
             play()
@@ -62,6 +71,16 @@ internal class PlayerQueueAudioSourceManagerImpl(
                 addMediaItems(index, newSongs)
             }
         }
+    }
+
+    private fun getPlaySongIdFromSource(source: AudioSource): String? {
+        if (source is AudioSource.Album) {
+            return source.songId
+        }
+        if (source is AudioSource.Playlist) {
+            return source.songId
+        }
+        return null
     }
 
     private suspend fun getMediaItemsFromSource(source: AudioSource): List<MediaItem> {

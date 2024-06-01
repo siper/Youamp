@@ -15,6 +15,7 @@ import ru.stresh.youamp.feature.artists.artistsModule
 import ru.stresh.youamp.feature.player.mini.playerMiniModule
 import ru.stresh.youamp.feature.player.queue.playerQueueScreenModule
 import ru.stresh.youamp.feature.player.screen.playerScreenModule
+import ru.stresh.youamp.feature.playlist.playlistInfoModule
 import ru.stresh.youamp.feature.playlists.playlistListModule
 import ru.stresh.youamp.feature.search.searchModule
 import ru.stresh.youamp.feature.server.create.serverCreateModule
@@ -51,7 +52,8 @@ private val feature = listOf(
     serverCreateModule,
     serverListModule,
     playlistListModule,
-    searchModule
+    searchModule,
+    playlistInfoModule
 )
 
 private val impl = module {

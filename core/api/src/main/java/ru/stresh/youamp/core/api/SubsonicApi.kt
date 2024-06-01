@@ -132,8 +132,9 @@ class SubsonicApi(
     fun getCoverArtUrl(
         id: String,
         size: Int? = null,
+        auth: Boolean = false
     ): String {
-        return buildUrl("getCoverArt", mapOf("id" to id, "size" to size))
+        return buildUrl("getCoverArt", mapOf("id" to id, "size" to size), auth)
     }
 
     fun downloadUrl(
@@ -141,8 +142,21 @@ class SubsonicApi(
     ): String = buildUrl("download", mapOf("id" to id))
 
     fun avatarUrl(
-        username: String
-    ): String = buildUrl("getAvatar", mapOf("username" to username))
+        username: String,
+        auth: Boolean = false
+    ): String = buildUrl("getAvatar", mapOf("username" to username), auth)
+
+    fun appendAuth(url: String): String {
+        val builder = Uri
+            .parse(url)
+            .buildUpon()
+
+        builder.appendAuth()
+
+        return builder
+            .build()
+            .toString()
+    }
 
     fun availableListTypes(): List<String> {
         val types = mutableListOf("random", "newest", "highest", "frequent", "recent")
@@ -158,7 +172,11 @@ class SubsonicApi(
         return types.toList()
     }
 
-    private fun buildUrl(path: String, queryMap: Map<String, Any?>): String {
+    private fun buildUrl(
+        path: String,
+        queryMap: Map<String, Any?>,
+        auth: Boolean = true
+    ): String {
         val uriBuilder = Uri
             .parse(url)
             .buildUpon()
@@ -171,7 +189,9 @@ class SubsonicApi(
             }
         }
 
-        uriBuilder.appendAuth()
+        if (auth) {
+            uriBuilder.appendAuth()
+        }
 
         return uriBuilder
             .build()

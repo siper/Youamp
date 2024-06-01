@@ -38,6 +38,7 @@ import ru.stresh.youamp.feature.main.ui.MainScreen
 import ru.stresh.youamp.feature.player.mini.ui.MiniPlayer
 import ru.stresh.youamp.feature.player.queue.ui.PlayerQueueScreen
 import ru.stresh.youamp.feature.player.screen.ui.PlayerScreen
+import ru.stresh.youamp.feature.playlist.ui.PlaylistInfoScreen
 import ru.stresh.youamp.feature.playlists.ui.PlaylistsScreen
 import ru.stresh.youamp.feature.search.ui.SearchScreen
 import ru.stresh.youamp.feature.search.ui.YouAmpSearchBar
@@ -140,8 +141,8 @@ class MainActivity : ComponentActivity() {
                     playlistsScreen = {
                         PlaylistsScreen(
                             viewModelStoreOwner = viewModelStoreOwner,
-                            onPlaylistClick = {
-
+                            onPlaylistClick = { playlistId ->
+                                rootNavController.navigate(PlaylistInfo(playlistId))
                             }
                         )
                     }
@@ -240,6 +241,21 @@ class MainActivity : ComponentActivity() {
                         onAlbumClick = { albumId ->
                             rootNavController.navigate(AlbumInfo(albumId))
                         },
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        }
+                    )
+                }
+            }
+            composable<PlaylistInfo> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    PlaylistInfoScreen(
+                        id = it.toRoute<PlaylistInfo>().playlistId,
                         onBackClick = {
                             rootNavController.popBackStack()
                         }
