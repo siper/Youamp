@@ -1,9 +1,5 @@
 files:
-  - source: /feature/*/src/main/res/values/strings.xml
-    translation: /feature/*/src/main/res/values-%android_code%/strings.xml
   - source: /feature/**/src/main/res/values/strings.xml
     translation: /feature/**/src/main/res/values-%android_code%/strings.xml
-  - source: /core/*/src/main/res/values/strings.xml
-    translation: /core/*/src/main/res/values-%android_code%/strings.xml
   - source: /app/src/main/res/values/strings.xml
     translation: /app/src/main/res/values-%android_code%/strings.xml
