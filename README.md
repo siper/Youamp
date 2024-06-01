@@ -8,6 +8,8 @@
   <img alt="License bage" src="https://img.shields.io/badge/MIT-grey?style=flat&label=License&color=blue">
 </p>
 
+![Static Badge](https://img.shields.io/badge/translate-grey?style=flat&logo=crowdin&link=https%3A%2F%2Fcrowdin.com%2Fproject%2Fyouamp%2Finvite%3Fh%3D8332eed99373a38dece2d0bebc46f1be2105154)
+
 ## About
 
 YouAMP player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,

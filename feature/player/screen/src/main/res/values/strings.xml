@@ -3,7 +3,7 @@
     <string name="play_queue_description">Play queue</string>
     <string name="shuffle_mode_description">Shuffle mode</string>
     <string name="repeat_mode_description">Repeat mode</string>
-    <string name="favorite_song_secription">Favorite song</string>
+    <string name="favorite_song_description">Favorite song</string>
     <string name="pause_button_description">Pause button</string>
     <string name="play_button_description">Play button</string>
     <string name="previous_song_description">Previous song</string>

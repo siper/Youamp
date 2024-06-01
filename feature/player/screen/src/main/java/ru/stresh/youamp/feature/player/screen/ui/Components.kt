@@ -115,7 +115,7 @@ internal fun FavoriteButton(
         }
         Icon(
             imageVector = imageVector,
-            contentDescription = stringResource(R.string.favorite_song_secription)
+            contentDescription = stringResource(R.string.favorite_song_description)
         )
     }
 }
