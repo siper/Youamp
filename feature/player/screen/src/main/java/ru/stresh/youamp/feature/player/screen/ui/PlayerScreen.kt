@@ -79,7 +79,7 @@ private fun PlayerScreen(
                     BackNavigationButton(onClick = onBackClick)
                 },
                 actions = {
-                    PlayerQueueButton(
+                    PlayQueueButton(
                         onClick = onPlayQueueClick
                     )
                 }

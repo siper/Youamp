@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import ru.stersh.youamp.feature.player.big.R
 
 @Composable
-internal fun PlayerQueueButton(
+internal fun PlayQueueButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -37,7 +37,7 @@ internal fun PlayerQueueButton(
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
-            contentDescription = stringResource(R.string.player_queue_description)
+            contentDescription = stringResource(R.string.play_queue_description)
         )
     }
 }
