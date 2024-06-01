@@ -4,7 +4,7 @@
     <string name="add_to_queue_title">Add to queue</string>
     <string name="artist_info_title">Artist info</string>
     <string name="album_info_title">Album info</string>
-    <string name="search_hint_title">Search tracks, albums, artists…</string>
+    <string name="search_hint_title">Search songs, albums, artists…</string>
     <string name="songs_title">Songs</string>
     <string name="load_more_title">Load more</string>
     <string name="albums_title">Albums</string>
