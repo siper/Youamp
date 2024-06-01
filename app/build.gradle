@@ -12,10 +12,10 @@ android {
     compileSdk project.compileSdk
 
     defaultConfig {
-        applicationId "ru.stresh.youamp"
+        applicationId "ru.stersh.youamp"
         minSdk project.minSdk
         targetSdk project.targetSdk
-        versionCode 2
+        versionCode 1
         versionName "1.0.0-alpha01"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
