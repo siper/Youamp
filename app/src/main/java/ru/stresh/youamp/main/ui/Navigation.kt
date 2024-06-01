@@ -29,3 +29,6 @@ object ServerList
 
 @Serializable
 data class ServerEditor(val serverId: Long)
+
+@Serializable
+data class PlaylistInfo(val playlistId: String)

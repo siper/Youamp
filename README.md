@@ -19,7 +19,7 @@ Feature list required for first alpha release
 - [x]  Album info
 - [x]  Multiple server support
 - [x]  Artist info
-- [ ]  Playlist info
+- [x]  Playlist info
 - [x]  Song queue
 - [x]  Search
 - [ ]  Error handling (network etc.)

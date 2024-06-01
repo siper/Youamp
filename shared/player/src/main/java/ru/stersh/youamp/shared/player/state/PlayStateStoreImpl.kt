@@ -34,9 +34,11 @@ internal class PlayStateStoreImpl(private val context: Context) : PlayStateStore
         }
 
         awaitClose {
-            callback?.let { player?.removeListener(it) }
-            callback = null
-            player = null
+            mainExecutor.execute {
+                callback?.let { player?.removeListener(it) }
+                callback = null
+                player = null
+            }
         }
     }
 }
