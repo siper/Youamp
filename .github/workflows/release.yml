@@ -1,0 +1,47 @@
+name: Build and Upload release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  CI:
+    name: Build and Upload release
+    runs-on: ubuntu-latest
+
+    env:
+      GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
+      KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      VERSION_TAG: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.3'
+          bundler-cache: true
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Generate google-service-key.json file
+        run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/YouAMP/YouAMP/google-service-key.json
+
+      - name: Generate .jks file
+        run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/YouAMP/YouAMP/keystore.jks
+
+      - name: Publish github release with fastlane
+        run: bundle exec fastlane github
