@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server_screen_title">Servers</string>
-    <string name="add_server_title">Add</string>
-    <string name="back_title">Back</string>
-    <string name="activate_server_title">Activate</string>
-    <string name="edit_server_title">Edit</string>
-    <string name="delete_server_title">Delete</string>
+    <string name="server_screen_title">Серверы</string>
+    <string name="add_server_title">Добавить</string>
+    <string name="back_title">Назад</string>
+    <string name="activate_server_title">Активировать</string>
+    <string name="edit_server_title">Изменить</string>
+    <string name="delete_server_title">Удалить</string>
 </resources>
