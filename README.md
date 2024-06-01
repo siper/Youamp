@@ -15,21 +15,14 @@ media3 and other modern android libraries. Developing is still in progress and m
 
 ## Features
 
-Feature list required for first alpha release
-
-- [x]  Albums
-- [x]  Artists
-- [x]  Playlist
-- [x]  Big player
-- [x]  Small bottom player
-- [x]  Album info
-- [x]  Multiple server support
-- [x]  Artist info
-- [x]  Playlist info
-- [x]  Song queue
-- [x]  Search
-- [ ]  Error handling (network etc.)
-- [x]  App icon
+- Material You theme with adaptive color support
+- Explore Albums, Artists and Playlist
+- Search Songs, Albums and Artists
+- Play songs
+- Add multiple Subsonic servers
+- Play queue with song ordering
+- Like songs
+- Sync play queue and current play song position with server
 
 ## Screenshots
 
