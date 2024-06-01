@@ -28,14 +28,14 @@ Feature list required for first alpha release
 ## Screenshots
 
 <p float="left">
-  <img src="/screenshots/albums.png" width="200" />
-  <img src="/screenshots/artists.png" width="200" /> 
-  <img src="/screenshots/playlists.png" width="200" /> 
-  <img src="/screenshots/album_info.png" width="200" />
-  <img src="/screenshots/search.png" width="200" />
-  <img src="/screenshots/player.png" width="200" />
-  <img src="/screenshots/servers.png" width="200" />
-  <img src="/screenshots/play_queue.png" width="200" />
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" />
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" /> 
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" /> 
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" />
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="200" />
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" />
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200" />
+  <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="200" />
 </p>
 
 ## License

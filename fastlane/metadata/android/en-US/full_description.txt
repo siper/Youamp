@@ -1,0 +1,7 @@
+YouAMP is a player for Subsonic servers with a modern Material You interface and a high level of privacy, which is ensured by the absence of trainers, advertising and analytics. The source code is open, so anyone can make YouAMP better.
+
+The following functionality is currently supported:
+• View a list of artists, albums and playlists
+• Search for artists, albums and songs
+• Play music
+• Add an unlimited number of Subsonic servers

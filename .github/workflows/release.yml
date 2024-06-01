@@ -43,5 +43,8 @@ jobs:
       - name: Generate .jks file
         run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/YouAMP/YouAMP/keystore.jks
 
+      - name: Publish Play Store release with fastlane
+        run: bundle exec fastlane play_store
+
       - name: Publish github release with fastlane
         run: bundle exec fastlane github
