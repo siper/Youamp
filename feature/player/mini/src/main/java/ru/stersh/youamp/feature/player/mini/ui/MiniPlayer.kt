@@ -35,7 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.SingleLineText
-import ru.stersh.youamp.feature.player.big.R
+import ru.stersh.youamp.feature.player.mini.R
 
 @Composable
 fun MiniPlayer(

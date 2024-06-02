@@ -1,6 +1,7 @@
 package ru.stersh.youamp
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -28,6 +29,21 @@ internal class ApiProviderImpl(
             .mapNotNull {
                 requireApi(it ?: return@mapNotNull null)
             }
+    }
+
+    override fun flowApiOrNull(): Flow<SubsonicApi?> {
+        return subsonicServerDao
+            .flowActive()
+            .map {
+                getApiOrNull(it)
+            }
+    }
+
+    private fun getApiOrNull(subsonicServer: SubsonicServerDb?): SubsonicApi? {
+        if (subsonicServer == null) {
+            return null
+        }
+        return requireApi(subsonicServer)
     }
 
     private fun requireApi(subsonicServer: SubsonicServerDb): SubsonicApi {

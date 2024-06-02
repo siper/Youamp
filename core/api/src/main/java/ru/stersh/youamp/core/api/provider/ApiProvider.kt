@@ -8,4 +8,6 @@ interface ApiProvider {
     suspend fun getApi(): SubsonicApi
 
     fun flowApi(): Flow<SubsonicApi>
+
+    fun flowApiOrNull(): Flow<SubsonicApi?>
 }

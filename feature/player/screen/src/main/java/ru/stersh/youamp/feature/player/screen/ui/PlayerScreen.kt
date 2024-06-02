@@ -34,7 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
-import ru.stersh.youamp.feature.player.big.R
+import ru.stersh.youamp.feature.player.screen.R
 
 @Composable
 fun PlayerScreen(

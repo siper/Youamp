@@ -10,7 +10,7 @@ internal class AvatarUrlRepositoryImpl(
 ) : AvatarUrlRepository {
     override fun getAvatarUrl(): Flow<String?> {
         return apiProvider
-            .flowApi()
-            .map { it.avatarUrl(it.username) }
+            .flowApiOrNull()
+            .map { it?.avatarUrl(it.username) }
     }
 }

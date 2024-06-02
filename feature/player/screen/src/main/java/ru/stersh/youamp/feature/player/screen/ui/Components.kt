@@ -24,7 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.stersh.youamp.feature.player.big.R
+import ru.stersh.youamp.feature.player.screen.R
 
 @Composable
 internal fun PlayQueueButton(
