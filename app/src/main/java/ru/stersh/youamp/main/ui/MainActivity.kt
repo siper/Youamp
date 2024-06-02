@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     MainScreen.AddServer -> {
                         ServerScreen(
                             onBackClick = { rootNavController.popBackStack() },
-                            onCloseScreen = { rootNavController.navigate(Main) }
+                            onCloseScreen = {}
                         )
                     }
 
