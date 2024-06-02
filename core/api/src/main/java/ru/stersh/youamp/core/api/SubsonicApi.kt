@@ -141,6 +141,10 @@ class SubsonicApi(
         id: String,
     ): String = buildUrl("download", mapOf("id" to id))
 
+    fun streamUrl(
+        id: String,
+    ): String = buildUrl("stream", mapOf("id" to id))
+
     fun avatarUrl(
         username: String,
         auth: Boolean = false
