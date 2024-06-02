@@ -12,7 +12,7 @@ internal data class SearchResult(
     data class Song(
         val id: String,
         val title: String,
-        val artist: String,
+        val artist: String?,
         val artworkUrl: String?
     )
 

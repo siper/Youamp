@@ -7,7 +7,9 @@ import ru.stersh.youamp.core.api.SubsonicApi
 import ru.stersh.youamp.feature.search.domain.SearchResult
 
 internal fun List<Song>?.toDomainSongs(api: SubsonicApi): List<SearchResult.Song> {
-    return this?.map { it.toDomain(api) }.orEmpty()
+    return this
+        ?.filter { !it.isDir && it.isVideo != true }
+        ?.map { it.toDomain(api) }.orEmpty()
 }
 
 internal fun List<Album>?.toDomainAlbums(api: SubsonicApi): List<SearchResult.Album> {
@@ -23,7 +25,7 @@ internal fun Song.toDomain(api: SubsonicApi): SearchResult.Song {
         id = id,
         title = title,
         artist = artist,
-        artworkUrl = api.getCoverArtUrl(coverArt)
+        artworkUrl = coverArt?.let { api.getCoverArtUrl(it) }
     )
 }
 

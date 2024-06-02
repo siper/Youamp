@@ -39,7 +39,7 @@ import ru.stersh.youamp.feature.search.R
 internal fun SongItem(
     item: SearchResultUi.Song,
     onPlay: (songId: String) -> Unit,
-    onAddToQueue: (songId: String) -> Unit,
+    onAddToQueue: (songId: String) -> Unit
 ) {
     var menuExpanded by rememberSaveable { mutableStateOf(false) }
     ListItem(
@@ -54,7 +54,7 @@ internal fun SongItem(
             Text(text = item.title)
         },
         supportingContent = {
-            Text(text = item.artist)
+            item.artist?.let { Text(text = it) }
         },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -230,7 +230,7 @@ internal object SearchResultUi {
     data class Song(
         val id: String,
         val title: String,
-        val artist: String,
+        val artist: String?,
         val artworkUrl: String?
     )
 
@@ -264,7 +264,7 @@ private fun Preview() {
                         artworkUrl = null
                     ),
                     onPlay = {},
-                    onAddToQueue = {},
+                    onAddToQueue = {}
                 )
                 AlbumItem(
                     item = SearchResultUi.Album(

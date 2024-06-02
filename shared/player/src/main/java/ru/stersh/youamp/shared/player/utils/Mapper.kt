@@ -15,10 +15,12 @@ internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
         .downloadUrl(id)
         .toUri()
 
-    val artworkUri = apiProvider
-        .getApi()
-        .getCoverArtUrl(coverArt)
-        .toUri()
+    val artworkUri = coverArt?.let {
+        apiProvider
+            .getApi()
+            .getCoverArtUrl(it)
+            .toUri()
+    }
 
     val songRating = userRating
     val rating = if (songRating != null && songRating > 0) {

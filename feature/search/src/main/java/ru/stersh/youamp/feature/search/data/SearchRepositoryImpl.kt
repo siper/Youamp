@@ -55,9 +55,9 @@ internal class SearchRepositoryImpl(private val apiProvider: ApiProvider) : Sear
                         artists = content
                             .flatMap { it.content.searchResult3.artist.toDomainArtists(api) }
                             .distinctBy { it.id },
-                        hasMoreSongs = content.last().content.hasMoreSongs,
-                        hasMoreAlbums = content.last().content.hasMoreAlbums,
-                        hasMoreArtists = content.last().content.hasMoreArtists,
+                        hasMoreSongs = content.lastOrNull()?.content?.hasMoreSongs == true,
+                        hasMoreAlbums = content.lastOrNull()?.content?.hasMoreAlbums == true,
+                        hasMoreArtists = content.lastOrNull()?.content?.hasMoreArtists == true,
                     )
                 }
             }
