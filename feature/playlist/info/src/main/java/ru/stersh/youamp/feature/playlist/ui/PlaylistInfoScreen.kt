@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.ListItem
@@ -72,51 +73,58 @@ private fun PlaylistInfoScreen(
             )
         }
     ) { padding ->
-        val scrollState = rememberScrollState()
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(padding)
-                .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        val listState = rememberLazyListState()
+        LazyColumn(
+            state = listState
         ) {
-            Artwork(
-                artworkUrl = state.artworkUrl,
-                placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier
-                    .padding(horizontal = 48.dp)
-                    .aspectRatio(1f)
-                    .fillMaxWidth()
-            )
-
-            Text(
-                text = state.title,
-                style = MaterialTheme.typography.titleLarge
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            item(
+                key = "header",
+                contentType = "header"
             ) {
-                PlayAllButton(
-                    onClick = onPlayAll,
-                    modifier = Modifier.weight(0.5f)
-                )
-                PlayShuffledButton(
-                    onClick = onPlayShuffled,
-                    modifier = Modifier.weight(0.5f)
-                )
-            }
-
-            Column {
-                state.songs.forEach {
-                    PlaylistSongItem(
-                        song = it,
-                        onClick = { onPlaySong(it.id) }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(padding),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Artwork(
+                        artworkUrl = state.artworkUrl,
+                        placeholder = Icons.Rounded.MusicNote,
+                        modifier = Modifier
+                            .padding(horizontal = 48.dp)
+                            .aspectRatio(1f)
+                            .fillMaxWidth()
                     )
+
+                    Text(
+                        text = state.title,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        PlayAllButton(
+                            onClick = onPlayAll,
+                            modifier = Modifier.weight(0.5f)
+                        )
+                        PlayShuffledButton(
+                            onClick = onPlayShuffled,
+                            modifier = Modifier.weight(0.5f)
+                        )
+                    }
                 }
+            }
+            items(
+                items = state.songs,
+                contentType = { "song" }
+            ) {
+                PlaylistSongItem(
+                    song = it,
+                    onClick = { onPlaySong(it.id) }
+                )
             }
         }
     }

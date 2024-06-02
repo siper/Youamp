@@ -48,43 +48,43 @@ data class Playlist(
 @JsonClass(generateAdapter = true)
 data class PlaylistEntry(
     @Json(name = "album")
-    val album: String,
+    val album: String?,
     @Json(name = "albumId")
-    val albumId: String,
+    val albumId: String?,
     @Json(name = "artist")
-    val artist: String,
+    val artist: String?,
     @Json(name = "artistId")
-    val artistId: String,
+    val artistId: String?,
     @Json(name = "bitRate")
-    val bitRate: Int,
+    val bitRate: Int?,
     @Json(name = "contentType")
-    val contentType: String,
+    val contentType: String?,
     @Json(name = "coverArt")
-    val coverArt: String,
+    val coverArt: String?,
     @Json(name = "created")
     val created: String,
     @Json(name = "discNumber")
     val discNumber: Int?,
     @Json(name = "duration")
-    val duration: Int,
+    val duration: Int?,
     @Json(name = "genre")
-    val genre: String,
+    val genre: String?,
     @Json(name = "id")
     val id: String,
     @Json(name = "isDir")
     val isDir: Boolean,
     @Json(name = "isVideo")
-    val isVideo: Boolean,
+    val isVideo: Boolean?,
     @Json(name = "parent")
-    val parent: String,
+    val parent: String?,
     @Json(name = "path")
-    val path: String,
+    val path: String?,
     @Json(name = "playCount")
     val playCount: Int,
     @Json(name = "size")
-    val size: Int,
+    val size: Int?,
     @Json(name = "suffix")
-    val suffix: String,
+    val suffix: String?,
     @Json(name = "starred")
     val starred: String?,
     @Json(name = "userRating")
@@ -92,13 +92,13 @@ data class PlaylistEntry(
     @Json(name = "title")
     val title: String,
     @Json(name = "track")
-    val track: Int,
+    val track: Int?,
     @Json(name = "transcodedContentType")
     val transcodedContentType: String?,
     @Json(name = "transcodedSuffix")
     val transcodedSuffix: String?,
     @Json(name = "type")
-    val type: String,
+    val type: String?,
     @Json(name = "year")
-    val year: Int,
+    val year: Int?,
 )

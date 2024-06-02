@@ -86,7 +86,7 @@ internal class PlaylistInfoViewModel(
                                     id = entry.id,
                                     title = entry.title,
                                     artist = entry.artist,
-                                    artworkUrl = api.getCoverArtUrl(entry.coverArt),
+                                    artworkUrl = entry.coverArt?.let { api.getCoverArtUrl(it) },
                                     isCurrent = isCurrent,
                                     isPlaying = isCurrent && isPlaying
                                 )

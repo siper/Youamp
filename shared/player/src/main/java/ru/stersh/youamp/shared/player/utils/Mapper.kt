@@ -37,7 +37,7 @@ internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
         .setExtras(
             bundleOf(
                 MEDIA_ITEM_ALBUM_ID to albumId,
-                MEDIA_ITEM_DURATION to duration * 1000L,
+                MEDIA_ITEM_DURATION to (duration ?: 0) * 1000L,
                 MEDIA_SONG_ID to id,
             ),
         )
