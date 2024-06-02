@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
@@ -22,7 +21,7 @@ internal class MainViewModel(
     init {
         viewModelScope.launch {
             combine(
-                flowOf(serverExistRepository.hasServer()),
+                serverExistRepository.hasServer(),
                 avatarUrlRepository.getAvatarUrl()
             ) { hasServer, avatarUrl ->
                 return@combine StateUi(
