@@ -143,10 +143,12 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .downloadUrl(id)
             .toUri()
 
-        val artworkUri = apiProvider
-            .getApi()
-            .getCoverArtUrl(coverArt)
-            .toUri()
+        val artworkUri = coverArt?.let {
+            apiProvider
+                .getApi()
+                .getCoverArtUrl(it)
+                .toUri()
+        }
 
         val songRating = userRating
         val rating = if (songRating != null && songRating > 0) {
@@ -163,7 +165,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .setExtras(
                 bundleOf(
                     MEDIA_ITEM_ALBUM_ID to albumId,
-                    MEDIA_ITEM_DURATION to duration * 1000L,
+                    MEDIA_ITEM_DURATION to (duration ?: 0) * 1000L,
                     MEDIA_SONG_ID to id,
                 ),
             )

@@ -49,7 +49,7 @@ internal class AlbumInfoViewModel(
                 AlbumSongUi(
                     id = it.id,
                     title = it.title,
-                    duration = formatSongDuration(it.duration * 1000)
+                    duration = formatSongDuration((it.duration ?: 0) * 1000)
                 )
             } ?: emptyList()
         )
