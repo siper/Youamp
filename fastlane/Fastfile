@@ -26,7 +26,7 @@ platform :android do
   desc "Lane for distributing app with Play Store"
   lane :play_store do
     gradle(
-      task: "assemble",
+      task: "bundle",
       build_type: "Release",
       properties: {
         "android.injected.signing.store.file" => "/home/runner/work/YouAMP/YouAMP/keystore.jks",
@@ -37,12 +37,15 @@ platform :android do
     )
     track = 'release'
     if ENV['VERSION_TAG'].include? 'alpha'
-      track = 'internal'
+      track = 'alpha'
     elsif ENV['VERSION_TAG'].include? 'beta'
       track = 'beta'
     else
       track = 'release'
     end
-    upload_to_play_store(track: track)
+    upload_to_play_store(
+      track: track,
+      skip_upload_apk: true
+    )
   end
 end
