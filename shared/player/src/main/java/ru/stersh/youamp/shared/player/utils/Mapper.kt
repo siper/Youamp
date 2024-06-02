@@ -12,7 +12,7 @@ import ru.stersh.youamp.core.api.provider.ApiProvider
 internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
     val songUri = apiProvider
         .getApi()
-        .downloadUrl(id)
+        .streamUrl(id)
         .toUri()
 
     val artworkUri = coverArt?.let {
