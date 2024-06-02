@@ -24,6 +24,14 @@ media3 and other modern android libraries. Developing is still in progress and m
 - Like songs
 - Sync play queue and current play song position with server
 
+## Testing
+
+If you want try app but you doesn't have subsonic server, you can use official subsonic demo server.
+Address: http://demo.subsonic.org
+Username: demo
+Password: demo
+Use legacy auth: false
+
 ## Screenshots
 
 <p float="left">
