@@ -27,10 +27,10 @@ media3 and other modern android libraries. Developing is still in progress and m
 ## Testing
 
 If you want try app but you doesn't have subsonic server, you can use official subsonic demo server.
-Address: http://demo.subsonic.org
-Username: demo
-Password: demo
-Use legacy auth: false
+* Address: ```http://demo.subsonic.org```
+* Username: ```guest```
+* Password: ```guest```
+* Use legacy auth: ```false```
 
 ## Screenshots
 
