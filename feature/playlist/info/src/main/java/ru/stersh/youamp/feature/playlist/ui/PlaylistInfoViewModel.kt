@@ -3,16 +3,15 @@ package ru.stersh.youamp.feature.playlist.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.youamp.feature.playlist.domain.PlaylistInfoRepository
 import ru.stersh.youamp.shared.player.controls.PlayerControls
 import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
 import ru.stersh.youamp.shared.player.queue.AudioSource
@@ -21,16 +20,18 @@ import ru.stersh.youamp.shared.player.state.PlayStateStore
 
 internal class PlaylistInfoViewModel(
     private val id: String,
-    private val apiProvider: ApiProvider,
-    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
+    private val playlistInfoRepository: PlaylistInfoRepository,
     private val playerStateStore: PlayStateStore,
     private val currentSongInfoStore: CurrentSongInfoStore,
-    private val playerControls: PlayerControls
+    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
+    private val playerControls: PlayerControls,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PlaylistInfoScreenStateUi())
     val state: StateFlow<PlaylistInfoScreenStateUi>
         get() = _state
+
+    private var playlistInfoJob: Job? = null
 
     init {
         loadPlaylist()
@@ -62,48 +63,40 @@ internal class PlaylistInfoViewModel(
         }
     }
 
-    private fun loadPlaylist() = viewModelScope.launch {
-        val api = apiProvider.getApi()
+    fun retry() {
+        loadPlaylist()
+    }
 
-        flow {
-            emit(api.getPlaylist(id))
+    private fun loadPlaylist() {
+        playlistInfoJob?.cancel()
+        _state.update {
+            it.copy(
+                playlistInfo = null,
+                progress = true,
+                error = false
+            )
         }
-            .flatMapLatest { playlist ->
-                combine(
-                    currentSongInfoStore.getCurrentSongInfo(),
-                    playerStateStore.isPlaying()
-                ) { currentSongInfo, isPlaying ->
-                    return@combine PlaylistInfoScreenStateUi(
-                        progress = false,
-                        title = playlist.name,
-                        artworkUrl = api.getCoverArtUrl(playlist.coverArt, auth = false),
-                        songs = playlist
-                            .entry
-                            .orEmpty()
-                            .map { entry ->
-                                val isCurrent = currentSongInfo?.id == entry.id
-                                PlaylistSongUi(
-                                    id = entry.id,
-                                    title = entry.title,
-                                    artist = entry.artist,
-                                    artworkUrl = entry.coverArt?.let { api.getCoverArtUrl(it) },
-                                    isCurrent = isCurrent,
-                                    isPlaying = isCurrent && isPlaying
-                                )
-                            }
-                    )
+        playlistInfoJob = viewModelScope.launch {
+            playlistInfoRepository
+                .getPlaylistInfo(id)
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            error = true
+                        )
+                    }
                 }
-            }
-            .flowOn(Dispatchers.IO)
-            .collect { newState ->
-                _state.update {
-                    it.copy(
-                        progress = newState.progress,
-                        title = newState.title,
-                        artworkUrl = newState.artworkUrl,
-                        songs = newState.songs
-                    )
+                .collect { playlistInfo ->
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            error = false,
+                            playlistInfo = playlistInfo.toUi()
+                        )
+                    }
                 }
-            }
+        }
     }
 }
