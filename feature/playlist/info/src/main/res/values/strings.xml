@@ -2,4 +2,5 @@
 <resources>
 
     <string name="song_menu_description">Song menu</string>
+    <string name="empty_state_title">There\'s nothing here yet...</string>
 </resources>
