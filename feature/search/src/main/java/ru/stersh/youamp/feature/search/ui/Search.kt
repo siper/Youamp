@@ -40,7 +40,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.feature.search.R
@@ -49,12 +48,12 @@ import ru.stersh.youamp.shared.player.queue.AudioSource
 
 @Composable
 fun SearchScreen(
-    viewModelStoreOwner: ViewModelStoreOwner,
     onBack: () -> Unit,
+    onOpenSongInfo: (songId: String) -> Unit,
     onOpenAlbumInfo: (albumId: String) -> Unit,
     onOpenArtistInfo: (albumId: String) -> Unit
 ) {
-    val viewModel: SearchViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
+    val viewModel: SearchViewModel = koinViewModel()
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -67,6 +66,7 @@ fun SearchScreen(
         onCloseClick = onBack,
         onPlay = viewModel::play,
         onAddToQueue = viewModel::addToQueue,
+        onOpenSongInfo = onOpenSongInfo,
         onOpenAlbumInfo = onOpenAlbumInfo,
         onOpenArtistInfo = onOpenArtistInfo
     )
@@ -82,6 +82,7 @@ private fun SearchScreen(
     onCloseClick: () -> Unit,
     onPlay: (source: AudioSource) -> Unit,
     onAddToQueue: (source: AudioSource) -> Unit,
+    onOpenSongInfo: (songId: String) -> Unit,
     onOpenAlbumInfo: (albumId: String) -> Unit,
     onOpenArtistInfo: (albumId: String) -> Unit
 ) {
@@ -189,12 +190,7 @@ private fun SearchScreen(
                             ) { result ->
                                 SongItem(
                                     item = result,
-                                    onPlay = {
-                                        onPlay(AudioSource.Song(it))
-                                    },
-                                    onAddToQueue = {
-                                        onAddToQueue(AudioSource.Song(it))
-                                    }
+                                    onMoreClick = { onOpenSongInfo(result.id) }
                                 )
                             }
                             if (state.hasMoreSongs) {
@@ -381,6 +377,7 @@ private fun SearchScreenPreview() {
         onCloseClick = {},
         onPlay = {},
         onAddToQueue = {},
+        onOpenSongInfo = {},
         onOpenAlbumInfo = {},
         onOpenArtistInfo = {}
     )

@@ -130,10 +130,13 @@ class SubsonicApi(
     ) = api.search3(query, songCount, songOffset, albumCount, albumOffset, artistCount, artistOffset)
 
     fun getCoverArtUrl(
-        id: String,
+        id: String?,
         size: Int? = null,
         auth: Boolean = false
-    ): String {
+    ): String? {
+        if (id == null) {
+            return null
+        }
         return buildUrl("getCoverArt", mapOf("id" to id, "size" to size), auth)
     }
 

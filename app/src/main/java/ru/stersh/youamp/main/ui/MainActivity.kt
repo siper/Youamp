@@ -16,9 +16,13 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
@@ -44,6 +48,7 @@ import ru.stersh.youamp.feature.search.ui.SearchScreen
 import ru.stersh.youamp.feature.search.ui.YouAmpSearchBar
 import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen
+import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -89,6 +94,8 @@ class MainActivity : ComponentActivity() {
         rootNavController: NavHostController,
         viewModelStoreOwner: ViewModelStoreOwner
     ) {
+        var songInfoProperties by remember { mutableStateOf<SongInfoProperties?>(null) }
+
         NavHost(
             navController = rootNavController,
             startDestination = Main,
@@ -104,7 +111,6 @@ class MainActivity : ComponentActivity() {
                     fadeOut()
                 },
             ) {
-
                 MainScreen(
                     topBar = {
                         YouAmpSearchBar(
@@ -156,6 +162,12 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     AlbumInfoScreen(
+                        onOpenSongInfo = { songId ->
+                            songInfoProperties = SongInfoProperties(
+                                songId = songId,
+                                showAlbum = false
+                            )
+                        },
                         onBackClick = { rootNavController.popBackStack() },
                         id = backStackEntry.toRoute<AlbumInfo>().albumId
                     )
@@ -212,12 +224,17 @@ class MainActivity : ComponentActivity() {
             }
             composable<Search> {
                 SearchScreen(
-                    viewModelStoreOwner = viewModelStoreOwner,
                     onBack = {
                         rootNavController.popBackStack()
                     },
                     onOpenAlbumInfo = { albumId ->
                         rootNavController.navigate(AlbumInfo(albumId))
+                    },
+                    onOpenSongInfo = { songId ->
+                        songInfoProperties = SongInfoProperties(
+                            songId = songId,
+                            showAlbum = true
+                        )
                     },
                     onOpenArtistInfo = { artistId ->
                         rootNavController.navigate(ArtistInfo(artistId))
@@ -261,6 +278,31 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
+            }
+        }
+        songInfoProperties?.let { songProperties ->
+            ModalBottomSheet(
+                containerColor = MaterialTheme.colorScheme.surface,
+                onDismissRequest = { songInfoProperties = null },
+                windowInsets = remember { WindowInsets(0.dp, 0.dp, 0.dp, 0.dp) },
+                dragHandle = {}
+            ) {
+                SongInfoScreen(
+                    id = songProperties.songId,
+                    showAlbum = songProperties.showAlbum,
+                    onDismiss = {
+                        songInfoProperties = null
+                    },
+                    onOpenAlbum = { albumId ->
+                        rootNavController.navigate(AlbumInfo(albumId))
+                    },
+                    onAddToPlaylist = { songId ->
+
+                    },
+                    onOpenArtist = { artistId ->
+                        rootNavController.navigate(ArtistInfo(artistId))
+                    }
+                )
             }
         }
     }

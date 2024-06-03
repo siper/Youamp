@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_title">Play</string>
+    <string name="play_next_in_queue_title">Play next in queue</string>
+    <string name="add_to_playlist_title">Add to playlist...</string>
+    <string name="go_to_album_title">Go to album</string>
+    <string name="go_to_artist_title">Go to artist</string>
+</resources>

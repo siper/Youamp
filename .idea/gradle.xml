@@ -34,6 +34,8 @@
             <option value="$PROJECT_DIR$/feature/server" />
             <option value="$PROJECT_DIR$/feature/server/create" />
             <option value="$PROJECT_DIR$/feature/server/list" />
+            <option value="$PROJECT_DIR$/feature/song" />
+            <option value="$PROJECT_DIR$/feature/song/info" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/player" />
           </set>
