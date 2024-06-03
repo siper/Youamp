@@ -1,5 +1,6 @@
 package ru.stersh.youamp.main.ui
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 
@@ -32,3 +33,9 @@ data class ServerEditor(val serverId: Long)
 
 @Serializable
 data class PlaylistInfo(val playlistId: String)
+
+@Immutable
+data class SongInfoProperties(
+    val songId: String,
+    val showAlbum: Boolean
+)

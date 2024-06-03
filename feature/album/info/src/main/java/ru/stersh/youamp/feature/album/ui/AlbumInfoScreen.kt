@@ -36,6 +36,7 @@ import ru.stersh.youamp.core.ui.VerticalSmallSpacer
 @Composable
 fun AlbumInfoScreen(
     id: String,
+    onOpenSongInfo: (songId: String) -> Unit,
     onBackClick: () -> Unit
 ) {
     val viewModel = koinViewModel<AlbumInfoViewModel> {
@@ -46,7 +47,7 @@ fun AlbumInfoScreen(
         state = state,
         onPlayAll = viewModel::playAll,
         onPlayShuffled = viewModel::playShuffled,
-        onPlaySong = viewModel::onPlaySong,
+        onPlaySong = onOpenSongInfo,
         onBackClick = onBackClick
     )
 }

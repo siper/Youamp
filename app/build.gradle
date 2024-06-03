@@ -38,6 +38,9 @@ android {
     kotlin {
         compilerOptions {
             allWarningsAsErrors = false
+
+            freeCompilerArgs.add('-opt-in=androidx.compose.material3.ExperimentalMaterial3Api')
+            freeCompilerArgs.add('-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi')
         }
     }
     buildFeatures {
@@ -69,6 +72,7 @@ dependencies {
     implementation project(":feature:server:create")
     implementation project(":feature:server:list")
     implementation project(":feature:search")
+    implementation project(":feature:song:info")
     implementation(libs.kotlin.serialization.core)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)

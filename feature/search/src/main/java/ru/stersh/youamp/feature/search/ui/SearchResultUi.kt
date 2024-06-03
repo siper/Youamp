@@ -38,10 +38,8 @@ import ru.stersh.youamp.feature.search.R
 @Composable
 internal fun SongItem(
     item: SearchResultUi.Song,
-    onPlay: (songId: String) -> Unit,
-    onAddToQueue: (songId: String) -> Unit
+    onMoreClick: () -> Unit
 ) {
-    var menuExpanded by rememberSaveable { mutableStateOf(false) }
     ListItem(
         leadingContent = {
             Artwork(
@@ -61,35 +59,15 @@ internal fun SongItem(
         ),
         trailingContent = {
             Box {
-                IconButton(onClick = { menuExpanded = true }) {
+                IconButton(onClick = onMoreClick) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
                         contentDescription = stringResource(R.string.more_action_description)
                     )
                 }
-                DropdownMenu(
-                    expanded = menuExpanded,
-                    onDismissRequest = { menuExpanded = false },
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.play_title)) },
-                        onClick = {
-                            onPlay(item.id)
-                            menuExpanded = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.add_to_queue_title)) },
-                        onClick = {
-                            onAddToQueue(item.id)
-                            menuExpanded = false
-                        }
-                    )
-                }
             }
         },
-        modifier = Modifier.clickable { menuExpanded = true }
+        modifier = Modifier.clickable(onClick = onMoreClick)
     )
 }
 
@@ -263,8 +241,7 @@ private fun Preview() {
                         artist = "Coolest artist in the world",
                         artworkUrl = null
                     ),
-                    onPlay = {},
-                    onAddToQueue = {}
+                    onMoreClick = {}
                 )
                 AlbumItem(
                     item = SearchResultUi.Album(

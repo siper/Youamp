@@ -1,6 +1,5 @@
 package ru.stersh.youamp.feature.main.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.main.R
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     topBar: @Composable () -> Unit,

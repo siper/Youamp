@@ -32,10 +32,6 @@ internal class AlbumInfoViewModel(
         playerQueueAudioSourceManager.playSource(AudioSource.Album(id))
     }
 
-    fun onPlaySong(id: String) = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Song(id))
-    }
-
     private fun loadAlbum() = viewModelScope.launch {
         val api = apiProvider.getApi()
         val album = api.getAlbum(id)
