@@ -1,1 +1,1 @@
-Player for Subsonic servers with modern Material You interface
+Music player for Subsonic servers with modern Material You interface
