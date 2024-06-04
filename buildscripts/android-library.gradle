@@ -24,4 +24,7 @@ android {
             freeCompilerArgs.add('-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi')
         }
     }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
 }
