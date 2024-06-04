@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="server_test_success_message">Проверка прошла успешно</string>
     <string name="server_test_error_message">Ошибка при проверке</string>
     <string name="new_server_title">Новый Subsonic сервер</string>
     <string name="edit_server_title">Редактировать сервер</string>
