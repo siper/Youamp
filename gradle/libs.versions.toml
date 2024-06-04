@@ -30,7 +30,7 @@ moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.re
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
-logging-interceptor = "com.squareup.okhttp3:logging-interceptor:4.11.0"
+logging-interceptor = "com.squareup.okhttp3:logging-interceptor:4.12.0"
 coil-compose = { module = "io.coil-kt:coil-compose", version = "2.6.0" }
 androidx-core = { module = "androidx.core:core-ktx", version = "1.13.1" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.9.0" }
