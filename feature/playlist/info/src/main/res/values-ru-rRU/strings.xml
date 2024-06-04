@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="song_menu_description">Меню песни</string>
+    <string name="empty_state_title">Здесь пока ничего нет...</string>
 </resources>
