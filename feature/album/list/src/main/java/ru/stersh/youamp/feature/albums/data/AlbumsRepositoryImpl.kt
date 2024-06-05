@@ -20,7 +20,7 @@ internal class AlbumsRepositoryImpl(private val apiProvider: ApiProvider) : Albu
                     id = album.id,
                     title = album.name ?: album.album ?: return@mapNotNull null,
                     artist = album.artist,
-                    artworkUrl = album.coverArt.let { apiProvider.getApi().getCoverArtUrl(it) }
+                    artworkUrl = apiProvider.getApi().getCoverArtUrl(album.coverArt)
                 )
             }
     }

@@ -14,13 +14,11 @@ internal class PlaylistsRepositoryImpl(private val apiProvider: ApiProvider) : P
             .map { api ->
                 api
                     .getPlaylists()
-                    .map { artist ->
+                    .map { playlist ->
                         Playlist(
-                            id = artist.id,
-                            name = artist.name,
-                            artworkUrl = artist.coverArt.let {
-                                apiProvider.getApi().getCoverArtUrl(it)
-                            }
+                            id = playlist.id,
+                            name = playlist.name,
+                            artworkUrl = apiProvider.getApi().getCoverArtUrl(playlist.coverArt)
                         )
                     }
             }

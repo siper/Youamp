@@ -17,6 +17,7 @@ import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
 import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
 import ru.stersh.youamp.shared.player.state.PlayStateStore
+import timber.log.Timber
 
 internal class PlaylistInfoViewModel(
     private val id: String,
@@ -80,7 +81,8 @@ internal class PlaylistInfoViewModel(
             playlistInfoRepository
                 .getPlaylistInfo(id)
                 .flowOn(Dispatchers.IO)
-                .catch {
+                .catch { throwable ->
+                    Timber.d(throwable)
                     _state.update {
                         it.copy(
                             progress = false,

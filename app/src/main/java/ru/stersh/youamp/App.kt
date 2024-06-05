@@ -1,12 +1,14 @@
 package ru.stersh.youamp
 
 import android.app.Application
+import androidx.media3.common.BuildConfig
 import coil.Coil
 import coil.ImageLoader
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.koin.android.ext.android.get
 import ru.stersh.youamp.core.api.provider.ApiProvider
+import timber.log.Timber
 
 class App : Application() {
 
@@ -14,6 +16,13 @@ class App : Application() {
         super.onCreate()
         setupDi(this)
         setupCoil()
+        setupTimber()
+    }
+
+    private fun setupTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     private fun setupCoil() {
