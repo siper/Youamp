@@ -34,13 +34,13 @@ data class Album(
     @Json(name = "artistId")
     val artistId: String?,
     @Json(name = "coverArt")
-    val coverArt: String,
+    val coverArt: String?,
     @Json(name = "created")
     val created: String,
     @Json(name = "duration")
     val duration: Int?,
     @Json(name = "genre")
-    val genre: String,
+    val genre: String?,
     @Json(name = "id")
     val id: String,
     @Json(name = "name")

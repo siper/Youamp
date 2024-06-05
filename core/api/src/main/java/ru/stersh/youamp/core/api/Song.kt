@@ -68,9 +68,9 @@ data class SongsByGenre(
 @JsonClass(generateAdapter = true)
 data class Song(
     @Json(name = "album")
-    val album: String,
+    val album: String?,
     @Json(name = "albumId")
-    val albumId: String,
+    val albumId: String?,
     @Json(name = "artist")
     val artist: String?,
     @Json(name = "artistId")
@@ -98,7 +98,7 @@ data class Song(
     @Json(name = "path")
     val path: String?,
     @Json(name = "playCount")
-    val playCount: Int,
+    val playCount: Int?,
     @Json(name = "size")
     val size: Int,
     @Json(name = "suffix")

@@ -34,9 +34,9 @@ data class Artist(
     @Json(name = "name")
     val name: String,
     @Json(name = "coverArt")
-    val coverArt: String,
+    val coverArt: String?,
     @Json(name = "albumCount")
-    val albumCount: Int,
+    val albumCount: Int?,
     @Json(name = "artistImageUrl")
     val artistImageUrl: String?,
     @Json(name = "album")
