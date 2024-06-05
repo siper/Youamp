@@ -1,13 +1,18 @@
 package ru.stersh.youamp.shared.player.android
 
 import android.app.NotificationManager
+import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.ResolvingDataSource
+import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import com.google.common.util.concurrent.Futures
@@ -18,6 +23,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -42,13 +48,32 @@ class MusicService : MediaLibraryService() {
         }
     }
 
+    @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
 
         val customCallback = CustomMediaSessionCallback()
 
+        val okHttpClient = OkHttpClient
+            .Builder()
+            .build()
+
+        val okHttpDataSource = OkHttpDataSource
+            .Factory(okHttpClient)
+            .setDefaultRequestProperties(emptyMap())
+
+        val resolver = ResolvingDataSource.Resolver {
+            it
+                .buildUpon()
+                .setHttpRequestHeaders(emptyMap())
+                .build()
+        }
+
+        val resolvingDataSource = ResolvingDataSource.Factory(okHttpDataSource, resolver)
+
         player = ExoPlayer
             .Builder(this)
+            .setMediaSourceFactory(DefaultMediaSourceFactory(resolvingDataSource))
             .setAudioAttributes(AudioAttributes.DEFAULT, true)
             .setWakeMode(C.WAKE_MODE_NETWORK)
             .build()
@@ -63,6 +88,7 @@ class MusicService : MediaLibraryService() {
         loadPlayQueue()
         syncQueueLoop()
     }
+
 
     override fun onDestroy() {
         mediaSession.release()
@@ -109,14 +135,8 @@ class MusicService : MediaLibraryService() {
             controller: MediaSession.ControllerInfo,
         ): MediaSession.ConnectionResult {
             val connectionResult = super.onConnect(session, controller)
-            val sessionCommands = connectionResult.availableSessionCommands
-                .buildUpon()
-                // Add custom commands
-//                    .add(SessionCommand(REWIND_30, Bundle()))
-//                    .add(SessionCommand(FAST_FWD_30, Bundle()))
-                .build()
             return MediaSession.ConnectionResult.accept(
-                sessionCommands,
+                connectionResult.availableSessionCommands,
                 connectionResult.availablePlayerCommands,
             )
         }
