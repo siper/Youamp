@@ -82,7 +82,7 @@ data class Song(
     @Json(name = "coverArt")
     val coverArt: String?,
     @Json(name = "created")
-    val created: String,
+    val created: String?,
     @Json(name = "duration")
     val duration: Int?,
     @Json(name = "genre")

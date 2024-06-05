@@ -26,7 +26,7 @@ data class Playlist(
     @Json(name = "changed")
     val changed: String,
     @Json(name = "coverArt")
-    val coverArt: String,
+    val coverArt: String?,
     @Json(name = "created")
     val created: String,
     @Json(name = "duration")
@@ -62,7 +62,7 @@ data class PlaylistEntry(
     @Json(name = "coverArt")
     val coverArt: String?,
     @Json(name = "created")
-    val created: String,
+    val created: String?,
     @Json(name = "discNumber")
     val discNumber: Int?,
     @Json(name = "duration")
@@ -80,7 +80,7 @@ data class PlaylistEntry(
     @Json(name = "path")
     val path: String?,
     @Json(name = "playCount")
-    val playCount: Int,
+    val playCount: Int?,
     @Json(name = "size")
     val size: Int?,
     @Json(name = "suffix")
