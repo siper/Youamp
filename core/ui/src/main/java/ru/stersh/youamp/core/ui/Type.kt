@@ -6,15 +6,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 
-private val PoppingFontFamily = FontFamily(
-    Font(R.font.poppins_light, FontWeight.Light),
-    Font(R.font.poppins_regular, FontWeight.Normal),
-    Font(R.font.poppins_italic, FontWeight.Normal, FontStyle.Italic),
-    Font(R.font.poppins_medium, FontWeight.Medium),
-    Font(R.font.poppins_bold, FontWeight.Bold)
+private val MontserratFontFamily = FontFamily(
+    Font(R.font.montserrat_light, FontWeight.Light),
+    Font(R.font.montserrat_regular, FontWeight.Normal),
+    Font(R.font.montserrat_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.montserrat_medium, FontWeight.Medium),
+    Font(R.font.montserrat_bold, FontWeight.Bold)
 )
 
-val Typography = Typography().defaultFontFamily(fontFamily = PoppingFontFamily)
+val Typography = Typography().defaultFontFamily(fontFamily = MontserratFontFamily)
 
 private fun Typography.defaultFontFamily(fontFamily: FontFamily): Typography {
     return this.copy(
