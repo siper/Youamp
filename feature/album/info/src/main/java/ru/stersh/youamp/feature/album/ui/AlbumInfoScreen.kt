@@ -3,12 +3,15 @@ package ru.stersh.youamp.feature.album.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material3.ListItem
@@ -27,10 +30,10 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
+import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
-import ru.stersh.youamp.core.ui.VerticalBigSpacer
-import ru.stersh.youamp.core.ui.VerticalSmallSpacer
+import ru.stersh.youamp.core.ui.SkeletonLayout
 
 
 @Composable
@@ -48,16 +51,18 @@ fun AlbumInfoScreen(
         onPlayAll = viewModel::playAll,
         onPlayShuffled = viewModel::playShuffled,
         onPlaySong = onOpenSongInfo,
+        onRetry = viewModel::retry,
         onBackClick = onBackClick
     )
 }
 
 @Composable
 private fun AlbumInfoScreen(
-    state: AlbumInfoScreenState,
+    state: AlbumInfoStateUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
     onPlaySong: (id: String) -> Unit,
+    onRetry: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     Scaffold(
@@ -70,38 +75,137 @@ private fun AlbumInfoScreen(
             )
         }
     ) {
-        when (state) {
-            is AlbumInfoScreenState.Content -> ContentState(
-                state = state,
-                onPlayAll = onPlayAll,
-                onPlayShuffled = onPlayShuffled,
-                onPlaySong = onPlaySong,
-                modifier = Modifier.padding(it)
+        when {
+            state.progress -> {
+                Progress(padding = it)
+            }
+
+            state.error -> {
+                ErrorLayout(
+                    onRetry = onRetry,
+                    modifier = Modifier.padding(it)
+                )
+            }
+
+            state.content != null -> {
+                ContentState(
+                    state = state.content,
+                    onPlayAll = onPlayAll,
+                    onPlayShuffled = onPlayShuffled,
+                    onPlaySong = onPlaySong,
+                    modifier = Modifier.padding(it)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Progress(padding: PaddingValues) {
+    SkeletonLayout {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(padding),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            SkeletonItem(
+                modifier = Modifier
+                    .padding(horizontal = 48.dp)
+                    .aspectRatio(1f)
+                    .fillMaxWidth()
             )
 
-            is AlbumInfoScreenState.Progress -> Text(text = "Progress")
-            is AlbumInfoScreenState.Error -> Text(text = "Error")
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SkeletonItem(
+                    modifier = Modifier.size(width = 200.dp, height = 32.dp)
+                )
+                SkeletonItem(
+                    modifier = Modifier.size(width = 160.dp, height = 24.dp)
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                SkeletonItem(
+                    modifier = Modifier
+                        .height(38.dp)
+                        .weight(0.5f)
+                )
+                SkeletonItem(
+                    modifier = Modifier
+                        .height(38.dp)
+                        .weight(0.5f)
+                )
+            }
+
+            Column {
+                repeat(5) {
+                    ListItem(
+                        headlineContent = {
+                            SkeletonItem(modifier = Modifier.size(width = 130.dp, height = 24.dp))
+                        },
+                        trailingContent = {
+                            SkeletonItem(modifier = Modifier.size(width = 30.dp, height = 16.dp))
+                        }
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun ContentState(
-    state: AlbumInfoScreenState.Content,
+    state: AlbumInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
     onPlaySong: (id: String) -> Unit,
     modifier: Modifier
 ) {
-    val scrollState = rememberScrollState()
+    LazyColumn(modifier = modifier) {
+        item(
+            key = "header",
+            contentType = "header"
+        ) {
+            Header(
+                state = state,
+                onPlayAll = onPlayAll,
+                onPlayShuffled = onPlayShuffled,
+            )
+        }
+        items(
+            items = state.songs,
+            contentType = { "song" },
+            key = { "song_${it.id}" }
+        ) {
+            AlbumSongItem(
+                song = it,
+                onClick = { onPlaySong(it.id) }
+            )
+        }
+    }
+
+}
+
+@Composable
+private fun Header(
+    state: AlbumInfoUi,
+    onPlayAll: () -> Unit,
+    onPlayShuffled: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.verticalScroll(
-            state = scrollState
-        )
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Artwork(
-            artworkUrl = state.coverArtUrl,
+            artworkUrl = state.artworkUrl,
             placeholder = Icons.Rounded.Album,
             modifier = Modifier
                 .padding(horizontal = 48.dp)
@@ -109,27 +213,26 @@ private fun ContentState(
                 .fillMaxWidth()
         )
 
-        VerticalBigSpacer()
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = state.title,
+                style = MaterialTheme.typography.titleLarge
+            )
 
-        Text(
-            text = state.title,
-            style = MaterialTheme.typography.titleLarge
-        )
-
-        VerticalSmallSpacer()
-
-        val subtitle = if (state.year != null) {
-            "${state.artist} · ${state.year}"
-        } else {
-            state.artist
+            val subtitle = if (state.year != null) {
+                "${state.artist} · ${state.year}"
+            } else {
+                state.artist
+            }
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.secondary
+            )
         }
-        Text(
-            text = subtitle,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.secondary
-        )
-
-        VerticalBigSpacer()
 
         Row(
             modifier = Modifier
@@ -144,15 +247,6 @@ private fun ContentState(
             PlayShuffledButton(
                 onClick = onPlayShuffled,
                 modifier = Modifier.weight(0.5f)
-            )
-        }
-
-        VerticalBigSpacer()
-
-        state.songs.forEach {
-            AlbumSongItem(
-                song = it,
-                onClick = { onPlaySong(it.id) }
             )
         }
     }
@@ -209,16 +303,21 @@ private fun AlbumInfoScreenPreview() {
         )
     )
     AlbumInfoScreen(
-        state = AlbumInfoScreenState.Content(
-            coverArtUrl = null,
-            title = "Test",
-            artist = "Test",
-            year = "2024",
-            songs = songs
+        state = AlbumInfoStateUi(
+            progress = false,
+            error = true,
+            content = AlbumInfoUi(
+                artworkUrl = null,
+                title = "Test",
+                artist = "Test",
+                year = "2024",
+                songs = songs
+            )
         ),
         onPlayAll = {},
         onPlayShuffled = {},
         onPlaySong = {},
+        onRetry = {},
         onBackClick = {}
     )
 }
