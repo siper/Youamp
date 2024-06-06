@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -165,7 +166,11 @@ private fun AlbumSongItem(
 ) {
     ListItem(
         headlineContent = {
-            Text(text = song.title)
+            Text(
+                text = song.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         trailingContent = {
             Text(text = song.duration)
@@ -179,7 +184,7 @@ private fun AlbumSongItem(
 private fun AlbumSongItemPreview() {
     val song = AlbumSongUi(
         id = "1",
-        title = "Coolest song in the world",
+        title = "Coolest song in the world with very long title",
         duration = "12:00"
     )
     AlbumSongItem(
