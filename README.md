@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+  <a title="F-Droid" target="_blank" href="https://f-droid.org/packages/ru.stersh.youamp/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"></a>
+</p>
+
+<p align="center">
   <img alt="Min sdk badge" src="https://img.shields.io/badge/21-grey?style=flat&logo=android&logoColor=minSdk&label=Min%20sdk&color=blue">
   <a title="Crowdin" target="_blank" href="https://crowdin.com/project/youamp"><img src="https://badges.crowdin.net/youamp/localized.svg"></a>
   <img alt="License bage" src="https://img.shields.io/badge/MIT-grey?style=flat&label=License&color=blue">
