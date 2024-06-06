@@ -2,7 +2,9 @@ package ru.stersh.youamp.core.utils
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -28,12 +30,46 @@ fun <D> pageLoader(
 
 fun <D, I> Paginator<List<D>, I>.data(): Flow<List<D>> {
     return pages()
+        .filter { it.size == it.filterIsInstance<Content<List<D>, I>>().size }
         .map { pages ->
             pages
                 .filterIsInstance<Content<List<D>, I>>()
                 .map { it.content }
                 .flatten()
         }
+}
+
+sealed interface PaginatorResult<D> {
+    data class Data<D>(val data: List<D>) : PaginatorResult<D>
+    data class Error<D>(val throwable: Throwable) : PaginatorResult<D>
+}
+
+inline fun <reified D> PaginatorResult<D>.fold(
+    crossinline onData: (data: List<D>) -> Unit,
+    crossinline onError: (throwable: Throwable) -> Unit
+) {
+    when (this) {
+        is PaginatorResult.Data<D> -> onData(data)
+        is PaginatorResult.Error -> onError(throwable)
+    }
+}
+
+fun <D, I> Paginator<List<D>, I>.result(): Flow<PaginatorResult<D>> {
+    return pages().mapNotNull { pages ->
+        val errorPage = pages
+            .filterIsInstance<Error<I>>()
+            .firstOrNull()
+        if (errorPage != null) {
+            return@mapNotNull PaginatorResult.Error(errorPage.throwable)
+        }
+
+        val contentPages = pages.filterIsInstance<Content<List<D>, I>>()
+        if (contentPages.size == pages.size) {
+            return@mapNotNull PaginatorResult.Data(contentPages.flatMap { it.content })
+        }
+
+        return@mapNotNull null
+    }
 }
 
 fun <I> Paginator<*, I>.isRefreshing(): Flow<Boolean> {
