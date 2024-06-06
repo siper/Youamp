@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -95,11 +96,19 @@ private fun SongItem(
 ) {
     ListItem(
         headlineContent = {
-            Text(text = song.title)
+            Text(
+                text = song.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         supportingContent = {
             song.artist?.let {
-                Text(text = it)
+                Text(
+                    text = it,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         },
         leadingContent = {
@@ -141,7 +150,7 @@ private fun PlayerQueueScreenPreview() {
             songs = listOf(
                 SongUi(
                     id = "1",
-                    title = "Best song in the world",
+                    title = "Best song in the world with very long title",
                     artist = "Best artist in the world",
                     artworkUrl = null,
                     isCurrent = false,

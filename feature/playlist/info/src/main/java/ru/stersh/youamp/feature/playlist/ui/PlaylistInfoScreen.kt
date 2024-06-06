@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -260,11 +261,19 @@ private fun PlaylistSongItem(
 ) {
     ListItem(
         headlineContent = {
-            Text(text = song.title)
+            Text(
+                text = song.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         supportingContent = {
             song.artist?.let {
-                Text(text = it)
+                Text(
+                    text = it,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         },
         leadingContent = {
@@ -297,7 +306,7 @@ private fun PlaylistInfoScreenPreview() {
     val songs = listOf(
         PlaylistSongUi(
             id = "1",
-            title = "Test song",
+            title = "Test song with veeeeeeeeeeeeery long title",
             artist = "Cool artist",
             artworkUrl = null,
             isCurrent = false,
@@ -327,7 +336,7 @@ private fun PlaylistInfoScreenPreview() {
                 playlistInfo = PlaylistInfoUi(
                     artworkUrl = null,
                     title = "Test",
-                    songs = emptyList()
+                    songs = songs
                 )
             ),
             onRetry = {},
