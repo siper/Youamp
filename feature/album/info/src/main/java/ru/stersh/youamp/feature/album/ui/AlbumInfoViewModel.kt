@@ -4,20 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.core.utils.formatSongDuration
+import ru.stersh.youamp.feature.album.domain.AlbumInfoRepository
 import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
+import timber.log.Timber
 
 internal class AlbumInfoViewModel(
     private val id: String,
-    private val apiProvider: ApiProvider,
+    private val albumInfoRepository: AlbumInfoRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<AlbumInfoScreenState>(AlbumInfoScreenState.Progress)
-    val state: StateFlow<AlbumInfoScreenState>
+    private val _state = MutableStateFlow(AlbumInfoStateUi())
+    val state: StateFlow<AlbumInfoStateUi>
         get() = _state
 
     init {
@@ -32,22 +33,38 @@ internal class AlbumInfoViewModel(
         playerQueueAudioSourceManager.playSource(AudioSource.Album(id))
     }
 
-    private fun loadAlbum() = viewModelScope.launch {
-        val api = apiProvider.getApi()
-        val album = api.getAlbum(id)
+    fun retry() {
+        loadAlbum()
+    }
 
-        _state.value = AlbumInfoScreenState.Content(
-            coverArtUrl = api.getCoverArtUrl(album.coverArt),
-            title = album.name ?: album.album ?: error("Wtf"),
-            artist = album.artist,
-            year = album.year.toString(),
-            songs = album.song?.map {
-                AlbumSongUi(
-                    id = it.id,
-                    title = it.title,
-                    duration = formatSongDuration((it.duration ?: 0) * 1000)
-                )
-            } ?: emptyList()
+    private fun loadAlbum() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                progress = true,
+                error = false,
+                content = null
+            )
+        }
+        runCatching { albumInfoRepository.getAlbumInfo(id) }.fold(
+            onSuccess = { albumInfo ->
+                _state.update {
+                    it.copy(
+                        progress = false,
+                        error = false,
+                        content = albumInfo.toUi()
+                    )
+                }
+            },
+            onFailure = { throwable ->
+                Timber.w(throwable)
+                _state.update {
+                    it.copy(
+                        progress = false,
+                        error = true,
+                        content = null
+                    )
+                }
+            }
         )
     }
 }
