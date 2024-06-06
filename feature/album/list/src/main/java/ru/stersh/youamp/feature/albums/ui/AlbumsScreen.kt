@@ -4,11 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -23,7 +24,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumUi
+import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.OnBottomReached
+import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
 
 
@@ -39,6 +42,7 @@ fun AlbumsScreen(
     AlbumsScreen(
         state = state,
         onRefresh = viewModel::refresh,
+        onRetry = viewModel::retry,
         onBottomReached = viewModel::loadMore,
         onAlbumClick = onAlbumClick
     )
@@ -46,8 +50,9 @@ fun AlbumsScreen(
 
 @Composable
 private fun AlbumsScreen(
-    state: StateUi,
+    state: AlbumsStateUi,
     onRefresh: () -> Unit,
+    onRetry: () -> Unit,
     onBottomReached: () -> Unit,
     onAlbumClick: (id: String) -> Unit
 ) {
@@ -67,42 +72,81 @@ private fun AlbumsScreen(
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection)
     ) {
-        when (state) {
-            is StateUi.Content -> {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    state = listState,
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                )
-                {
-                    items(
-                        key = { it.id },
-                        items = state.items
-                    ) { album ->
-                        AlbumItem(
-                            album = album,
-                            onAlbumClick = onAlbumClick
-                        )
-                    }
-                }
-                PullToRefreshContainer(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    state = pullRefreshState,
+        when {
+            state.progress -> {
+                Progress(
+                    listState = listState
                 )
             }
 
-            is StateUi.Progress -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+            state.error -> {
+                ErrorLayout(onRetry = onRetry)
+            }
+
+            state.items.isNotEmpty() -> {
+                Content(
+                    listState = listState,
+                    state = state,
+                    onAlbumClick = onAlbumClick
                 )
             }
         }
 
+        PullToRefreshContainer(
+            modifier = Modifier.align(Alignment.TopCenter),
+            state = pullRefreshState,
+        )
 
         listState.OnBottomReached {
             onBottomReached()
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    listState: LazyGridState,
+    state: AlbumsStateUi,
+    onAlbumClick: (id: String) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = listState,
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    )
+    {
+        items(
+            key = { it.id },
+            items = state.items
+        ) { album ->
+            AlbumItem(
+                album = album,
+                onAlbumClick = onAlbumClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun Progress(listState: LazyGridState) {
+    SkeletonLayout {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            state = listState,
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(
+                key = { it },
+                items = (0..10).toList()
+            ) {
+                SkeletonItem(
+                    modifier = Modifier.height(240.dp)
+                )
+            }
         }
     }
 }
@@ -131,12 +175,18 @@ private fun AlbumsScreenPreview() {
                 artworkUrl = null
             )
         )
-        val state = StateUi.Content(isRefreshing = true, items)
+        val state = AlbumsStateUi(
+            progress = true,
+            isRefreshing = false,
+            error = false,
+            items = items
+        )
         AlbumsScreen(
             state = state,
-            onRefresh = { },
-            onBottomReached = { },
-            onAlbumClick = { }
+            onRefresh = {},
+            onRetry = {},
+            onBottomReached = {},
+            onAlbumClick = {}
         )
     }
 }
