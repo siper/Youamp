@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumUi
+import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.OnBottomReached
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -83,7 +84,11 @@ private fun AlbumsScreen(
                 ErrorLayout(onRetry = onRetry)
             }
 
-            state.items.isNotEmpty() -> {
+            state.items.isEmpty() -> {
+                EmptyLayout()
+            }
+
+            else -> {
                 Content(
                     listState = listState,
                     state = state,

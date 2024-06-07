@@ -4,12 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,12 +34,12 @@ import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.ArtworkMaskColor
 import ru.stersh.youamp.core.ui.BackNavigationButton
+import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongPlayAnimation
-import ru.stersh.youamp.feature.playlist.R
 
 
 @Composable
@@ -120,14 +117,7 @@ private fun Content(
                 onPlayAll = onPlayAll,
                 onPlayShuffled = onPlayShuffled
             )
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.outline,
-                    text = stringResource(R.string.empty_state_title),
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            EmptyLayout()
         }
     } else {
         LazyColumn(
