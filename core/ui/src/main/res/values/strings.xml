@@ -7,4 +7,5 @@
     <string name="error_button_title">Try again</string>
     <string name="error_message">Try again. If the error occurs several times, contact the developer.</string>
     <string name="error_title">Oops, something went wrong</string>
+    <string name="empty_state_title">There\'s nothing here yet…</string>
 </resources>

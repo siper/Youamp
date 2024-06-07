@@ -4,4 +4,5 @@
     <string name="shuffle_title">Перемешать</string>
     <string name="play_all_title">Играть все</string>
     <string name="placeholder_image_description">Плейсхолдер</string>
+    <string name="empty_state_title">Здесь пока ничего нет…</string>
 </resources>

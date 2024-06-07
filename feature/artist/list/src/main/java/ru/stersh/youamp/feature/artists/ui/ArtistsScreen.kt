@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
@@ -71,7 +72,7 @@ private fun ArtistsScreen(
         onRefresh()
     }
 
-    if (pullRefreshState.isRefreshing && state.isRefreshing) {
+    if (pullRefreshState.isRefreshing && !state.isRefreshing) {
         pullRefreshState.endRefresh()
     }
 
@@ -90,7 +91,11 @@ private fun ArtistsScreen(
                 ErrorLayout(onRetry = onRetry)
             }
 
-            state.items.isNotEmpty() -> {
+            state.items.isEmpty() -> {
+                EmptyLayout()
+            }
+
+            else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     state = listState,

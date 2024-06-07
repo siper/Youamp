@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,7 +14,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,6 +31,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.EmptyLayout
+import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
 
 
@@ -45,6 +48,7 @@ fun PlaylistsScreen(
 
     PlaylistsScreen(
         state = state,
+        onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onPlaylistClick = onPlaylistClick
     )
@@ -52,7 +56,8 @@ fun PlaylistsScreen(
 
 @Composable
 private fun PlaylistsScreen(
-    state: StateUi,
+    state: PlaylistsStateUi,
+    onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onPlaylistClick: (id: String) -> Unit
 ) {
@@ -62,8 +67,7 @@ private fun PlaylistsScreen(
         onRefresh()
     }
 
-    val isRefreshingState = (state as? StateUi.Content)?.isRefreshing == true
-    if (pullRefreshState.isRefreshing && isRefreshingState) {
+    if (pullRefreshState.isRefreshing && !state.isRefreshing) {
         pullRefreshState.endRefresh()
     }
 
@@ -73,8 +77,20 @@ private fun PlaylistsScreen(
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection)
     ) {
-        when (state) {
-            is StateUi.Content -> {
+        when {
+            state.progress -> {
+                Progress()
+            }
+
+            state.error -> {
+                ErrorLayout(onRetry = onRetry)
+            }
+
+            state.items.isEmpty() -> {
+                EmptyLayout()
+            }
+
+            else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     state = listState,
@@ -97,10 +113,25 @@ private fun PlaylistsScreen(
                     state = pullRefreshState,
                 )
             }
+        }
+    }
+}
 
-            is StateUi.Progress -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+@Composable
+private fun Progress() {
+    SkeletonLayout {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(
+                key = { it },
+                items = (0..10).toList()
+            ) {
+                SkeletonItem(
+                    modifier = Modifier.height(220.dp)
                 )
             }
         }
@@ -159,11 +190,17 @@ private fun PlaylistsScreenPreview() {
                 artworkUrl = null
             )
         )
-        val state = StateUi.Content(isRefreshing = true, items)
+        val state = PlaylistsStateUi(
+            progress = false,
+            isRefreshing = true,
+            error = false,
+            items = emptyList()
+        )
         PlaylistsScreen(
             state = state,
-            onRefresh = { },
-            onPlaylistClick = { }
+            onRetry = {},
+            onRefresh = {},
+            onPlaylistClick = {}
         )
     }
 }
