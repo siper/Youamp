@@ -3,4 +3,5 @@
     <string name="albums_title">Albums</string>
     <string name="artists_title">Artists</string>
     <string name="playlists_title">Playlists</string>
+    <string name="favorites_title">Favorites</string>
 </resources>

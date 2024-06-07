@@ -2,40 +2,37 @@ package ru.stersh.youamp.feature.artists.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
-import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -66,21 +63,9 @@ private fun ArtistsScreen(
     onRefresh: () -> Unit,
     onArtistClick: (id: String) -> Unit
 ) {
-    val pullRefreshState = rememberPullToRefreshState()
-
-    if (pullRefreshState.isRefreshing) {
-        onRefresh()
-    }
-
-    if (pullRefreshState.isRefreshing && !state.isRefreshing) {
-        pullRefreshState.endRefresh()
-    }
-
-    val listState = rememberLazyGridState()
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(pullRefreshState.nestedScrollConnection)
+    PullToRefreshBox(
+        isRefreshing = state.isRefreshing,
+        onRefresh = onRefresh
     ) {
         when {
             state.progress -> {
@@ -92,13 +77,16 @@ private fun ArtistsScreen(
             }
 
             state.items.isEmpty() -> {
-                EmptyLayout()
+                EmptyLayout(
+                    modifier = Modifier.verticalScroll(
+                        state = rememberScrollState()
+                    )
+                )
             }
 
             else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
-                    state = listState,
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -112,10 +100,6 @@ private fun ArtistsScreen(
                         )
                     }
                 }
-                PullToRefreshContainer(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    state = pullRefreshState,
-                )
             }
         }
     }
@@ -166,14 +150,10 @@ private fun ArtistItem(
                 onAlbumClick(artist.id)
             },
     ) {
-        val circleShape = remember { CircleShape }
-        Artwork(
+        CircleArtwork(
             artworkUrl = artist.artworkUrl,
             placeholder = Icons.Rounded.Person,
-            shape = circleShape,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
+            modifier = Modifier.fillMaxWidth()
         )
         Text(
             text = artist.name,

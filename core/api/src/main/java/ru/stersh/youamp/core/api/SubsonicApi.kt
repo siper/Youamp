@@ -129,6 +129,10 @@ class SubsonicApi(
         artistOffset: Int? = null
     ) = api.search3(query, songCount, songOffset, albumCount, albumOffset, artistCount, artistOffset)
 
+    suspend fun getStarred2(
+        musicFolderId: String? = null
+    ) = api.getStarred2(musicFolderId)
+
     fun getCoverArtUrl(
         id: String?,
         size: Int? = null,

@@ -76,6 +76,7 @@ dependencies {
     implementation project(":feature:server:list")
     implementation project(":feature:search")
     implementation project(":feature:song:info")
+    implementation project(":feature:favorite:list")
     implementation(libs.kotlin.serialization.core)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)

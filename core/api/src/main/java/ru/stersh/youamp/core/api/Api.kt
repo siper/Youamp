@@ -99,4 +99,9 @@ interface Api {
         @Query("artistCount") artistCount: Int?,
         @Query("artistOffset") artistOffset: Int?
     ): SearchResult3Response
+
+    @GET("rest/getStarred2")
+    suspend fun getStarred2(
+        @Query("musicFolderId") musicFolderId: String?
+    ): Starred2Response
 }

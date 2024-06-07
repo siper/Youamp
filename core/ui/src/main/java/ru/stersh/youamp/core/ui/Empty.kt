@@ -8,11 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun EmptyLayout(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize()) {
-        Empty(modifier = Modifier.align(Alignment.Center))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .then(modifier)
+    ) {
+        Empty(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+        )
     }
 }
 
@@ -23,6 +32,7 @@ fun Empty(
     Text(
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.outline,
+        textAlign = TextAlign.Center,
         text = stringResource(R.string.empty_state_title),
         modifier = modifier
     )

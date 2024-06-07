@@ -22,6 +22,8 @@
             <option value="$PROJECT_DIR$/feature/artist" />
             <option value="$PROJECT_DIR$/feature/artist/info" />
             <option value="$PROJECT_DIR$/feature/artist/list" />
+            <option value="$PROJECT_DIR$/feature/favorite" />
+            <option value="$PROJECT_DIR$/feature/favorite/list" />
             <option value="$PROJECT_DIR$/feature/main" />
             <option value="$PROJECT_DIR$/feature/player" />
             <option value="$PROJECT_DIR$/feature/player/mini" />
