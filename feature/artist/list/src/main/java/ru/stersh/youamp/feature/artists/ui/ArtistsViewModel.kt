@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.utils.mapItems
 import ru.stersh.youamp.feature.artists.domain.ArtistsRepository
@@ -12,17 +14,30 @@ import ru.stersh.youamp.feature.artists.domain.ArtistsRepository
 internal class ArtistsViewModel(private val artistsRepository: ArtistsRepository) : ViewModel() {
     private var artistLoadJob: Job? = null
 
-    private val _state = MutableStateFlow<StateUi>(StateUi.Progress)
-    val state: StateFlow<StateUi>
+    private val _state = MutableStateFlow(ArtistsStateUi())
+    val state: StateFlow<ArtistsStateUi>
         get() = _state
 
     init {
+        retry()
+    }
+
+    fun refresh() {
+        _state.update {
+            it.copy(isRefreshing = true)
+        }
         subscribeArtists()
     }
 
-    fun refresh() = viewModelScope.launch {
-        val contentState = _state.value as? StateUi.Content ?: return@launch
-        _state.value = contentState.copy(isRefreshing = true)
+    fun retry() {
+        _state.update {
+            it.copy(
+                progress = true,
+                isRefreshing = false,
+                error = false,
+                items = emptyList()
+            )
+        }
         subscribeArtists()
     }
 
@@ -31,16 +46,26 @@ internal class ArtistsViewModel(private val artistsRepository: ArtistsRepository
         artistLoadJob = viewModelScope.launch {
             artistsRepository
                 .getArtists()
-                .mapItems {
-                    ArtistUi(
-                        id = it.id,
-                        name = it.name,
-                        albumCount = it.albumCount,
-                        artworkUrl = it.artworkUrl
-                    )
+                .mapItems { it.toUi() }
+                .catch {
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            isRefreshing = false,
+                            error = true,
+                            items = emptyList()
+                        )
+                    }
                 }
-                .collect {
-                    _state.value = StateUi.Content(false, it)
+                .collect { artists ->
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            isRefreshing = false,
+                            error = false,
+                            items = artists
+                        )
+                    }
                 }
         }
     }
