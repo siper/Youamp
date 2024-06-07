@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -17,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
@@ -36,6 +36,8 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
 
 
@@ -50,6 +52,7 @@ fun ArtistsScreen(
 
     ArtistsScreen(
         state = state,
+        onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onArtistClick = onArtistClick
     )
@@ -57,7 +60,8 @@ fun ArtistsScreen(
 
 @Composable
 private fun ArtistsScreen(
-    state: StateUi,
+    state: ArtistsStateUi,
+    onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onArtistClick: (id: String) -> Unit
 ) {
@@ -67,8 +71,7 @@ private fun ArtistsScreen(
         onRefresh()
     }
 
-    val isRefreshingState = (state as? StateUi.Content)?.isRefreshing == true
-    if (pullRefreshState.isRefreshing && isRefreshingState) {
+    if (pullRefreshState.isRefreshing && state.isRefreshing) {
         pullRefreshState.endRefresh()
     }
 
@@ -78,16 +81,23 @@ private fun ArtistsScreen(
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection)
     ) {
-        when (state) {
-            is StateUi.Content -> {
+        when {
+            state.progress -> {
+                Progress()
+            }
+
+            state.error -> {
+                ErrorLayout(onRetry = onRetry)
+            }
+
+            state.items.isNotEmpty() -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     state = listState,
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
-                )
-                {
+                ) {
                     items(
                         items = state.items
                     ) { album ->
@@ -102,9 +112,36 @@ private fun ArtistsScreen(
                     state = pullRefreshState,
                 )
             }
+        }
+    }
+}
 
-            is StateUi.Progress -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+@Composable
+private fun Progress() {
+    SkeletonLayout {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(
+                items = (0..12).toList()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    SkeletonItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f),
+                        shape = CircleShape
+                    )
+                    SkeletonItem(
+                        modifier = Modifier.size(width = 80.dp, height = 24.dp)
+                    )
+                }
             }
         }
     }
@@ -154,27 +191,40 @@ private fun ArtistsScreenPreview() {
             ArtistUi(
                 id = "1",
                 name = "Test",
-                albumCount = 2,
                 artworkUrl = null
             ),
             ArtistUi(
                 id = "2",
                 name = "Test 2",
-                albumCount = 10,
                 artworkUrl = null
             ),
             ArtistUi(
                 id = "3",
                 name = "Test 3",
-                albumCount = 3,
+                artworkUrl = null
+            ),
+            ArtistUi(
+                id = "4",
+                name = "Test 4",
+                artworkUrl = null
+            ),
+            ArtistUi(
+                id = "5",
+                name = "Test 5",
                 artworkUrl = null
             )
         )
-        val state = StateUi.Content(isRefreshing = true, items)
+        val state = ArtistsStateUi(
+            progress = false,
+            isRefreshing = true,
+            error = false,
+            items = items
+        )
         ArtistsScreen(
             state = state,
-            onRefresh = { },
-            onArtistClick = { }
+            onRetry = {},
+            onRefresh = {},
+            onArtistClick = {}
         )
     }
 }
