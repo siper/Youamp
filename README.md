@@ -3,7 +3,8 @@
 </p>
 
 <p align="center">
-  <a title="F-Droid" target="_blank" href="https://f-droid.org/packages/ru.stersh.youamp/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"></a>
+  <a title="Get it on F-Droid" target="_blank" href="https://f-droid.org/packages/ru.stersh.youamp/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"></a>
+  <a title="Get it on Github" target="_blank" href="https://github.com/siper/YouAMP/releases"><img src="/assets/bage/get_it_on_github.png" height="75"></a>
 </p>
 
 <p align="center">
