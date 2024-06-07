@@ -34,7 +34,8 @@ fun MainScreen(
     miniPlayer: @Composable () -> Unit,
     albumsScreen: @Composable () -> Unit,
     artistsScreen: @Composable () -> Unit,
-    playlistsScreen: @Composable () -> Unit
+    playlistsScreen: @Composable () -> Unit,
+    favoritesScreen: @Composable () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -54,7 +55,8 @@ fun MainScreen(
         val tabData = arrayOf(
             stringResource(R.string.albums_title),
             stringResource(R.string.artists_title),
-            stringResource(R.string.playlists_title)
+            stringResource(R.string.playlists_title),
+            stringResource(R.string.favorites_title)
         )
         val pagerState = rememberPagerState { tabData.size }
         val scope = rememberCoroutineScope()
@@ -100,6 +102,7 @@ fun MainScreen(
                     0 -> albumsScreen()
                     1 -> artistsScreen()
                     2 -> playlistsScreen()
+                    3 -> favoritesScreen()
                     else -> {}
                 }
             }

@@ -25,6 +25,7 @@ import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
 import ru.stersh.youamp.shared.player.playerSharedModule
+import ru.stresh.youamp.feature.favorite.list.favoriteListModule
 
 internal fun setupDi(application: Application) {
     startKoin {
@@ -53,7 +54,8 @@ private val feature = listOf(
     serverListModule,
     playlistListModule,
     searchModule,
-    playlistInfoModule
+    playlistInfoModule,
+    favoriteListModule
 )
 
 private val impl = module {

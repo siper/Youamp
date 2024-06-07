@@ -49,6 +49,7 @@ import ru.stersh.youamp.feature.search.ui.YouAmpSearchBar
 import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen
 import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
+import ru.stresh.youamp.feature.favorite.list.ui.FavoriteListScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -149,6 +150,17 @@ class MainActivity : ComponentActivity() {
                             viewModelStoreOwner = viewModelStoreOwner,
                             onPlaylistClick = { playlistId ->
                                 rootNavController.navigate(PlaylistInfo(playlistId))
+                            }
+                        )
+                    },
+                    favoritesScreen = {
+                        FavoriteListScreen(
+                            viewModelStoreOwner = viewModelStoreOwner,
+                            onSongClick = { songId ->
+                                songInfoProperties = SongInfoProperties(
+                                    songId = songId,
+                                    showAlbum = true
+                                )
                             }
                         )
                     }
@@ -284,7 +296,7 @@ class MainActivity : ComponentActivity() {
             ModalBottomSheet(
                 containerColor = MaterialTheme.colorScheme.surface,
                 onDismissRequest = { songInfoProperties = null },
-                windowInsets = remember { WindowInsets(0.dp, 0.dp, 0.dp, 0.dp) },
+                contentWindowInsets = { WindowInsets(0.dp, 0.dp, 0.dp, 0.dp) },
                 dragHandle = {}
             ) {
                 SongInfoScreen(
