@@ -2,10 +2,10 @@ package ru.stersh.youamp.core.api
 
 import android.net.Uri
 import com.squareup.moshi.Moshi
-import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 class SubsonicApi(
     val url: String,
@@ -28,7 +28,7 @@ class SubsonicApi(
         useLegacyAuth
     )
     private val errorInterceptor = ErrorInterceptor(moshi)
-    private val client = OkHttpClient.Builder()
+    private val client = getUnsafeOkHttpClient()
         .addInterceptor(loggingInterceptor)
         .addInterceptor(responseInterceptor)
         .addInterceptor(errorInterceptor)
@@ -109,7 +109,7 @@ class SubsonicApi(
         position: Long? = null
     ) = api.savePlayQueue(id, current, position)
 
-    suspend fun starSong(vararg songId: String, ) = api.star(id = songId.asList())
+    suspend fun starSong(vararg songId: String) = api.star(id = songId.asList())
 
     suspend fun unstarSong(vararg id: String) = api.unstar(id = id.asList())
 
