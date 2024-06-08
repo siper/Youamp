@@ -9,17 +9,11 @@ on:
 
 jobs:
   crowdin-contributors:
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Create env file
-        run: |
-          touch .env
-          echo CROWDIN_PROJECT_ID=${{ secrets.CROWDIN_PROJECT_ID }} >> .env
-          echo CROWDIN_PERSONAL_TOKEN=${{ secrets.CROWDIN_PERSONAL_TOKEN }} >> .env
-          cat .env
 
       - name: Generate Crowdin Contributors table
         uses: andrii-bodnar/action-crowdin-contributors@v2
@@ -28,6 +22,9 @@ jobs:
           max_contributors: 32
           image_size: 64
           min_words_contributed: 256
+        env:
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
