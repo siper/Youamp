@@ -22,7 +22,7 @@ jobs:
           max_contributors: 32
           image_size: 64
           min_words_contributed: 0
-          files: TRANSLATION_CONTRIBUTORS.md
+          files: README.md
           crowdin_project_link: https://crowdin.com/project/youamp
         env:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}

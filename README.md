@@ -50,6 +50,11 @@ If you want try app but you doesn't have subsonic server, you can use official s
   <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="200" />
 </p>
 
+## Translation contributors
+
+<!-- CROWDIN-CONTRIBUTORS-START -->
+<!-- CROWDIN-CONTRIBUTORS-END -->
+
 ## License
 
 ```
