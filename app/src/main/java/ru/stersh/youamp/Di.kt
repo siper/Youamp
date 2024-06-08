@@ -1,6 +1,8 @@
 package ru.stersh.youamp
 
 import android.app.Application
+import android.content.Context
+import androidx.core.net.toUri
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -25,6 +27,9 @@ import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
 import ru.stersh.youamp.shared.player.playerSharedModule
+import ru.stresh.youamp.core.properties.app.AppProperties
+import ru.stresh.youamp.core.propertiesModule
+import ru.stresh.youamp.feature.about.aboutModule
 import ru.stresh.youamp.feature.favorite.list.favoriteListModule
 
 internal fun setupDi(application: Application) {
@@ -35,6 +40,7 @@ internal fun setupDi(application: Application) {
 }
 
 private val core = listOf(
+    propertiesModule,
     roomModule
 )
 
@@ -55,10 +61,22 @@ private val feature = listOf(
     playlistListModule,
     searchModule,
     playlistInfoModule,
-    favoriteListModule
+    favoriteListModule,
+    aboutModule
 )
 
 private val impl = module {
+    single {
+        AppProperties(
+            name = get<Context>().getString(R.string.app_name),
+            version = BuildConfig.VERSION_NAME,
+            googlePlayAppUri = "market://details?id=ru.stersh.youamp".toUri(),
+            googlePlayBrowserUri = "https://play.google.com/store/apps/details?id=ru.stersh.youamp".toUri(),
+            githubUri = "https://github.com/siper/Youamp".toUri(),
+            fdroidUri = "https://f-droid.org/packages/ru.stersh.youamp/".toUri(),
+            crwodinUri = "https://crowdin.com/project/youamp".toUri()
+        )
+    }
     single<ApiProvider> { ApiProviderImpl(get()) }
 }
 

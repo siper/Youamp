@@ -12,10 +12,12 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/api" />
+            <option value="$PROJECT_DIR$/core/properties" />
             <option value="$PROJECT_DIR$/core/room" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/core/utils" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/about" />
             <option value="$PROJECT_DIR$/feature/album" />
             <option value="$PROJECT_DIR$/feature/album/info" />
             <option value="$PROJECT_DIR$/feature/album/list" />
@@ -36,6 +38,7 @@
             <option value="$PROJECT_DIR$/feature/server" />
             <option value="$PROJECT_DIR$/feature/server/create" />
             <option value="$PROJECT_DIR$/feature/server/list" />
+            <option value="$PROJECT_DIR$/feature/settings" />
             <option value="$PROJECT_DIR$/feature/song" />
             <option value="$PROJECT_DIR$/feature/song/info" />
             <option value="$PROJECT_DIR$/shared" />

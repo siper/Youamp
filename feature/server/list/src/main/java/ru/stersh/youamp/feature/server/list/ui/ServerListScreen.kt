@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.server.list.R
 
 @Composable
@@ -212,7 +212,7 @@ private fun ServerListScreenPreview() {
             )
         )
     )
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         ServerListScreen(
             state = state,
             onBackClick = {},
@@ -228,7 +228,7 @@ private fun ServerListScreenPreview() {
 @Preview(name = "Progress")
 private fun ServerListScreenProgressPreview() {
     val state = ServerListViewModel.StateUi.Progress
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         ServerListScreen(
             state = state,
             onBackClick = {},

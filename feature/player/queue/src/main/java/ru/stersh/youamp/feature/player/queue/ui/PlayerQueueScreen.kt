@@ -31,7 +31,7 @@ import ru.stersh.youamp.core.ui.ArtworkMaskColor
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.DragAndDropLazyColumn
 import ru.stersh.youamp.core.ui.SongPlayAnimation
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.player.queue.R
 
 @Composable
@@ -144,7 +144,7 @@ private fun SongItem(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview
 private fun PlayerQueueScreenPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         val state = StateUi(
             progress = false,
             songs = listOf(

@@ -63,7 +63,7 @@ fun Error(
 @Composable
 @Preview
 private fun ErrorLayoutPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         Scaffold {
             ErrorLayout(
                 onRetry = {},

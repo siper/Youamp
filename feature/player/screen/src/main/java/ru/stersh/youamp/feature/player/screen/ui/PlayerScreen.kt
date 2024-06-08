@@ -33,7 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.player.screen.R
 
 @Composable
@@ -204,7 +204,7 @@ private fun PlayerScreen(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview
 private fun PlayerScreenPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         val state = StateUi(
             title = "Best song in the world",
             artist = "Best artist in the world",

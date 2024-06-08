@@ -118,11 +118,11 @@ private fun MiniPlayer(
                     modifier = Modifier.weight(1f)
                 ) {
                     SingleLineText(
-                        text = state.title,
+                        text = state.title.orEmpty(),
                         style = MaterialTheme.typography.titleMedium
                     )
                     SingleLineText(
-                        text = state.artist,
+                        text = state.artist.orEmpty(),
                         color = MaterialTheme.colorScheme.secondary
                     )
                 }

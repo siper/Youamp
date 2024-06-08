@@ -31,7 +31,7 @@ import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.SkeletonLayout
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 
 
 @Composable
@@ -158,7 +158,7 @@ private fun PlaylistItem(
 @Composable
 @Preview
 private fun PlaylistsScreenPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         val items = listOf(
             PlaylistUi(
                 id = "1",

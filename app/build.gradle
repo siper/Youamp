@@ -30,6 +30,10 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -45,6 +49,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     packagingOptions {
         resources {
@@ -61,6 +66,7 @@ dependencies {
     implementation project(":core:api")
     implementation project(":core:ui")
     implementation project(":core:room")
+    implementation project(":core:properties")
     implementation project(":shared:player")
     implementation project(':feature:album:list')
     implementation project(':feature:album:info')
@@ -77,6 +83,8 @@ dependencies {
     implementation project(":feature:search")
     implementation project(":feature:song:info")
     implementation project(":feature:favorite:list")
+    implementation project(":feature:settings")
+    implementation project(":feature:about")
     implementation(libs.kotlin.serialization.core)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)
