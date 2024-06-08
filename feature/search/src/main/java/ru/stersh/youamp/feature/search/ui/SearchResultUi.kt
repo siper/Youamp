@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.MoreVert
@@ -29,9 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
 import ru.stersh.youamp.feature.search.R
 
@@ -49,10 +50,20 @@ internal fun SongItem(
             )
         },
         headlineContent = {
-            Text(text = item.title)
+            Text(
+                text = item.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         supportingContent = {
-            item.artist?.let { Text(text = it) }
+            item.artist?.let {
+                Text(
+                    text = it,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -88,10 +99,18 @@ internal fun AlbumItem(
             )
         },
         headlineContent = {
-            Text(text = item.title)
+            Text(
+                text = item.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         supportingContent = {
-            Text(text = item.artist)
+            Text(
+                text = item.artist,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -147,15 +166,18 @@ internal fun ArtistItem(
     var menuExpanded by rememberSaveable { mutableStateOf(false) }
     ListItem(
         leadingContent = {
-            Artwork(
+            CircleArtwork(
                 artworkUrl = item.artworkUrl,
                 placeholder = Icons.Rounded.Person,
-                shape = CircleShape,
                 modifier = Modifier.size(56.dp)
             )
         },
         headlineContent = {
-            Text(text = item.name)
+            Text(
+                text = item.name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -257,7 +279,7 @@ private fun Preview() {
                 ArtistItem(
                     item = SearchResultUi.Artist(
                         id = "1",
-                        name = "Coolest artist in the world",
+                        name = "Coolest artist in the world with very long title",
                         artworkUrl = null
                     ),
                     onPlay = {},
