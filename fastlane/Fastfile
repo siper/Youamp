@@ -8,17 +8,18 @@ platform :android do
       task: "assemble",
       build_type: "Release",
       properties: {
-        "android.injected.signing.store.file" => "/home/runner/work/YouAMP/YouAMP/keystore.jks",
+        "android.injected.signing.store.file" => "/home/runner/work/Youamp/Youamp/keystore.jks",
         "android.injected.signing.store.password" => ENV['KEYSTORE_PASSWORD'],
         "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
         "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
       }
     )
     set_github_release(
-      repository_name: "siper/YouAMP",
+      repository_name: "siper/Youamp",
       api_token: ENV['TOKEN_GITHUB'],
       name: ENV['VERSION_TAG'],
       tag_name: ENV['VERSION_TAG'],
+      is_generate_release_notes: true,
       upload_assets: ["app/build/outputs/apk/release/app-release.apk"]
     )
   end
@@ -29,7 +30,7 @@ platform :android do
       task: "bundle",
       build_type: "Release",
       properties: {
-        "android.injected.signing.store.file" => "/home/runner/work/YouAMP/YouAMP/keystore.jks",
+        "android.injected.signing.store.file" => "/home/runner/work/Youamp/Youamp/keystore.jks",
         "android.injected.signing.store.password" => ENV['KEYSTORE_PASSWORD'],
         "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
         "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],

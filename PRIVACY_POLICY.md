@@ -1,6 +1,6 @@
 **Privacy Policy**
 
-This privacy policy applies to the YouAMP app (hereby referred to as "Application") for mobile devices that was created
+This privacy policy applies to the Youamp app (hereby referred to as "Application") for mobile devices that was created
 by Kirill Zhukov (Stersh) (hereby referred to as "Service Provider") as an Open Source service. This service is intended
 for use "AS IS".
 

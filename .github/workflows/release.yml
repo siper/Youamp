@@ -39,10 +39,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Generate google-service-key.json file
-        run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/YouAMP/YouAMP/google-service-key.json
+        run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/Youamp/Youamp/google-service-key.json
 
       - name: Generate .jks file
-        run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/YouAMP/YouAMP/keystore.jks
+        run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/Youamp/Youamp/keystore.jks
 
       - name: Publish github release with fastlane
         run: bundle exec fastlane github

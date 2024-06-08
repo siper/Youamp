@@ -4,7 +4,7 @@
 
 <p align="center">
   <a title="Get it on F-Droid" target="_blank" href="https://f-droid.org/packages/ru.stersh.youamp/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"></a>
-  <a title="Get it on Github" target="_blank" href="https://github.com/siper/YouAMP/releases"><img src="/assets/bage/get_it_on_github.png" height="75"></a>
+  <a title="Get it on Github" target="_blank" href="https://github.com/siper/Youamp/releases"><img src="/assets/bage/get_it_on_github.png" height="75"></a>
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 
 ## About
 
-YouAMP player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,
+Youamp player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,
 media3 and other modern android libraries. Developing is still in progress and many features are not available now.
 
 ## Features
