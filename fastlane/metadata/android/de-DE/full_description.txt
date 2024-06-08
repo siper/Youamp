@@ -1,0 +1,7 @@
+Youamp ist ein Musikplayer für Subsonic-Server mit einer modernen Material You Oberfläche und einem hohen Maß an Privatsphäre, die durch den Verzicht auf Tracker, Werbung und Analytics gewährleistet ist. Der Quellcode ist offen, so dass jeder Youamp verbessern kann.
+
+Die folgenden Funktionen werden derzeit unterstützt:
+• Liste der Interpreten, Alben und Wiedergabelisten anzeigen
+• Suche nach Interpreten, Alben und Liedern
+• Musik abspielen
+• Unbegrenzte Anzahl von Subsonic-Servern hinzufügen
