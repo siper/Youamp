@@ -42,7 +42,7 @@ import org.koin.compose.rememberKoinInject
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.SkeletonLayout
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.song.info.R
 import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
@@ -324,7 +324,7 @@ private fun MenuItem(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview
 private fun AlbumInfoScreenPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         SongInfoScreen(
             state = SongInfoStateUi(
                 title = "Test song",

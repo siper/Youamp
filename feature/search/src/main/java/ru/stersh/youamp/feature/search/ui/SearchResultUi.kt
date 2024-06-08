@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.CircleArtwork
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.search.R
 
 @Composable
@@ -253,7 +253,7 @@ internal object SearchResultUi {
 @Composable
 @Preview
 private fun Preview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         Scaffold {
             Column(modifier = Modifier.padding(it)) {
                 SongItem(

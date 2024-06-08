@@ -67,7 +67,7 @@ object SkeletonScope {
 @Composable
 @Preview
 private fun SkeletonItemPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         Surface {
             SkeletonLayout {
                 SkeletonItem(

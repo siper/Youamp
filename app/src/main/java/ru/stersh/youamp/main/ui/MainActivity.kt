@@ -33,7 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import org.koin.androidx.compose.koinViewModel
-import ru.stersh.youamp.core.ui.YouAmpPlayerTheme
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.album.ui.AlbumInfoScreen
 import ru.stersh.youamp.feature.albums.ui.AlbumsScreen
 import ru.stersh.youamp.feature.artist.ui.ArtistInfoScreen
@@ -45,11 +45,13 @@ import ru.stersh.youamp.feature.player.screen.ui.PlayerScreen
 import ru.stersh.youamp.feature.playlist.ui.PlaylistInfoScreen
 import ru.stersh.youamp.feature.playlists.ui.PlaylistsScreen
 import ru.stersh.youamp.feature.search.ui.SearchScreen
-import ru.stersh.youamp.feature.search.ui.YouAmpSearchBar
+import ru.stersh.youamp.feature.search.ui.YouampSearchBar
 import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen
 import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
+import ru.stresh.youamp.feature.about.ui.AboutScreen
 import ru.stresh.youamp.feature.favorite.list.ui.FavoriteListScreen
+import ru.stresh.youamp.feature.settings.ui.SettingsScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            YouAmpPlayerTheme {
+            YouampPlayerTheme {
                 val viewModel: MainViewModel = koinViewModel()
 
                 val state by viewModel.state.collectAsState()
@@ -114,10 +116,10 @@ class MainActivity : ComponentActivity() {
             ) {
                 MainScreen(
                     topBar = {
-                        YouAmpSearchBar(
+                        YouampSearchBar(
                             avatarUrl = avatarUrl,
                             onClick = { rootNavController.navigate(Search) },
-                            onAvatarClick = { rootNavController.navigate(ServerList) },
+                            onAvatarClick = { rootNavController.navigate(Settings) },
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
                     },
@@ -285,6 +287,40 @@ class MainActivity : ComponentActivity() {
                 ) {
                     PlaylistInfoScreen(
                         id = it.toRoute<PlaylistInfo>().playlistId,
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        }
+                    )
+                }
+            }
+            composable<Settings> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    SettingsScreen(
+                        onAboutClick = {
+                            rootNavController.navigate(About)
+                        },
+                        onServersClick = {
+                            rootNavController.navigate(ServerList)
+                        },
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        }
+                    )
+                }
+            }
+            composable<About> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    AboutScreen(
                         onBackClick = {
                             rootNavController.popBackStack()
                         }

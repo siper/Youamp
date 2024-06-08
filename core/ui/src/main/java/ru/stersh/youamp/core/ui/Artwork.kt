@@ -90,7 +90,7 @@ fun ArtworkPlaceholder(
 @Composable
 @Preview(showBackground = true)
 private fun ArtworkPreview() {
-    YouAmpPlayerTheme {
+    YouampPlayerTheme {
         Surface {
             Column {
                 Artwork(

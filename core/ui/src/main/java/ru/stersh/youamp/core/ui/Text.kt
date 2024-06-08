@@ -10,13 +10,13 @@ import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun SingleLineText(
-    text: String?,
+    text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     style: TextStyle = LocalTextStyle.current
 ) {
     Text(
-        text = text.orEmpty(),
+        text = text,
         modifier = modifier,
         color = color,
         style = style,

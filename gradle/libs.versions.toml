@@ -14,6 +14,7 @@ androidx-junit = "1.1.5"
 espresso-core = "3.5.1"
 google-material = "1.12.0"
 appcompat = "1.7.0"
+compose-icons = "1.1.0"
 
 [libraries]
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -55,6 +56,7 @@ compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-material3 = "androidx.compose.material3:material3:1.3.0-beta02"
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "compose-icons" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }

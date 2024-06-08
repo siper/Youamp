@@ -39,3 +39,9 @@ data class SongInfoProperties(
     val songId: String,
     val showAlbum: Boolean
 )
+
+@Serializable
+object Settings
+
+@Serializable
+object About
