@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -120,8 +121,20 @@ private fun ServerItem(
 ) {
     var menuExpanded by rememberSaveable { mutableStateOf(false) }
     ListItem(
-        headlineContent = { Text(item.title) },
-        supportingContent = { Text(item.url) },
+        headlineContent = {
+            Text(
+                text = item.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        supportingContent = {
+            Text(
+                text = item.url,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         leadingContent = {
             Icon(
                 imageVector = Icons.Rounded.Dns,
@@ -187,8 +200,8 @@ private fun ServerListScreenPreview() {
         items = listOf(
             ServerUi(
                 id = 1,
-                title = "Test server",
-                url = "http://myserver.com:4040/",
+                title = "Test server with very long name",
+                url = "http://myserver.very.long.address.com:4040/",
                 isActive = true
             ),
             ServerUi(
