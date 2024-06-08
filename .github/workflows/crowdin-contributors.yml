@@ -21,7 +21,9 @@ jobs:
           contributors_per_line: 8
           max_contributors: 32
           image_size: 64
-          min_words_contributed: 256
+          min_words_contributed: 0
+          files: TRANSLATION_CONTRIBUTORS.md
+          crowdin_project_link: https://crowdin.com/project/youamp
         env:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
