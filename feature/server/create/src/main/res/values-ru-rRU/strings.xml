@@ -12,4 +12,6 @@
     <string name="server_test_title">Тестирование</string>
     <string name="server_add_action_title">Добавить</string>
     <string name="server_save_action_title">Сохранить</string>
+    <string name="hide_password_description">Скрыть пароль</string>
+    <string name="show_password_description">Показать пароль</string>
 </resources>
