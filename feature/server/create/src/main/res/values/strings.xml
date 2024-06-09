@@ -12,4 +12,6 @@
     <string name="server_test_title">Test</string>
     <string name="server_add_action_title">Add</string>
     <string name="server_save_action_title">Save</string>
+    <string name="hide_password_description">Hide password</string>
+    <string name="show_password_description">Show password</string>
 </resources>

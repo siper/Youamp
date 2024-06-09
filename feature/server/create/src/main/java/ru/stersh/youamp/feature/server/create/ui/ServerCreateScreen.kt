@@ -7,8 +7,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -29,6 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -214,6 +221,7 @@ private fun ContentState(
                 .padding(bottom = 8.dp)
         )
 
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
         OutlinedTextField(
             value = password,
             label = {
@@ -222,6 +230,29 @@ private fun ContentState(
             onValueChange = {
                 password = it
                 onValidateInput(input)
+            },
+            visualTransformation = if (passwordVisible) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = { passwordVisible = !passwordVisible }
+                ) {
+                    Icon(
+                        imageVector = if (passwordVisible) {
+                            Icons.Rounded.Visibility
+                        } else {
+                            Icons.Rounded.VisibilityOff
+                        },
+                        contentDescription = if (passwordVisible) {
+                            stringResource(R.string.hide_password_description)
+                        } else {
+                            stringResource(R.string.show_password_description)
+                        }
+                    )
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
