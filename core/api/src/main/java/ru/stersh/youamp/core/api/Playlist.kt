@@ -17,7 +17,7 @@ data class PlaylistsResponse(
     @JsonClass(generateAdapter = true)
     data class PlaylistsData(
         @Json(name = "playlist")
-        val playlist: List<Playlist>
+        val playlist: List<Playlist>?
     )
 }
 

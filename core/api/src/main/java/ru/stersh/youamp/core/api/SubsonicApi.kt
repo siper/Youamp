@@ -51,7 +51,7 @@ class SubsonicApi(
 
     suspend fun getPlaylist(id: String): Playlist = api.getPlaylist(id).playlist
 
-    suspend fun getPlaylists(): List<Playlist> = api.getPlaylists().playlists.playlist
+    suspend fun getPlaylists(): List<Playlist> = api.getPlaylists().playlists.playlist.orEmpty()
 
     suspend fun getAlbumList(
         type: ListType,
