@@ -61,7 +61,7 @@ If you want try app but you doesn't have subsonic server, you can use official s
           <br />
           <sub><b>Kirill Zhukov (Stersh)</b></sub></a>
         <br />
-        <sub><b>3747 words</b></sub>
+        <sub><b>3755 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/Mega-Cookie"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16410342/medium/c80be863d1105bd3b3e3e0487620070e.png" />
