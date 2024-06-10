@@ -5,7 +5,7 @@
 <p align="center">
   <a title="Get it on F-Droid" target="_blank" href="https://f-droid.org/packages/ru.stersh.youamp/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"></a>
   <a title="Get it on Github" target="_blank" href="https://github.com/siper/Youamp/releases"><img src="/assets/bage/get_it_on_github.png" height="75"></a>
-  <a title="Get it on Google Play" target="_blank" href="https://play.google.com/store/apps/details?id=ru.stersh.youamp"><img src="/assets/bage/get_it_on_google_play.png" height="75"></a>
+  <a title="Get it on Google Play" target="_blank" href="https://play.google.com/store/apps/details?id=ru.stersh.youamp"><img src="/assets/bage/get_it_on_google_play.png" height="95"></a>
 </p>
 
 <p align="center">
