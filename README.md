@@ -15,7 +15,8 @@
 
 ## About
 
-Youamp player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,
+Youamp music player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack
+compose,
 media3 and other modern android libraries. Developing is still in progress and many features are not available now.
 
 ## Features
@@ -29,14 +30,6 @@ media3 and other modern android libraries. Developing is still in progress and m
 - Like songs
 - Sync play queue and current play song position with server
 
-## Testing
-
-If you want try app but you doesn't have subsonic server, you can use official subsonic demo server.
-* Address: ```http://demo.subsonic.org```
-* Username: ```guest```
-* Password: ```guest```
-* Use legacy auth: ```false```
-
 ## Screenshots
 
 <p float="left">
@@ -49,6 +42,17 @@ If you want try app but you doesn't have subsonic server, you can use official s
   <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200" />
   <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="200" />
 </p>
+
+## Contribution
+
+If you want help to make Youamp better, you can:
+
+* Star project
+* Help with translation on [crowdin](https://crowdin.com/project/youamp)
+* Test new features on your Subsonic server, or use
+  public [test servers](https://github.com/siper/Youamp/wiki/Servers-for-test). And than submit feature request or bug
+  report
+* Make pull request with new feature or bugfix
 
 ## Translation contributors
 
