@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_queue_description">Wiedergabeliste</string>
+    <string name="shuffle_mode_description">Shufflemodus</string>
+    <string name="repeat_mode_description">Wiederholungsmodus</string>
+    <string name="favorite_song_description">Titel zu Favoriten hinzufügen</string>
+    <string name="pause_button_description">Pause-Taste</string>
+    <string name="play_button_description">Play-Taste</string>
+    <string name="previous_song_description">Vorheriger Titel</string>
+    <string name="next_song_description">Nächster Titel</string>
+</resources>
