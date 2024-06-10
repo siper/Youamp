@@ -5,6 +5,7 @@
 <p align="center">
   <a title="Get it on F-Droid" target="_blank" href="https://f-droid.org/packages/ru.stersh.youamp/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75"></a>
   <a title="Get it on Github" target="_blank" href="https://github.com/siper/Youamp/releases"><img src="/assets/bage/get_it_on_github.png" height="75"></a>
+  <a title="Get it on Google Play" target="_blank" href="https://play.google.com/store/apps/details?id=ru.stersh.youamp"><img src="/assets/bage/get_it_on_google_play.png" height="75"></a>
 </p>
 
 <p align="center">
@@ -15,7 +16,8 @@
 
 ## About
 
-Youamp player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack compose,
+Youamp music player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack
+compose,
 media3 and other modern android libraries. Developing is still in progress and many features are not available now.
 
 ## Features
@@ -29,14 +31,6 @@ media3 and other modern android libraries. Developing is still in progress and m
 - Like songs
 - Sync play queue and current play song position with server
 
-## Testing
-
-If you want try app but you doesn't have subsonic server, you can use official subsonic demo server.
-* Address: ```http://demo.subsonic.org```
-* Username: ```guest```
-* Password: ```guest```
-* Use legacy auth: ```false```
-
 ## Screenshots
 
 <p float="left">
@@ -49,6 +43,17 @@ If you want try app but you doesn't have subsonic server, you can use official s
   <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200" />
   <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="200" />
 </p>
+
+## Contribution
+
+If you want help to make Youamp better, you can:
+
+* Star project
+* Help with translation on [crowdin](https://crowdin.com/project/youamp)
+* Test new features on your Subsonic server, or use
+  public [test servers](https://github.com/siper/Youamp/wiki/Servers-for-test). And than submit feature request or bug
+  report
+* Make pull request with new feature or bugfix
 
 ## Translation contributors
 
