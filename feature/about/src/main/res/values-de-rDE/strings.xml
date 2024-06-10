@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github_icon_description">GitHub icon</string>
+    <string name="github_subtitle">Stern oder Problem melden</string>
+    <string name="google_play_icon_description">Google Play Icon</string>
+    <string name="google_play_subtitle">Bewerten oder nach Updates suchen</string>
+    <string name="f_droid_icon_description">F-Droid Icon</string>
+    <string name="f_droid_subtitle">Nach Updates suchen</string>
+    <string name="crowdin_icon_description">Crowdin Icon</string>
+    <string name="crowdin_subtitle">Hilf bei der Übersetzung</string>
+    <string name="about_title">Über</string>
+    <string name="app_icon_description">App Symbol</string>
+</resources>
