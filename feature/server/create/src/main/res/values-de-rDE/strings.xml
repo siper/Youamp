@@ -12,4 +12,6 @@
     <string name="server_test_title">Test</string>
     <string name="server_add_action_title">Hinzufügen</string>
     <string name="server_save_action_title">Speichern</string>
+    <string name="hide_password_description">Passwort ausblenden</string>
+    <string name="show_password_description">Passwort anzeigen</string>
 </resources>
