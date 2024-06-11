@@ -73,7 +73,7 @@ If you want help to make Youamp better, you can:
           <br />
           <sub><b>Mega-Cookie</b></sub></a>
         <br />
-        <sub><b>185 words</b></sub>
+        <sub><b>245 words</b></sub>
       </td>
     </tr>
   </tbody>
