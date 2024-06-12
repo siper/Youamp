@@ -1,6 +1,5 @@
 package ru.stersh.youamp.feature.server.create.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
@@ -8,15 +7,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.server.create.domain.ServerRepository
+import timber.log.Timber
 
 internal class ServerCreateViewModel(
     private val serverId: Long?,
     private val serverRepository: ServerRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow<StateUi>(StateUi.Progress)
-    val state: StateFlow<StateUi>
+    private val _state = MutableStateFlow(ServerCreateStateUi())
+    val state: StateFlow<ServerCreateStateUi>
         get() = _state
 
     private val _exit = Channel<Unit>()
@@ -29,23 +30,24 @@ internal class ServerCreateViewModel(
 
     init {
         viewModelScope.launch {
-            val returnAvailable = serverRepository.hasActiveServer()
-
-            _state.value = if (serverId != null) {
-                val initWith = serverRepository
-                    .getServer(serverId)
-                    ?.toUi()
-                StateUi.Content(
-                    buttonsEnabled = initWith != null,
-                    returnAvailable = returnAvailable,
-                    initWith = initWith
-                )
+            val closeAvailable = serverRepository.hasActiveServer()
+            if (serverId != null) {
+                val server = serverRepository.getServer(serverId)
+                val serverInfo = server?.toInfo()
+                _state.update {
+                    it.copy(
+                        serverInfo = serverInfo ?: ServerInfoUi(),
+                        buttonsEnabled = serverInfo?.isValid == true,
+                        closeAvailable = closeAvailable
+                    )
+                }
             } else {
-                StateUi.Content(
-                    buttonsEnabled = false,
-                    returnAvailable = returnAvailable,
-                    initWith = null
-                )
+                _state.update {
+                    it.copy(
+                        buttonsEnabled = false,
+                        closeAvailable = closeAvailable
+                    )
+                }
             }
         }
     }
@@ -62,19 +64,26 @@ internal class ServerCreateViewModel(
     fun test(server: ServerUi) = viewModelScope.launch {
         runCatching { serverRepository.testServer(server.toDomain()) }.fold(
             onSuccess = {
-                _testResult.send(ServerTestResultUi.SUCCESS)
+                _testResult.send(ServerTestResultUi.Success)
             },
             onFailure = {
-                val t = it
-                Log.d("Error", "Error", it)
-                _testResult.send(ServerTestResultUi.ERROR)
+                Timber.w(it)
+                _testResult.send(ServerTestResultUi.Error)
             }
         )
     }
 
     fun validateInput(input: ServerInputUi) {
-        val contentState = _state.value as? StateUi.Content ?: return
-
-        _state.value = contentState.copy(buttonsEnabled = input.isValid)
+        _state.update {
+            it.copy(
+                serverInfo = it.serverInfo.copy(
+                    name = input.name,
+                    url = input.url,
+                    username = input.username,
+                    password = input.password
+                ),
+                buttonsEnabled = input.isValid
+            )
+        }
     }
 }
