@@ -4,5 +4,5 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 internal enum class ServerTestResultUi {
-    SUCCESS, ERROR
+    Success, Error
 }

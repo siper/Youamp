@@ -3,13 +3,26 @@ package ru.stersh.youamp.feature.server.create.ui
 import ru.stersh.youamp.feature.server.create.domain.Server
 
 internal fun ServerUi.toDomain(): Server {
+    val formattedUrl = if (!url.endsWith("/")) {
+        "$url/"
+    } else {
+        url
+    }
     return Server(
-        name, url, username, password, useLegacyAuth
+        name = name,
+        url = formattedUrl,
+        username = username,
+        password = password,
+        useLegacyAuth = useLegacyAuth
     )
 }
 
-internal fun Server.toUi(): ServerUi {
-    return ServerUi(
-        name, url, username, password, useLegacyAuth
+internal fun Server.toInfo(): ServerInfoUi {
+    return ServerInfoUi(
+        name = name,
+        url = url,
+        username = username,
+        password = password,
+        useLegacyAuth = useLegacyAuth
     )
 }
