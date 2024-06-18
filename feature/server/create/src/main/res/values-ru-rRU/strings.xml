@@ -8,10 +8,13 @@
     <string name="server_address_title">Адрес</string>
     <string name="server_username_title">Имя пользователя</string>
     <string name="server_password_title">Пароль</string>
-    <string name="server_use_legacy_auth_title">Использовать устаревшую авторизацию</string>
+    <string name="server_use_legacy_auth_title">Использовать устаревшую аутентификацию</string>
     <string name="server_test_title">Тестирование</string>
     <string name="server_add_action_title">Добавить</string>
     <string name="server_save_action_title">Сохранить</string>
     <string name="hide_password_description">Скрыть пароль</string>
     <string name="show_password_description">Показать пароль</string>
+    <string name="server_icon_description">Иконка сервера</string>
+    <string name="user_icon_description">Иконка пользователя</string>
+    <string name="use_legacy_auth_subtitle">Некоторые серверы не поддерживают аутентификацию с помощью токена. Если у вас есть проблемы с подключением, включите эту опцию</string>
 </resources>
