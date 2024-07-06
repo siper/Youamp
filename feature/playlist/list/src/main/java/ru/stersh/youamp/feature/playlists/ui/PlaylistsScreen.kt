@@ -3,6 +3,7 @@ package ru.stersh.youamp.feature.playlists.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -86,9 +87,9 @@ private fun PlaylistsScreen(
                     state = listState,
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                )
-                {
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
                     items(
                         items = state.items
                     ) { playlist ->
@@ -165,22 +166,22 @@ private fun PlaylistsScreenPreview() {
                 name = "Test",
                 artworkUrl = null
             ),
-            PlaylistUi(
-                id = "2",
-                name = "Test 2",
-                artworkUrl = null
-            ),
-            PlaylistUi(
-                id = "3",
-                name = "Test 3",
-                artworkUrl = null
-            )
+//            PlaylistUi(
+//                id = "2",
+//                name = "Test 2",
+//                artworkUrl = null
+//            ),
+//            PlaylistUi(
+//                id = "3",
+//                name = "Test 3",
+//                artworkUrl = null
+//            )
         )
         val state = PlaylistsStateUi(
             progress = false,
             isRefreshing = true,
             error = false,
-            items = emptyList()
+            items = items
         )
         PlaylistsScreen(
             state = state,
