@@ -121,27 +121,31 @@ private fun PlayerScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp)
             ) {
-                Text(
-                    text = state.currentTime.orEmpty(),
-                    style = MaterialTheme.typography.labelLarge
-                )
                 PlayerSlider(
                     progress = state.progress,
                     onSeek = onSeek,
                     modifier = Modifier
-                        .weight(1f)
                         .padding(horizontal = 8.dp)
                 )
-                Text(
-                    text = state.totalTime.orEmpty(),
-                    style = MaterialTheme.typography.labelLarge
-                )
+                Row(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = state.currentTime.orEmpty(),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = state.totalTime.orEmpty(),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(48.dp))

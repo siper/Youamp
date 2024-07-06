@@ -13,7 +13,10 @@ fun BackNavigationButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    IconButton(onClick = onClick) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             contentDescription = stringResource(R.string.navigate_back_description)
