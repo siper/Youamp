@@ -17,13 +17,13 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.stersh.youamp.core.ui.ProgressSlider
 import ru.stersh.youamp.feature.player.screen.R
 
 @Composable
@@ -156,7 +156,7 @@ internal fun PlayerSlider(
     val interactionSource = remember { MutableInteractionSource() }
     val isDragged = interactionSource.collectIsDraggedAsState()
 
-    Slider(
+    ProgressSlider(
         value = if (isDragged.value) {
             tempSliderPosition.floatValue
         } else {
