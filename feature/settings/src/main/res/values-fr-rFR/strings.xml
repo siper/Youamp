@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_title">A propos</string>
+    <string name="about_subtitle">Infos sur l\'application, liens vers les commentaires</string>
+    <string name="servers_title">Serveurs</string>
+    <string name="servers_subtitle">Gérer vos serveurs Subsonic</string>
+    <string name="about_icon_description">Icône À propos</string>
+    <string name="servers_icon_description">Icône des serveurs</string>
+    <string name="settings_title">Options</string>
+</resources>
