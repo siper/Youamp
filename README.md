@@ -69,6 +69,13 @@ If you want help to make Youamp better, you can:
         <sub><b>3863 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
+          <br />
+          <sub><b>myrad2267</b></sub></a>
+        <br />
+        <sub><b>264 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/Mega-Cookie"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16410342/medium/c80be863d1105bd3b3e3e0487620070e.png" />
           <br />
           <sub><b>Mega-Cookie</b></sub></a>
