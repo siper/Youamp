@@ -1,1 +1,1 @@
-Lecteur de musique pour les serveurs Subsonic avec l'interface Material You moderne
+Lecteur de musique pour serveurs Subsonic avec interface Material You
