@@ -66,7 +66,7 @@ If you want help to make Youamp better, you can:
           <br />
           <sub><b>Kirill Zhukov (Stersh)</b></sub></a>
         <br />
-        <sub><b>3863 words</b></sub>
+        <sub><b>3873 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
