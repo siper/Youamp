@@ -37,6 +37,7 @@ internal class ServerCreateViewModel(
                 _state.update {
                     it.copy(
                         serverInfo = serverInfo ?: ServerInfoUi(),
+                        progress = false,
                         buttonsEnabled = serverInfo?.isValid == true,
                         closeAvailable = closeAvailable
                     )
@@ -45,6 +46,7 @@ internal class ServerCreateViewModel(
                 _state.update {
                     it.copy(
                         buttonsEnabled = false,
+                        progress = false,
                         closeAvailable = closeAvailable
                     )
                 }

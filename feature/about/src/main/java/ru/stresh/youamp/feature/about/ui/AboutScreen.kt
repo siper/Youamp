@@ -19,12 +19,14 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -77,6 +79,7 @@ private fun AboutScreen(
     onFDroidClick: () -> Unit,
     onCrowdinClick: () -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         topBar = {
             LargeTopAppBar(
@@ -85,9 +88,11 @@ private fun AboutScreen(
                 },
                 title = {
                     Text(text = stringResource(R.string.about_title))
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
         Column(
             modifier = Modifier

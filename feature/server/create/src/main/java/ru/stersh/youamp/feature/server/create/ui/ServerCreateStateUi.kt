@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 @Immutable
 internal data class ServerCreateStateUi(
     val serverInfo: ServerInfoUi = ServerInfoUi(),
+    val progress: Boolean = true,
     val closeAvailable: Boolean = false,
     val buttonsEnabled: Boolean = false
 )

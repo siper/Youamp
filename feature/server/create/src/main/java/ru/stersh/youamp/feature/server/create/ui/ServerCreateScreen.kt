@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Dns
 import androidx.compose.material.icons.rounded.Person
@@ -25,6 +27,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +37,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -83,7 +87,7 @@ fun ServerScreen(
     }
 
     ServerScreen(
-        snackbarHostState,
+        snackbarHostState = snackbarHostState,
         state = state,
         isNewServer = serverId == null,
         onValidateInput = viewModel::validateInput,
@@ -103,7 +107,9 @@ private fun ServerScreen(
     onAdd: (server: ServerUi) -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
@@ -122,18 +128,21 @@ private fun ServerScreen(
                     if (state.closeAvailable) {
                         BackNavigationButton(onClick = onBackClick)
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { padding ->
-        ContentState(
-            state = state,
-            isNewServer = isNewServer,
-            padding = padding,
-            onValidateInput = onValidateInput,
-            onTest = onTest,
-            onAdd = onAdd
-        )
+        if (!state.progress) {
+            ContentState(
+                state = state,
+                isNewServer = isNewServer,
+                padding = padding,
+                onValidateInput = onValidateInput,
+                onTest = onTest,
+                onAdd = onAdd
+            )
+        }
     }
 }
 
@@ -159,10 +168,12 @@ private fun ContentState(
         ServerUi(name, url, username, password, useLegacyAuth)
     }
 
+    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(padding)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Column(
@@ -181,8 +192,10 @@ private fun ContentState(
                         Text(text = stringResource(R.string.server_name_title))
                     },
                     onValueChange = {
-                        name = it
-                        onValidateInput(input)
+                        if (name != it) {
+                            name = it
+                            onValidateInput(input)
+                        }
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -194,8 +207,10 @@ private fun ContentState(
                     Text(text = stringResource(R.string.server_address_title))
                 },
                 onValueChange = {
-                    url = it
-                    onValidateInput(input)
+                    if (url != it) {
+                        url = it
+                        onValidateInput(input)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -219,8 +234,10 @@ private fun ContentState(
                         Text(text = stringResource(R.string.server_username_title))
                     },
                     onValueChange = {
-                        username = it
-                        onValidateInput(input)
+                        if (username != it) {
+                            username = it
+                            onValidateInput(input)
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -234,8 +251,10 @@ private fun ContentState(
                     Text(text = stringResource(R.string.server_password_title))
                 },
                 onValueChange = {
-                    password = it
-                    onValidateInput(input)
+                    if (password != it) {
+                        password = it
+                        onValidateInput(input)
+                    }
                 },
                 visualTransformation = if (passwordVisible) {
                     VisualTransformation.None
