@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigate_back_description">Torna enrere</string>
+    <string name="shuffle_title">Aleatori</string>
+    <string name="play_all_title">Reprodueix-ho tot</string>
+    <string name="placeholder_image_description">Imatge del marcador de posició</string>
+    <string name="error_button_title">Torna a provar</string>
+    <string name="error_message">Torneu a provar. Si l\'errada persisteix, contacteu amb el desenvolupador.</string>
+    <string name="error_title">Aix, alguna cosa no ha anat bé</string>
+    <string name="empty_state_title">No hi ha res aquí encara…</string>
+</resources>
