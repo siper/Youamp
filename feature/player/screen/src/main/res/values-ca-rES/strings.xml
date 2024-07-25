@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_queue_description">Reproduir cua</string>
+    <string name="shuffle_mode_description">Mode aleatori</string>
+    <string name="repeat_mode_description">Mode repetició</string>
+    <string name="favorite_song_description">Cançó preferida</string>
+    <string name="pause_button_description">Botó de pausa</string>
+    <string name="play_button_description">Botó de reproducció</string>
+    <string name="previous_song_description">Cançó anterior</string>
+    <string name="next_song_description">Cançó següent</string>
+</resources>
