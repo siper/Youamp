@@ -1,0 +1,8 @@
+Youamp és un reproductor de música per a servidors Subsonic que té una interfície moderna Material You i un nivell alt de privacitat, gràcies a l'absència de
+rastrejadors, anuncis i analítiques. El codi font és obert, de forma que qualsevol persona pot millorar Youamp.
+
+Aquestes són les característiques actualment disponibles:
+• Veure una llista d'artistes, àlbums i llistes de reproducció
+• Cercar artistes, àlbums i cançons
+• Reproduir música
+• Afegir una quantitat il·limitada de servidors Subsonic

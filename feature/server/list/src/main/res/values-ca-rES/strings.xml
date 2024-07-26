@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_screen_title">Servidors</string>
+    <string name="add_server_title">Afegeix</string>
+    <string name="back_title">Enrere</string>
+    <string name="activate_server_title">Activa</string>
+    <string name="edit_server_title">Edita</string>
+    <string name="delete_server_title">Suprimeix</string>
+</resources>
