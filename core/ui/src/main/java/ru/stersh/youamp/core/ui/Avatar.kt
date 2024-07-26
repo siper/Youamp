@@ -1,4 +1,4 @@
-package ru.stersh.youamp.feature.search.ui
+package ru.stersh.youamp.core.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,10 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import ru.stersh.youamp.feature.search.R
 
 @Composable
-internal fun AvatarImage(
+fun AvatarImage(
     avatarUrl: String?,
     onAvatarClick: () -> Unit,
     modifier: Modifier = Modifier
