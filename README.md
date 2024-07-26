@@ -82,6 +82,13 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>245 words</b></sub>
       </td>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
+          <br />
+          <sub><b>isard</b></sub></a>
+        <br />
+        <sub><b>210 words</b></sub>
+      </td>
     </tr>
   </tbody>
 </table><a href="https://crowdin.com/project/youamp" target="_blank">Translate in Crowdin 🚀</a>
