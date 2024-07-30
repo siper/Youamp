@@ -11,10 +11,6 @@ jobs:
 
     env:
       GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
-      KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
-      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
-      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
       TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
       VERSION_TAG: ${{ github.ref_name }}
 
@@ -48,9 +44,6 @@ jobs:
 
       - name: Generate google-service-key.json file
         run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/Youamp/Youamp/google-service-key.json
-
-      - name: Generate .jks file
-        run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/Youamp/Youamp/keystore.jks
 
       - name: Validate metadata in Play Store with fastlane
         run: bundle exec fastlane play_store_validate

@@ -53,20 +53,11 @@ platform :android do
 
   desc "Lane for validate app metadata in Play Store"
     lane :play_store_validate do
-      gradle(
-        task: "bundle",
-        build_type: "Release",
-        properties: {
-          "android.injected.signing.store.file" => "/home/runner/work/Youamp/Youamp/keystore.jks",
-          "android.injected.signing.store.password" => ENV['KEYSTORE_PASSWORD'],
-          "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
-          "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
-        }
-      )
       upload_to_play_store(
         track: 'alpha',
         sync_image_upload: true,
         validate_only: true,
+        skip_upload_aab: true,
         skip_upload_apk: true
       )
     end
