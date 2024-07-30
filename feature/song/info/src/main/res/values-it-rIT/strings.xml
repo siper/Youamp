@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_title">Riproduci</string>
+    <string name="play_next_in_queue_title">Riproduci prossimo in coda</string>
+    <string name="add_to_playlist_title">Aggiungi alla Playlist...</string>
+    <string name="go_to_album_title">Vai all\'album</string>
+    <string name="go_to_artist_title">Vai all\'artista</string>
+</resources>
