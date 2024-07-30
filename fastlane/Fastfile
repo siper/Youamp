@@ -46,7 +46,20 @@ platform :android do
     end
     upload_to_play_store(
       track: track,
+      sync_image_upload: true,
       skip_upload_apk: true
     )
   end
+
+  desc "Lane for validate app metadata in Play Store"
+    lane :play_store_validate do
+      upload_to_play_store(
+        track: 'alpha',
+        skip_upload_changelogs: true,
+        sync_image_upload: true,
+        validate_only: true,
+        skip_upload_aab: true,
+        skip_upload_apk: true
+      )
+    end
 end
