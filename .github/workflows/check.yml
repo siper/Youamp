@@ -8,12 +8,6 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
-    env:
-      GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-      VERSION_TAG: ${{ github.ref_name }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -73,8 +67,12 @@ jobs:
   check-metadata:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
+    env:
+      GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
