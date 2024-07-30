@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_queue_description">Coda di riproduzione</string>
+    <string name="shuffle_mode_description">Modalità casuale</string>
+    <string name="repeat_mode_description">Modalità Ripeti</string>
+    <string name="favorite_song_description">Canzone preferita</string>
+    <string name="pause_button_description">Pausa</string>
+    <string name="play_button_description">Riproduci</string>
+    <string name="previous_song_description">Canzone precedente</string>
+    <string name="next_song_description">Canzone successiva</string>
+</resources>
