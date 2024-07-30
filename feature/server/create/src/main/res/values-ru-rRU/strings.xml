@@ -17,4 +17,5 @@
     <string name="server_icon_description">Иконка сервера</string>
     <string name="user_icon_description">Иконка пользователя</string>
     <string name="use_legacy_auth_subtitle">Некоторые серверы не поддерживают аутентификацию с помощью токена. Если у вас есть проблемы с подключением, включите эту опцию</string>
+    <string name="additional_settings_title">Дополнительные настройки</string>
 </resources>

@@ -287,7 +287,7 @@ private fun ContentState(
 
         Column {
             Text(
-                text = "Additional settings",
+                text = stringResource(R.string.additional_settings_title),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(horizontal = 16.dp)
