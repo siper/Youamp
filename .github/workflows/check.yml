@@ -6,6 +6,7 @@ on:
 
 jobs:
   lint:
+    name: Run lint checks
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -34,6 +35,7 @@ jobs:
         run: ./gradlew lint
 
   build:
+    name: Build apk
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -62,6 +64,7 @@ jobs:
         run: ./gradlew app:assemble
 
   check-metadata:
+    name: Check Play Store metadata
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
