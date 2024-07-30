@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_test_success_message">Test riuscito</string>
+    <string name="server_test_error_message">Errore test</string>
+    <string name="new_server_title">Nuovo server Subsonic</string>
+    <string name="edit_server_title">Modifica server</string>
+    <string name="server_name_title">Nome</string>
+    <string name="server_address_title">Indirizzo</string>
+    <string name="server_username_title">Username</string>
+    <string name="server_password_title">Password</string>
+    <string name="server_use_legacy_auth_title">Usa autenticazione legacy</string>
+    <string name="server_test_title">Prova</string>
+    <string name="server_add_action_title">Aggiungi</string>
+    <string name="server_save_action_title">Salva</string>
+    <string name="hide_password_description">Nascondi password</string>
+    <string name="show_password_description">Mostra password</string>
+    <string name="server_icon_description">Icona del server</string>
+    <string name="user_icon_description">Icona dell\'utente</string>
+    <string name="use_legacy_auth_subtitle">Alcuni server non supportano l\'autenticazione tramite Salt. Se hai problemi con la connessione, abilita questa opzione</string>
+</resources>
