@@ -5,9 +5,9 @@ on:
     branches: [ master ]
 
 jobs:
-  check:
+  lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
 
     env:
       GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
@@ -39,8 +39,47 @@ jobs:
       - name: Lint
         run: ./gradlew lint
 
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.3'
+          bundler-cache: true
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Lint
+        run: ./gradlew lint
+
       - name: Build
         run: ./gradlew app:assemble
+
+  check-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.3'
+          bundler-cache: true
 
       - name: Generate google-service-key.json file
         run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/Youamp/Youamp/google-service-key.json

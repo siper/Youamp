@@ -55,6 +55,7 @@ platform :android do
     lane :play_store_validate do
       upload_to_play_store(
         track: 'alpha',
+        skip_upload_changelogs: true,
         sync_image_upload: true,
         validate_only: true,
         skip_upload_aab: true,
