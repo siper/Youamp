@@ -76,6 +76,20 @@ If you want help to make Youamp better, you can:
         <sub><b>264 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/CraftWorks"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/15747391/medium/334632c01b9b9321cdaa5f555e70b0e7.png" />
+          <br />
+          <sub><b>CraftWorks</b></sub></a>
+        <br />
+        <sub><b>264 words</b></sub>
+      </td>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
+          <br />
+          <sub><b>isard</b></sub></a>
+        <br />
+        <sub><b>260 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/Mega-Cookie"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16410342/medium/c80be863d1105bd3b3e3e0487620070e.png" />
           <br />
           <sub><b>Mega-Cookie</b></sub></a>
@@ -83,11 +97,11 @@ If you want help to make Youamp better, you can:
         <sub><b>245 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
+        <a href="https://crowdin.com/profile/tct123"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/15267698/medium/322d599848cfa45502662989d2208a22.jpg" />
           <br />
-          <sub><b>isard</b></sub></a>
+          <sub><b>tct123</b></sub></a>
         <br />
-        <sub><b>210 words</b></sub>
+        <sub><b>22 words</b></sub>
       </td>
     </tr>
   </tbody>
