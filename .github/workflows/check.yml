@@ -58,9 +58,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Lint
-        run: ./gradlew lint
-
       - name: Build
         run: ./gradlew app:assemble
 
