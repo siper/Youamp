@@ -7,7 +7,17 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+
+    env:
+      GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
+      KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      VERSION_TAG: ${{ github.ref_name }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,6 +31,12 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.3'
+          bundler-cache: true
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
@@ -29,3 +45,12 @@ jobs:
 
       - name: Build
         run: ./gradlew app:assemble
+
+      - name: Generate google-service-key.json file
+        run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/Youamp/Youamp/google-service-key.json
+
+      - name: Generate .jks file
+        run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/Youamp/Youamp/keystore.jks
+
+      - name: Validate metadata in Play Store with fastlane
+        run: bundle exec fastlane play_store_validate
