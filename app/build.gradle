@@ -102,6 +102,7 @@ dependencies {
     implementation project(":feature:library")
     implementation project(":feature:song:random")
     implementation(libs.kotlin.serialization.core)
+    implementation(libs.media.session)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.compose)

@@ -13,6 +13,8 @@ dependencies {
     implementation project(':core:api')
     implementation project(':core:utils')
 
+    implementation(libs.kotlin.coroutines.android)
+    implementation(libs.kotlin.coroutines.guava)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.kotlin.coroutines)
     implementation(libs.timber)
