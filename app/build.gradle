@@ -86,6 +86,7 @@ dependencies {
     implementation project(":feature:settings")
     implementation project(":feature:about")
     implementation(libs.kotlin.serialization.core)
+    implementation(libs.media.session)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.compose)

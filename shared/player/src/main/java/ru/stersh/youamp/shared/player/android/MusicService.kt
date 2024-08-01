@@ -1,7 +1,7 @@
 package ru.stersh.youamp.shared.player.android
 
-import android.app.NotificationManager
 import androidx.annotation.OptIn
+import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -13,23 +13,32 @@ import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaSession.MediaItemsWithStartPosition
+import androidx.media3.session.SessionError
+import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.guava.asListenableFuture
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.koin.android.ext.android.inject
+import ru.stersh.youamp.shared.player.library.MediaLibraryRepository
+import ru.stersh.youamp.shared.player.utils.mediaItems
 import timber.log.Timber
 
 class MusicService : MediaLibraryService() {
 
-    private val notificationManager: NotificationManager by inject()
+    private val mediaLibraryRepository: MediaLibraryRepository by inject()
     private val apiSonicPlayQueueSyncer: ApiSonicPlayQueueSyncer by inject()
 
     private lateinit var player: Player
@@ -82,13 +91,11 @@ class MusicService : MediaLibraryService() {
             .Builder(this, player, customCallback)
             .build()
 
-        addSession(mediaSession)
         player.addListener(playerListener)
 
         loadPlayQueue()
         syncQueueLoop()
     }
-
 
     override fun onDestroy() {
         mediaSession.release()
@@ -116,6 +123,7 @@ class MusicService : MediaLibraryService() {
     }
 
     private inner class CustomMediaSessionCallback : MediaLibrarySession.Callback {
+
         override fun onAddMediaItems(
             mediaSession: MediaSession,
             controller: MediaSession.ControllerInfo,
@@ -130,19 +138,190 @@ class MusicService : MediaLibraryService() {
             return Futures.immediateFuture(updatedMediaItems)
         }
 
-        override fun onConnect(
-            session: MediaSession,
-            controller: MediaSession.ControllerInfo,
-        ): MediaSession.ConnectionResult {
-            val connectionResult = super.onConnect(session, controller)
-            return MediaSession.ConnectionResult.accept(
-                connectionResult.availableSessionCommands,
-                connectionResult.availablePlayerCommands,
-            )
+        override fun onGetLibraryRoot(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            params: LibraryParams?
+        ): ListenableFuture<LibraryResult<MediaItem>> {
+            val root = MediaItem.Builder()
+                .setMediaId(LIBRARY_ROOT_ID)
+                .setMediaMetadata(
+                    MediaMetadata.Builder()
+                        .setTitle("Root")
+                        .setIsPlayable(false)
+                        .setIsBrowsable(true)
+                        .setMediaType(MediaMetadata.MEDIA_TYPE_FOLDER_MIXED)
+                        .build()
+                )
+                .build()
+                .let { LibraryResult.ofItem(it, params) }
+            return Futures.immediateFuture(root)
         }
+
+        override fun onGetChildren(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            parentId: String,
+            page: Int,
+            pageSize: Int,
+            params: LibraryParams?
+        ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+            return when {
+                parentId == LIBRARY_ROOT_ID -> {
+                    val items = listOf(
+                        MediaItem.Builder()
+                            .setMediaId(LIBRARY_PLAYLISTS_ID)
+                            .setMediaMetadata(
+                                MediaMetadata.Builder()
+                                    .setTitle("Playlists")
+                                    .setIsPlayable(false)
+                                    .setIsBrowsable(true)
+                                    .setMediaType(MediaMetadata.MEDIA_TYPE_FOLDER_PLAYLISTS)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    Futures.immediateFuture(LibraryResult.ofItemList(items, params))
+                }
+
+                parentId == LIBRARY_PLAYLISTS_ID -> {
+                    runBlocking {
+                        async {
+                            mediaLibraryRepository
+                                .getPlaylists()
+                                .map {
+                                    MediaItem.Builder()
+                                        .setMediaId(LIBRARY_PLAYLIST_PREFIX + it.id)
+                                        .setMediaMetadata(
+                                            MediaMetadata.Builder()
+                                                .setTitle(it.title)
+                                                .setArtworkUri(it.coverUrl?.toUri())
+                                                .setIsPlayable(true)
+                                                .setIsBrowsable(false)
+                                                .setMediaType(MediaMetadata.MEDIA_TYPE_PLAYLIST)
+                                                .build()
+                                        )
+                                        .build()
+                                }
+                                .let {
+                                    LibraryResult.ofItemList(it, params)
+                                }
+                        }.asListenableFuture()
+                    }
+                }
+
+                parentId.startsWith(LIBRARY_PLAYLIST_PREFIX) -> {
+                    runBlocking {
+                        async {
+                            mediaLibraryRepository
+                                .getPlaylistSongs(parentId.replace(LIBRARY_PLAYLIST_PREFIX, ""))
+                                .map {
+                                    MediaItem
+                                        .Builder()
+                                        .setMediaId(it.id)
+                                        .setMediaMetadata(
+                                            MediaMetadata
+                                                .Builder()
+                                                .setTitle(it.title)
+                                                .setArtworkUri(it.coverUrl?.toUri())
+                                                .setIsPlayable(true)
+                                                .setIsBrowsable(false)
+                                                .setMediaType(MediaMetadata.MEDIA_TYPE_MUSIC)
+                                                .build()
+                                        )
+                                        .build()
+                                }
+                                .let {
+                                    LibraryResult.ofItemList(it, params)
+                                }
+                        }
+                            .asListenableFuture()
+                    }
+                }
+
+                else -> Futures.immediateFuture(LibraryResult.ofError(SessionError.ERROR_BAD_VALUE))
+            }
+        }
+
+        override fun onGetItem(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            mediaId: String
+        ): ListenableFuture<LibraryResult<MediaItem>> {
+            return super.onGetItem(session, browser, mediaId)
+        }
+
+        @OptIn(UnstableApi::class)
+        override fun onSetMediaItems(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            mediaItems: MutableList<MediaItem>,
+            startIndex: Int,
+            startPositionMs: Long
+        ): ListenableFuture<MediaItemsWithStartPosition> {
+            val item = mediaItems.firstOrNull() ?: return super.onSetMediaItems(
+                mediaSession,
+                controller,
+                mediaItems,
+                startIndex,
+                startPositionMs
+            )
+            if (item.mediaId.startsWith(LIBRARY_PLAYLIST_PREFIX)) {
+                return runBlocking {
+                    async {
+                        mediaLibraryRepository
+                            .getPlaylistSongs(item.clearId)
+                            .map {
+                                MediaItem
+                                    .Builder()
+                                    .setMediaId(it.id)
+                                    .setMediaMetadata(
+                                        MediaMetadata
+                                            .Builder()
+                                            .setTitle(it.title)
+                                            .setArtworkUri(it.coverUrl?.toUri())
+                                            .setIsPlayable(true)
+                                            .setIsBrowsable(false)
+                                            .setMediaType(MediaMetadata.MEDIA_TYPE_MUSIC)
+                                            .build()
+                                    )
+                                    .build()
+                            }
+                            .let {
+                                MediaItemsWithStartPosition(it, 0, 0L)
+                            }
+                    }
+                        .asListenableFuture()
+                }
+            }
+            return super.onSetMediaItems(mediaSession, controller, mediaItems, startIndex, startPositionMs)
+        }
+
+        override fun onGetSearchResult(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            query: String,
+            page: Int,
+            pageSize: Int,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+            val search = player.mediaItems.filter {
+                it.mediaMetadata.title?.contains(query, true) == true ||
+                        it.mediaMetadata.artist?.contains(query, true) == true ||
+                        it.mediaMetadata.albumTitle?.contains(query, true) == true ||
+                        it.mediaMetadata.albumArtist?.contains(query, true) == true
+            }
+            return Futures.immediateFuture(LibraryResult.ofItemList(search, params))
+        }
+
+        val MediaItem.clearId: String
+            get() = mediaId.replace(LIBRARY_PLAYLIST_PREFIX, "")
     }
 
     companion object {
+        private const val LIBRARY_ROOT_ID = "[ROOT_ID]"
+        private const val LIBRARY_PLAYLISTS_ID = "[PLAYLISTS_ID]"
+        private const val LIBRARY_PLAYLIST_PREFIX = "playlist_"
         private const val SYNC_QUEUE_PERIOD = 5000L
     }
 }

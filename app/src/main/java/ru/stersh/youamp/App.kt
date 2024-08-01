@@ -1,7 +1,6 @@
 package ru.stersh.youamp
 
 import android.app.Application
-import androidx.media3.common.BuildConfig
 import coil.Coil
 import coil.ImageLoader
 import kotlinx.coroutines.runBlocking
