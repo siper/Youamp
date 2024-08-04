@@ -123,6 +123,12 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
                     },
+                    bigPlayer = {
+                        PlayerScreen(
+                            onBackClick = { rootNavController.popBackStack() },
+                            onPlayQueueClick = { rootNavController.navigate(PlayQueue) }
+                        )
+                    },
                     miniPlayer = {
                         MiniPlayer(
                             viewModelStoreOwner = viewModelStoreOwner,

@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
@@ -39,18 +38,24 @@ import ru.stersh.youamp.feature.main.R
 fun MainScreen(
     topBar: @Composable () -> Unit,
     miniPlayer: @Composable () -> Unit,
+    bigPlayer: @Composable () -> Unit,
     albumsScreen: @Composable () -> Unit,
     artistsScreen: @Composable () -> Unit,
     playlistsScreen: @Composable () -> Unit,
     favoritesScreen: @Composable () -> Unit
 ) {
-    Scaffold(
+    ExpandableScaffold(
         topBar = {
-            Toolbar()
+            topBar()
+        },
+        collapsedContent = {
+            miniPlayer()
+        },
+        expandedContent = {
+            bigPlayer()
         },
         bottomBar = {
             Column {
-                miniPlayer()
                 NavigationBar {
                     NavigationBarItem(
                         selected = true,
@@ -173,7 +178,8 @@ private fun MainScreenPreview() {
             albumsScreen = {},
             artistsScreen = {},
             playlistsScreen = {},
-            favoritesScreen = {}
+            favoritesScreen = {},
+            bigPlayer = {}
         )
     }
 }
