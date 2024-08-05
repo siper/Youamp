@@ -17,4 +17,5 @@
     <string name="server_icon_description">Server Icon</string>
     <string name="user_icon_description">Benutzer-Icon</string>
     <string name="use_legacy_auth_subtitle">Einige Server unterstützen keine Salt-Authentifizierung. Wenn Sie Probleme mit der Verbindung haben, aktivieren Sie diese Option</string>
+    <string name="additional_settings_title">Zusätzliche Einstellungen</string>
 </resources>
