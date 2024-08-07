@@ -82,7 +82,7 @@ internal class PlaylistInfoViewModel(
                 .getPlaylistInfo(id)
                 .flowOn(Dispatchers.IO)
                 .catch { throwable ->
-                    Timber.d(throwable)
+                    Timber.w(throwable)
                     _state.update {
                         it.copy(
                             progress = false,
