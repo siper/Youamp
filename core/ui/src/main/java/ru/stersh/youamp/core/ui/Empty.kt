@@ -13,9 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 fun EmptyLayout(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .then(modifier)
+        modifier = modifier.fillMaxSize()
     ) {
         Empty(
             modifier = Modifier
