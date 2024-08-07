@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Dns
@@ -65,7 +66,7 @@ fun ServerScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
-    LaunchedEffect("exit_navigation") {
+    LaunchedEffect(Unit) {
         viewModel
             .exit
             .onEach {
@@ -73,7 +74,7 @@ fun ServerScreen(
             }
             .launchIn(this)
     }
-    LaunchedEffect("test_snackbar") {
+    LaunchedEffect(Unit) {
         viewModel
             .testResult
             .onEach {
@@ -212,6 +213,7 @@ private fun ContentState(
                         onValidateInput(input)
                     }
                 },
+                keyboardOptions = KeyboardOptions(autoCorrect = false),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp)
