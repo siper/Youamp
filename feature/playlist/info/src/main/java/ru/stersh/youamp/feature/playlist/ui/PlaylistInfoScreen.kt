@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -117,7 +118,8 @@ private fun Content(
                 onPlayAll = onPlayAll,
                 onPlayShuffled = onPlayShuffled
             )
-            EmptyLayout()
+            Box(modifier = Modifier.weight(1f))
+            EmptyLayout(modifier = Modifier.weight(1f))
         }
     } else {
         LazyColumn(
@@ -326,7 +328,7 @@ private fun PlaylistInfoScreenPreview() {
                 playlistInfo = PlaylistInfoUi(
                     artworkUrl = null,
                     title = "Test",
-                    songs = songs
+                    songs = emptyList()
                 )
             ),
             onRetry = {},

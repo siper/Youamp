@@ -40,7 +40,7 @@ data class Playlist(
     @Json(name = "owner")
     val owner: String,
     @Json(name = "public")
-    val `public`: Boolean,
+    val `public`: Boolean?,
     @Json(name = "songCount")
     val songCount: Int,
 )

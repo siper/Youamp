@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.utils.mapItems
 import ru.stersh.youamp.feature.playlists.domain.PlaylistsRepository
+import timber.log.Timber
 
 internal class PlaylistsViewModel(
     private val playlistsRepository: PlaylistsRepository
@@ -49,7 +50,8 @@ internal class PlaylistsViewModel(
             playlistsRepository
                 .getPlaylists()
                 .mapItems { it.toUi() }
-                .catch {
+                .catch { throwable ->
+                    Timber.w(throwable)
                     _state.update {
                         it.copy(
                             progress = false,
