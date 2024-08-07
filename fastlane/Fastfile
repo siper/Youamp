@@ -36,13 +36,11 @@ platform :android do
         "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
       }
     )
-    track = 'release'
+    track = 'production'
     if ENV['VERSION_TAG'].include? 'alpha'
       track = 'alpha'
     elsif ENV['VERSION_TAG'].include? 'beta'
       track = 'beta'
-    else
-      track = 'release'
     end
     upload_to_play_store(
       track: track,
