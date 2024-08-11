@@ -11,6 +11,9 @@ import androidx.media3.common.StarRating
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import ru.stersh.youamp.core.api.PlaylistEntry
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.shared.player.android.MusicService
@@ -20,6 +23,7 @@ import ru.stersh.youamp.shared.player.utils.MEDIA_SONG_ID
 import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
 import ru.stersh.youamp.shared.player.utils.toMediaItem
 import ru.stersh.youamp.shared.player.utils.withPlayer
+import ru.stersh.youamp.shared.player.utils.withPlayer2
 
 internal class PlayerQueueAudioSourceManagerImpl(
     private val context: Context,
@@ -27,6 +31,9 @@ internal class PlayerQueueAudioSourceManagerImpl(
 ) : PlayerQueueAudioSourceManager {
     private val mediaController = mediaControllerFuture(context, MusicService::class.java)
     private val mainExecutor = ContextCompat.getMainExecutor(context)
+    private val playingSource = MutableStateFlow<PlayingSource?>(null)
+
+    override fun playingSource(): Flow<PlayingSource?> = playingSource
 
     override suspend fun playSource(source: AudioSource, shuffled: Boolean) {
         val newQueue = getMediaItemsFromSource(source)
@@ -48,6 +55,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
             prepare()
             play()
         }
+        setPlayingSource(source)
     }
 
     override suspend fun addSource(source: AudioSource, shuffled: Boolean) {
@@ -59,6 +67,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
                 addMediaItems(newSongs)
             }
         }
+        clearPlayingSource()
     }
 
     override suspend fun addAfterCurrent(source: AudioSource, shuffled: Boolean) {
@@ -71,6 +80,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
                 addMediaItems(index, newSongs)
             }
         }
+        clearPlayingSource()
     }
 
     private fun getPlaySongIdFromSource(source: AudioSource): String? {
@@ -81,6 +91,35 @@ internal class PlayerQueueAudioSourceManagerImpl(
             return source.songId
         }
         return null
+    }
+
+    private suspend fun setPlayingSource(source: AudioSource) {
+        val serverId = apiProvider.getApiId()
+        if (serverId == null) {
+            playingSource.update {
+                null
+            }
+            return
+        }
+        val type = when (source) {
+            is AudioSource.Song -> PlayingSource.Type.Song
+            is AudioSource.Album -> PlayingSource.Type.Album
+            is AudioSource.Artist -> PlayingSource.Type.Artist
+            is AudioSource.Playlist -> PlayingSource.Type.Playlist
+        }
+        playingSource.update {
+            PlayingSource(
+                serverId = serverId,
+                id = source.id,
+                type = type
+            )
+        }
+    }
+
+    private fun clearPlayingSource() {
+        playingSource.update {
+            null
+        }
     }
 
     private suspend fun getMediaItemsFromSource(source: AudioSource): List<MediaItem> {

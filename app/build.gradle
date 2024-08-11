@@ -85,6 +85,7 @@ dependencies {
     implementation project(":feature:favorite:list")
     implementation project(":feature:settings")
     implementation project(":feature:about")
+    implementation project(":feature:personal")
     implementation(libs.kotlin.serialization.core)
     implementation(libs.bundles.koin)
     implementation(libs.navigation.compose)

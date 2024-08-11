@@ -13,6 +13,7 @@ import ru.stersh.youamp.feature.album.albumInfoModule
 import ru.stersh.youamp.feature.albums.albumsModule
 import ru.stersh.youamp.feature.artist.artistInfoModule
 import ru.stersh.youamp.feature.artists.artistsModule
+import ru.stersh.youamp.feature.personal.personalModule
 import ru.stersh.youamp.feature.player.mini.playerMiniModule
 import ru.stersh.youamp.feature.player.queue.playerQueueScreenModule
 import ru.stersh.youamp.feature.player.screen.playerScreenModule
@@ -62,7 +63,8 @@ private val feature = listOf(
     searchModule,
     playlistInfoModule,
     favoriteListModule,
-    aboutModule
+    aboutModule,
+    personalModule
 )
 
 private val impl = module {

@@ -7,6 +7,10 @@ interface ApiProvider {
 
     suspend fun getApi(): SubsonicApi
 
+    suspend fun getApiId(): Long?
+
+    suspend fun requireApiId(): Long
+
     fun flowApi(): Flow<SubsonicApi>
 
     fun flowApiOrNull(): Flow<SubsonicApi?>

@@ -23,6 +23,14 @@ internal class ApiProviderImpl(
         return@withLock requireApi(currentServerSettings)
     }
 
+    override suspend fun requireApiId(): Long {
+        return requireNotNull(getApiId())
+    }
+
+    override suspend fun getApiId(): Long? {
+        return subsonicServerDao.getActive()?.id
+    }
+
     override fun flowApi(): Flow<SubsonicApi> {
         return subsonicServerDao
             .flowActive()

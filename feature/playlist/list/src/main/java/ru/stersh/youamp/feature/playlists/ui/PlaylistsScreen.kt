@@ -140,8 +140,8 @@ private fun PlaylistItem(
             artworkUrl = playlist.artworkUrl,
             placeholder = Icons.Rounded.MusicNote,
             modifier = Modifier
-                .fillMaxWidth()
                 .aspectRatio(1f)
+                .fillMaxWidth()
         )
         Text(
             text = playlist.name,

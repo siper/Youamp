@@ -28,14 +28,14 @@ data class AlbumUi(
 @Composable
 fun AlbumItem(
     album: AlbumUi,
-    onAlbumClick: (id: String) -> Unit,
+    onClick: (id: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
         shape = MaterialTheme.shapes.large,
         modifier = modifier,
         onClick = {
-            onAlbumClick(album.id)
+            onClick(album.id)
         }
     ) {
         Artwork(
@@ -83,7 +83,7 @@ private fun AlbumItemPreview() {
     MaterialTheme {
         AlbumItem(
             album = album,
-            onAlbumClick = {}
+            onClick = {}
         )
     }
 }

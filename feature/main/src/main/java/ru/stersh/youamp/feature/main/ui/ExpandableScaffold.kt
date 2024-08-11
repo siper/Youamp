@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -112,7 +113,9 @@ fun ExpandableScaffold(
             .fillMaxSize()
             .then(globalModifier)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(bottom = (state.collapsedHeight + state.bottomBarMaxHeight).toDp(density))
+        ) {
             val topBarModifier = if (state.topBarMaxHeight.isNaN()) {
                 Modifier.onGloballyPositioned {
                     state.topBarMaxHeight = it.size.height.toFloat()
@@ -172,12 +175,11 @@ fun ExpandableScaffold(
                     expandedContent()
                 }
             }
-            val collapsedMeasureModifier = if (state.collapsedHeight.isNaN()) {
-                Modifier.onGloballyPositioned {
-                    state.collapsedHeight = it.size.height.toFloat()
+            val collapsedMeasureModifier = Modifier.onGloballyPositioned {
+                val measuredHeight = it.size.height.toFloat()
+                if(state.collapsedHeight != measuredHeight) {
+                    state.collapsedHeight = measuredHeight
                 }
-            } else {
-                Modifier
             }
             Box(
                 modifier = Modifier

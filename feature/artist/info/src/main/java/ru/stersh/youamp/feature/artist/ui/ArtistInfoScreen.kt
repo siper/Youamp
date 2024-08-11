@@ -137,7 +137,7 @@ private fun Content(
             val column = index % 2
             AlbumItem(
                 album = item,
-                onAlbumClick = onAlbumClick,
+                onClick = onAlbumClick,
                 modifier = if (column == 0) {
                     Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
                 } else {

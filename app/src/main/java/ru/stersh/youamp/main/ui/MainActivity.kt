@@ -39,6 +39,7 @@ import ru.stersh.youamp.feature.albums.ui.AlbumsScreen
 import ru.stersh.youamp.feature.artist.ui.ArtistInfoScreen
 import ru.stersh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stersh.youamp.feature.main.ui.MainScreen
+import ru.stersh.youamp.feature.personal.ui.PersonalScreen
 import ru.stersh.youamp.feature.player.mini.ui.MiniPlayer
 import ru.stersh.youamp.feature.player.queue.ui.PlayerQueueScreen
 import ru.stersh.youamp.feature.player.screen.ui.PlayerScreen
@@ -170,6 +171,19 @@ class MainActivity : ComponentActivity() {
                                     showAlbum = true
                                 )
                             }
+                        )
+                    },
+                    personal = {
+                        PersonalScreen(
+                            onSongClick = {
+                                songInfoProperties = SongInfoProperties(
+                                    songId = it,
+                                    showAlbum = true
+                                )
+                            },
+                            onAlbumClick = { rootNavController.navigate(AlbumInfo(it)) },
+                            onArtistClick = { rootNavController.navigate(ArtistInfo(it)) },
+                            onPlaylistClick = { rootNavController.navigate(PlaylistInfo(it)) }
                         )
                     }
                 )
@@ -338,7 +352,14 @@ class MainActivity : ComponentActivity() {
             ModalBottomSheet(
                 containerColor = MaterialTheme.colorScheme.surface,
                 onDismissRequest = { songInfoProperties = null },
-                contentWindowInsets = { WindowInsets(0.dp, 0.dp, 0.dp, 0.dp) },
+                contentWindowInsets = {
+                    WindowInsets(
+                        0.dp,
+                        0.dp,
+                        0.dp,
+                        0.dp
+                    )
+                },
                 dragHandle = {}
             ) {
                 SongInfoScreen(

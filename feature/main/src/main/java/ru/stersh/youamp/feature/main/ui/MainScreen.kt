@@ -39,6 +39,7 @@ fun MainScreen(
     topBar: @Composable () -> Unit,
     miniPlayer: @Composable () -> Unit,
     bigPlayer: @Composable () -> Unit,
+    personal: @Composable () -> Unit,
     albumsScreen: @Composable () -> Unit,
     artistsScreen: @Composable () -> Unit,
     playlistsScreen: @Composable () -> Unit,
@@ -100,62 +101,62 @@ fun MainScreen(
             }
         },
         modifier = Modifier.fillMaxSize()
-    ) { padding ->
-        val tabData = arrayOf(
-            stringResource(R.string.albums_title),
-            stringResource(R.string.artists_title),
-            stringResource(R.string.playlists_title),
-            stringResource(R.string.favorites_title)
-        )
-        val pagerState = rememberPagerState { tabData.size }
-        val scope = rememberCoroutineScope()
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            ScrollableTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                edgePadding = 0.dp,
-                indicator = { tabPositions ->
-                    TabRowDefaults.PrimaryIndicator(
-                        Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
-                    )
-                },
-                divider = {},
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                tabData.forEachIndexed { index, tabTitle ->
-                    Tab(
-                        selected = pagerState.currentPage == index,
-                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        onClick = {
-                            scope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                        text = {
-                            Text(text = tabTitle)
-                        }
-                    )
-                }
-            }
-            HorizontalDivider()
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .clipToBounds()
-                    .weight(1f)
-            ) {
-                when (it) {
-                    0 -> albumsScreen()
-                    1 -> artistsScreen()
-                    2 -> playlistsScreen()
-                    3 -> favoritesScreen()
-                    else -> {}
-                }
-            }
-        }
+    ) {
+        personal()
+//        val tabData = arrayOf(
+//            stringResource(R.string.albums_title),
+//            stringResource(R.string.artists_title),
+//            stringResource(R.string.playlists_title),
+//            stringResource(R.string.favorites_title)
+//        )
+//        val pagerState = rememberPagerState { tabData.size }
+//        val scope = rememberCoroutineScope()
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//        ) {
+//            ScrollableTabRow(
+//                selectedTabIndex = pagerState.currentPage,
+//                edgePadding = 0.dp,
+//                indicator = { tabPositions ->
+//                    TabRowDefaults.PrimaryIndicator(
+//                        Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
+//                    )
+//                },
+//                divider = {},
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                tabData.forEachIndexed { index, tabTitle ->
+//                    Tab(
+//                        selected = pagerState.currentPage == index,
+//                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+//                        onClick = {
+//                            scope.launch {
+//                                pagerState.animateScrollToPage(index)
+//                            }
+//                        },
+//                        text = {
+//                            Text(text = tabTitle)
+//                        }
+//                    )
+//                }
+//            }
+//            HorizontalDivider()
+//            HorizontalPager(
+//                state = pagerState,
+//                modifier = Modifier
+//                    .clipToBounds()
+//                    .weight(1f)
+//            ) {
+//                when (it) {
+//                    0 -> albumsScreen()
+//                    1 -> artistsScreen()
+//                    2 -> playlistsScreen()
+//                    3 -> favoritesScreen()
+//                    else -> {}
+//                }
+//            }
+//        }
     }
 }
 
@@ -179,7 +180,8 @@ private fun MainScreenPreview() {
             artistsScreen = {},
             playlistsScreen = {},
             favoritesScreen = {},
-            bigPlayer = {}
+            bigPlayer = {},
+            personal = { }
         )
     }
 }

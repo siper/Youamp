@@ -112,7 +112,7 @@ private fun Content(
         ) { album ->
             AlbumItem(
                 album = album,
-                onAlbumClick = onAlbumClick
+                onClick = onAlbumClick
             )
         }
     }
