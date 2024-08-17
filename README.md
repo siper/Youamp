@@ -103,6 +103,13 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>24 words</b></sub>
       </td>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/gfreak70"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13415218/medium/0b6ea6c0fa230d9069a08c28fed8a6b8.jpg" />
+          <br />
+          <sub><b>Jann Bern (gfreak70)</b></sub></a>
+        <br />
+        <sub><b>15 words</b></sub>
+      </td>
     </tr>
   </tbody>
 </table><a href="https://crowdin.com/project/youamp" target="_blank">Translate in Crowdin 🚀</a>
