@@ -17,7 +17,7 @@ internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
 
     val artworkUri = apiProvider
         .getApi()
-        .getCoverArtUrl(coverArt)
+        .getCoverArtUrl(coverArt, auth = true)
         ?.toUri()
 
     val songRating = userRating

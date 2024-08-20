@@ -3,8 +3,10 @@ package ru.stersh.youamp.feature.personal.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -30,12 +32,26 @@ internal class PersonalViewModel(
     val state: StateFlow<PersonalScreenStateUi>
         get() = _state
 
+    private var stateJob: Job? = null
+
     init {
-        viewModelScope.launch {
+        subscribeState()
+    }
+
+    private fun subscribeState() {
+        stateJob = viewModelScope.launch {
             personalRepository
                 .getPersonal()
                 .map { it.toUi() }
                 .flowOn(Dispatchers.IO)
+                .catch {
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            error = true
+                        )
+                    }
+                }
                 .collect { personal ->
                     _state.update {
                         it.copy(
@@ -47,6 +63,18 @@ internal class PersonalViewModel(
         }
     }
 
+    fun retry() {
+        stateJob?.cancel()
+        _state.update {
+            it.copy(
+                progress = true,
+                error = false,
+                data = null
+            )
+        }
+        subscribeState()
+    }
+
     fun onPlayPauseAudioSource(source: AudioSource) {
         viewModelScope.launch {
             val playingSource = playerQueueAudioSourceManager
@@ -56,7 +84,10 @@ internal class PersonalViewModel(
             val isPlaying = playStateStore
                 .isPlaying()
                 .first()
-            val isSourcePlaying = playingSource?.equals(serverId, source) == true
+            val isSourcePlaying = playingSource?.equals(
+                serverId,
+                source
+            ) == true
             if (isSourcePlaying && isPlaying) {
                 playerControls.pause()
                 return@launch

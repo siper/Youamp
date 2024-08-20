@@ -42,7 +42,7 @@ fun SkeletonLayout(
         ),
         label = "skeleton_alpha_animation"
     )
-    Column(modifier = modifier.graphicsLayer(alpha = alphaAnimation)) {
+    Box(modifier = modifier.graphicsLayer(alpha = alphaAnimation)) {
         content(SkeletonScope)
     }
 }
@@ -70,14 +70,16 @@ private fun SkeletonItemPreview() {
     YouampPlayerTheme {
         Surface {
             SkeletonLayout {
-                SkeletonItem(
-                    modifier = Modifier
-                        .size(width = 60.dp, height = 48.dp)
-                )
-                SkeletonItem(
-                    modifier = Modifier
-                        .size(width = 130.dp, height = 20.dp)
-                )
+                Column {
+                    SkeletonItem(
+                        modifier = Modifier
+                            .size(width = 60.dp, height = 48.dp)
+                    )
+                    SkeletonItem(
+                        modifier = Modifier
+                            .size(width = 130.dp, height = 20.dp)
+                    )
+                }
             }
         }
     }
