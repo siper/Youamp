@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates
+                src="user"
+                tools:ignore="AcceptsUserCertificates" />
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
