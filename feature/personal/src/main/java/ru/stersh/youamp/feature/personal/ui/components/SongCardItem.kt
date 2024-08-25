@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import ru.stersh.youamp.core.ui.Artwork
 
 @Immutable
-data class PersonalSongUi(
+internal data class PersonalSongUi(
     val id: String,
     val title: String,
     val artist: String?,
@@ -30,7 +30,7 @@ data class PersonalSongUi(
 )
 
 @Composable
-fun SongCardItem(
+internal fun SongCardItem(
     song: PersonalSongUi,
     onPlayPauseClick: () -> Unit,
     onClick: () -> Unit,

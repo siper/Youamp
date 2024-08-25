@@ -17,7 +17,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import ru.stersh.youamp.core.ui.Artwork
 
 @Immutable
-data class PersonalAlbumUi(
+internal data class PersonalAlbumUi(
     val id: String,
     val title: String,
     val artist: String?,

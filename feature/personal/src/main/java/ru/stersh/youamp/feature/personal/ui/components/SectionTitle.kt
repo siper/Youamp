@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SectionTitle(
+internal fun SectionTitle(
     title: String,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null

@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OutlinedPlayButton(
+internal fun OutlinedPlayButton(
     isPlaying: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier

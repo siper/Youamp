@@ -26,7 +26,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import ru.stersh.youamp.core.ui.CircleArtwork
 
 @Immutable
-data class PersonalArtistUi(
+internal data class PersonalArtistUi(
     val id: String,
     val name: String,
     val artworkUrl: String?,
@@ -34,7 +34,7 @@ data class PersonalArtistUi(
 )
 
 @Composable
-fun ArtistItem(
+internal fun ArtistItem(
     artist: PersonalArtistUi,
     onPlayPauseClick: () -> Unit,
     onClick: (id: String) -> Unit,
@@ -70,7 +70,10 @@ fun ArtistItem(
                     .aspectRatio(1f)
                     .background(
                         brush = Brush.verticalGradient(
-                            colorStops = arrayOf(0.2f to Color.Transparent, 0.7f to MaterialTheme.colorScheme.surfaceContainerLow)
+                            colorStops = arrayOf(
+                                0.2f to Color.Transparent,
+                                0.7f to MaterialTheme.colorScheme.surfaceContainerLow
+                            )
                         ),
                         shape = CircleShape
                     )
