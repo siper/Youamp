@@ -58,7 +58,7 @@ platform :android do
         validate_only: true,
         skip_upload_aab: true,
         skip_upload_apk: true,
-        changes_not_sent_for_review: false
+        changes_not_sent_for_review: true
       )
     end
 end
