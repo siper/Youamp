@@ -110,6 +110,13 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>15 words</b></sub>
       </td>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12617257/medium/a201650da44fed28890b0e0d8477a663.jpg" />
+          <br />
+          <sub><b>⁂ josé m. (ghose)</b></sub></a>
+        <br />
+        <sub><b>0 words</b></sub>
+      </td>
     </tr>
   </tbody>
 </table><a href="https://crowdin.com/project/youamp" target="_blank">Translate in Crowdin 🚀</a>
