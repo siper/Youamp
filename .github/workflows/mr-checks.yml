@@ -22,12 +22,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.3'
-          bundler-cache: true
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
@@ -51,12 +45,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.3'
-          bundler-cache: true
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
@@ -67,8 +55,6 @@ jobs:
     name: Check Play Store metadata
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      GOOGLE_SERVICE_KEY_JSON: ${{ secrets.GOOGLE_SERVICE_KEY_JSON }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
