@@ -2,6 +2,7 @@ package ru.stersh.youamp.core.api
 
 import android.net.Uri
 import com.squareup.moshi.Moshi
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -28,7 +29,8 @@ class SubsonicApi(
         useLegacyAuth
     )
     private val errorInterceptor = ErrorInterceptor(moshi)
-    private val client = getUnsafeOkHttpClient()
+    private val client = OkHttpClient
+        .Builder()
         .addInterceptor(loggingInterceptor)
         .addInterceptor(responseInterceptor)
         .addInterceptor(errorInterceptor)
