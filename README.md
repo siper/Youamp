@@ -111,6 +111,15 @@ If you want help to make Youamp better, you can:
         <sub><b>15 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
+          <br />
+          <sub><b>January Mara (januarymara185)</b></sub></a>
+        <br />
+        <sub><b>3 words</b></sub>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12617257/medium/a201650da44fed28890b0e0d8477a663.jpg" />
           <br />
           <sub><b>⁂ josé m. (ghose)</b></sub></a>
