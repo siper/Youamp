@@ -1,6 +1,6 @@
 package ru.stersh.youamp.feature.artists
 
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.stersh.youamp.feature.artists.data.ArtistsRepositoryImpl
 import ru.stersh.youamp.feature.artists.domain.ArtistsRepository

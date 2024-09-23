@@ -7,7 +7,7 @@ import ru.stersh.youamp.shared.player.android.MusicService
 import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
 
 internal class PlayerControlsImpl(
-    private val context: Context
+    context: Context
 ) : PlayerControls {
     private val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
     private val mainExecutor = ContextCompat.getMainExecutor(context)

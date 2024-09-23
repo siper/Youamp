@@ -31,6 +31,7 @@ fun mediaControllerFuture(context: Context, clazz: Class<*>): ListenableFuture<M
         .buildAsync()
 }
 
+@Suppress("unused")
 internal fun mediaItemsFlow(context: Context, clazz: Class<*>): Flow<List<MediaItem>> = callbackFlow {
     val mediaControllerFuture = mediaControllerFuture(context, clazz)
 

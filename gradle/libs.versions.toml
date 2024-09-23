@@ -9,11 +9,7 @@ timber = "5.0.1"
 moshi = "1.15.1"
 retrofit = "2.11.0"
 media = "1.4.1"
-junit = "4.13.2"
-androidx-junit = "1.2.1"
-espresso-core = "3.6.1"
 google-material = "1.12.0"
-appcompat = "1.7.0"
 compose-icons = "1.1.1"
 
 [libraries]
@@ -47,7 +43,7 @@ room-core = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
-compose-bom = "androidx.compose:compose-bom:2024.09.00"
+compose-bom = "androidx.compose:compose-bom:2024.09.02"
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
@@ -57,11 +53,7 @@ compose-material3 = "androidx.compose.material3:material3:1.3.0"
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "compose-icons" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 [bundles]
 koin = [

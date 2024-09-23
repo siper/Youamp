@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.koin.compose.rememberKoinInject
+import org.koin.compose.koinInject
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -51,14 +51,13 @@ import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
 @Composable
 fun SongInfoScreen(
     id: String,
-    onAddToPlaylist: (songId: String) -> Unit,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
     onDismiss: () -> Unit,
     showAlbum: Boolean = true
 ) {
-    val apiProvider: ApiProvider = rememberKoinInject()
-    val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager = rememberKoinInject()
+    val apiProvider: ApiProvider = koinInject()
+    val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager = koinInject()
     val scope = rememberCoroutineScope()
 
     var state by remember(showAlbum) { mutableStateOf(SongInfoStateUi(showAlbum = showAlbum)) }
@@ -79,7 +78,6 @@ fun SongInfoScreen(
     SongInfoScreen(
         state = state,
         onDismiss = onDismiss,
-        onAddToPlaylist = { onAddToPlaylist(id) },
         onOpenAlbum = onOpenAlbum,
         onOpenArtist = onOpenArtist,
         onPlay = {
@@ -172,7 +170,6 @@ private fun Progress(
 private fun Content(
     state: SongInfoStateUi,
     onDismiss: () -> Unit,
-    onAddToPlaylist: () -> Unit,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
     onPlay: () -> Unit,
@@ -227,14 +224,6 @@ private fun Content(
             title = stringResource(R.string.play_next_in_queue_title),
             onClick = onPlayNextInQueue
         )
-//            MenuItem(
-//                icon = Icons.AutoMirrored.Rounded.PlaylistAdd,
-//                title = stringResource(R.string.add_to_playlist_title),
-//                onClick = {
-//                    onAddToPlaylist()
-//                    onDismiss()
-//                }
-//            )
         if (state.showAlbum && state.albumId != null) {
             MenuItem(
                 icon = Icons.Rounded.MusicVideo,
@@ -262,7 +251,6 @@ private fun Content(
 private fun SongInfoScreen(
     state: SongInfoStateUi,
     onDismiss: () -> Unit,
-    onAddToPlaylist: () -> Unit,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
     onPlay: () -> Unit,
@@ -279,7 +267,6 @@ private fun SongInfoScreen(
             Content(
                 state = state,
                 onDismiss = onDismiss,
-                onAddToPlaylist = onAddToPlaylist,
                 onOpenAlbum = onOpenAlbum,
                 onOpenArtist = onOpenArtist,
                 onPlay = onPlay,
@@ -334,7 +321,6 @@ private fun AlbumInfoScreenPreview() {
                 progress = false
             ),
             onDismiss = {},
-            onAddToPlaylist = {},
             onPlay = {},
             onOpenAlbum = {},
             onOpenArtist = {},

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import ru.stresh.youamp.core.properties.app.AppProperties
 import ru.stresh.youamp.core.properties.app.AppPropertiesStorage
 
-internal class AboutAppViewModel(private val appPropertiesStorage: AppPropertiesStorage) : ViewModel() {
+internal class AboutAppViewModel(appPropertiesStorage: AppPropertiesStorage) : ViewModel() {
     private val _state = MutableStateFlow(appPropertiesStorage.getAppProperties().toState())
 
     val state: StateFlow<AboutStateUi>

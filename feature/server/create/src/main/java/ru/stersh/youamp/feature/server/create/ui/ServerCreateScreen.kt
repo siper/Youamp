@@ -213,7 +213,7 @@ private fun ContentState(
                         onValidateInput(input)
                     }
                 },
-                keyboardOptions = KeyboardOptions(autoCorrect = false),
+                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp)

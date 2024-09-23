@@ -22,7 +22,7 @@ import ru.stersh.youamp.shared.player.utils.toMediaItem
 import ru.stersh.youamp.shared.player.utils.withPlayer
 
 internal class PlayerQueueAudioSourceManagerImpl(
-    private val context: Context,
+    context: Context,
     private val apiProvider: ApiProvider,
 ) : PlayerQueueAudioSourceManager {
     private val mediaController = mediaControllerFuture(context, MusicService::class.java)

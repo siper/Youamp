@@ -2,7 +2,6 @@
 <resources>
     <string name="play_title">Lire</string>
     <string name="play_next_in_queue_title">Jouer le suivant dans la file d\'attente</string>
-    <string name="add_to_playlist_title">Ajouter à la liste de lecture...</string>
     <string name="go_to_album_title">Aller à l\'album</string>
     <string name="go_to_artist_title">Aller à l\'artiste</string>
 </resources>

@@ -2,7 +2,6 @@
 <resources>
     <string name="server_screen_title">Server</string>
     <string name="add_server_title">Hinzufügen</string>
-    <string name="back_title">Zurück</string>
     <string name="activate_server_title">Aktivieren</string>
     <string name="edit_server_title">Bearbeiten</string>
     <string name="delete_server_title">Löschen</string>

@@ -1,5 +1,6 @@
 package ru.stersh.youamp.core.api
 
+@Suppress("unused")
 enum class ListType(val value: String) {
     RANDOM("random"),
     NEWEST("newest"),

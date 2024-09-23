@@ -4,7 +4,6 @@
     <string name="add_to_queue_title">Ajouter à la file d\'attente</string>
     <string name="artist_info_title">Informations sur l\'artiste</string>
     <string name="album_info_title">Infos sur l\'album</string>
-    <string name="search_hint_title">Recherche chansons, albums, artistes...</string>
     <string name="songs_title">Chansons</string>
     <string name="load_more_title">Charger plus d\'éléments</string>
     <string name="albums_title">Albums</string>

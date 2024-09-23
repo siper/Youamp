@@ -344,9 +344,6 @@ class MainActivity : ComponentActivity() {
                     onOpenAlbum = { albumId ->
                         rootNavController.navigate(AlbumInfo(albumId))
                     },
-                    onAddToPlaylist = { songId ->
-
-                    },
                     onOpenArtist = { artistId ->
                         rootNavController.navigate(ArtistInfo(artistId))
                     }

@@ -7,5 +7,4 @@
     <string name="error_button_title">Réessayer</string>
     <string name="error_message">Réessayez. Si l\'erreur se produit plusieurs fois, contactez le développeur.</string>
     <string name="error_title">Oups, une erreur est arrivée</string>
-    <string name="empty_state_title">Il n\'y a rien encore ici...</string>
 </resources>

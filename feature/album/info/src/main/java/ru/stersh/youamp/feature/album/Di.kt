@@ -1,6 +1,6 @@
 package ru.stersh.youamp.feature.album
 
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.stersh.youamp.feature.album.data.AlbumInfoRepositoryImpl
 import ru.stersh.youamp.feature.album.domain.AlbumInfoRepository

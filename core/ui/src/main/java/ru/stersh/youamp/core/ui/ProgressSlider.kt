@@ -1,3 +1,5 @@
+@file:Suppress("SameParameterValue")
+
 package ru.stersh.youamp.core.ui
 
 import android.content.res.Configuration
@@ -131,14 +133,6 @@ private fun calculateNewValue(
     }
 }
 
-private fun Float.normalizeBetween(min: Float, max: Float): Float {
-    return when {
-        this < min -> min
-        this > max -> max
-        else -> this
-    }
-}
-
 private fun ClosedFloatingPointRange<Float>.normalize(value: Float): Float {
     return when {
         value < this.start -> this.start
@@ -187,7 +181,7 @@ private fun valueToXPositionPx(
     trackWidth: Float
 ): Float {
     val raw = (value - valueRange.start) / (valueRange.endInclusive - valueRange.start)
-    return raw.normalizeBetween(0f, 1f) * trackWidth
+    return raw.coerceIn(0f, 1f) * trackWidth
 }
 
 @Composable

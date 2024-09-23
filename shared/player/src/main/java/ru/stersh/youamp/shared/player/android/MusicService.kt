@@ -1,6 +1,5 @@
 package ru.stersh.youamp.shared.player.android
 
-import android.app.NotificationManager
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -29,7 +28,6 @@ import timber.log.Timber
 
 class MusicService : MediaLibraryService() {
 
-    private val notificationManager: NotificationManager by inject()
     private val apiSonicPlayQueueSyncer: ApiSonicPlayQueueSyncer by inject()
 
     private lateinit var player: Player

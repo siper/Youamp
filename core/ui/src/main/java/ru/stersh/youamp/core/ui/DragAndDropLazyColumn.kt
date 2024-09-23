@@ -128,9 +128,7 @@ class DragDropState internal constructor(
             .firstOrNull { it.index == currentIndexOfDraggedItem }
 
     internal var previousIndexOfDraggedItem by mutableStateOf<Int?>(null)
-        private set
     internal var previousItemOffset = Animatable(0f)
-        private set
 
     // used to obtain initial offsets on drag start
     private var initiallyDraggedElement by mutableStateOf<LazyListItemInfo?>(null)
@@ -279,7 +277,7 @@ fun LazyItemScope.DraggableItem(
                 translationY = previous
             }
     } else {
-        Modifier.animateItemPlacement()
+        Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null)
     }
     Column(modifier = modifier.then(draggingModifier)) {
         content(dragging)
