@@ -1,6 +1,7 @@
 *.iml
 .gradle
-/.idea
+/.idea/*
+!/.idea/icon.svg
 /local.properties
 /.idea/caches
 /.idea/libraries
