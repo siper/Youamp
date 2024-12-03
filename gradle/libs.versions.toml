@@ -8,7 +8,7 @@ room = "2.6.1"
 timber = "5.0.1"
 moshi = "1.15.1"
 retrofit = "2.11.0"
-media = "1.4.1"
+media = "1.5.0"
 google-material = "1.12.0"
 compose-icons = "1.1.1"
 
