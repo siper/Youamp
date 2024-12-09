@@ -19,8 +19,6 @@ dependencies {
 
     api(libs.media.exoplayer)
     api(libs.media.exoplayer.hls)
-    api(libs.media.exoplayer.hls)
-    api(libs.media.exoplayer.workmanager)
     api(libs.media.datasource)
     api(libs.media.datasource.okhttp)
     api(libs.media.session)
