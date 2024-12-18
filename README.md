@@ -120,7 +120,7 @@ If you want help to make Youamp better, you can:
     </tr>
     <tr>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12617257/medium/a201650da44fed28890b0e0d8477a663.jpg" />
+        <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12617257/medium/7a0122f352a94d95be10780bb83f63ef.jpg" />
           <br />
           <sub><b>⁂ josé m. (ghose)</b></sub></a>
         <br />
