@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_title">关于</string>
+    <string name="about_subtitle">应用程序信息，反馈链接</string>
+    <string name="servers_title">服务器</string>
+    <string name="servers_subtitle">管理你的 Subsonic 服务器</string>
+    <string name="about_icon_description">关于图标</string>
+    <string name="servers_icon_description">服务器图标</string>
+    <string name="settings_title">设置</string>
+</resources>
