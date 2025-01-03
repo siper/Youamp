@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_screen_title">服务器</string>
+    <string name="add_server_title">添加</string>
+    <string name="activate_server_title">激活</string>
+    <string name="edit_server_title">编辑</string>
+    <string name="delete_server_title">删除</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_queue_description">播放队列</string>
+    <string name="shuffle_mode_description">随机模式</string>
+    <string name="repeat_mode_description">重复模式</string>
+    <string name="favorite_song_description">收藏歌曲</string>
+    <string name="pause_button_description">暂停按钮</string>
+    <string name="play_button_description">播放按钮</string>
+    <string name="previous_song_description">上一首歌</string>
+    <string name="next_song_description">下一首歌</string>
+</resources>

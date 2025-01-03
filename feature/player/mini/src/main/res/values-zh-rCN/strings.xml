@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pause_button_description">暂停按钮</string>
+    <string name="play_button_description">播放按钮</string>
+</resources>

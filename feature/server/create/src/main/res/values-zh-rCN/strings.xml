@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_test_success_message">测试成功</string>
+    <string name="server_test_error_message">测试出错</string>
+    <string name="new_server_title">新建 Subsonic 服务器</string>
+    <string name="edit_server_title">编辑服务器</string>
+    <string name="server_name_title">名称</string>
+    <string name="server_address_title">网址</string>
+    <string name="server_username_title">用户名</string>
+    <string name="server_password_title">密码</string>
+    <string name="server_use_legacy_auth_title">使用旧版认证</string>
+    <string name="server_test_title">测试</string>
+    <string name="server_add_action_title">添加</string>
+    <string name="server_save_action_title">保存</string>
+    <string name="hide_password_description">隐藏密码</string>
+    <string name="show_password_description">显示密码</string>
+    <string name="server_icon_description">服务器图标</string>
+    <string name="user_icon_description">用户图标</string>
+    <string name="use_legacy_auth_subtitle">部分服务器不支持加盐的验证方式。若你遇到连接问题，启用此项。</string>
+    <string name="additional_settings_title">附加设置</string>
+</resources>
