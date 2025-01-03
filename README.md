@@ -69,6 +69,13 @@ If you want help to make Youamp better, you can:
         <sub><b>3875 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
+          <br />
+          <sub><b>isard</b></sub></a>
+        <br />
+        <sub><b>266 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
           <br />
           <sub><b>myrad2267</b></sub></a>
@@ -83,9 +90,9 @@ If you want help to make Youamp better, you can:
         <sub><b>264 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
+        <a href="https://crowdin.com/profile/hyx0329"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16804195/medium/378e586e06527bde2ada2f62b492dcd0.png" />
           <br />
-          <sub><b>isard</b></sub></a>
+          <sub><b>hyx0329</b></sub></a>
         <br />
         <sub><b>260 words</b></sub>
       </td>
@@ -110,6 +117,8 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>15 words</b></sub>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
           <br />
@@ -117,8 +126,6 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>3 words</b></sub>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12617257/medium/7a0122f352a94d95be10780bb83f63ef.jpg" />
           <br />
