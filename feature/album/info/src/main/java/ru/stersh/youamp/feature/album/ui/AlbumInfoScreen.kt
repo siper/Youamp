@@ -267,12 +267,18 @@ private fun AlbumSongItem(
     onClick: () -> Unit
 ) {
     ListItem(
+        leadingContent = {
+            Text(text = song.track.toString())
+        },
         headlineContent = {
             Text(
                 text = song.title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+        },
+        supportingContent = {
+            Text(text = song.artist ?: "")
         },
         trailingContent = {
             Text(text = song.duration)
@@ -287,7 +293,9 @@ private fun AlbumSongItemPreview() {
     val song = AlbumSongUi(
         id = "1",
         title = "Coolest song in the world with very long title",
-        duration = "12:00"
+        duration = "12:00",
+        track = 1,
+        artist = "Someone"
     )
     AlbumSongItem(
         song = song,
@@ -301,17 +309,24 @@ private fun AlbumInfoScreenPreview() {
     val songs = listOf(
         AlbumSongUi(
             id = "1",
+            track = 1,
             title = "Test song",
-            duration = "2:11"
+            duration = "2:11",
+            artist = "Test artist"
+
         ),
         AlbumSongUi(
             id = "2",
+            track = 2,
             title = "Test song 2",
-            duration = "6:23"
+            artist = "Someone else",
+            duration = "6:23",
         ),
         AlbumSongUi(
             id = "3",
+            track = 3,
             title = "Test song 3",
+            artist = "Test artist",
             duration = "5:11"
         )
     )

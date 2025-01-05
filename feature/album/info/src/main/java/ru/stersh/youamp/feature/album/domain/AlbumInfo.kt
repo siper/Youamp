@@ -6,4 +6,4 @@ internal data class AlbumInfo(
     val artist: String,
     val year: String?,
     val songs: List<AlbumSong>
-) 
+)
