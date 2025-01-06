@@ -17,4 +17,5 @@
     <string name="server_icon_description">Icona del servidor</string>
     <string name="user_icon_description">Icona d\'usuari</string>
     <string name="use_legacy_auth_subtitle">Alguns servidors no suporten l\'autenticació de tipus sal. Si teniu problemes amb la connexió, activeu aquesta opció</string>
+    <string name="additional_settings_title">Més opcions</string>
 </resources>
