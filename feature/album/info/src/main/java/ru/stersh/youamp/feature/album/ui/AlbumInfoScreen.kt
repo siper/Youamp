@@ -279,9 +279,11 @@ private fun AlbumSongItem(
         },
         supportingContent = {
             song.artist?.let { 
-                Text(text = it,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis) 
+                Text(
+                    text = it,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         },
         trailingContent = {
