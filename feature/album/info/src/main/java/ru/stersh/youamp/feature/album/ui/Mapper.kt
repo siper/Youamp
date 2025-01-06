@@ -17,6 +17,8 @@ internal fun AlbumSong.toUi(): AlbumSongUi {
     return AlbumSongUi(
         id = id,
         title = title,
+        track = track,
+        artist = artist,
         duration = duration
     )
 }

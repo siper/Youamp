@@ -35,7 +35,9 @@ internal class AlbumInfoRepositoryImpl(
     private fun Song.toDomain(): AlbumSong {
         return AlbumSong(
             id = id,
+            track = track,
             title = title,
+            artist = artist,
             duration = formatSongDuration((duration ?: 0) * 1000)
         )
     }

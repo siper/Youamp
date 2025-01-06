@@ -22,5 +22,7 @@ internal data class AlbumInfoUi(
 internal data class AlbumSongUi(
     val id: String,
     val title: String,
+    val track: Int?,
+    val artist: String?,
     val duration: String
 )
