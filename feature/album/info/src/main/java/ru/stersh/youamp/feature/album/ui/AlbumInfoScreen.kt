@@ -268,7 +268,7 @@ private fun AlbumSongItem(
 ) {
     ListItem(
         leadingContent = {
-            Text(text = song.track.toString())
+            song.track?.let { Text(text = it.toString()) }
         },
         headlineContent = {
             Text(
@@ -278,7 +278,11 @@ private fun AlbumSongItem(
             )
         },
         supportingContent = {
-            Text(text = song.artist ?: "")
+            song.artist?.let { 
+                Text(text = it,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis) 
+            }
         },
         trailingContent = {
             Text(text = song.duration)
