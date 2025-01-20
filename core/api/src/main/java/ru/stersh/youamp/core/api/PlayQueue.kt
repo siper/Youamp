@@ -12,7 +12,7 @@ data class PlayQueueResponse(
 @JsonClass(generateAdapter = true)
 data class PlayQueue(
     @Json(name = "current")
-    val current: Long?,
+    val current: String?,
     @Json(name = "position")
     val position: Long,
     @Json(name = "username")

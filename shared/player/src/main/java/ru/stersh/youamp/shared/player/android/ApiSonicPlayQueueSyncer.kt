@@ -23,8 +23,7 @@ internal class ApiSonicPlayQueueSyncer(private val apiProvider: ApiProvider) {
         } ?: return
 
         val items = playQueue.entry.map { it.toMediaItem(apiProvider) }
-        val currentIndex = items
-            .indexOfFirst { it.mediaId == playQueue.current?.toString() }
+        val currentIndex = items.indexOfFirst { it.mediaId == playQueue.current }
         val position = playQueue.position
 
         if (currentIndex != -1) {
