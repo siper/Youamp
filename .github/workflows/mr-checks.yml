@@ -50,23 +50,3 @@ jobs:
 
       - name: Build
         run: ./gradlew app:assemble
-
-  check-metadata:
-    name: Check Play Store metadata
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.3'
-          bundler-cache: true
-
-      - name: Generate google-service-key.json file
-        run: echo ${{secrets.GOOGLE_SERVICE_KEY_JSON}} | base64 -d > /home/runner/work/Youamp/Youamp/google-service-key.json
-
-      - name: Validate metadata in Play Store with fastlane
-        run: bundle exec fastlane play_store_validate

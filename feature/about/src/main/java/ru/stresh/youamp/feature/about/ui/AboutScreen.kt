@@ -37,7 +37,6 @@ import compose.icons.SimpleIcons
 import compose.icons.simpleicons.Crowdin
 import compose.icons.simpleicons.FDroid
 import compose.icons.simpleicons.Github
-import compose.icons.simpleicons.Googleplay
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SingleLineText
@@ -133,9 +132,6 @@ private fun AboutScreen(
                 GithubItem(
                     onClick = onGithubClick
                 )
-                GooglePlayItem(
-                    onClick = onGooglePlayClick
-                )
                 FDroidItem(
                     onClick = onFDroidClick
                 )
@@ -195,33 +191,6 @@ private fun FDroidItem(
         supportingContent = {
             SingleLineText(
                 text = stringResource(R.string.f_droid_subtitle)
-            )
-        },
-        modifier = modifier.clickable(onClick = onClick)
-    )
-}
-
-@Composable
-private fun GooglePlayItem(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    ListItem(
-        leadingContent = {
-            Icon(
-                imageVector = SimpleIcons.Googleplay,
-                contentDescription = stringResource(R.string.google_play_icon_description),
-                modifier = Modifier.size(36.dp)
-            )
-        },
-        headlineContent = {
-            SingleLineText(
-                text = stringResource(R.string.google_play_title)
-            )
-        },
-        supportingContent = {
-            SingleLineText(
-                text = stringResource(R.string.google_play_subtitle)
             )
         },
         modifier = modifier.clickable(onClick = onClick)

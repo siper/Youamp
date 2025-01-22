@@ -24,41 +24,4 @@ platform :android do
     )
   end
 
-  desc "Lane for distributing app with Play Store"
-  lane :play_store do
-    gradle(
-      task: "bundle",
-      build_type: "Release",
-      properties: {
-        "android.injected.signing.store.file" => "/home/runner/work/Youamp/Youamp/keystore.jks",
-        "android.injected.signing.store.password" => ENV['KEYSTORE_PASSWORD'],
-        "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
-        "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
-      }
-    )
-    track = 'production'
-    if ENV['VERSION_TAG'].include? 'alpha'
-      track = 'alpha'
-    elsif ENV['VERSION_TAG'].include? 'beta'
-      track = 'beta'
-    end
-    upload_to_play_store(
-      track: track,
-      sync_image_upload: true,
-      skip_upload_apk: true
-    )
-  end
-
-  desc "Lane for validate app metadata in Play Store"
-    lane :play_store_validate do
-      upload_to_play_store(
-        track: 'alpha',
-        skip_upload_changelogs: true,
-        sync_image_upload: true,
-        validate_only: true,
-        skip_upload_aab: true,
-        skip_upload_apk: true,
-        changes_not_sent_for_review: true
-      )
-    end
 end
