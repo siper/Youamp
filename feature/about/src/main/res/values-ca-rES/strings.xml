@@ -2,8 +2,6 @@
 <resources>
     <string name="github_icon_description">Icona de GitHub</string>
     <string name="github_subtitle">Valorar o enviar un informe d\'errada</string>
-    <string name="google_play_icon_description">Icona de Google Play</string>
-    <string name="google_play_subtitle">Puntua o comprova actualitzacions</string>
     <string name="f_droid_icon_description">Icona de F-Droid</string>
     <string name="f_droid_subtitle">Comprova actualitzacions</string>
     <string name="crowdin_icon_description">Icona de Crowdin</string>

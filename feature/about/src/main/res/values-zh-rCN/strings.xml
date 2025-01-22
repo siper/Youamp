@@ -2,8 +2,6 @@
 <resources>
     <string name="github_icon_description">GitHub 图标</string>
     <string name="github_subtitle">Star 或反馈问题</string>
-    <string name="google_play_icon_description">Google Play 图标</string>
-    <string name="google_play_subtitle">评分或检查更新</string>
     <string name="f_droid_icon_description">F-Droid 图标</string>
     <string name="f_droid_subtitle">检查更新</string>
     <string name="crowdin_icon_description">Crowdin 图标</string>
