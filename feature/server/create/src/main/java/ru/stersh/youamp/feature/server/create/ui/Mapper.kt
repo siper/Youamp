@@ -3,11 +3,7 @@ package ru.stersh.youamp.feature.server.create.ui
 import ru.stersh.youamp.feature.server.create.domain.Server
 
 internal fun ServerUi.toDomain(): Server {
-    val formattedUrl = if (!url.endsWith("/")) {
-        "$url/"
-    } else {
-        url
-    }
+    val formattedUrl = url.filter { !it.isWhitespace() }.tryAddingSlashAtEnd()
     return Server(
         name = name,
         url = formattedUrl,
@@ -26,3 +22,10 @@ internal fun Server.toInfo(): ServerInfoUi {
         useLegacyAuth = useLegacyAuth
     )
 }
+
+private fun String.tryAddingSlashAtEnd() : String =
+    if (!this.endsWith("/")) {
+        "$this/"
+    } else {
+        this
+    }
