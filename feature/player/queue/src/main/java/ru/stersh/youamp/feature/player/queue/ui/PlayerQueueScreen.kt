@@ -1,8 +1,9 @@
 package ru.stersh.youamp.feature.player.queue.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,7 +18,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,18 +42,31 @@ fun PlayerQueueScreen(onBackClick: () -> Unit) {
     val viewModel: PlayerQueueViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val menuState by remember { derivedStateOf { state.menuSongState } }
+
     PlayerQueueScreen(
         state = state,
         onSongClick = viewModel::playSong,
+        onSongLongClick = viewModel::openSongMenu,
         onMoveSong = viewModel::moveSong,
         onBackClick = onBackClick
     )
+
+    menuState?.let {
+        PlayQueueSongMenu(
+            state = it,
+            onPlaySong = viewModel::playSong,
+            onRemoveSong = viewModel::removeSong,
+            onDismiss = viewModel::dismissSongMenu
+        )
+    }
 }
 
 @Composable
 private fun PlayerQueueScreen(
     state: StateUi,
     onSongClick: (index: Int) -> Unit,
+    onSongLongClick: (index: Int) -> Unit,
     onMoveSong: (from: Int, to: Int) -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -82,6 +98,9 @@ private fun PlayerQueueScreen(
                     song = item,
                     onClick = {
                         onSongClick(index)
+                    },
+                    onLongClick = {
+                        onSongLongClick(index)
                     }
                 )
             }
@@ -89,10 +108,12 @@ private fun PlayerQueueScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SongItem(
     song: SongUi,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
 ) {
     ListItem(
         headlineContent = {
@@ -136,7 +157,11 @@ private fun SongItem(
                 contentDescription = "Drag handle"
             )
         },
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
     )
 }
 
@@ -169,6 +194,7 @@ private fun PlayerQueueScreenPreview() {
         PlayerQueueScreen(
             state = state,
             onSongClick = {},
+            onSongLongClick = {},
             onMoveSong = { from, to -> },
             onBackClick = {}
         )

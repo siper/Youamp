@@ -27,7 +27,7 @@ internal class ApiSonicPlayQueueSyncer(private val apiProvider: ApiProvider) {
         val position = playQueue.position
 
         if (currentIndex != -1) {
-            player.setMediaItems(items, currentIndex, position)
+            player.setMediaItems(items, currentIndex, position ?: 0)
         } else {
             player.setMediaItems(items)
         }

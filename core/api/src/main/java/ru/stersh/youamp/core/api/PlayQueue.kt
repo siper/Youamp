@@ -14,7 +14,7 @@ data class PlayQueue(
     @Json(name = "current")
     val current: String?,
     @Json(name = "position")
-    val position: Long,
+    val position: Long?,
     @Json(name = "username")
     val username: String,
     @Json(name = "changed")

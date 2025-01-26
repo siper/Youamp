@@ -66,6 +66,35 @@ internal class PlayerQueueViewModel(
         }
     }
 
+    fun removeSong(index: Int) = viewModelScope.launch {
+        playerQueueManager.removeSong(index)
+    }
+
+    fun openSongMenu(index: Int) = viewModelScope.launch {
+        val currentSong = playerQueueManager
+            .getQueue()
+            .first()
+            .getOrNull(index)
+            ?: return@launch
+
+        _state.update {
+            it.copy(
+                menuSongState = MenuSongStateUi(
+                    title = currentSong.mediaMetadata.title?.toString(),
+                    artist = currentSong.mediaMetadata.artist?.toString(),
+                    artworkUrl = currentSong.mediaMetadata.artworkUri?.toString(),
+                    index = index
+                )
+            )
+        }
+    }
+
+    fun dismissSongMenu() = viewModelScope.launch {
+        _state.update {
+            it.copy(menuSongState = null)
+        }
+    }
+
     fun moveSong(from: Int, to: Int) = viewModelScope.launch {
         _state.update {
             it.copy(songs = it.songs.swap(from, to))
