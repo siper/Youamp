@@ -1,9 +1,15 @@
 package ru.stersh.youamp.feature.song.info.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.MusicVideo
 import androidx.compose.material.icons.rounded.PersonSearch
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -13,22 +19,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.Error
 import ru.stersh.youamp.core.ui.SongMenu
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.song.info.R
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
 
 
 @Composable
@@ -39,43 +40,43 @@ fun SongInfoScreen(
     onDismiss: () -> Unit,
     showAlbum: Boolean = true
 ) {
-    val apiProvider: ApiProvider = koinInject()
-    val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager = koinInject()
-    val scope = rememberCoroutineScope()
+    val viewModel: SongInfoViewModel = koinViewModel()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var state by remember(showAlbum) { mutableStateOf(SongInfoStateUi(showAlbum = showAlbum)) }
-
-    LaunchedEffect(id) {
-        val api = apiProvider.getApi()
-        val song = api.getSong(id)
-
-        state = state.copy(
-            artworkUrl = api.getCoverArtUrl(song.coverArt),
-            title = song.title,
-            artist = song.artist,
-            artistId = song.artistId,
-            albumId = song.albumId,
-            progress = false
+    LaunchedEffect("load_track_state") {
+        viewModel.loadSongInfo(songId = id, showAlbum = showAlbum)
+    }
+    if (state.error) {
+        Error(
+            onRetry = { viewModel.loadSongInfo(id, showAlbum) },
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .windowInsetsPadding(WindowInsets.navigationBars)
+        )
+    } else {
+        SongInfoScreen(
+            state = state,
+            onDismiss = onDismiss,
+            onOpenAlbum = onOpenAlbum,
+            onOpenArtist = onOpenArtist,
+            onPlay = {
+                viewModel.play(id)
+                onDismiss()
+            },
+            onPlayNextInQueue = {
+                viewModel.playAfterCurrent(id)
+                onDismiss()
+            },
+            onAddToFavorites = {
+                viewModel.addToFavorites(id)
+                onDismiss()
+            },
+            onRemoveFromFavorites = {
+                viewModel.removeFromFavorites(id)
+                onDismiss()
+            },
         )
     }
-    SongInfoScreen(
-        state = state,
-        onDismiss = onDismiss,
-        onOpenAlbum = onOpenAlbum,
-        onOpenArtist = onOpenArtist,
-        onPlay = {
-            scope.launch {
-                playerQueueAudioSourceManager.playSource(AudioSource.Song(id))
-                onDismiss()
-            }
-        },
-        onPlayNextInQueue = {
-            scope.launch {
-                playerQueueAudioSourceManager.addAfterCurrent(AudioSource.Song(id))
-                onDismiss()
-            }
-        }
-    )
 }
 
 @Composable
@@ -86,6 +87,8 @@ private fun SongInfoScreen(
     onOpenArtist: (artistId: String) -> Unit,
     onPlay: () -> Unit,
     onPlayNextInQueue: () -> Unit,
+    onAddToFavorites: () -> Unit,
+    onRemoveFromFavorites: () -> Unit
 ) {
     SongMenu(
         progress = state.progress,
@@ -171,6 +174,34 @@ private fun SongInfoScreen(
                 }
             )
         }
+
+        if (state.favorite) {
+            item(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Favorite,
+                        contentDescription = stringResource(R.string.remove_from_favorites),
+                    )
+                },
+                title = {
+                    Text(text = stringResource(R.string.remove_from_favorites))
+                },
+                onClick = onRemoveFromFavorites
+            )
+        } else {
+            item(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.FavoriteBorder,
+                        contentDescription = stringResource(R.string.add_to_favorites),
+                    )
+                },
+                title = {
+                    Text(text = stringResource(R.string.add_to_favorites))
+                },
+                onClick = onAddToFavorites
+            )
+        }
     }
 }
 
@@ -191,7 +222,9 @@ private fun AlbumInfoScreenPreview() {
             onPlay = {},
             onOpenAlbum = {},
             onOpenArtist = {},
-            onPlayNextInQueue = {}
+            onPlayNextInQueue = {},
+            onAddToFavorites = {},
+            onRemoveFromFavorites = {},
         )
     }
 }

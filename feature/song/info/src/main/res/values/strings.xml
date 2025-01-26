@@ -4,4 +4,6 @@
     <string name="play_next_in_queue_title">Play next in queue</string>
     <string name="go_to_album_title">Go to album</string>
     <string name="go_to_artist_title">Go to artist</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
 </resources>
