@@ -15,8 +15,8 @@ android {
         applicationId "ru.stersh.youamp"
         minSdk project.minSdk
         targetSdk project.targetSdk
-        versionCode 16
-        versionName "1.0.4"
+        versionCode 17
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
