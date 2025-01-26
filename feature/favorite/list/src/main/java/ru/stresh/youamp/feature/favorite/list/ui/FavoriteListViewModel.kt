@@ -12,14 +12,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
-import ru.stersh.youamp.shared.player.queue.PlayerQueueManager
 import ru.stresh.youamp.feature.favorite.list.domain.FavoritesRepository
 import timber.log.Timber
 
 internal class FavoriteListViewModel(
     private val favoritesRepository: FavoritesRepository,
-    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playerQueueManager: PlayerQueueManager
+    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
 ) : ViewModel() {
     private val _state = MutableStateFlow(FavoriteListStateUi())
     val state: StateFlow<FavoriteListStateUi>
@@ -37,19 +35,17 @@ internal class FavoriteListViewModel(
             .getOrNull()
             ?: return@launch
 
-        favorites.songs.forEach {
-            playerQueueAudioSourceManager.addSource(
-                AudioSource.RawSong(
-                    id = it.id,
-                    title = it.title,
-                    artist = it.artist,
-                    artworkUrl = it.artworkUrl,
-                    starred = true,
-                    userRating = it.userRating
-                )
+        val sources = favorites.songs.map {
+            AudioSource.RawSong(
+                id = it.id,
+                title = it.title,
+                artist = it.artist,
+                artworkUrl = it.artworkUrl,
+                starred = true,
+                userRating = it.userRating
             )
         }
-        playerQueueManager.playPosition(0)
+        playerQueueAudioSourceManager.playSource(*sources.toTypedArray())
     }
 
     fun refresh() {

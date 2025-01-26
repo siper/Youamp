@@ -8,5 +8,5 @@ import ru.stresh.youamp.feature.favorite.list.ui.FavoriteListViewModel
 
 val favoriteListModule = module {
     single<FavoritesRepository> { FavoritesRepositoryImpl(get()) }
-    viewModel { FavoriteListViewModel(get(), get(), get()) }
+    viewModel { FavoriteListViewModel(get(), get()) }
 }
