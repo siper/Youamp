@@ -43,7 +43,7 @@ fun SongMenu(
     artist: @Composable () -> Unit,
     items: SongMenuScope.() -> Unit,
 ) {
-    val scope = remember { SongMenuScopeImpl() }
+    val scope = remember(items) { SongMenuScopeImpl() }
     items.invoke(scope)
 
     Surface(

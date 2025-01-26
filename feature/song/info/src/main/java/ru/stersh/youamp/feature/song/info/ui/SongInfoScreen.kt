@@ -119,7 +119,6 @@ private fun SongInfoScreen(
             },
             onClick = {
                 onPlay()
-                onDismiss()
             }
         )
         item(
@@ -134,7 +133,6 @@ private fun SongInfoScreen(
             },
             onClick = {
                 onPlayNextInQueue()
-                onDismiss()
             }
         )
 
