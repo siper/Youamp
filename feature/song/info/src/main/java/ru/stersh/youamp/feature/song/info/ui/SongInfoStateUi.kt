@@ -10,5 +10,7 @@ internal data class SongInfoStateUi(
     val albumId: String? = null,
     val artworkUrl: String? = null,
     val showAlbum: Boolean = false,
-    val progress: Boolean = true
+    val favorite: Boolean = false,
+    val progress: Boolean = true,
+    val error: Boolean = false,
 )

@@ -21,6 +21,7 @@ import ru.stersh.youamp.feature.playlists.playlistListModule
 import ru.stersh.youamp.feature.search.searchModule
 import ru.stersh.youamp.feature.server.create.serverCreateModule
 import ru.stersh.youamp.feature.server.list.serverListModule
+import ru.stersh.youamp.feature.song.info.songInfoModule
 import ru.stersh.youamp.main.data.AvatarUrlRepositoryImpl
 import ru.stersh.youamp.main.data.ServerExistRepositoryImpl
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
@@ -62,7 +63,8 @@ private val feature = listOf(
     searchModule,
     playlistInfoModule,
     favoriteListModule,
-    aboutModule
+    aboutModule,
+    songInfoModule,
 )
 
 private val impl = module {
