@@ -30,7 +30,8 @@ internal class FavoritesRepositoryImpl(private val apiProvider: ApiProvider) : F
             id = id,
             title = title,
             artist = artist,
-            artworkUrl = api.getCoverArtUrl(coverArt)
+            artworkUrl = api.getCoverArtUrl(coverArt),
+            userRating = userRating
         )
     }
 }

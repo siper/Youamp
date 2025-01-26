@@ -39,7 +39,14 @@ internal class FavoriteListViewModel(
 
         favorites.songs.forEach {
             playerQueueAudioSourceManager.addSource(
-                AudioSource.Song(it.id)
+                AudioSource.RawSong(
+                    id = it.id,
+                    title = it.title,
+                    artist = it.artist,
+                    artworkUrl = it.artworkUrl,
+                    starred = true,
+                    userRating = it.userRating
+                )
             )
         }
         playerQueueManager.playPosition(0)
