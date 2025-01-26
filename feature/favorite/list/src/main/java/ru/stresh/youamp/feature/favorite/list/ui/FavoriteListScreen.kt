@@ -1,10 +1,15 @@
 package ru.stresh.youamp.feature.favorite.list.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
-import ru.stersh.youamp.core.ui.SkeletonScope
+import ru.stersh.youamp.core.ui.PlayAllFabButton
+import ru.stersh.youamp.core.ui.SkeletonLayout
 
 @Composable
 fun FavoriteListScreen(
@@ -41,6 +48,7 @@ fun FavoriteListScreen(
 
     FavoriteListScreen(
         state = state,
+        onPlayAll = viewModel::playAll,
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onSongClick = onSongClick
@@ -50,6 +58,7 @@ fun FavoriteListScreen(
 @Composable
 private fun FavoriteListScreen(
     state: FavoriteListStateUi,
+    onPlayAll: () -> Unit,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onSongClick: (id: String) -> Unit
@@ -76,19 +85,32 @@ private fun FavoriteListScreen(
             }
 
             state.favorites?.songs != null -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .fillMaxSize()
                 ) {
-                    items(
-                        items = state.favorites.songs,
-                        contentType = { "song" },
-                        key = { "song_${it.id}" }
-                    ) { song ->
-                        FavoriteSongItem(
-                            song = song,
-                            onClick = { onSongClick(song.id) }
-                        )
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(
+                            items = state.favorites.songs,
+                            contentType = { "song" },
+                            key = { "song_${it.id}" }
+                        ) { song ->
+                            FavoriteSongItem(
+                                song = song,
+                                onClick = { onSongClick(song.id) }
+                            )
+                        }
+                        item(key = "fab_spacer") {
+                            Spacer(modifier = Modifier.height(88.dp))
+                        }
                     }
+                    PlayAllFabButton(
+                        onClick = onPlayAll,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp)
+                    )
                 }
             }
         }
@@ -97,17 +119,17 @@ private fun FavoriteListScreen(
 
 @Composable
 private fun Progress() {
-    Column {
+    SkeletonLayout {
         repeat(10) {
             ListItem(
                 headlineContent = {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        SkeletonScope.SkeletonItem(modifier = Modifier.size(width = 130.dp, height = 16.dp))
-                        SkeletonScope.SkeletonItem(modifier = Modifier.size(width = 200.dp, height = 16.dp))
+                        SkeletonItem(modifier = Modifier.size(width = 130.dp, height = 16.dp))
+                        SkeletonItem(modifier = Modifier.size(width = 200.dp, height = 16.dp))
                     }
                 },
                 leadingContent = {
-                    SkeletonScope.SkeletonItem(modifier = Modifier.size(48.dp))
+                    SkeletonItem(modifier = Modifier.size(48.dp))
                 }
             )
         }
@@ -185,7 +207,7 @@ private fun FavoriteListScreenPreview() {
             ),
         )
         val state = FavoriteListStateUi(
-            progress = true,
+            progress = false,
             isRefreshing = false,
             error = false,
             favorites = FavoritesUi(
@@ -194,6 +216,7 @@ private fun FavoriteListScreenPreview() {
         )
         FavoriteListScreen(
             state = state,
+            onPlayAll = {},
             onRetry = {},
             onRefresh = {},
             onSongClick = {}

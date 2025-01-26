@@ -4,5 +4,6 @@ internal data class FavoriteSong(
     val id: String,
     val title: String,
     val artist: String?,
-    val artworkUrl: String?
+    val artworkUrl: String?,
+    val userRating: Int?
 )

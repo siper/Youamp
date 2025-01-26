@@ -15,4 +15,13 @@ sealed class AudioSource(open val id: String) {
         override val id: String,
         val songId: String? = null
     ) : AudioSource(id)
+
+    data class RawSong(
+        override val id: String,
+        val title: String?,
+        val artist: String?,
+        val artworkUrl: String?,
+        val starred: Boolean?,
+        val userRating: Int?
+    ) : AudioSource(id)
 }

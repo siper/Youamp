@@ -14,8 +14,6 @@ import kotlinx.coroutines.coroutineScope
 import ru.stersh.youamp.core.api.PlaylistEntry
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.MEDIA_ITEM_ALBUM_ID
-import ru.stersh.youamp.shared.player.utils.MEDIA_ITEM_DURATION
 import ru.stersh.youamp.shared.player.utils.MEDIA_SONG_ID
 import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
 import ru.stersh.youamp.shared.player.utils.toMediaItem
@@ -89,6 +87,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
             is AudioSource.Album -> getSongs(source)
             is AudioSource.Artist -> getSongs(source)
             is AudioSource.Playlist -> getSongs(source)
+            is AudioSource.RawSong -> listOf(getSong(source))
         }
     }
 
@@ -137,6 +136,48 @@ internal class PlayerQueueAudioSourceManagerImpl(
             ?: emptyList()
     }
 
+    private suspend fun getSong(source: AudioSource.RawSong): MediaItem {
+        val songUri = apiProvider
+            .getApi()
+            .downloadUrl(source.id)
+            .toUri()
+
+        val starredRating = HeartRating(source.starred != null)
+
+        val songRating = source.userRating
+        val rating = if (songRating != null && songRating > 0) {
+            StarRating(5, songRating.toFloat())
+        } else {
+            StarRating(5)
+        }
+
+        val metadata = MediaMetadata
+            .Builder()
+            .setTitle(source.title)
+            .setArtist(source.artist)
+            .setExtras(
+                bundleOf(
+                    MEDIA_SONG_ID to source.id,
+                ),
+            )
+            .setUserRating(starredRating)
+            .setOverallRating(rating)
+            .setArtworkUri(source.artworkUrl?.toUri())
+            .build()
+        val requestMetadata = MediaItem
+            .RequestMetadata
+            .Builder()
+            .setMediaUri(songUri)
+            .build()
+        return MediaItem
+            .Builder()
+            .setMediaId(source.id)
+            .setMediaMetadata(metadata)
+            .setRequestMetadata(requestMetadata)
+            .setUri(songUri)
+            .build()
+    }
+
     private suspend fun PlaylistEntry.toMediaItem(): MediaItem {
         val songUri = apiProvider
             .getApi()
@@ -162,8 +203,6 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .setArtist(artist)
             .setExtras(
                 bundleOf(
-                    MEDIA_ITEM_ALBUM_ID to albumId,
-                    MEDIA_ITEM_DURATION to (duration ?: 0) * 1000L,
                     MEDIA_SONG_ID to id,
                 ),
             )
