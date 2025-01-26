@@ -26,9 +26,9 @@ internal class PlayerQueueAudioSourceManagerImpl(
     private val mediaController = mediaControllerFuture(context, MusicService::class.java)
     private val mainExecutor = ContextCompat.getMainExecutor(context)
 
-    override suspend fun playSource(source: AudioSource, shuffled: Boolean) {
-        val newQueue = getMediaItemsFromSource(source)
-        val songId = getPlaySongIdFromSource(source)
+    override suspend fun playSource(vararg source: AudioSource, shuffled: Boolean) {
+        val newQueue = source.flatMap { getMediaItemsFromSource(it) }
+        val songId = source.getOrNull(0)?.let { getPlaySongIdFromSource(it) }
         val index = if (songId == null) {
             -1
         } else {
@@ -48,8 +48,8 @@ internal class PlayerQueueAudioSourceManagerImpl(
         }
     }
 
-    override suspend fun addSource(source: AudioSource, shuffled: Boolean) {
-        val newSongs = getMediaItemsFromSource(source)
+    override suspend fun addSource(vararg source: AudioSource, shuffled: Boolean) {
+        val newSongs = source.flatMap { getMediaItemsFromSource(it) }
         mediaController.withPlayer(mainExecutor) {
             if (shuffled) {
                 addMediaItems(newSongs.shuffled())
@@ -59,8 +59,8 @@ internal class PlayerQueueAudioSourceManagerImpl(
         }
     }
 
-    override suspend fun addAfterCurrent(source: AudioSource, shuffled: Boolean) {
-        val newSongs = getMediaItemsFromSource(source)
+    override suspend fun addAfterCurrent(vararg source: AudioSource, shuffled: Boolean) {
+        val newSongs = source.flatMap { getMediaItemsFromSource(it) }
         mediaController.withPlayer(mainExecutor) {
             val index = currentMediaItemIndex + 1
             if (shuffled) {

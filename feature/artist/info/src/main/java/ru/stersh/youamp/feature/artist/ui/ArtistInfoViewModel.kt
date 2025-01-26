@@ -26,7 +26,7 @@ internal class ArtistInfoViewModel(
     }
 
     fun playShuffled() = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Artist(id), true)
+        playerQueueAudioSourceManager.playSource(AudioSource.Artist(id), shuffled = true)
     }
 
     fun playAll() = viewModelScope.launch {

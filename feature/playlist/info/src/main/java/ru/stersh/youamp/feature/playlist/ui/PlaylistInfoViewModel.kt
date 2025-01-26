@@ -39,7 +39,7 @@ internal class PlaylistInfoViewModel(
     }
 
     fun playShuffled() = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id), true)
+        playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id), shuffled = true)
     }
 
     fun playAll() = viewModelScope.launch {
