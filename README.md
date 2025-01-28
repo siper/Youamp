@@ -68,49 +68,49 @@ If you want help to make Youamp better, you can:
         <sub><b>3912 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
+        <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
           <br />
           <sub><b>isard</b></sub></a>
         <br />
         <sub><b>266 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
+        <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
           <br />
           <sub><b>myrad2267</b></sub></a>
         <br />
         <sub><b>264 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/CraftWorks"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/15747391/medium/334632c01b9b9321cdaa5f555e70b0e7.png" />
+        <a href="https://crowdin.com/profile/CraftWorks"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15747391/medium/334632c01b9b9321cdaa5f555e70b0e7.png" />
           <br />
           <sub><b>CraftWorks</b></sub></a>
         <br />
         <sub><b>264 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/hyx0329"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16804195/medium/378e586e06527bde2ada2f62b492dcd0.png" />
+        <a href="https://crowdin.com/profile/hyx0329"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16804195/medium/378e586e06527bde2ada2f62b492dcd0.png" />
           <br />
           <sub><b>hyx0329</b></sub></a>
         <br />
         <sub><b>260 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/Mega-Cookie"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16410342/medium/c80be863d1105bd3b3e3e0487620070e.png" />
+        <a href="https://crowdin.com/profile/Mega-Cookie"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16410342/medium/c80be863d1105bd3b3e3e0487620070e.png" />
           <br />
           <sub><b>Mega-Cookie</b></sub></a>
         <br />
         <sub><b>245 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/tct123"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/15267698/medium/322d599848cfa45502662989d2208a22.jpg" />
+        <a href="https://crowdin.com/profile/tct123"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15267698/medium/322d599848cfa45502662989d2208a22.jpg" />
           <br />
           <sub><b>tct123</b></sub></a>
         <br />
         <sub><b>24 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/gfreak70"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/13415218/medium/0b6ea6c0fa230d9069a08c28fed8a6b8.jpg" />
+        <a href="https://crowdin.com/profile/gfreak70"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13415218/medium/0b6ea6c0fa230d9069a08c28fed8a6b8.jpg" />
           <br />
           <sub><b>Jann Bern (gfreak70)</b></sub></a>
         <br />
@@ -119,14 +119,14 @@ If you want help to make Youamp better, you can:
     </tr>
     <tr>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
+        <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
           <br />
           <sub><b>January Mara (januarymara185)</b></sub></a>
         <br />
         <sub><b>3 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12617257/medium/7a0122f352a94d95be10780bb83f63ef.jpg" />
+        <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/12617257/medium/7a0122f352a94d95be10780bb83f63ef.jpg" />
           <br />
           <sub><b>⁂ josé m. (ghose)</b></sub></a>
         <br />
