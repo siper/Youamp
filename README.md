@@ -61,7 +61,7 @@ If you want help to make Youamp better, you can:
   <tbody>
     <tr>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/Stersh"><img alt="logo" style="width: 64px" src="https://crowdin-static.downloads.crowdin.com/avatar/12594712/medium/64086cc05e0f4413e73c99bd39b1de74.jpg" />
+        <a href="https://crowdin.com/profile/Stersh"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/12594712/medium/64086cc05e0f4413e73c99bd39b1de74.jpg" />
           <br />
           <sub><b>Kirill Zhukov (Stersh)</b></sub></a>
         <br />
