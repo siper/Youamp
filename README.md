@@ -110,14 +110,21 @@ If you want help to make Youamp better, you can:
         <sub><b>24 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/John_Ethan"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16850011/medium/beb9b59e234ff94a96b8e0ab3485f8a8_default.png" />
+          <br />
+          <sub><b>John_Ethan</b></sub></a>
+        <br />
+        <sub><b>17 words</b></sub>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/gfreak70"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13415218/medium/0b6ea6c0fa230d9069a08c28fed8a6b8.jpg" />
           <br />
           <sub><b>Jann Bern (gfreak70)</b></sub></a>
         <br />
         <sub><b>15 words</b></sub>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
           <br />
