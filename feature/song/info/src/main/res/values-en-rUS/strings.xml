@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_title"></string>
+    <string name="play_next_in_queue_title"></string>
+    <string name="go_to_album_title"></string>
+    <string name="go_to_artist_title"></string>
+    <string name="add_to_favorites"></string>
+    <string name="remove_from_favorites"></string>
+</resources>
