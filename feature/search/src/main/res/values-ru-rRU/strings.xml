@@ -4,13 +4,13 @@
     <string name="add_to_queue_title">Добавить в очередь</string>
     <string name="artist_info_title">Информация об исполнителе</string>
     <string name="album_info_title">Информация об альбоме</string>
-    <string name="search_hint_title">Поиск песен, альбомов, исполнителей…</string>
     <string name="songs_title">Песни</string>
     <string name="load_more_title">Загрузить ещё</string>
     <string name="albums_title">Альбомы</string>
     <string name="artists_title">Исполнители</string>
     <string name="close_search_title">Закрыть поиск</string>
     <string name="clear_search_title">Очистить поисковый запрос</string>
+    <string name="search_hint_title">Поиск песен, альбомов, исполнителей…</string>
     <string name="search_title">Поиск</string>
     <string name="more_action_description">Ещё</string>
 </resources>
