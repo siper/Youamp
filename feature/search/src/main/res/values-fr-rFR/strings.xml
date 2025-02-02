@@ -10,6 +10,7 @@
     <string name="artists_title">Artistes</string>
     <string name="close_search_title">Fermer la recherche</string>
     <string name="clear_search_title">Effacer la recherche</string>
+    <string name="search_hint_title">Recherche chansons, albums, artistes...</string>
     <string name="search_title">Rechercher</string>
     <string name="more_action_description">Plus</string>
 </resources>
