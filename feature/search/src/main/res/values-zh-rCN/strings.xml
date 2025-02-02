@@ -4,13 +4,13 @@
     <string name="add_to_queue_title">添加到队列</string>
     <string name="artist_info_title">艺人信息</string>
     <string name="album_info_title">专辑信息</string>
-    <string name="search_hint_title">搜索歌曲、专辑、艺人…</string>
     <string name="songs_title">歌曲</string>
     <string name="load_more_title">加载更多</string>
     <string name="albums_title">专辑</string>
     <string name="artists_title">艺人</string>
     <string name="close_search_title">关闭搜索</string>
     <string name="clear_search_title">清空搜索栏</string>
+    <string name="search_hint_title">搜索歌曲、专辑、艺人…</string>
     <string name="search_title">搜索</string>
     <string name="more_action_description">更多</string>
 </resources>

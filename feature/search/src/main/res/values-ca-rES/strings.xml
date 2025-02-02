@@ -4,13 +4,13 @@
     <string name="add_to_queue_title">Afegeix a la cua</string>
     <string name="artist_info_title">Informació de l\'artista</string>
     <string name="album_info_title">Informació de l\'àlbum</string>
-    <string name="search_hint_title">Cerca cançons, àlbums, artistes…</string>
     <string name="songs_title">Cançons</string>
     <string name="load_more_title">Carrega\'n més</string>
     <string name="albums_title">Àlbums</string>
     <string name="artists_title">Artistes</string>
     <string name="close_search_title">Tanca la cerca</string>
     <string name="clear_search_title">Neteja la consulta de cerca</string>
+    <string name="search_hint_title">Cerca cançons, àlbums, artistes…</string>
     <string name="search_title">Cerca</string>
     <string name="more_action_description">Més</string>
 </resources>

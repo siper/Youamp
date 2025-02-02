@@ -4,13 +4,13 @@
     <string name="add_to_queue_title">Zur Warteschlange hinzufügen</string>
     <string name="artist_info_title">Interpreteninfo</string>
     <string name="album_info_title">Albumdetails</string>
-    <string name="search_hint_title">Suche Titel, Alben, Interpreten…</string>
     <string name="songs_title">Titel</string>
     <string name="load_more_title">Mehr laden</string>
     <string name="albums_title">Alben</string>
     <string name="artists_title">Interpreten</string>
     <string name="close_search_title">Suche schließen</string>
     <string name="clear_search_title">Suchabfrage leeren</string>
+    <string name="search_hint_title">Suche Titel, Alben, Interpreten…</string>
     <string name="search_title">Suchen</string>
     <string name="more_action_description">Mehr</string>
 </resources>
