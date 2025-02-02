@@ -52,7 +52,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
             prepare()
             play()
         }
-        setPlayingSource(source)
+        setPlayingSource(source.first())
     }
 
     override suspend fun addSource(vararg source: AudioSource, shuffled: Boolean) {
