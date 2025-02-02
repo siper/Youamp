@@ -135,6 +135,14 @@ class SubsonicApi(
         musicFolderId: String? = null
     ) = api.getStarred2(musicFolderId)
 
+    suspend fun getRandomSongs(
+        size: Int? = null,
+        genre: String? = null,
+        fromYear: Int? = null,
+        toYear: Int? = null,
+        musicFolderId: String? = null,
+    ) = api.getRandomSongs(size, genre, fromYear, toYear, musicFolderId).randomSongs.randomSongs
+
     fun getCoverArtUrl(
         id: String?,
         size: Int? = null,

@@ -12,6 +12,5 @@
     <string name="close_search_title">关闭搜索</string>
     <string name="clear_search_title">清空搜索栏</string>
     <string name="search_title">搜索</string>
-    <string name="user_avatar_title">用户头像</string>
     <string name="more_action_description">更多</string>
 </resources>

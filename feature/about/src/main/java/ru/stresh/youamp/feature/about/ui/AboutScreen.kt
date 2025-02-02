@@ -57,9 +57,6 @@ fun AboutScreen(
         onGithubClick = {
             context.launchSafeAnyUri(state.githubUri)
         },
-        onGooglePlayClick = {
-            context.launchSafeAnyUri(state.googlePlayAppUri, state.googlePlayBrowserUri)
-        },
         onFDroidClick = {
             context.launchSafeAnyUri(state.fdroidUri)
         },
@@ -74,7 +71,6 @@ private fun AboutScreen(
     state: AboutStateUi,
     onBackClick: () -> Unit,
     onGithubClick: () -> Unit,
-    onGooglePlayClick: () -> Unit,
     onFDroidClick: () -> Unit,
     onCrowdinClick: () -> Unit
 ) {
@@ -241,7 +237,6 @@ private fun AboutScreenPreview() {
             ),
             onBackClick = {},
             onGithubClick = {},
-            onGooglePlayClick = {},
             onFDroidClick = {},
             onCrowdinClick = {}
         )

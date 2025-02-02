@@ -12,6 +12,5 @@
     <string name="close_search_title">Tanca la cerca</string>
     <string name="clear_search_title">Neteja la consulta de cerca</string>
     <string name="search_title">Cerca</string>
-    <string name="user_avatar_title">Avatar de l\'usuari</string>
     <string name="more_action_description">Més</string>
 </resources>

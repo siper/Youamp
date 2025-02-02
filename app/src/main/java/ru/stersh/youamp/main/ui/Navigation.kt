@@ -45,3 +45,15 @@ object Settings
 
 @Serializable
 object About
+
+@Serializable
+object Albums
+
+@Serializable
+object Artists
+
+@Serializable
+object Playlists
+
+@Serializable
+object FavoriteSongs

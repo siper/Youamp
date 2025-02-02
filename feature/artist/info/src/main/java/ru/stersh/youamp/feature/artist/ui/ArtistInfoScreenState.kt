@@ -1,7 +1,6 @@
 package ru.stersh.youamp.feature.artist.ui
 
 import androidx.compose.runtime.Immutable
-import ru.stersh.youamp.core.ui.AlbumUi
 
 @Immutable
 internal data class ArtistInfoStateUi(

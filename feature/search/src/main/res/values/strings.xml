@@ -4,14 +4,14 @@
     <string name="add_to_queue_title">Add to queue</string>
     <string name="artist_info_title">Artist info</string>
     <string name="album_info_title">Album info</string>
-    <string name="search_hint_title">Search songs, albums, artists…</string>
+
     <string name="songs_title">Songs</string>
     <string name="load_more_title">Load more</string>
     <string name="albums_title">Albums</string>
     <string name="artists_title">Artists</string>
     <string name="close_search_title">Close search</string>
     <string name="clear_search_title">Clear search query</string>
+    <string name="search_hint_title">Search songs, albums, artists…</string>
     <string name="search_title">Search</string>
-    <string name="user_avatar_title">User avatar</string>
     <string name="more_action_description">More</string>
 </resources>

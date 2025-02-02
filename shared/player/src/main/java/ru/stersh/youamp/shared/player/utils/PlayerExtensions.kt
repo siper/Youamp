@@ -13,6 +13,20 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.concurrent.Executor
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+
+suspend fun ListenableFuture<MediaController>.withPlayer2(executor: Executor, block: Player.() -> Unit) =
+    suspendCoroutine {
+        addListener(
+            {
+                val player = get()
+                block.invoke(player)
+                it.resume(Unit)
+            },
+            executor,
+        )
+    }
 
 internal inline fun ListenableFuture<MediaController>.withPlayer(executor: Executor, crossinline block: Player.() -> Unit) {
     addListener(
