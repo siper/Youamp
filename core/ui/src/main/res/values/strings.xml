@@ -9,4 +9,6 @@
     <string name="error_title">Oops, something went wrong</string>
     <string name="empty_state_title">There\'s nothing here yet…</string>
     <string name="user_avatar_title">User avatar</string>
+    <string name="dislike_title">Dislike</string>
+    <string name="like_title">Like</string>
 </resources>

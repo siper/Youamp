@@ -5,5 +5,6 @@ internal data class AlbumInfo(
     val title: String,
     val artist: String,
     val year: String?,
+    val isFavorite: Boolean,
     val songs: List<AlbumSong>
 ) 

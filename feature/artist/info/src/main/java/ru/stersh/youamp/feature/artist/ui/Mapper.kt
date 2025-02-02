@@ -7,6 +7,7 @@ internal fun ArtistInfo.toUi(): ArtistInfoUi {
     return ArtistInfoUi(
         artworkUrl = artworkUrl,
         name = name,
+        isFavorite = isFavorite,
         albums = albums.map { it.toUi() }
     )
 }

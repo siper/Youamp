@@ -13,5 +13,6 @@ internal data class ArtistInfoStateUi(
 internal data class ArtistInfoUi(
     val artworkUrl: String? = null,
     val name: String,
+    val isFavorite: Boolean,
     val albums: List<AlbumUi>
 )

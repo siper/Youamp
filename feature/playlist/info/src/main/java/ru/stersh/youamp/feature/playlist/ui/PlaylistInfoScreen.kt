@@ -175,16 +175,15 @@ private fun Header(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             PlayAllButton(
-                onClick = onPlayAll,
-                modifier = Modifier.weight(0.5f)
+                onClick = onPlayAll
             )
             PlayShuffledButton(
-                onClick = onPlayShuffled,
-                modifier = Modifier.weight(0.5f)
+                onClick = onPlayShuffled
             )
         }
     }

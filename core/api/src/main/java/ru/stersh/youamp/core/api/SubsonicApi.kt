@@ -115,6 +115,14 @@ class SubsonicApi(
 
     suspend fun unstarSong(vararg id: String) = api.unstar(id = id.asList())
 
+    suspend fun starAlbum(vararg id: String) = api.star(albumIds = id.asList())
+
+    suspend fun unstarAlbum(vararg id: String) = api.unstar(albumIds = id.asList())
+
+    suspend fun starArtist(vararg id: String) = api.star(artistIds = id.asList())
+
+    suspend fun unstarArtist(vararg id: String) = api.unstar(artistIds = id.asList())
+
     suspend fun scrobble(
         id: String,
         time: Long? = null,

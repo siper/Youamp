@@ -9,6 +9,7 @@ internal fun AlbumInfo.toUi(): AlbumInfoUi {
         artist = artist,
         year = year,
         artworkUrl = artworkUrl,
+        isFavorite = isFavorite,
         songs = songs.map { it.toUi() }
     )
 }
