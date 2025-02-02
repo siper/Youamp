@@ -4,13 +4,13 @@
     <string name="add_to_queue_title">Aggiungi alla coda</string>
     <string name="artist_info_title">Informazioni sull\'artista</string>
     <string name="album_info_title">Informazioni sull\'album</string>
-    <string name="search_hint_title">Cerca canzoni, album, artisti…</string>
     <string name="songs_title">Brani</string>
     <string name="load_more_title">Carica altro</string>
     <string name="albums_title">Album</string>
     <string name="artists_title">Artisti</string>
     <string name="close_search_title">Chiudi ricerca</string>
     <string name="clear_search_title">Cancella la ricerca</string>
+    <string name="search_hint_title">Cerca canzoni, album, artisti…</string>
     <string name="search_title">Cerca</string>
     <string name="more_action_description">Di più</string>
 </resources>
