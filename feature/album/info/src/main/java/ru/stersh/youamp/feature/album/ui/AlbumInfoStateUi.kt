@@ -15,6 +15,7 @@ internal data class AlbumInfoUi(
     val title: String,
     val artist: String,
     val year: String?,
+    val isFavorite: Boolean,
     val songs: List<AlbumSongUi>
 )
 

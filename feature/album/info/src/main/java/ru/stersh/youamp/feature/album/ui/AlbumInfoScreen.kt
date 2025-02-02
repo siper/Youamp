@@ -33,6 +33,7 @@ import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.FavoriteButton
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -52,6 +53,7 @@ fun AlbumInfoScreen(
         state = state,
         onPlayAll = viewModel::playAll,
         onPlayShuffled = viewModel::playShuffled,
+        onFavoriteChange = viewModel::onFavoriteChange,
         onPlaySong = onOpenSongInfo,
         onRetry = viewModel::retry,
         onBackClick = onBackClick
@@ -63,6 +65,7 @@ private fun AlbumInfoScreen(
     state: AlbumInfoStateUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
+    onFavoriteChange: (isFavorite: Boolean) -> Unit,
     onPlaySong: (id: String) -> Unit,
     onRetry: () -> Unit,
     onBackClick: () -> Unit,
@@ -94,6 +97,7 @@ private fun AlbumInfoScreen(
                     state = state.content,
                     onPlayAll = onPlayAll,
                     onPlayShuffled = onPlayShuffled,
+                    onFavoriteChange = onFavoriteChange,
                     onPlaySong = onPlaySong,
                     modifier = Modifier.padding(it)
                 )
@@ -168,6 +172,7 @@ private fun ContentState(
     state: AlbumInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
+    onFavoriteChange: (isFavorite: Boolean) -> Unit,
     onPlaySong: (id: String) -> Unit,
     modifier: Modifier
 ) {
@@ -180,6 +185,7 @@ private fun ContentState(
                 state = state,
                 onPlayAll = onPlayAll,
                 onPlayShuffled = onPlayShuffled,
+                onFavoriteChange = onFavoriteChange
             )
         }
         items(
@@ -200,7 +206,8 @@ private fun ContentState(
 private fun Header(
     state: AlbumInfoUi,
     onPlayAll: () -> Unit,
-    onPlayShuffled: () -> Unit
+    onPlayShuffled: () -> Unit,
+    onFavoriteChange: (isFavorite: Boolean) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -246,16 +253,19 @@ private fun Header(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             PlayAllButton(
-                onClick = onPlayAll,
-                modifier = Modifier.weight(0.5f)
+                onClick = onPlayAll
             )
             PlayShuffledButton(
-                onClick = onPlayShuffled,
-                modifier = Modifier.weight(0.5f)
+                onClick = onPlayShuffled
+            )
+            FavoriteButton(
+                isFavorite = state.isFavorite,
+                onChange = onFavoriteChange
             )
         }
     }
@@ -342,6 +352,7 @@ private fun AlbumInfoScreenPreview() {
             error = false,
             content = AlbumInfoUi(
                 artworkUrl = null,
+                isFavorite = true,
                 title = "Test",
                 artist = "Test",
                 year = "2024",
@@ -350,6 +361,7 @@ private fun AlbumInfoScreenPreview() {
         ),
         onPlayAll = {},
         onPlayShuffled = {},
+        onFavoriteChange = {},
         onPlaySong = {},
         onRetry = {},
         onBackClick = {}

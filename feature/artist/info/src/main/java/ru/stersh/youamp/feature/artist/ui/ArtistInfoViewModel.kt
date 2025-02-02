@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.feature.artist.domain.ArtistFavoriteRepository
 import ru.stersh.youamp.feature.artist.domain.ArtistInfoRepository
 import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
@@ -14,6 +15,7 @@ import timber.log.Timber
 internal class ArtistInfoViewModel(
     private val id: String,
     private val artistInfoRepository: ArtistInfoRepository,
+    private val artistFavoriteRepository: ArtistFavoriteRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
 ) : ViewModel() {
 
@@ -35,6 +37,19 @@ internal class ArtistInfoViewModel(
 
     fun retry() {
         loadArtist()
+    }
+
+    fun onFavoriteChange(isFavorite: Boolean) = viewModelScope.launch {
+        runCatching { artistFavoriteRepository.setFavorite(id, isFavorite) }.fold(
+            onSuccess = {
+                _state.update {
+                    it.copy(content = it.content?.copy(isFavorite = isFavorite))
+                }
+            },
+            onFailure = {
+                Timber.w(it)
+            }
+        )
     }
 
     private fun loadArtist() = viewModelScope.launch {
