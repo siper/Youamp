@@ -12,6 +12,5 @@
     <string name="close_search_title">Chiudi ricerca</string>
     <string name="clear_search_title">Cancella la ricerca</string>
     <string name="search_title">Cerca</string>
-    <string name="user_avatar_title">Avatar dell\'utente</string>
     <string name="more_action_description">Di più</string>
 </resources>
