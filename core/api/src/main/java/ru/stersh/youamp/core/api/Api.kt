@@ -104,4 +104,13 @@ interface Api {
     suspend fun getStarred2(
         @Query("musicFolderId") musicFolderId: String?
     ): Starred2Response
+
+    @GET("rest/getRandomSongs")
+    suspend fun getRandomSongs(
+        @Query("size") size: Int?,
+        @Query("genre") genre: String?,
+        @Query("fromYear") fromYear: Int?,
+        @Query("toYear") toYear: Int?,
+        @Query("musicFolderId") musicFolderId: String?
+    ): RandomSongsResponse
 }

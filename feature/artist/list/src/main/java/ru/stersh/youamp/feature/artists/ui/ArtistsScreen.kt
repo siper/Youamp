@@ -18,8 +18,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,25 +30,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.feature.artists.R
 
 
 @Composable
 fun ArtistsScreen(
-    viewModelStoreOwner: ViewModelStoreOwner,
-    onArtistClick: (id: String) -> Unit
+    onArtistClick: (id: String) -> Unit,
+    onBackClick: () -> Unit
 ) {
-    val viewModel: ArtistsViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
+    val viewModel: ArtistsViewModel = koinViewModel()
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -53,7 +59,8 @@ fun ArtistsScreen(
         state = state,
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
-        onArtistClick = onArtistClick
+        onArtistClick = onArtistClick,
+        onBackClick = onBackClick
     )
 }
 
@@ -62,44 +69,62 @@ private fun ArtistsScreen(
     state: ArtistsStateUi,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
-    onArtistClick: (id: String) -> Unit
+    onArtistClick: (id: String) -> Unit,
+    onBackClick: () -> Unit
 ) {
-    PullToRefreshBox(
-        isRefreshing = state.isRefreshing,
-        onRefresh = onRefresh
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold(
+        topBar = {
+            LargeTopAppBar(
+                navigationIcon = {
+                    BackNavigationButton(onClick = onBackClick)
+                },
+                title = {
+                    Text(text = stringResource(R.string.artists_title))
+                },
+                scrollBehavior = scrollBehavior
+            )
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        when {
-            state.progress -> {
-                Progress()
-            }
+        PullToRefreshBox(
+            isRefreshing = state.isRefreshing,
+            onRefresh = onRefresh,
+            modifier = Modifier.padding(it)
+        ) {
+            when {
+                state.progress -> {
+                    Progress()
+                }
 
-            state.error -> {
-                ErrorLayout(onRetry = onRetry)
-            }
+                state.error -> {
+                    ErrorLayout(onRetry = onRetry)
+                }
 
-            state.items.isEmpty() -> {
-                EmptyLayout(
-                    modifier = Modifier.verticalScroll(
-                        state = rememberScrollState()
-                    )
-                )
-            }
-
-            else -> {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(
-                        items = state.items
-                    ) { album ->
-                        ArtistItem(
-                            artist = album,
-                            onAlbumClick = onArtistClick
+                state.items.isEmpty() -> {
+                    EmptyLayout(
+                        modifier = Modifier.verticalScroll(
+                            state = rememberScrollState()
                         )
+                    )
+                }
+
+                else -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(3),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(
+                            items = state.items
+                        ) { album ->
+                            ArtistItem(
+                                artist = album,
+                                onAlbumClick = onArtistClick
+                            )
+                        }
                     }
                 }
             }
@@ -211,7 +236,8 @@ private fun ArtistsScreenPreview() {
             state = state,
             onRetry = {},
             onRefresh = {},
-            onArtistClick = {}
+            onArtistClick = {},
+            onBackClick = {}
         )
     }
 }

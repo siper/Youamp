@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.AlbumItem
-import ru.stersh.youamp.core.ui.AlbumUi
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.ErrorLayout
@@ -136,8 +135,10 @@ private fun Content(
         ) { index, item ->
             val column = index % 2
             AlbumItem(
-                album = item,
-                onAlbumClick = onAlbumClick,
+                title = item.title,
+                artist = item.artist,
+                artworkUrl = item.artworkUrl,
+                onClick = { onAlbumClick(item.id) },
                 modifier = if (column == 0) {
                     Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
                 } else {

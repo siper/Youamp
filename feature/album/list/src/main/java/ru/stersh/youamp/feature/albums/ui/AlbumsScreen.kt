@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -11,30 +12,36 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
-import ru.stersh.youamp.core.ui.AlbumUi
+import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.OnBottomReached
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.feature.albums.R
 
 
 @Composable
 fun AlbumsScreen(
-    viewModelStoreOwner: ViewModelStoreOwner,
-    onAlbumClick: (id: String) -> Unit
+    onBackClick: () -> Unit,
+    onAlbumClick: (id: String) -> Unit,
 ) {
-    val viewModel: AlbumsViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
+    val viewModel: AlbumsViewModel = koinViewModel()
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -43,7 +50,8 @@ fun AlbumsScreen(
         onRefresh = viewModel::refresh,
         onRetry = viewModel::retry,
         onBottomReached = viewModel::loadMore,
-        onAlbumClick = onAlbumClick
+        onAlbumClick = onAlbumClick,
+        onBackClick = onBackClick
     )
 }
 
@@ -53,39 +61,57 @@ private fun AlbumsScreen(
     onRefresh: () -> Unit,
     onRetry: () -> Unit,
     onBottomReached: () -> Unit,
-    onAlbumClick: (id: String) -> Unit
+    onAlbumClick: (id: String) -> Unit,
+    onBackClick: () -> Unit,
 ) {
-    PullToRefreshBox(
-        isRefreshing = state.isRefreshing,
-        onRefresh = onRefresh
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    Scaffold(
+        topBar = {
+            LargeTopAppBar(
+                navigationIcon = {
+                    BackNavigationButton(onClick = onBackClick)
+                },
+                title = {
+                    Text(text = stringResource(R.string.albums_title))
+                },
+                scrollBehavior = scrollBehavior
+            )
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        when {
-            state.progress -> {
-                Progress()
-            }
+        PullToRefreshBox(
+            isRefreshing = state.isRefreshing,
+            onRefresh = onRefresh,
+            modifier = Modifier.padding(it)
+        ) {
+            when {
+                state.progress -> {
+                    Progress()
+                }
 
-            state.error -> {
-                ErrorLayout(onRetry = onRetry)
-            }
+                state.error -> {
+                    ErrorLayout(onRetry = onRetry)
+                }
 
-            state.items.isEmpty() -> {
-                EmptyLayout(
-                    modifier = Modifier.verticalScroll(
-                        state = rememberScrollState()
+                state.items.isEmpty() -> {
+                    EmptyLayout(
+                        modifier = Modifier.verticalScroll(
+                            state = rememberScrollState()
+                        )
                     )
-                )
-            }
+                }
 
-            else -> {
-                val listState = rememberLazyGridState()
-                Content(
-                    listState = listState,
-                    state = state,
-                    onAlbumClick = onAlbumClick
-                )
+                else -> {
+                    val listState = rememberLazyGridState()
+                    Content(
+                        listState = listState,
+                        state = state,
+                        onAlbumClick = onAlbumClick
+                    )
 
-                listState.OnBottomReached {
-                    onBottomReached()
+                    listState.OnBottomReached {
+                        onBottomReached()
+                    }
                 }
             }
         }
@@ -111,8 +137,10 @@ private fun Content(
             items = state.items
         ) { album ->
             AlbumItem(
-                album = album,
-                onAlbumClick = onAlbumClick
+                title = album.title,
+                artist = album.artist,
+                artworkUrl = album.artworkUrl,
+                onClick = { onAlbumClick(album.id) }
             )
         }
     }
@@ -164,7 +192,7 @@ private fun AlbumsScreenPreview() {
             )
         )
         val state = AlbumsStateUi(
-            progress = true,
+            progress = false,
             isRefreshing = false,
             error = false,
             items = items
@@ -174,7 +202,8 @@ private fun AlbumsScreenPreview() {
             onRefresh = {},
             onRetry = {},
             onBottomReached = {},
-            onAlbumClick = {}
+            onAlbumClick = {},
+            onBackClick = {}
         )
     }
 }

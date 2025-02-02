@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -39,18 +38,20 @@ import ru.stersh.youamp.feature.albums.ui.AlbumsScreen
 import ru.stersh.youamp.feature.artist.ui.ArtistInfoScreen
 import ru.stersh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stersh.youamp.feature.main.ui.MainScreen
+import ru.stersh.youamp.feature.personal.ui.PersonalScreen
 import ru.stersh.youamp.feature.player.mini.ui.MiniPlayer
 import ru.stersh.youamp.feature.player.queue.ui.PlayerQueueScreen
 import ru.stersh.youamp.feature.player.screen.ui.PlayerScreen
 import ru.stersh.youamp.feature.playlist.ui.PlaylistInfoScreen
 import ru.stersh.youamp.feature.playlists.ui.PlaylistsScreen
 import ru.stersh.youamp.feature.search.ui.SearchScreen
-import ru.stersh.youamp.feature.search.ui.YouampSearchBar
 import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen
 import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
 import ru.stresh.youamp.feature.about.ui.AboutScreen
-import ru.stresh.youamp.feature.favorite.list.ui.FavoriteListScreen
+import ru.stresh.youamp.feature.explore.ui.ExploreScreen
+import ru.stresh.youamp.feature.favorite.list.ui.FavoriteSongsScreen
+import ru.stresh.youamp.feature.library.ui.LibraryScreen
 import ru.stresh.youamp.feature.settings.ui.SettingsScreen
 
 class MainActivity : ComponentActivity() {
@@ -70,7 +71,6 @@ class MainActivity : ComponentActivity() {
                 when (state.screen) {
                     MainScreen.Main -> {
                         Content(
-                            avatarUrl = state.avatarUrl,
                             rootNavController = rootNavController,
                             viewModelStoreOwner = viewModelStoreOwner
                         )
@@ -93,7 +93,6 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun Content(
-        avatarUrl: String?,
         rootNavController: NavHostController,
         viewModelStoreOwner: ViewModelStoreOwner
     ) {
@@ -115,12 +114,10 @@ class MainActivity : ComponentActivity() {
                 },
             ) {
                 MainScreen(
-                    topBar = {
-                        YouampSearchBar(
-                            avatarUrl = avatarUrl,
-                            onClick = { rootNavController.navigate(Search) },
-                            onAvatarClick = { rootNavController.navigate(Settings) },
-                            modifier = Modifier.padding(horizontal = 16.dp)
+                    bigPlayer = {
+                        PlayerScreen(
+                            onBackClick = { rootNavController.popBackStack() },
+                            onPlayQueueClick = { rootNavController.navigate(PlayQueue) }
                         )
                     },
                     miniPlayer = {
@@ -131,40 +128,57 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     },
-                    albumsScreen = {
-                        AlbumsScreen(
-                            viewModelStoreOwner = viewModelStoreOwner,
-                            onAlbumClick = { albumId ->
-                                rootNavController.navigate(AlbumInfo(albumId))
-                            }
-                        )
-                    },
-                    artistsScreen = {
-                        ArtistsScreen(
-                            viewModelStoreOwner = viewModelStoreOwner,
-                            onArtistClick = { artistId ->
-                                rootNavController.navigate(ArtistInfo(artistId))
-                            }
-                        )
-                    },
-                    playlistsScreen = {
-                        PlaylistsScreen(
-                            viewModelStoreOwner = viewModelStoreOwner,
-                            onPlaylistClick = { playlistId ->
-                                rootNavController.navigate(PlaylistInfo(playlistId))
-                            }
-                        )
-                    },
-                    favoritesScreen = {
-                        FavoriteListScreen(
-                            viewModelStoreOwner = viewModelStoreOwner,
-                            onSongClick = { songId ->
+                    personal = {
+                        PersonalScreen(
+                            onSongClick = {
                                 songInfoProperties = SongInfoProperties(
-                                    songId = songId,
+                                    songId = it,
+                                    showAlbum = true
+                                )
+                            },
+                            onAlbumClick = { rootNavController.navigate(AlbumInfo(it)) },
+                            onArtistClick = { rootNavController.navigate(ArtistInfo(it)) },
+                            onPlaylistClick = { rootNavController.navigate(PlaylistInfo(it)) },
+                            onPlaylistsClick = { rootNavController.navigate(Playlists) },
+                            onFavoriteSongsClick = { rootNavController.navigate(FavoriteSongs) },
+                            onFavoriteAlbumsClick = {},
+                            onFavoriteArtistsClick = {}
+                        )
+                    },
+                    explore = {
+                        ExploreScreen(
+                            onSearchClick = {
+                                rootNavController.navigate(Search)
+                            },
+                            onSongClick = {
+                                songInfoProperties = SongInfoProperties(
+                                    songId = it,
                                     showAlbum = true
                                 )
                             }
                         )
+                    },
+                    library = {
+                        LibraryScreen(
+                            onAlbumClick = {
+                                rootNavController.navigate(AlbumInfo(it))
+                            },
+                            onArtistClick = {
+                                rootNavController.navigate(ArtistInfo(it))
+                            },
+                            onArtistsClick = {
+                                rootNavController.navigate(Artists)
+                            },
+                            onAlbumsClick = {
+                                rootNavController.navigate(Albums)
+                            }
+                        )
+                    },
+                    onSettingsClick = {
+                        rootNavController.navigate(Settings)
+                    },
+                    onAvatarClick = {
+                        rootNavController.navigate(ServerList)
                     }
                 )
             }
@@ -327,12 +341,90 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+            composable<Albums> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    AlbumsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onAlbumClick = { albumId ->
+                            rootNavController.navigate(AlbumInfo(albumId))
+                        }
+                    )
+                }
+            }
+            composable<Artists> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    ArtistsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onArtistClick = { artistId ->
+                            rootNavController.navigate(ArtistInfo(artistId))
+                        }
+                    )
+                }
+            }
+            composable<Playlists> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    PlaylistsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onPlaylistClick = {
+                            rootNavController.navigate(PlaylistInfo(it))
+                        }
+                    )
+                }
+            }
+            composable<FavoriteSongs> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    FavoriteSongsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onSongClick = {
+                            songInfoProperties = SongInfoProperties(
+                                songId = it,
+                                showAlbum = true
+                            )
+                        }
+                    )
+                }
+            }
         }
         songInfoProperties?.let { songProperties ->
             ModalBottomSheet(
                 containerColor = MaterialTheme.colorScheme.surface,
                 onDismissRequest = { songInfoProperties = null },
-                contentWindowInsets = { WindowInsets(0.dp, 0.dp, 0.dp, 0.dp) },
+                contentWindowInsets = {
+                    WindowInsets(
+                        0.dp,
+                        0.dp,
+                        0.dp,
+                        0.dp
+                    )
+                },
                 dragHandle = {}
             ) {
                 SongInfoScreen(

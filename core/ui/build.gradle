@@ -19,6 +19,7 @@ dependencies {
     api(libs.bundles.compose)
     implementation(libs.androidx.core)
     implementation(libs.coil.compose)
+    implementation(libs.compose.constraintLayout)
 
     debugApi(libs.compose.ui.tooling)
     debugApi(libs.compose.ui.test.manifest)

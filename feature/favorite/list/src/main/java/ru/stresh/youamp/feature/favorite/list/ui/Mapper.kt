@@ -1,15 +1,15 @@
 package ru.stresh.youamp.feature.favorite.list.ui
 
-import ru.stresh.youamp.feature.favorite.list.domain.FavoriteSong
 import ru.stresh.youamp.feature.favorite.list.domain.Favorites
+import ru.stresh.youamp.feature.favorite.list.domain.Song
 
-internal fun Favorites.toUi(): FavoritesUi {
-    return FavoritesUi(
+internal fun Favorites.toUi(): DataUi {
+    return DataUi(
         songs = songs.map { it.toUi() }
     )
 }
 
-private fun FavoriteSong.toUi() = FavoriteSongUi(
+private fun Song.toUi() = SongUi(
     id = id,
     title = title,
     artist = artist,

@@ -13,6 +13,8 @@ import ru.stersh.youamp.feature.album.albumInfoModule
 import ru.stersh.youamp.feature.albums.albumsModule
 import ru.stersh.youamp.feature.artist.artistInfoModule
 import ru.stersh.youamp.feature.artists.artistsModule
+import ru.stersh.youamp.feature.main.mainModule
+import ru.stersh.youamp.feature.personal.personalModule
 import ru.stersh.youamp.feature.player.mini.playerMiniModule
 import ru.stersh.youamp.feature.player.queue.playerQueueScreenModule
 import ru.stersh.youamp.feature.player.screen.playerScreenModule
@@ -31,7 +33,9 @@ import ru.stersh.youamp.shared.player.playerSharedModule
 import ru.stresh.youamp.core.properties.app.AppProperties
 import ru.stresh.youamp.core.propertiesModule
 import ru.stresh.youamp.feature.about.aboutModule
+import ru.stresh.youamp.feature.explore.exploreModule
 import ru.stresh.youamp.feature.favorite.list.favoriteListModule
+import ru.stresh.youamp.feature.library.libraryModule
 
 internal fun setupDi(application: Application) {
     startKoin {
@@ -64,7 +68,11 @@ private val feature = listOf(
     playlistInfoModule,
     favoriteListModule,
     aboutModule,
-    songInfoModule,
+    personalModule,
+    exploreModule,
+    mainModule,
+    libraryModule,
+    songInfoModule
 )
 
 private val impl = module {

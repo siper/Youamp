@@ -44,6 +44,7 @@ fun Error(
         Text(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
             text = stringResource(R.string.error_title)
         )
 

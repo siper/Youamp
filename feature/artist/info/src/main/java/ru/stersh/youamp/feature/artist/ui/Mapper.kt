@@ -1,6 +1,5 @@
 package ru.stersh.youamp.feature.artist.ui
 
-import ru.stersh.youamp.core.ui.AlbumUi
 import ru.stersh.youamp.feature.artist.domain.ArtistAlbum
 import ru.stersh.youamp.feature.artist.domain.ArtistInfo
 
