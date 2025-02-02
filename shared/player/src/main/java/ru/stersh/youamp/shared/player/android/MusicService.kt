@@ -6,6 +6,7 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.OptIn
+import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -17,14 +18,27 @@ import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
+import androidx.media3.session.SessionError
+import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.guava.asListenableFuture
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.koin.android.ext.android.inject
 import ru.stersh.youamp.shared.player.library.MediaLibraryRepository
 import ru.stersh.youamp.shared.player.utils.PlayerThread
+import ru.stersh.youamp.shared.player.utils.mediaItems
 import timber.log.Timber
 
 class MusicService : MediaLibraryService() {
@@ -135,6 +149,7 @@ class MusicService : MediaLibraryService() {
             return Futures.immediateFuture(root)
         }
 
+        @OptIn(UnstableApi::class)
         override fun onGetChildren(
             session: MediaLibrarySession,
             browser: MediaSession.ControllerInfo,
@@ -235,7 +250,7 @@ class MusicService : MediaLibraryService() {
             mediaItems: MutableList<MediaItem>,
             startIndex: Int,
             startPositionMs: Long
-        ): ListenableFuture<MediaItemsWithStartPosition> {
+        ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
             val item = mediaItems.firstOrNull() ?: return super.onSetMediaItems(
                 mediaSession,
                 controller,
@@ -265,7 +280,7 @@ class MusicService : MediaLibraryService() {
                                     .build()
                             }
                             .let {
-                                MediaItemsWithStartPosition(it, 0, 0L)
+                                MediaSession.MediaItemsWithStartPosition(it, 0, 0L)
                             }
                     }
                         .asListenableFuture()
