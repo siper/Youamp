@@ -42,6 +42,7 @@ import ru.stresh.youamp.feature.explore.ui.components.SearchBar
 @Composable
 fun ExploreScreen(
     onSearchClick: () -> Unit,
+    onRandomSongsClick: () -> Unit,
     onSongClick: (id: String) -> Unit,
 ) {
     val viewModel: ExploreViewModel = koinViewModel()
@@ -50,6 +51,7 @@ fun ExploreScreen(
         state = state,
         onSearchClick = onSearchClick,
         onSongClick = onSongClick,
+        onRandomSongsClick = onRandomSongsClick,
         onRetry = viewModel::retry,
         onPlayPauseAudioSource = viewModel::onPlayPauseAudioSource,
     )
@@ -60,6 +62,7 @@ private fun ExploreScreen(
     state: StateUi,
     onSearchClick: () -> Unit,
     onSongClick: (id: String) -> Unit,
+    onRandomSongsClick: () -> Unit,
     onRetry: () -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     modifier: Modifier = Modifier
@@ -81,6 +84,7 @@ private fun ExploreScreen(
                 modifier = modifier,
                 onSearchClick = onSearchClick,
                 onSongClick = onSongClick,
+                onRandomSongsClick = onRandomSongsClick,
                 onPlayPauseAudioSource = onPlayPauseAudioSource
             )
         },
@@ -100,6 +104,7 @@ private fun ExploreScreen(
 private fun Content(
     state: StateUi,
     onSearchClick: () -> Unit,
+    onRandomSongsClick: () -> Unit,
     onSongClick: (id: String) -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     modifier: Modifier = Modifier,
@@ -119,7 +124,8 @@ private fun Content(
         state.data?.randomSongs?.let { randomSongs ->
             item {
                 SectionTitle(
-                    title = stringResource(R.string.random_songs_title)
+                    title = stringResource(R.string.random_songs_title),
+                    onClick = onRandomSongsClick
                 )
             }
             item {
@@ -236,6 +242,7 @@ private fun ExploreScreenPreview() {
             state = StateUi(),
             onRetry = {},
             onSongClick = {},
+            onRandomSongsClick = {},
             onPlayPauseAudioSource = {},
             onSearchClick = {}
         )

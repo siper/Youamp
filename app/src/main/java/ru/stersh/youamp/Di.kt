@@ -36,6 +36,9 @@ import ru.stresh.youamp.feature.about.aboutModule
 import ru.stresh.youamp.feature.explore.exploreModule
 import ru.stresh.youamp.feature.favorite.list.favoriteListModule
 import ru.stresh.youamp.feature.library.libraryModule
+import ru.stresh.youamp.feature.song.random.songRandomModule
+import ru.stresh.youamp.shared.favorites.favoritesSharedModule
+import ru.stresh.youamp.shared.song.random.songRandomSharedModule
 
 internal fun setupDi(application: Application) {
     startKoin {
@@ -50,7 +53,9 @@ private val core = listOf(
 )
 
 private val shared = listOf(
-    playerSharedModule
+    playerSharedModule,
+    favoritesSharedModule,
+    songRandomSharedModule
 )
 
 private val feature = listOf(
@@ -72,7 +77,8 @@ private val feature = listOf(
     exploreModule,
     mainModule,
     libraryModule,
-    songInfoModule
+    songInfoModule,
+    songRandomModule
 )
 
 private val impl = module {
@@ -80,8 +86,6 @@ private val impl = module {
         AppProperties(
             name = get<Context>().getString(R.string.app_name),
             version = BuildConfig.VERSION_NAME,
-            googlePlayAppUri = "market://details?id=ru.stersh.youamp".toUri(),
-            googlePlayBrowserUri = "https://play.google.com/store/apps/details?id=ru.stersh.youamp".toUri(),
             githubUri = "https://github.com/siper/Youamp".toUri(),
             fdroidUri = "https://f-droid.org/packages/ru.stersh.youamp/".toUri(),
             crwodinUri = "https://crowdin.com/project/youamp".toUri()

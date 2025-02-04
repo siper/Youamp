@@ -30,22 +30,11 @@ internal class FavoriteSongsViewModel(
     }
 
     fun playAll() = viewModelScope.launch {
-        val favorites = runCatching { favoriteSongsRepository.getFavorites().first() }
-            .onFailure { Timber.w(it) }
-            .getOrNull()
-            ?: return@launch
+        playFavorites()
+    }
 
-        val sources = favorites.songs.map {
-            AudioSource.RawSong(
-                id = it.id,
-                title = it.title,
-                artist = it.artist,
-                artworkUrl = it.artworkUrl,
-                starred = true,
-                userRating = it.userRating
-            )
-        }
-        playerQueueAudioSourceManager.playSource(*sources.toTypedArray())
+    fun playShuffled() = viewModelScope.launch {
+        playFavorites(true)
     }
 
     fun refresh() {
@@ -65,6 +54,25 @@ internal class FavoriteSongsViewModel(
             )
         }
         getFavorites()
+    }
+
+    private suspend fun playFavorites(shuffled: Boolean = false) {
+        val favorites = runCatching { favoriteSongsRepository.getFavorites().first() }
+            .onFailure { Timber.w(it) }
+            .getOrNull()
+            ?: return
+
+        val sources = favorites.songs.map {
+            AudioSource.RawSong(
+                id = it.id,
+                title = it.title,
+                artist = it.artist,
+                artworkUrl = it.artworkUrl,
+                starred = true,
+                userRating = it.userRating
+            )
+        }
+        playerQueueAudioSourceManager.playSource(*sources.toTypedArray(), shuffled = shuffled)
     }
 
     private fun getFavorites() {

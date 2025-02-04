@@ -11,11 +11,13 @@ import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
 import timber.log.Timber
 
 internal class SongInfoViewModel(
     private val apiProvider: ApiProvider,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
+    private val songFavoritesStorage: SongFavoritesStorage
 ) : ViewModel() {
 
     val state: StateFlow<SongInfoStateUi>
@@ -64,12 +66,12 @@ internal class SongInfoViewModel(
     }
 
     fun addToFavorites(songId: String) = viewModelScope.launch {
-        runCatching { apiProvider.getApi().starSong(songId) }
+        runCatching { songFavoritesStorage.setSongFavorite(songId, true) }
             .onFailure { Timber.e(it) }
     }
 
     fun removeFromFavorites(songId: String) = viewModelScope.launch {
-        runCatching { apiProvider.getApi().unstarSong(songId) }
+        runCatching { songFavoritesStorage.setSongFavorite(songId, false) }
             .onFailure { Timber.e(it) }
     }
 }

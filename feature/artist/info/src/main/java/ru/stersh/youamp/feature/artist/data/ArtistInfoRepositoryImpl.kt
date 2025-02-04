@@ -9,20 +9,20 @@ import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.feature.artist.domain.ArtistAlbum
 import ru.stersh.youamp.feature.artist.domain.ArtistInfo
 import ru.stersh.youamp.feature.artist.domain.ArtistInfoRepository
+import ru.stresh.youamp.shared.favorites.ArtistFavoritesStorage
 
 internal class ArtistInfoRepositoryImpl(
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val artistFavoritesStorage: ArtistFavoritesStorage
 ) : ArtistInfoRepository {
 
     override suspend fun getArtistInfo(id: String): ArtistInfo = coroutineScope {
         val api = apiProvider.getApi()
-        val starred = async { api.getStarred2() }
+        val favoriteArtists = async { artistFavoritesStorage.getArtists() }
         val artistInfo = async { api.getArtist(id) }
-        val isFavorite = starred
+        val isFavorite = favoriteArtists
             .await()
-            .starred2Result
-            .artist
-            ?.any { it.id == id } == true
+            .any { it.id == id }
 
         return@coroutineScope artistInfo.await().toDomain(api, isFavorite)
     }

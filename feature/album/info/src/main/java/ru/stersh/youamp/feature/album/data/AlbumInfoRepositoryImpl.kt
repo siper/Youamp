@@ -10,20 +10,20 @@ import ru.stersh.youamp.core.utils.formatSongDuration
 import ru.stersh.youamp.feature.album.domain.AlbumInfo
 import ru.stersh.youamp.feature.album.domain.AlbumInfoRepository
 import ru.stersh.youamp.feature.album.domain.AlbumSong
+import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
 
 internal class AlbumInfoRepositoryImpl(
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val albumFavoritesStorage: AlbumFavoritesStorage
 ) : AlbumInfoRepository {
 
     override suspend fun getAlbumInfo(id: String): AlbumInfo = coroutineScope {
         val api = apiProvider.getApi()
-        val starred = async { api.getStarred2() }
+        val favoriteAlbums = async { albumFavoritesStorage.getAlbums() }
         val albumInfo = async { api.getAlbum(id) }
-        val isFavorite = starred
+        val isFavorite = favoriteAlbums
             .await()
-            .starred2Result
-            .album
-            ?.any { it.id == id } == true
+            .any { it.id == id }
         return@coroutineScope albumInfo
             .await()
             .toDomain(api, isFavorite)

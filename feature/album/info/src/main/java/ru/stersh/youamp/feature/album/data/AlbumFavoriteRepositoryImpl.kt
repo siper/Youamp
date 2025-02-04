@@ -1,18 +1,13 @@
 package ru.stersh.youamp.feature.album.data
 
-import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.feature.album.domain.AlbumFavoriteRepository
+import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
 
 internal class AlbumFavoriteRepositoryImpl(
-    private val apiProvider: ApiProvider
+    private val albumFavoritesStorage: AlbumFavoritesStorage
 ) : AlbumFavoriteRepository {
 
     override suspend fun setFavorite(id: String, isFavorite: Boolean) {
-        val api = apiProvider.getApi()
-        if (isFavorite) {
-            api.starAlbum(id)
-        } else {
-            api.unstarAlbum(id)
-        }
+        albumFavoritesStorage.setAlbumFavorite(id, isFavorite)
     }
 }

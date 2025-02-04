@@ -15,6 +15,7 @@ dependencies {
     implementation project(":core:api")
     implementation project(":core:utils")
     implementation project(":shared:player")
+    implementation project(":shared:favorites")
     implementation(libs.bundles.lifecycle)
     implementation(libs.coil.compose)
     implementation(libs.bundles.koin)
