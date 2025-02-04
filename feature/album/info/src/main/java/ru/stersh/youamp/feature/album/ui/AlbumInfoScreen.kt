@@ -34,6 +34,7 @@ import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.FavoriteButton
+import ru.stersh.youamp.core.ui.HeaderLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -199,64 +200,56 @@ private fun ContentState(
             )
         }
     }
-
 }
 
 @Composable
+
 private fun Header(
     state: AlbumInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
     onFavoriteChange: (isFavorite: Boolean) -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Artwork(
-            artworkUrl = state.artworkUrl,
-            placeholder = Icons.Rounded.Album,
-            modifier = Modifier
-                .padding(horizontal = 48.dp)
-                .aspectRatio(1f)
-                .fillMaxWidth()
-        )
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = 24.dp)
-        ) {
-            Text(
-                text = state.title,
-                style = MaterialTheme.typography.titleLarge,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
+    HeaderLayout(
+        title = {
+            Artwork(
+                artworkUrl = state.artworkUrl,
+                placeholder = Icons.Rounded.Album,
+                modifier = Modifier
+                    .padding(horizontal = 48.dp)
+                    .aspectRatio(1f)
+                    .fillMaxWidth()
             )
 
-            val subtitle = if (state.year != null) {
-                "${state.artist} · ${state.year}"
-            } else {
-                state.artist
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            ) {
+                Text(
+                    text = state.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+
+                val subtitle = if (state.year != null) {
+                    "${state.artist} · ${state.year}"
+                } else {
+                    state.artist
+                }
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.secondary,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
             }
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 12.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
+        },
+        actions = {
             PlayAllButton(
                 onClick = onPlayAll
             )
@@ -268,7 +261,7 @@ private fun Header(
                 onChange = onFavoriteChange
             )
         }
-    }
+    )
 }
 
 @Composable

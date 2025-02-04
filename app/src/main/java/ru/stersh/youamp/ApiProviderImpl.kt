@@ -3,24 +3,23 @@ package ru.stersh.youamp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import ru.stersh.youamp.core.api.ApiDefaults
 import ru.stersh.youamp.core.api.SubsonicApi
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.core.api.provider.NoActiveServerSettingsFound
 import ru.stersh.youamp.core.room.server.SubsonicServerDao
 import ru.stersh.youamp.core.room.server.SubsonicServerDb
+import java.util.concurrent.ConcurrentHashMap
 
 internal class ApiProviderImpl(
     private val subsonicServerDao: SubsonicServerDao
 ) : ApiProvider {
-    private val mutex = Mutex()
-    private var apiSonic: SubsonicApi? = null
 
-    override suspend fun getApi(): SubsonicApi = mutex.withLock {
+    private val apiCache = ConcurrentHashMap<Long, SubsonicApi>()
+
+    override suspend fun getApi(): SubsonicApi {
         val currentServerSettings = subsonicServerDao.getActive() ?: throw NoActiveServerSettingsFound()
-        return@withLock requireApi(currentServerSettings)
+        return requireApi(currentServerSettings)
     }
 
     override suspend fun requireApiId(): Long {
@@ -43,22 +42,34 @@ internal class ApiProviderImpl(
         return subsonicServerDao
             .flowActive()
             .map {
-                getApiOrNull(it)
+                if (it == null) {
+                    null
+                } else {
+                    getApi(it.id)
+                }
             }
     }
 
-    private fun getApiOrNull(subsonicServer: SubsonicServerDb?): SubsonicApi? {
-        if (subsonicServer == null) {
-            return null
+    override fun flowApiId(): Flow<Long?> {
+        return subsonicServerDao
+            .flowActive()
+            .map { it?.id }
+    }
+
+    override suspend fun getApi(id: Long): SubsonicApi? {
+        return apiCache.getOrPut(id) {
+            subsonicServerDao.getServer(id)?.let {
+                createNewApi(it)
+            }
         }
-        return requireApi(subsonicServer)
+    }
+
+    override suspend fun requireApi(id: Long): SubsonicApi {
+        return requireNotNull(getApi(id))
     }
 
     private fun requireApi(subsonicServer: SubsonicServerDb): SubsonicApi {
-        if (!isSameSettings(subsonicServer)) {
-            apiSonic = createNewApi(subsonicServer)
-        }
-        return requireNotNull(apiSonic)
+        return apiCache.getOrPut(subsonicServer.id) { createNewApi(subsonicServer) }
     }
 
     private fun createNewApi(subsonicServer: SubsonicServerDb): SubsonicApi {
@@ -70,13 +81,5 @@ internal class ApiProviderImpl(
             clientId = ApiDefaults.CLIENT_ID,
             useLegacyAuth = subsonicServer.useLegacyAuth
         )
-    }
-
-    private fun isSameSettings(subsonicServer: SubsonicServerDb): Boolean {
-        val currentApiSonic = apiSonic ?: return false
-        return currentApiSonic.username == subsonicServer.username &&
-                currentApiSonic.password == subsonicServer.password &&
-                currentApiSonic.url == subsonicServer.url &&
-                currentApiSonic.useLegacyAuth == subsonicServer.useLegacyAuth
     }
 }

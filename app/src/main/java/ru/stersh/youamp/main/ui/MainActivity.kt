@@ -53,6 +53,7 @@ import ru.stresh.youamp.feature.explore.ui.ExploreScreen
 import ru.stresh.youamp.feature.favorite.list.ui.FavoriteSongsScreen
 import ru.stresh.youamp.feature.library.ui.LibraryScreen
 import ru.stresh.youamp.feature.settings.ui.SettingsScreen
+import ru.stresh.youamp.feature.song.random.ui.RandomSongsScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -149,6 +150,9 @@ class MainActivity : ComponentActivity() {
                         ExploreScreen(
                             onSearchClick = {
                                 rootNavController.navigate(Search)
+                            },
+                            onRandomSongsClick = {
+                                rootNavController.navigate(RandomSongs)
                             },
                             onSongClick = {
                                 songInfoProperties = SongInfoProperties(
@@ -400,6 +404,26 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     FavoriteSongsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onSongClick = {
+                            songInfoProperties = SongInfoProperties(
+                                songId = it,
+                                showAlbum = true
+                            )
+                        }
+                    )
+                }
+            }
+            composable<RandomSongs> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    RandomSongsScreen(
                         onBackClick = {
                             rootNavController.popBackStack()
                         },

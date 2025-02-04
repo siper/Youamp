@@ -13,7 +13,6 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -98,7 +97,7 @@ private fun ArtistArtwork(
 }
 
 @Composable
-@NonRestartableComposable
+
 private fun PlayButtonBackground(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier

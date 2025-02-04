@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -37,6 +36,7 @@ import ru.stersh.youamp.core.ui.ArtworkMaskColor
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.HeaderLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -118,7 +118,6 @@ private fun Content(
                 onPlayAll = onPlayAll,
                 onPlayShuffled = onPlayShuffled
             )
-            Box(modifier = Modifier.weight(1f))
             EmptyLayout(modifier = Modifier.weight(1f))
         }
     } else {
@@ -149,36 +148,29 @@ private fun Content(
 }
 
 @Composable
+
 private fun Header(
     info: PlaylistInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Artwork(
-            artworkUrl = info.artworkUrl,
-            placeholder = Icons.Rounded.MusicNote,
-            modifier = Modifier
-                .padding(horizontal = 48.dp)
-                .aspectRatio(1f)
-                .fillMaxWidth()
-        )
+    HeaderLayout(
+        title = {
+            Artwork(
+                artworkUrl = info.artworkUrl,
+                placeholder = Icons.Rounded.MusicNote,
+                modifier = Modifier
+                    .padding(horizontal = 48.dp)
+                    .aspectRatio(1f)
+                    .fillMaxWidth()
+            )
 
-        Text(
-            text = info.title,
-            style = MaterialTheme.typography.titleLarge
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 12.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
+            Text(
+                text = info.title,
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        actions = {
             PlayAllButton(
                 onClick = onPlayAll
             )
@@ -186,7 +178,7 @@ private fun Header(
                 onClick = onPlayShuffled
             )
         }
-    }
+    )
 }
 
 @Composable

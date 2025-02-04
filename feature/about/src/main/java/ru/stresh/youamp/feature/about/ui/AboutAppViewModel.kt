@@ -16,8 +16,6 @@ internal class AboutAppViewModel(appPropertiesStorage: AppPropertiesStorage) : V
         return AboutStateUi(
             name = name,
             version = version,
-            googlePlayAppUri = googlePlayAppUri,
-            googlePlayBrowserUri = googlePlayBrowserUri,
             githubUri = githubUri,
             fdroidUri = fdroidUri,
             crwodinUri = crwodinUri

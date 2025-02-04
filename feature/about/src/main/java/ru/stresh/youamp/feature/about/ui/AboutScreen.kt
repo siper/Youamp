@@ -229,8 +229,6 @@ private fun AboutScreenPreview() {
             state = AboutStateUi(
                 name = "Youamp",
                 version = "1.0.0-alpha04",
-                googlePlayAppUri = Uri.EMPTY,
-                googlePlayBrowserUri = Uri.EMPTY,
                 githubUri = Uri.EMPTY,
                 fdroidUri = Uri.EMPTY,
                 crwodinUri = Uri.EMPTY

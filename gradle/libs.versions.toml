@@ -15,6 +15,7 @@ junit = "4.13.2"
 junit-version = "1.2.1"
 espresso-core = "3.6.1"
 appcompat = "1.7.0"
+paging = "3.3.5"
 
 [libraries]
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -45,6 +46,10 @@ media-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp",
 room-core = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+
 
 compose-bom = "androidx.compose:compose-bom:2025.01.00"
 compose-ui-ui = { module = "androidx.compose.ui:ui" }

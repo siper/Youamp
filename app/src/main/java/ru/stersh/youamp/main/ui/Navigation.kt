@@ -57,3 +57,6 @@ object Playlists
 
 @Serializable
 object FavoriteSongs
+
+@Serializable
+object RandomSongs

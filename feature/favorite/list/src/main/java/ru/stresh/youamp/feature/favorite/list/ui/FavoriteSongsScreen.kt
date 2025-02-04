@@ -6,9 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,18 +15,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +34,10 @@ import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
-import ru.stersh.youamp.core.ui.PlayAllFabButton
+import ru.stersh.youamp.core.ui.HeaderLayout
+import ru.stersh.youamp.core.ui.HeaderTitle
+import ru.stersh.youamp.core.ui.PlayAllButton
+import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.feature.favorite.list.R
 
@@ -55,6 +53,7 @@ fun FavoriteSongsScreen(
     FavoriteSongsScreen(
         state = state,
         onPlayAll = viewModel::playAll,
+        onPlayShuffled = viewModel::playShuffled,
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onSongClick = onSongClick,
@@ -66,25 +65,21 @@ fun FavoriteSongsScreen(
 private fun FavoriteSongsScreen(
     state: StateUi,
     onPlayAll: () -> Unit,
+    onPlayShuffled: () -> Unit,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onSongClick: (id: String) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
+                title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                },
-                title = {
-                    Text(text = stringResource(R.string.favorite_songs_title))
-                },
-                scrollBehavior = scrollBehavior
+                }
             )
-        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        }
     ) {
         PullToRefreshBox(
             isRefreshing = state.isRefreshing,
@@ -115,6 +110,24 @@ private fun FavoriteSongsScreen(
                             .fillMaxSize()
                     ) {
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
+                            item(
+                                contentType = "header",
+                                key = "header"
+                            ) {
+                                HeaderLayout(
+                                    title = {
+                                        HeaderTitle(text = stringResource(R.string.favorite_songs_title))
+                                    },
+                                    actions = {
+                                        PlayAllButton(
+                                            onClick = onPlayAll
+                                        )
+                                        PlayShuffledButton(
+                                            onClick = onPlayShuffled
+                                        )
+                                    }
+                                )
+                            }
                             items(
                                 items = state.data.songs,
                                 contentType = { "song" },
@@ -125,16 +138,7 @@ private fun FavoriteSongsScreen(
                                     onClick = { onSongClick(song.id) }
                                 )
                             }
-                            item(key = "fab_spacer") {
-                                Spacer(modifier = Modifier.height(88.dp))
-                            }
                         }
-                        PlayAllFabButton(
-                            onClick = onPlayAll,
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(16.dp)
-                        )
                     }
                 }
             }
@@ -242,6 +246,7 @@ private fun FavoriteSongsScreenPreview() {
         FavoriteSongsScreen(
             state = state,
             onPlayAll = {},
+            onPlayShuffled = {},
             onRetry = {},
             onRefresh = {},
             onSongClick = {},

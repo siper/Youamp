@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +34,7 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.FavoriteButton
+import ru.stersh.youamp.core.ui.HeaderLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -162,31 +162,21 @@ private fun Header(
     onPlayShuffled: () -> Unit,
     onFavoriteChange: (isFavorite: Boolean) -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CircleArtwork(
-            artworkUrl = state.artworkUrl,
-            placeholder = Icons.Rounded.Person,
-            modifier = Modifier
-                .padding(horizontal = 48.dp)
-                .size(160.dp)
-        )
-
-        Text(
-            text = state.name,
-            style = MaterialTheme.typography.titleLarge
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 12.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
+    HeaderLayout(
+        title = {
+            CircleArtwork(
+                artworkUrl = state.artworkUrl,
+                placeholder = Icons.Rounded.Person,
+                modifier = Modifier
+                    .padding(horizontal = 48.dp)
+                    .size(160.dp)
+            )
+            Text(
+                text = state.name,
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        actions = {
             PlayAllButton(
                 onClick = onPlayAll
             )
@@ -198,7 +188,7 @@ private fun Header(
                 onChange = onFavoriteChange
             )
         }
-    }
+    )
 }
 
 @Composable

@@ -14,11 +14,17 @@ import ru.stersh.youamp.feature.personal.domain.Song
 import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
 import ru.stersh.youamp.shared.player.queue.PlayingSource
 import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
+import ru.stresh.youamp.shared.favorites.ArtistFavoritesStorage
+import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
 
 internal class PersonalRepositoryImpl(
     private val apiProvider: ApiProvider,
     private val queueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playStateStore: PlayStateStore
+    private val playStateStore: PlayStateStore,
+    private val songFavoritesStorage: SongFavoritesStorage,
+    private val albumFavoritesStorage: AlbumFavoritesStorage,
+    private val artistFavoritesStorage: ArtistFavoritesStorage
 ) : PersonalRepository {
 
     override suspend fun getPersonal(): Flow<Personal> {
@@ -32,8 +38,11 @@ internal class PersonalRepositoryImpl(
                         .map { isPlaying ->
                             source.takeIf { isPlaying }
                         }
-                }
-        ) { api, playingSource ->
+                },
+            songFavoritesStorage.flowSongs(),
+            albumFavoritesStorage.flowAlbums(),
+            artistFavoritesStorage.flowArtists()
+        ) { api, playingSource, songs, albums, artists ->
             val serverId = requireNotNull(apiProvider.getApiId())
             val playlists = api
                 .getPlaylists()
@@ -47,44 +56,37 @@ internal class PersonalRepositoryImpl(
                         isPlaying = playingSource?.isPlaylistPlaying(serverId, playlist.id) == true
                     )
                 }
-            val starred = api.getStarred2()
-            val songs = starred.starred2Result.song
-                .orEmpty()
-                .map { song ->
+            val personalSongs = songs.map { song ->
                     Song(
                         id = song.id,
                         title = song.title,
                         artist = song.artist,
-                        artworkUrl = api.getCoverArtUrl(song.coverArt),
+                        artworkUrl = song.artworkUrl,
                         isPlaying = playingSource?.isSongPlaying(serverId, song.id) == true
                     )
                 }
-            val albums = starred.starred2Result.album
-                .orEmpty()
-                .map { album ->
+            val personalAlbums = albums.map { album ->
                     Album(
                         id = album.id,
-                        title = requireNotNull(album.name ?: album.album),
+                        title = album.title,
                         artist = album.artist,
-                        artworkUrl = api.getCoverArtUrl(album.coverArt),
+                        artworkUrl = album.artworkUrl,
                         isPlaying = playingSource?.isAlbumPlaying(serverId, album.id) == true
                     )
                 }
-            val artists = starred.starred2Result.artist
-                .orEmpty()
-                .map { artist ->
+            val personalArtists = artists.map { artist ->
                     Artist(
                         id = artist.id,
                         name = artist.name,
-                        artworkUrl = api.getCoverArtUrl(artist.coverArt),
+                        artworkUrl = artist.artworkUrl,
                         isPlaying = playingSource?.isArtistPlaying(serverId, artist.id) == true
                     )
                 }
             return@combine Personal(
                 playlists = playlists,
-                songs = songs,
-                albums = albums,
-                artists = artists
+                songs = personalSongs,
+                albums = personalAlbums,
+                artists = personalArtists
             )
         }
     }

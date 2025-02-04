@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import ru.stersh.youamp.feature.song.info.ui.SongInfoViewModel
 
 val songInfoModule = module {
-    viewModel { SongInfoViewModel(get(), get()) }
+    viewModel { SongInfoViewModel(get(), get(), get()) }
 }
