@@ -2,34 +2,31 @@ package ru.stresh.youamp.feature.favorite.list.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.stersh.youamp.core.api.SubsonicApi
-import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stresh.youamp.feature.favorite.list.domain.FavoriteSongsRepository
 import ru.stresh.youamp.feature.favorite.list.domain.Favorites
 import ru.stresh.youamp.feature.favorite.list.domain.Song
+import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
 
-internal class FavoriteSongsRepositoryImpl(private val apiProvider: ApiProvider) : FavoriteSongsRepository {
+internal class FavoriteSongsRepositoryImpl(
+    private val songFavoritesStorage: SongFavoritesStorage
+) : FavoriteSongsRepository {
 
     override fun getFavorites(): Flow<Favorites> {
-        return apiProvider
-            .flowApi()
-            .map { api ->
-                val starred = api.getStarred2().starred2Result
+        return songFavoritesStorage
+            .flowSongs()
+            .map { favoriteSongs ->
                 Favorites(
-                    songs = starred
-                        .song
-                        .orEmpty()
-                        .map { it.toDomain(api) }
+                    songs = favoriteSongs.map { it.toDomain() }
                 )
             }
     }
 
-    private fun ru.stersh.youamp.core.api.Song.toDomain(api: SubsonicApi): Song {
+    private fun ru.stresh.youamp.shared.favorites.Song.toDomain(): Song {
         return Song(
             id = id,
             title = title,
             artist = artist,
-            artworkUrl = api.getCoverArtUrl(coverArt),
+            artworkUrl = artworkUrl,
             userRating = userRating
         )
     }

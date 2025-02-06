@@ -123,7 +123,8 @@ internal class FavoritesStorageImpl(
                     albumId = it.albumId,
                     artist = it.artist,
                     artistId = it.artistId,
-                    artworkUrl = api.getCoverArtUrl(it.coverArt)
+                    artworkUrl = api.getCoverArtUrl(it.coverArt),
+                    userRating = it.userRating
                 )
             }.orEmpty(),
             albums = newFavorites.starred2Result.album?.map {
