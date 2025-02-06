@@ -5,8 +5,10 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
@@ -113,7 +115,6 @@ private fun Content(
         modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
-            .padding(bottom = 12.dp)
     ) {
         item {
             SearchBar(
@@ -137,7 +138,7 @@ private fun Content(
                     flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    randomSongs.forEach { songChunk ->
+                    randomSongs.forEachIndexed { index, songChunk ->
                         item {
                             Column(
                                 verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -166,6 +167,10 @@ private fun Content(
                         }
                     }
                 }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
