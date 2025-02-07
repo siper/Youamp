@@ -17,4 +17,5 @@
     <string name="server_icon_description">Icône du serveur</string>
     <string name="user_icon_description">Image de l\'utilisateur</string>
     <string name="use_legacy_auth_subtitle">Certains serveurs ne prennent pas en charge l\'authentification avec un sel. Si vous avez des problèmes de connexion, activez cette option</string>
+    <string name="additional_settings_title">Paramètres supplémentaires</string>
 </resources>
