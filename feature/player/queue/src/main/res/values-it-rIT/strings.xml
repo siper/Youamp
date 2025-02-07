@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_queue_title">Coda di riproduzione</string>
+    <string name="play_song_title">Riproduci brano</string>
+    <string name="remove_from_queue_title">Rimuovi dalla coda</string>
 </resources>
