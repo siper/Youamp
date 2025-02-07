@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pause_action_title">Pausa</string>
+    <string name="play_action_title">Riproduci</string>
+    <string name="artists_2">%s E %s</string>
+    <string name="artists_many">%s, %s e altri</string>
+    <string name="songs_title">Brani</string>
+    <string name="playlists_title">Playlist</string>
+    <string name="albums_title">Album</string>
+    <string name="artists_title">Artisti</string>
+</resources>
