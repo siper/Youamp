@@ -1,48 +1,53 @@
 package ru.stersh.youamp.shared.player.controls
 
-import android.content.Context
-import androidx.core.content.ContextCompat
-import androidx.media3.common.Player
-import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
+import kotlinx.coroutines.launch
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stersh.youamp.shared.player.utils.PlayerScope
 
 internal class PlayerControlsImpl(
-    context: Context
+    private val playerProvider: PlayerProvider
 ) : PlayerControls {
-    private val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
-    private val mainExecutor = ContextCompat.getMainExecutor(context)
 
-    override fun play() = withPlayer {
-        play()
-    }
-
-    override fun pause() = withPlayer {
-        pause()
-    }
-
-    override fun next() = withPlayer {
-        seekToNextMediaItem()
-    }
-
-    override fun previous() = withPlayer {
-        if (currentPosition >= 3000) {
-            seekTo(0)
-        } else {
-            seekToPreviousMediaItem()
+    override fun play() {
+        PlayerScope.launch {
+            playerProvider
+                .get()
+                .play()
         }
     }
 
-    override fun seek(time: Long) = withPlayer {
-        seekTo(time)
+    override fun pause() {
+        PlayerScope.launch {
+            playerProvider
+                .get()
+                .pause()
+        }
     }
 
-    private inline fun withPlayer(crossinline block: Player.() -> Unit) {
-        mediaControllerFuture.addListener(
-            {
-                val player = mediaControllerFuture.get()
-                block.invoke(player)
-            },
-            mainExecutor,
-        )
+    override fun next() {
+        PlayerScope.launch {
+            playerProvider
+                .get()
+                .seekToNextMediaItem()
+        }
+    }
+
+    override fun previous() {
+        PlayerScope.launch {
+            val player = playerProvider.get()
+            if (player.currentPosition >= 3000) {
+                player.seekTo(0)
+            } else {
+                player.seekToPreviousMediaItem()
+            }
+        }
+    }
+
+    override fun seek(time: Long) {
+        PlayerScope.launch {
+            playerProvider
+                .get()
+                .seekTo(time)
+        }
     }
 }

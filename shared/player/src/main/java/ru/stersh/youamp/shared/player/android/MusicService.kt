@@ -3,6 +3,8 @@ package ru.stersh.youamp.shared.player.android
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -19,29 +21,20 @@ import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import org.koin.android.ext.android.inject
+import ru.stersh.youamp.shared.player.utils.PlayerThread
 import timber.log.Timber
 
 class MusicService : MediaLibraryService() {
 
-    private val apiSonicPlayQueueSyncer: ApiSonicPlayQueueSyncer by inject()
-
     private lateinit var player: Player
     private lateinit var mediaSession: MediaLibrarySession
 
-    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-
     private val playerListener = object : Player.Listener {
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-            onUpdateNotification(mediaSession, true)
-            syncQueue()
+            Handler(Looper.getMainLooper()).post {
+                onUpdateNotification(mediaSession, true)
+            }
         }
 
         override fun onPlayerError(error: PlaybackException) {
@@ -74,6 +67,7 @@ class MusicService : MediaLibraryService() {
 
         player = ExoPlayer
             .Builder(this)
+            .setLooper(PlayerThread.looper)
             .setMediaSourceFactory(DefaultMediaSourceFactory(resolvingDataSource))
             .setAudioAttributes(AudioAttributes.DEFAULT, true)
             .setWakeMode(C.WAKE_MODE_NETWORK)
@@ -90,9 +84,6 @@ class MusicService : MediaLibraryService() {
 
         addSession(mediaSession)
         player.addListener(playerListener)
-
-        loadPlayQueue()
-        syncQueueLoop()
     }
 
 
@@ -103,23 +94,6 @@ class MusicService : MediaLibraryService() {
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
-
-    private fun loadPlayQueue() = serviceScope.launch {
-        apiSonicPlayQueueSyncer.loadPlayQueue(player)
-    }
-
-    private fun syncQueue() = serviceScope.launch {
-        apiSonicPlayQueueSyncer.syncPlayQueue(player)
-    }
-
-    private fun syncQueueLoop() = serviceScope.launch {
-        withContext(Dispatchers.IO) {
-            while (true) {
-                delay(SYNC_QUEUE_PERIOD)
-                apiSonicPlayQueueSyncer.syncPlayQueue(player)
-            }
-        }
-    }
 
     private inner class CustomMediaSessionCallback : MediaLibrarySession.Callback {
         override fun onAddMediaItems(
@@ -146,9 +120,5 @@ class MusicService : MediaLibraryService() {
                 connectionResult.availablePlayerCommands,
             )
         }
-    }
-
-    companion object {
-        private const val SYNC_QUEUE_PERIOD = 5000L
     }
 }

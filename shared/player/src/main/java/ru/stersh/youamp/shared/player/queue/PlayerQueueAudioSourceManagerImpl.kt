@@ -1,38 +1,33 @@
 package ru.stersh.youamp.shared.player.queue
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
 import androidx.media3.common.HeartRating
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.StarRating
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import ru.stersh.youamp.core.api.PlaylistEntry
 import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.MEDIA_SONG_ID
-import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
 import ru.stersh.youamp.shared.player.utils.toMediaItem
-import ru.stersh.youamp.shared.player.utils.withPlayer
 
 internal class PlayerQueueAudioSourceManagerImpl(
-    context: Context,
+    private val playerProvider: PlayerProvider,
     private val apiProvider: ApiProvider,
 ) : PlayerQueueAudioSourceManager {
-    private val mediaController = mediaControllerFuture(context, MusicService::class.java)
-    private val mainExecutor = ContextCompat.getMainExecutor(context)
     private val playingSource = MutableStateFlow<PlayingSource?>(null)
 
     override fun playingSource(): Flow<PlayingSource?> = playingSource
 
-    override suspend fun playSource(vararg source: AudioSource, shuffled: Boolean) {
+    override suspend fun playSource(vararg source: AudioSource, shuffled: Boolean) = withContext(Dispatchers.IO) {
         val newQueue = source.flatMap { getMediaItemsFromSource(it) }
         val songId = source.getOrNull(0)?.let { getPlaySongIdFromSource(it) }
         val index = if (songId == null) {
@@ -40,41 +35,44 @@ internal class PlayerQueueAudioSourceManagerImpl(
         } else {
             newQueue.indexOfFirst { it.mediaId == songId }
         }
-        mediaController.withPlayer(mainExecutor) {
+        withContext(PlayerDispatcher) {
+            val player = playerProvider.get()
             if (shuffled) {
-                setMediaItems(newQueue.shuffled())
+                player.setMediaItems(newQueue.shuffled())
             } else {
-                setMediaItems(newQueue)
+                player.setMediaItems(newQueue)
             }
             if (index != -1) {
-                seekTo(index, 0)
+                player.seekTo(index, 0)
             }
-            prepare()
-            play()
+            player.prepare()
+            player.play()
         }
         setPlayingSource(source.first())
     }
 
-    override suspend fun addSource(vararg source: AudioSource, shuffled: Boolean) {
+    override suspend fun addSource(vararg source: AudioSource, shuffled: Boolean) = withContext(Dispatchers.IO) {
         val newSongs = source.flatMap { getMediaItemsFromSource(it) }
-        mediaController.withPlayer(mainExecutor) {
+        withContext(PlayerDispatcher) {
+            val player = playerProvider.get()
             if (shuffled) {
-                addMediaItems(newSongs.shuffled())
+                player.addMediaItems(newSongs.shuffled())
             } else {
-                addMediaItems(newSongs)
+                player.addMediaItems(newSongs)
             }
         }
         clearPlayingSource()
     }
 
-    override suspend fun addAfterCurrent(vararg source: AudioSource, shuffled: Boolean) {
+    override suspend fun addAfterCurrent(vararg source: AudioSource, shuffled: Boolean) = withContext(Dispatchers.IO) {
         val newSongs = source.flatMap { getMediaItemsFromSource(it) }
-        mediaController.withPlayer(mainExecutor) {
-            val index = currentMediaItemIndex + 1
+        withContext(PlayerDispatcher) {
+            val player = playerProvider.get()
+            val index = player.currentMediaItemIndex + 1
             if (shuffled) {
-                addMediaItems(index, newSongs.shuffled())
+                player.addMediaItems(index, newSongs.shuffled())
             } else {
-                addMediaItems(index, newSongs)
+                player.addMediaItems(index, newSongs)
             }
         }
         clearPlayingSource()
@@ -90,13 +88,13 @@ internal class PlayerQueueAudioSourceManagerImpl(
         return null
     }
 
-    private suspend fun setPlayingSource(source: AudioSource) {
+    private suspend fun setPlayingSource(source: AudioSource) = withContext(Dispatchers.IO) {
         val serverId = apiProvider.getApiId()
         if (serverId == null) {
             playingSource.update {
                 null
             }
-            return
+            return@withContext
         }
         val type = when (source) {
             is AudioSource.RawSong,
@@ -121,8 +119,8 @@ internal class PlayerQueueAudioSourceManagerImpl(
         }
     }
 
-    private suspend fun getMediaItemsFromSource(source: AudioSource): List<MediaItem> {
-        return when (source) {
+    private suspend fun getMediaItemsFromSource(source: AudioSource): List<MediaItem> = withContext(Dispatchers.IO) {
+        return@withContext when (source) {
             is AudioSource.Song -> listOf(getSong(source))
             is AudioSource.Album -> getSongs(source)
             is AudioSource.Artist -> getSongs(source)
@@ -195,11 +193,6 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .Builder()
             .setTitle(source.title)
             .setArtist(source.artist)
-            .setExtras(
-                bundleOf(
-                    MEDIA_SONG_ID to source.id,
-                ),
-            )
             .setUserRating(starredRating)
             .setOverallRating(rating)
             .setArtworkUri(source.artworkUrl?.toUri())
@@ -241,11 +234,6 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .Builder()
             .setTitle(title)
             .setArtist(artist)
-            .setExtras(
-                bundleOf(
-                    MEDIA_SONG_ID to id,
-                ),
-            )
             .setUserRating(starredRating)
             .setOverallRating(rating)
             .setArtworkUri(artworkUri)

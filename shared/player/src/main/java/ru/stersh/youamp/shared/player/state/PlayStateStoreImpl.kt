@@ -1,44 +1,33 @@
 package ru.stersh.youamp.shared.player.state
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.media3.common.Player
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
-import ru.stersh.youamp.shared.player.utils.withPlayer
+import kotlinx.coroutines.flow.flowOn
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
 
-internal class PlayStateStoreImpl(private val context: Context) : PlayStateStore {
-    private val mainExecutor = ContextCompat.getMainExecutor(context)
+internal class PlayStateStoreImpl(
+    private val playerProvider: PlayerProvider
+) : PlayStateStore {
 
     override fun isPlaying(): Flow<Boolean> = callbackFlow {
-        val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
 
-        var player: Player? = null
-        var callback: Player.Listener? = null
+        val player = playerProvider.get()
 
-        mediaControllerFuture.withPlayer(mainExecutor) {
-            trySend(isPlaying)
-
-            val sessionCallback = object : Player.Listener {
-                override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    trySend(isPlaying)
-                }
+        val listener = object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                trySend(player.isPlaying)
             }
-            addListener(sessionCallback)
-
-            player = this
-            callback = sessionCallback
         }
+
+        player.addListener(listener)
+
+        trySend(player.isPlaying)
 
         awaitClose {
-            mainExecutor.execute {
-                callback?.let { player?.removeListener(it) }
-                callback = null
-                player = null
-            }
+            player.removeListener(listener)
         }
-    }
+    }.flowOn(PlayerDispatcher)
 }

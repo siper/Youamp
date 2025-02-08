@@ -1,7 +1,6 @@
 package ru.stersh.youamp.shared.player.utils
 
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
 import androidx.media3.common.HeartRating
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -9,7 +8,7 @@ import androidx.media3.common.StarRating
 import ru.stersh.youamp.core.api.Song
 import ru.stersh.youamp.core.api.provider.ApiProvider
 
-internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
+suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
     val songUri = apiProvider
         .getApi()
         .streamUrl(id)
@@ -32,11 +31,6 @@ internal suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
         .Builder()
         .setTitle(title)
         .setArtist(artist)
-        .setExtras(
-            bundleOf(
-                MEDIA_SONG_ID to id,
-            ),
-        )
         .setOverallRating(rating)
         .setUserRating(starredRating)
         .setArtworkUri(artworkUri)

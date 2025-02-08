@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.kotlin.coroutines)
     implementation(libs.timber)
+    implementation(libs.kotlin.coroutines.guava)
 
     api(libs.media.exoplayer)
     api(libs.media.exoplayer.hls)

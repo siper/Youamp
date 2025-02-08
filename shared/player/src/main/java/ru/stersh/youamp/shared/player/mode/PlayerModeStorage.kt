@@ -2,7 +2,7 @@ package ru.stersh.youamp.shared.player.mode
 
 import kotlinx.coroutines.flow.Flow
 
-interface PlayerMode {
+interface PlayerModeStorage {
 
     fun getShuffleMode(): Flow<ShuffleMode>
     fun setShuffleMode(shuffleMode: ShuffleMode)

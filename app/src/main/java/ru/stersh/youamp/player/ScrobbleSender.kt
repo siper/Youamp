@@ -1,4 +1,4 @@
-package ru.stersh.youamp.shared.player.progress
+package ru.stersh.youamp.player
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -9,8 +9,10 @@ internal class ScrobbleSender(
     val id: String,
     private val apiProvider: ApiProvider,
 ) {
-    private var scrobbleSent = false
-    private var submissionSent = false
+    var scrobbleSent = false
+        private set
+    var submissionSent = false
+        private set
 
     private val sendMutex = Mutex()
 
