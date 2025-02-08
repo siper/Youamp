@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
@@ -315,7 +316,7 @@ private fun AlbumSongItemPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun AlbumInfoScreenPreview() {
-    val songs = listOf(
+    val songs = persistentListOf(
         AlbumSongUi(
             id = "1",
             track = 1,

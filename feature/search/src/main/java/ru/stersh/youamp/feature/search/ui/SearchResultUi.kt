@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,7 +37,7 @@ import ru.stersh.youamp.feature.search.R
 
 @Composable
 internal fun SongItem(
-    item: SearchResultUi.Song,
+    item: Song,
     onMoreClick: () -> Unit
 ) {
     ListItem(
@@ -84,7 +83,7 @@ internal fun SongItem(
 
 @Composable
 internal fun AlbumItem(
-    item: SearchResultUi.Album,
+    item: Album,
     onPlay: (albumId: String) -> Unit,
     onAddToQueue: (albumId: String) -> Unit,
     onOpenInfo: (albumId: String) -> Unit,
@@ -158,7 +157,7 @@ internal fun AlbumItem(
 
 @Composable
 internal fun ArtistItem(
-    item: SearchResultUi.Artist,
+    item: Artist,
     onPlay: (artistId: String) -> Unit,
     onAddToQueue: (artistId: String) -> Unit,
     onOpenInfo: (artistId: String) -> Unit,
@@ -223,33 +222,6 @@ internal fun ArtistItem(
     )
 }
 
-@Immutable
-internal object SearchResultUi {
-
-    @Immutable
-    data class Song(
-        val id: String,
-        val title: String,
-        val artist: String?,
-        val artworkUrl: String?
-    )
-
-    @Immutable
-    data class Album(
-        val id: String,
-        val title: String,
-        val artist: String,
-        val artworkUrl: String?
-    )
-
-    @Immutable
-    data class Artist(
-        val id: String,
-        val name: String,
-        val artworkUrl: String?
-    )
-}
-
 @Composable
 @Preview
 private fun Preview() {
@@ -257,7 +229,7 @@ private fun Preview() {
         Scaffold {
             Column(modifier = Modifier.padding(it)) {
                 SongItem(
-                    item = SearchResultUi.Song(
+                    item = Song(
                         id = "1",
                         title = "Coolest song in the world",
                         artist = "Coolest artist in the world",
@@ -266,7 +238,7 @@ private fun Preview() {
                     onMoreClick = {}
                 )
                 AlbumItem(
-                    item = SearchResultUi.Album(
+                    item = Album(
                         id = "1",
                         title = "Coolest album in the world",
                         artist = "Coolest artist in the world",
@@ -277,7 +249,7 @@ private fun Preview() {
                     onOpenInfo = {}
                 )
                 ArtistItem(
-                    item = SearchResultUi.Artist(
+                    item = Artist(
                         id = "1",
                         name = "Coolest artist in the world with very long title",
                         artworkUrl = null

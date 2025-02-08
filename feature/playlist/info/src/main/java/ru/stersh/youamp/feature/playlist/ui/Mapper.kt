@@ -1,5 +1,7 @@
 package ru.stersh.youamp.feature.playlist.ui
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import ru.stersh.youamp.feature.playlist.domain.PlaylistInfo
 import ru.stersh.youamp.feature.playlist.domain.PlaylistSong
 
@@ -11,7 +13,7 @@ internal fun PlaylistInfo.toUi(): PlaylistInfoUi {
     )
 }
 
-internal fun List<PlaylistSong>.toUi(): List<PlaylistSongUi> = map { it.toUi() }
+internal fun List<PlaylistSong>.toUi(): ImmutableList<PlaylistSongUi> = map { it.toUi() }.toPersistentList()
 
 internal fun PlaylistSong.toUi(): PlaylistSongUi {
     return PlaylistSongUi(

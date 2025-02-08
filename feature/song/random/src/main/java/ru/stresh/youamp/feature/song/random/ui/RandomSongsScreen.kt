@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
@@ -104,44 +104,57 @@ private fun RandomSongsScreen(
                 }
 
                 state.data?.songs != null -> {
-                    Box(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .fillMaxSize()
-                    ) {
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
-                            item(
-                                contentType = "header",
-                                key = "header"
-                            ) {
-                                HeaderLayout(
-                                    title = {
-                                        HeaderTitle(text = stringResource(R.string.random_songs_title))
-                                    },
-                                    actions = {
-                                        PlayAllButton(
-                                            onClick = onPlayAll
-                                        )
-                                        PlayShuffledButton(
-                                            onClick = onPlayShuffled
-                                        )
-                                    }
-                                )
-                            }
-                            items(
-                                items = state.data.songs,
-                                contentType = { "song" },
-                                key = { "song_${it.id}" }
-                            ) { song ->
-                                RandomSongItem(
-                                    song = song,
-                                    onClick = { onSongClick(song.id) }
-                                )
-                            }
-                        }
-                    }
+                    Content(
+                        data = state.data,
+                        onPlayAll = onPlayAll,
+                        onPlayShuffled = onPlayShuffled,
+                        onSongClick = onSongClick
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    data: DataUi,
+    onPlayAll: () -> Unit,
+    onPlayShuffled: () -> Unit,
+    onSongClick: (id: String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        item(
+            contentType = "header",
+            key = "header"
+        ) {
+            HeaderLayout(
+                title = {
+                    HeaderTitle(text = stringResource(R.string.random_songs_title))
+                },
+                actions = {
+                    PlayAllButton(
+                        onClick = onPlayAll
+                    )
+                    PlayShuffledButton(
+                        onClick = onPlayShuffled
+                    )
+                }
+            )
+        }
+        items(
+            items = data.songs,
+            contentType = { "song" },
+            key = { "song_${it.id}" }
+        ) { song ->
+            RandomSongItem(
+                song = song,
+                onClick = { onSongClick(song.id) }
+            )
         }
     }
 }
@@ -203,7 +216,7 @@ private fun RandomSongItem(
 @Composable
 private fun FavoriteSongsScreenPreview() {
     MaterialTheme {
-        val songs = listOf(
+        val songs = persistentListOf(
             SongUi(
                 id = "1",
                 title = "Best song in the world 1",

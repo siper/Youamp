@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -234,18 +233,6 @@ private fun Progress(
         }
     }
 }
-
-internal data class StateUi(
-    val progress: Boolean = true,
-    val error: Boolean = false,
-    val refreshing: Boolean = false,
-    val data: DataUi? = null
-)
-
-@Immutable
-internal data class DataUi(
-    val randomSongs: List<List<SongUi>> = emptyList(),
-)
 
 @Composable
 @Preview

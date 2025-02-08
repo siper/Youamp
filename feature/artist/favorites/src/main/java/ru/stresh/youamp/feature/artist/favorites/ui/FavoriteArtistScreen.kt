@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.BackNavigationButton
@@ -167,7 +168,7 @@ private fun Progress() {
 @Composable
 private fun FavoriteArtistsScreenPreview() {
     MaterialTheme {
-        val albums = listOf(
+        val albums = persistentListOf(
             ArtistUi(
                 id = "1",
                 name = "Artist 1",

@@ -81,7 +81,7 @@ fun SongInfoScreen(
 
 @Composable
 private fun SongInfoScreen(
-    state: SongInfoStateUi,
+    state: State,
     onDismiss: () -> Unit,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
@@ -211,7 +211,7 @@ private fun SongInfoScreen(
 private fun AlbumInfoScreenPreview() {
     YouampPlayerTheme {
         SongInfoScreen(
-            state = SongInfoStateUi(
+            state = State(
                 title = "Test song",
                 artistId = "1",
                 albumId = "1",

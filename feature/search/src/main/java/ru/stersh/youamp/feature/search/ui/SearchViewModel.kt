@@ -2,8 +2,11 @@ package ru.stersh.youamp.feature.search.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.search.domain.SearchRepository
 import ru.stersh.youamp.shared.player.queue.AudioSource
@@ -22,17 +25,27 @@ internal class SearchViewModel(
         viewModelScope.launch {
             searchRepository
                 .searchResults()
+                .flowOn(Dispatchers.IO)
                 .collect { searchResult ->
                     val currentState = _state.value
                     _state.value = currentState.copy(
                         progress = false,
-                        songs = searchResult.songs.map { it.toUi() },
+                        songs = searchResult
+                            .songs
+                            .map { it.toUi() }
+                            .toPersistentList(),
                         hasMoreSongs = searchResult.hasMoreSongs,
                         songsProgress = false,
-                        albums = searchResult.albums.map { it.toUi() },
+                        albums = searchResult
+                            .albums
+                            .map { it.toUi() }
+                            .toPersistentList(),
                         hasMoreAlbums = searchResult.hasMoreAlbums,
                         albumsProgress = false,
-                        artists = searchResult.artists.map { it.toUi() },
+                        artists = searchResult
+                            .artists
+                            .map { it.toUi() }
+                            .toPersistentList(),
                         hasMoreArtists = searchResult.hasMoreArtists,
                         artistsProgress = false
                     )

@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
@@ -203,7 +204,7 @@ private fun FavoriteSongItem(
 @Composable
 private fun FavoriteSongsScreenPreview() {
     MaterialTheme {
-        val songs = listOf(
+        val songs = persistentListOf(
             SongUi(
                 id = "1",
                 title = "Best song in the world 1",

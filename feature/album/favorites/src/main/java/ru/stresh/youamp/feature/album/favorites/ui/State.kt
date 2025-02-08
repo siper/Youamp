@@ -1,6 +1,6 @@
 package ru.stresh.youamp.feature.album.favorites.ui
 
-import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 
 internal data class StateUi(
     val progress: Boolean = true,
@@ -9,9 +9,8 @@ internal data class StateUi(
     val data: DataUi? = null
 )
 
-@Immutable
 internal data class DataUi(
-    val albums: List<AlbumUi>
+    val albums: ImmutableList<AlbumUi>
 )
 
 internal class AlbumUi(

@@ -1,5 +1,6 @@
 package ru.stersh.youamp.feature.album.ui
 
+import kotlinx.collections.immutable.toImmutableList
 import ru.stersh.youamp.feature.album.domain.AlbumInfo
 import ru.stersh.youamp.feature.album.domain.AlbumSong
 
@@ -10,7 +11,9 @@ internal fun AlbumInfo.toUi(): AlbumInfoUi {
         year = year,
         artworkUrl = artworkUrl,
         isFavorite = isFavorite,
-        songs = songs.map { it.toUi() }
+        songs = songs
+            .map { it.toUi() }
+            .toImmutableList()
     )
 }
 

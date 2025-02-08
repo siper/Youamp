@@ -1,11 +1,14 @@
 package ru.stresh.youamp.feature.song.favorites.ui
 
+import kotlinx.collections.immutable.toPersistentList
 import ru.stresh.youamp.feature.song.favorites.domain.Favorites
 import ru.stresh.youamp.feature.song.favorites.domain.Song
 
 internal fun Favorites.toUi(): DataUi {
     return DataUi(
-        songs = songs.map { it.toUi() }
+        songs = songs
+            .map { it.toUi() }
+            .toPersistentList()
     )
 }
 

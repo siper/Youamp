@@ -2,6 +2,7 @@ package ru.stersh.youamp.feature.albums.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -42,7 +43,7 @@ internal class AlbumsViewModel(
                 progress = true,
                 isRefreshing = false,
                 error = false,
-                items = emptyList()
+                items = persistentListOf()
             )
         }
         paginator.restart()
@@ -79,7 +80,7 @@ internal class AlbumsViewModel(
                                 progress = false,
                                 isRefreshing = false,
                                 error = true,
-                                items = emptyList()
+                                items = persistentListOf()
                             )
                         }
                     }
@@ -98,7 +99,7 @@ internal class AlbumsViewModel(
                             progress = true,
                             isRefreshing = false,
                             error = false,
-                            items = emptyList()
+                            items = persistentListOf()
                         )
                     }
                     paginator.restart()

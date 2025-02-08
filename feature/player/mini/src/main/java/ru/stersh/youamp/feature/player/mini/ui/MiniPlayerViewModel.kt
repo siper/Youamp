@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.shared.player.controls.PlayerControls
 import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
@@ -19,7 +20,7 @@ internal class MiniPlayerViewModel(
     private val playerControls: PlayerControls,
     private val playerProgressStore: PlayerProgressStore
 ) : ViewModel() {
-    private val _state = MutableStateFlow<StateUi>(StateUi.Invisible)
+    private val _state = MutableStateFlow<StateUi>(StateUi())
     val state: StateFlow<StateUi>
         get() = _state
 
@@ -32,10 +33,8 @@ internal class MiniPlayerViewModel(
                     .playerProgress()
                     .mapNotNull { it?.progressPercent }
             ) { songInfo, isPlaying, progress ->
-                return@combine if (songInfo == null) {
-                    StateUi.Invisible
-                } else {
-                    StateUi.Content(
+                return@combine songInfo?.let {
+                    PlayerDataUi(
                         title = songInfo.title,
                         artist = songInfo.artist,
                         artworkUrl = songInfo.coverArtUrl,
@@ -44,8 +43,10 @@ internal class MiniPlayerViewModel(
                     )
                 }
             }
-                .collect {
-                    _state.value = it
+                .collect { data ->
+                    _state.update {
+                        it.copy(data = data, invisible = data == null)
+                    }
                 }
         }
     }

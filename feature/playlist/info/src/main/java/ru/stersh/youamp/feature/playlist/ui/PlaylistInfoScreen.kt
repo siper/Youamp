@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
@@ -286,7 +287,7 @@ private fun PlaylistSongItem(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PlaylistInfoScreenPreview() {
-    val songs = listOf(
+    val songs = persistentListOf(
         PlaylistSongUi(
             id = "1",
             title = "Test song with veeeeeeeeeeeeery long title",
@@ -319,7 +320,7 @@ private fun PlaylistInfoScreenPreview() {
                 playlistInfo = PlaylistInfoUi(
                     artworkUrl = null,
                     title = "Test",
-                    songs = emptyList()
+                    songs = songs
                 )
             ),
             onRetry = {},

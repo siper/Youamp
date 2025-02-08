@@ -18,30 +18,28 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
+import ru.stersh.youamp.core.ui.AlbumItem
+import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButton
+import ru.stersh.youamp.core.ui.PlayButtonOutlined
+import ru.stersh.youamp.core.ui.PlaylistItem
 import ru.stersh.youamp.core.ui.SectionTitle
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.personal.R
-import ru.stersh.youamp.feature.personal.ui.components.AlbumPersonalItem
-import ru.stersh.youamp.feature.personal.ui.components.ArtistItem
-import ru.stersh.youamp.feature.personal.ui.components.PersonalAlbumUi
-import ru.stersh.youamp.feature.personal.ui.components.PersonalArtistUi
-import ru.stersh.youamp.feature.personal.ui.components.PlaylistItem
-import ru.stersh.youamp.feature.personal.ui.components.PlaylistUi
 import ru.stersh.youamp.shared.player.queue.AudioSource
 
 @Composable
@@ -56,7 +54,7 @@ fun PersonalScreen(
     onPlaylistClick: (id: String) -> Unit,
 ) {
     val viewModel: PersonalViewModel = koinViewModel()
-    val state: PersonalScreenStateUi by viewModel.state.collectAsStateWithLifecycle()
+    val state: StateUi by viewModel.state.collectAsStateWithLifecycle()
 
     PersonalScreen(
         state = state,
@@ -76,7 +74,7 @@ fun PersonalScreen(
 
 @Composable
 private fun PersonalScreen(
-    state: PersonalScreenStateUi,
+    state: StateUi,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
@@ -251,12 +249,17 @@ private fun Content(
                     data.playlists.forEach {
                         item {
                             PlaylistItem(
-                                playlist = it,
-                                onClick = {
-                                    onPlaylistClick(it)
+                                title = it.title,
+                                playButton = {
+                                    PlayButtonOutlined(
+                                        isPlaying = it.isPlaying,
+                                        onClick = {
+                                            onPlayPauseAudioSource(AudioSource.Playlist(it.id))
+                                        }
+                                    )
                                 },
-                                onPlayPauseClick = {
-                                    onPlayPauseAudioSource(AudioSource.Playlist(it.id))
+                                onClick = {
+                                    onPlaylistClick(it.id)
                                 },
                                 modifier = Modifier.requiredWidth(160.dp)
                             )
@@ -331,13 +334,20 @@ private fun Content(
                         .albums
                         .forEach {
                             item {
-                                AlbumPersonalItem(
-                                    album = it,
-                                    onPlayPauseClick = {
-                                        onPlayPauseAudioSource(AudioSource.Album(it.id))
+                                AlbumItem(
+                                    title = it.title,
+                                    artist = it.artist,
+                                    artworkUrl = it.artworkUrl,
+                                    playButton = {
+                                        PlayButtonOutlined(
+                                            isPlaying = it.isPlaying,
+                                            onClick = {
+                                                onPlayPauseAudioSource(AudioSource.Album(it.id))
+                                            }
+                                        )
                                     },
                                     onClick = {
-                                        onAlbumClick(it)
+                                        onAlbumClick(it.id)
                                     },
                                     modifier = Modifier.requiredWidth(160.dp)
                                 )
@@ -364,12 +374,18 @@ private fun Content(
                         .forEach {
                             item {
                                 ArtistItem(
-                                    artist = it,
-                                    onPlayPauseClick = {
-                                        onPlayPauseAudioSource(AudioSource.Artist(it.id))
+                                    name = it.name,
+                                    artworkUrl = it.artworkUrl,
+                                    playButton = {
+                                        PlayButtonOutlined(
+                                            isPlaying = it.isPlaying,
+                                            onClick = {
+                                                onPlayPauseAudioSource(AudioSource.Artist(it.id))
+                                            }
+                                        )
                                     },
                                     onClick = {
-                                        onArtistClick(it)
+                                        onArtistClick(it.id)
                                     },
                                     modifier = Modifier.requiredWidth(160.dp)
                                 )
@@ -381,77 +397,57 @@ private fun Content(
     }
 }
 
-@Immutable
-internal data class PersonalScreenStateUi(
-    val progress: Boolean = true,
-    val error: Boolean = false,
-    val refreshing: Boolean = false,
-    val data: PersonalDataUi? = null
-)
-
-@Immutable
-internal data class PersonalDataUi(
-    val songs: List<List<PersonalSongUi>> = emptyList(),
-    val playlists: List<PlaylistUi> = emptyList(),
-    val albums: List<PersonalAlbumUi> = emptyList(),
-    val artists: List<PersonalArtistUi> = emptyList(),
-) {
-
-    val isEmpty: Boolean
-        get() = songs.isEmpty() && playlists.isEmpty() && albums.isEmpty() && artists.isEmpty()
-}
-
 @Composable
 @Preview
 private fun PersonalScreenPreview() {
     YouampPlayerTheme {
-        val state = PersonalScreenStateUi(
+        val state = StateUi(
             progress = false,
             error = false,
             data = PersonalDataUi(
-                playlists = listOf(
+                playlists = persistentListOf(
                     PlaylistUi(
                         id = "Verna",
-                        name = "Sedric",
+                        title = "Sedric",
                         artworkUrl = null,
                         isPlaying = false
                     ),
                     PlaylistUi(
                         id = "Verna",
-                        name = "Sedric",
+                        title = "Sedric",
                         artworkUrl = null,
                         isPlaying = false
                     ),
                     PlaylistUi(
                         id = "Verna",
-                        name = "Sedric",
+                        title = "Sedric",
                         artworkUrl = null,
                         isPlaying = false
                     ),
                     PlaylistUi(
                         id = "Verna",
-                        name = "Sedric",
+                        title = "Sedric",
                         artworkUrl = null,
                         isPlaying = true
                     )
                 ),
-                songs = listOf(
-                    listOf(
-                        PersonalSongUi(
+                songs = persistentListOf(
+                    persistentListOf(
+                        SongUi(
                             id = "Indra",
                             title = "Britanny",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
                         ),
-                        PersonalSongUi(
+                        SongUi(
                             id = "Raffaele",
                             title = "Brittny",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
                         ),
-                        PersonalSongUi(
+                        SongUi(
                             id = "Patsy",
                             title = "Brittiney",
                             artist = null,
@@ -459,22 +455,22 @@ private fun PersonalScreenPreview() {
                             isPlaying = false
                         )
                     ),
-                    listOf(
-                        PersonalSongUi(
+                    persistentListOf(
+                        SongUi(
                             id = "Julieta",
                             title = "Tykia",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
                         ),
-                        PersonalSongUi(
+                        SongUi(
                             id = "Kofi",
                             title = "Lyla",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
                         ),
-                        PersonalSongUi(
+                        SongUi(
                             id = "Kofi",
                             title = "Lyla",
                             artist = null,
@@ -483,8 +479,8 @@ private fun PersonalScreenPreview() {
                         )
                     )
                 ),
-                albums = listOf(
-                    PersonalAlbumUi(
+                albums = persistentListOf(
+                    AlbumUi(
                         id = "Kashif",
                         title = "Tremaine",
                         artist = "Slipknot",
@@ -492,14 +488,14 @@ private fun PersonalScreenPreview() {
                         isPlaying = false
                     )
                 ),
-                artists = listOf(
-                    PersonalArtistUi(
+                artists = persistentListOf(
+                    ArtistUi(
                         id = "Soloman",
                         name = "Eliana",
                         artworkUrl = null,
                         isPlaying = false
                     ),
-                    PersonalArtistUi(
+                    ArtistUi(
                         id = "Tari",
                         name = "Shamir",
                         artworkUrl = null,
