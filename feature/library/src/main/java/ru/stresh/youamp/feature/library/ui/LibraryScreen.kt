@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -57,6 +58,7 @@ fun LibraryScreen(
         onAlbumsClick = onAlbumsClick,
         onArtistsClick = onArtistsClick,
         onRetry = viewModel::retry,
+        onRefresh = viewModel::refresh,
         onPlayPauseAudioSource = viewModel::onPlayPauseAudioSource
     )
 }
@@ -70,6 +72,7 @@ internal fun LibraryScreen(
     onArtistsClick: () -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     onRetry: () -> Unit,
+    onRefresh: () -> Unit,
 ) {
     val layoutState by remember(state) {
         derivedStateOf {
@@ -80,28 +83,33 @@ internal fun LibraryScreen(
             }
         }
     }
-    StateLayout(
-        state = layoutState,
-        content = {
-            Content(
-                data = state.data,
-                onAlbumClick = onAlbumClick,
-                onArtistClick = onArtistClick,
-                onAlbumsClick = onAlbumsClick,
-                onArtistsClick = onArtistsClick,
-                onPlayPauseAudioSource = onPlayPauseAudioSource
-            )
-        },
-        progress = {
-            Progress()
-        },
-        error = {
-            ErrorLayout(onRetry = onRetry)
-        },
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    )
+    PullToRefreshBox(
+        isRefreshing = state.refreshing,
+        onRefresh = onRefresh
+    ) {
+        StateLayout(
+            state = layoutState,
+            content = {
+                Content(
+                    data = state.data,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick,
+                    onAlbumsClick = onAlbumsClick,
+                    onArtistsClick = onArtistsClick,
+                    onPlayPauseAudioSource = onPlayPauseAudioSource
+                )
+            },
+            progress = {
+                Progress()
+            },
+            error = {
+                ErrorLayout(onRetry = onRetry)
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+        )
+    }
 }
 
 @Composable
@@ -278,6 +286,7 @@ private fun LibraryScreenPreview() {
         LibraryScreen(
             state = StateUi(),
             onRetry = {},
+            onRefresh = {},
             onAlbumClick = {},
             onArtistClick = {},
             onArtistsClick = {},

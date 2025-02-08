@@ -19,6 +19,7 @@ import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
 import ru.stersh.youamp.shared.player.queue.equals
 import ru.stersh.youamp.shared.player.state.PlayStateStore
 import ru.stresh.youamp.feature.explore.domain.ExploreRepository
+import timber.log.Timber
 
 internal class ExploreViewModel(
     private val repository: ExploreRepository,
@@ -46,6 +47,7 @@ internal class ExploreViewModel(
                 .catch {
                     _state.update {
                         it.copy(
+                            refreshing = false,
                             progress = false,
                             error = true
                         )
@@ -54,12 +56,23 @@ internal class ExploreViewModel(
                 .collect { explore ->
                     _state.update {
                         it.copy(
+                            refreshing = false,
                             progress = false,
                             data = explore
                         )
                     }
                 }
         }
+    }
+
+    fun refresh() = viewModelScope.launch {
+        _state.update {
+            it.copy(refreshing = true)
+        }
+        runCatching { repository.refresh() }
+            .onFailure { Timber.w(it) }
+        stateJob?.cancel()
+        subscribeState()
     }
 
     fun retry() {

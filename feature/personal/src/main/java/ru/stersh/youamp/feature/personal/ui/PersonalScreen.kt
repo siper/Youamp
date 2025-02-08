@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -60,6 +61,7 @@ fun PersonalScreen(
     PersonalScreen(
         state = state,
         onRetry = viewModel::retry,
+        onRefresh = viewModel::refresh,
         onPlayPauseAudioSource = viewModel::onPlayPauseAudioSource,
         onSongClick = onSongClick,
         onAlbumClick = onAlbumClick,
@@ -76,6 +78,7 @@ fun PersonalScreen(
 private fun PersonalScreen(
     state: PersonalScreenStateUi,
     onRetry: () -> Unit,
+    onRefresh: () -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     onPlaylistsClick: () -> Unit,
     onFavoriteSongsClick: () -> Unit,
@@ -92,35 +95,40 @@ private fun PersonalScreen(
         state.data?.isEmpty == true -> LayoutStateUi.Empty
         else -> LayoutStateUi.Content
     }
-    StateLayout(
-        state = layoutState,
-        content = {
-            Content(
-                data = state.data,
-                onPlayPauseAudioSource = onPlayPauseAudioSource,
-                onSongClick = onSongClick,
-                onAlbumClick = onAlbumClick,
-                onArtistClick = onArtistClick,
-                onPlaylistClick = onPlaylistClick,
-                onPlaylistsClick = onPlaylistsClick,
-                onFavoriteSongsClick = onFavoriteSongsClick,
-                onFavoriteAlbumsClick = onFavoriteAlbumsClick,
-                onFavoriteArtistsClick = onFavoriteArtistsClick
-            )
-        },
-        progress = {
-            Progress()
-        },
-        error = {
-            ErrorLayout(onRetry = onRetry)
-        },
-        empty = {
-            EmptyLayout()
-        },
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    )
+    PullToRefreshBox(
+        isRefreshing = state.refreshing,
+        onRefresh = onRefresh
+    ) {
+        StateLayout(
+            state = layoutState,
+            content = {
+                Content(
+                    data = state.data,
+                    onPlayPauseAudioSource = onPlayPauseAudioSource,
+                    onSongClick = onSongClick,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick,
+                    onPlaylistClick = onPlaylistClick,
+                    onPlaylistsClick = onPlaylistsClick,
+                    onFavoriteSongsClick = onFavoriteSongsClick,
+                    onFavoriteAlbumsClick = onFavoriteAlbumsClick,
+                    onFavoriteArtistsClick = onFavoriteArtistsClick
+                )
+            },
+            progress = {
+                Progress()
+            },
+            error = {
+                ErrorLayout(onRetry = onRetry)
+            },
+            empty = {
+                EmptyLayout()
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+        )
+    }
 }
 
 @Composable
@@ -377,6 +385,7 @@ private fun Content(
 internal data class PersonalScreenStateUi(
     val progress: Boolean = true,
     val error: Boolean = false,
+    val refreshing: Boolean = false,
     val data: PersonalDataUi? = null
 )
 
@@ -502,6 +511,7 @@ private fun PersonalScreenPreview() {
         PersonalScreen(
             state = state,
             onRetry = {},
+            onRefresh = {},
             onPlayPauseAudioSource = {},
             onSongClick = {},
             onAlbumClick = {},

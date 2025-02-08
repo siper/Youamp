@@ -48,6 +48,7 @@ internal class PersonalViewModel(
                     _state.update {
                         it.copy(
                             progress = false,
+                            refreshing = false,
                             error = true
                         )
                     }
@@ -56,6 +57,7 @@ internal class PersonalViewModel(
                     _state.update {
                         it.copy(
                             progress = false,
+                            refreshing = false,
                             data = personal
                         )
                     }
@@ -72,6 +74,14 @@ internal class PersonalViewModel(
                 data = null
             )
         }
+        subscribeState()
+    }
+
+    fun refresh() {
+        _state.update {
+            it.copy(refreshing = true)
+        }
+        stateJob?.cancel()
         subscribeState()
     }
 
