@@ -103,12 +103,21 @@ If you want help to make Youamp better, you can:
         <sub><b>245 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/ctrlVnt"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16872155/medium/5d6936a3ed5809ea8d6898f3f49b247c.png" />
+          <br />
+          <sub><b>Riccardo Venturini (ctrlVnt)</b></sub></a>
+        <br />
+        <sub><b>92 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/tct123"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15267698/medium/322d599848cfa45502662989d2208a22.jpg" />
           <br />
           <sub><b>tct123</b></sub></a>
         <br />
         <sub><b>24 words</b></sub>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/John_Ethan"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16850011/medium/beb9b59e234ff94a96b8e0ab3485f8a8_default.png" />
           <br />
@@ -116,8 +125,6 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>17 words</b></sub>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/gfreak70"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13415218/medium/0b6ea6c0fa230d9069a08c28fed8a6b8.jpg" />
           <br />
