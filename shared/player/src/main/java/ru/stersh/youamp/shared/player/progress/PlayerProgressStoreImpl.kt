@@ -1,96 +1,54 @@
 package ru.stersh.youamp.shared.player.progress
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.media3.common.C
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import kotlinx.coroutines.flow.flowOn
 import ru.stersh.youamp.core.utils.formatSongDuration
-import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
-import ru.stersh.youamp.shared.player.utils.withPlayer
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
 
 internal class PlayerProgressStoreImpl(
-    private val context: Context,
-    private val apiProvider: ApiProvider,
+    private val playerProvider: PlayerProvider
 ) : PlayerProgressStore {
-    private val executor = ContextCompat.getMainExecutor(context)
-    private var scrobbleSender: ScrobbleSender? = null
 
-    override fun playerProgress(): Flow<PlayerProgress?> = callbackFlow {
-        val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
+    override fun playerProgress(): Flow<PlayerProgress?> = channelFlow {
+        val player = playerProvider.get()
 
-        var player: Player? = null
-        var callback: Player.Listener? = null
+        var progress = getProgress(player)
 
-        mediaControllerFuture.withPlayer(executor) {
-            trySend(progress)
-
-            launch {
-                while (true) {
-                    delay(SEND_PROGRESS_DELAY)
-
-                    val id = currentMediaItem?.mediaId
-                    if (id != null && scrobbleSender?.id != id) {
-                        scrobbleSender = ScrobbleSender(id, apiProvider)
-                    }
-
-                    val currentProgress = progress ?: continue
-                    when {
-                        currentProgress.currentTimeMs > SEND_SCROBBLE_EVENT_TIME -> {
-                            launch { scrobbleSender?.trySendScrobble() }
-                        }
-                        (currentProgress.currentTimeMs + SEND_SCROBBLE_EVENT_TIME) >= currentProgress.totalTimeMs -> {
-                            launch { scrobbleSender?.trySendSubmission() }
-                        }
-                    }
-                    trySend(progress)
-                }
+        trySend(progress)
+        while (true) {
+            val newProgress = getProgress(player)
+            if (newProgress != progress) {
+                trySend(newProgress)
+                progress = newProgress
             }
-
-            val sessionCallback = object : Player.Listener {
-                override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                    trySend(progress)
-                }
-            }
-            addListener(sessionCallback)
-
-            player = this
-            callback = sessionCallback
+            delay(PROGRESS_REFRESH_INTERVAL)
         }
+    }
+        .flowOn(PlayerDispatcher)
+        .distinctUntilChanged()
 
-        awaitClose {
-            callback?.let { player?.removeListener(it) }
-            callback = null
-            player = null
+    private fun getProgress(player: Player): PlayerProgress? {
+        val totalTimeMs = player.duration.takeIf { it != C.TIME_UNSET } ?: return null
+        val currentTimeMs = if (player.currentPosition > totalTimeMs) {
+            totalTimeMs
+        } else {
+            player.currentPosition
         }
-    }.distinctUntilChanged()
-
-    private val Player.progress: PlayerProgress?
-        get() {
-            val totalTimeMs = duration.takeIf { it != C.TIME_UNSET } ?: return null
-            val currentTimeMs = if (currentPosition > totalTimeMs) {
-                totalTimeMs
-            } else {
-                currentPosition
-            }
-            return PlayerProgress(
-                totalTimeMs = totalTimeMs,
-                currentTimeMs = currentTimeMs,
-                totalTime = formatSongDuration(totalTimeMs),
-                currentTime = formatSongDuration(currentTimeMs),
-            )
-        }
+        return PlayerProgress(
+            totalTimeMs = totalTimeMs,
+            currentTimeMs = currentTimeMs,
+            totalTime = formatSongDuration(totalTimeMs),
+            currentTime = formatSongDuration(currentTimeMs),
+        )
+    }
 
     companion object {
-        private const val SEND_PROGRESS_DELAY = 500L
-        private const val SEND_SCROBBLE_EVENT_TIME = 5000L
+        private const val PROGRESS_REFRESH_INTERVAL = 500L
     }
 }

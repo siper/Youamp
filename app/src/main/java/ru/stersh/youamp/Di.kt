@@ -29,7 +29,10 @@ import ru.stersh.youamp.main.data.ServerExistRepositoryImpl
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
+import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
+import ru.stersh.youamp.player.PlayerProviderImpl
 import ru.stersh.youamp.shared.player.playerSharedModule
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
 import ru.stresh.youamp.core.properties.app.AppProperties
 import ru.stresh.youamp.core.propertiesModule
 import ru.stresh.youamp.feature.about.aboutModule
@@ -96,6 +99,8 @@ private val impl = module {
         )
     }
     single<ApiProvider> { ApiProviderImpl(get()) }
+    single<PlayerProvider> { PlayerProviderImpl(get()) }
+    single { ApiSonicPlayQueueSyncer(get(), get()) }
 }
 
 private val main = module {

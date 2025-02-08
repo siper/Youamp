@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import ru.stersh.youamp.shared.player.controls.PlayerControls
 import ru.stersh.youamp.shared.player.favorites.CurrentSongFavorites
 import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
-import ru.stersh.youamp.shared.player.mode.PlayerMode
+import ru.stersh.youamp.shared.player.mode.PlayerModeStorage
 import ru.stersh.youamp.shared.player.progress.PlayerProgressStore
 import ru.stersh.youamp.shared.player.state.PlayStateStore
 
@@ -21,7 +21,7 @@ internal class PlayerScreenViewModel(
     private val playerControls: PlayerControls,
     private val playerProgressStore: PlayerProgressStore,
     private val currentSongFavorites: CurrentSongFavorites,
-    private val playerMode: PlayerMode
+    private val playerModeStorage: PlayerModeStorage
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(StateUi())
@@ -69,7 +69,7 @@ internal class PlayerScreenViewModel(
                 }
         }
         viewModelScope.launch {
-            playerMode
+            playerModeStorage
                 .getRepeatMode()
                 .collect { repeatMode ->
                     _state.update {
@@ -80,7 +80,7 @@ internal class PlayerScreenViewModel(
                 }
         }
         viewModelScope.launch {
-            playerMode
+            playerModeStorage
                 .getShuffleMode()
                 .collect { shuffleMode ->
                     _state.update {
@@ -133,10 +133,10 @@ internal class PlayerScreenViewModel(
     }
 
     fun shuffleModeChanged(shuffleMode: ShuffleModeUi) = viewModelScope.launch {
-        playerMode.setShuffleMode(shuffleMode.toDomain())
+        playerModeStorage.setShuffleMode(shuffleMode.toDomain())
     }
 
     fun repeatModeChanged(repeatMode: RepeatModeUi) = viewModelScope.launch {
-        playerMode.setRepeatMode(repeatMode.toDomain())
+        playerModeStorage.setRepeatMode(repeatMode.toDomain())
     }
 }

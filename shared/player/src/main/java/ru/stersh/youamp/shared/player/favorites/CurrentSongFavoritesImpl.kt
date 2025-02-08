@@ -1,37 +1,32 @@
 package ru.stersh.youamp.shared.player.favorites
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.media3.common.HeartRating
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.MEDIA_SONG_ID
-import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
-import ru.stersh.youamp.shared.player.utils.withPlayer
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
+import ru.stersh.youamp.shared.player.utils.PlayerScope
 
 internal class CurrentSongFavoritesImpl(
-    private val context: Context,
+    private val playerProvider: PlayerProvider,
     private val apiProvider: ApiProvider
 ) : CurrentSongFavorites {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
-    private val executor = ContextCompat.getMainExecutor(context)
 
     override fun toggleFavorite(favorite: Boolean) {
-        mediaControllerFuture.withPlayer(executor) {
-            val item = currentMediaItem ?: return@withPlayer
-            val id = item.mediaMetadata.extras?.getString(MEDIA_SONG_ID) ?: return@withPlayer
-            scope.launch {
+        PlayerScope.launch {
+            val player = playerProvider.get()
+            val item = player.currentMediaItem ?: return@launch
+            val id = item.mediaId
+            withContext(Dispatchers.IO) {
                 if (favorite) {
                     apiProvider
                         .getApi()
@@ -42,43 +37,34 @@ internal class CurrentSongFavoritesImpl(
                         .unstarSong(id)
                 }
             }
+            toggleFavoriteInMediaItems(player, favorite)
         }
-        toggleFavoriteInMediaItems(favorite)
     }
 
     override fun isFavorite(): Flow<Boolean> = callbackFlow {
-        val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
-
-        var player: Player? = null
-        var callback: Player.Listener? = null
-
-        mediaControllerFuture.withPlayer(executor) {
-            trySend(isFavorite)
-
-            val sessionCallback = object : Player.Listener {
-                override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                    trySend(isFavorite)
-                }
+        val player = playerProvider.get()
+        val listener = object : Player.Listener {
+            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                trySend(player.isCurrentItemFavorite)
             }
-            addListener(sessionCallback)
-
-            player = this
-            callback = sessionCallback
         }
+        trySend(player.isCurrentItemFavorite)
+
+        player.addListener(listener)
 
         awaitClose {
-            callback?.let { player?.removeListener(it) }
-            callback = null
-            player = null
+            player.removeListener(listener)
         }
-    }.distinctUntilChanged()
+    }
+        .flowOn(PlayerDispatcher)
+        .distinctUntilChanged()
 
-    private val Player.isFavorite: Boolean
+    private val Player.isCurrentItemFavorite: Boolean
         get() = (currentMediaItem?.mediaMetadata?.userRating as? HeartRating)?.isHeart == true
 
-    private fun toggleFavoriteInMediaItems(favorite: Boolean) = mediaControllerFuture.withPlayer(executor) {
-        val item = currentMediaItem ?: return@withPlayer
-        val index = currentMediaItemIndex.takeIf { it != -1 } ?: return@withPlayer
+    private suspend fun toggleFavoriteInMediaItems(player: Player, favorite: Boolean) = withContext(PlayerDispatcher) {
+        val item = player.currentMediaItem ?: return@withContext
+        val index = player.currentMediaItemIndex.takeIf { it != -1 } ?: return@withContext
         val newMetadata = item
             .mediaMetadata
             .buildUpon()
@@ -88,6 +74,6 @@ internal class CurrentSongFavoritesImpl(
             .buildUpon()
             .setMediaMetadata(newMetadata)
             .build()
-        replaceMediaItem(index, newItem)
+        player.replaceMediaItem(index, newItem)
     }
 }

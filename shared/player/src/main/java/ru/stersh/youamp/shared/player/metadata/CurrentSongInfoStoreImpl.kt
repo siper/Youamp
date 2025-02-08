@@ -1,51 +1,40 @@
 package ru.stersh.youamp.shared.player.metadata
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.media3.common.HeartRating
 import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.StarRating
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import ru.stersh.youamp.shared.player.android.MusicService
-import ru.stersh.youamp.shared.player.utils.mediaControllerFuture
-import ru.stersh.youamp.shared.player.utils.withPlayer
+import kotlinx.coroutines.flow.flowOn
+import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
 
-internal class CurrentSongInfoStoreImpl(private val context: Context) : CurrentSongInfoStore {
-    private val executor = ContextCompat.getMainExecutor(context)
+internal class CurrentSongInfoStoreImpl(private val playerProvider: PlayerProvider) : CurrentSongInfoStore {
 
     override fun getCurrentSongInfo(): Flow<SongInfo?> = callbackFlow {
-        val mediaControllerFuture = mediaControllerFuture(context, MusicService::class.java)
+        val player = playerProvider.get()
+        val listener = object : Player.Listener {
 
-        var player: Player? = null
-        var callback: Player.Listener? = null
-
-        mediaControllerFuture.withPlayer(executor) {
-            trySend(songInfo)
-
-            val sessionCallback = object : Player.Listener {
-                override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-                    trySend(songInfo)
+            override fun onEvents(player: Player, events: Player.Events) {
+                if (events.containsAny(Player.EVENT_METADATA, Player.EVENT_MEDIA_ITEM_TRANSITION)) {
+                    trySend(player.songInfo)
                 }
             }
-            addListener(sessionCallback)
-
-            player = this
-            callback = sessionCallback
         }
+
+        trySend(player.songInfo)
+
+        player.addListener(listener)
 
         awaitClose {
-            executor.execute {
-                callback?.let { player?.removeListener(it) }
-                callback = null
-                player = null
-            }
+            player.removeListener(listener)
         }
-    }.distinctUntilChanged()
+    }
+        .flowOn(PlayerDispatcher)
+        .distinctUntilChanged()
 
     private val Player.songInfo: SongInfo?
         get() = currentMediaItem?.toSongInfo()
