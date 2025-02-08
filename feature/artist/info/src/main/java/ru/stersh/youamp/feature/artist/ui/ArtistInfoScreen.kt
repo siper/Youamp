@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.AlbumItem
@@ -262,7 +263,7 @@ private fun Progress(padding: PaddingValues) {
 @Preview(showBackground = true)
 @Composable
 private fun ArtistInfoScreenPreview() {
-    val albums = listOf(
+    val albums = persistentListOf(
         AlbumUi(
             id = "1",
             title = "Test album",

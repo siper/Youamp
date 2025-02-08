@@ -1,17 +1,24 @@
 package ru.stersh.youamp.feature.playlist.ui
 
-import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 
-@Immutable
 internal data class PlaylistInfoScreenStateUi(
     val progress: Boolean = true,
     val error: Boolean = false,
     val playlistInfo: PlaylistInfoUi? = null
 )
 
-@Immutable
 internal data class PlaylistInfoUi(
     val artworkUrl: String?,
     val title: String,
-    val songs: List<PlaylistSongUi>
+    val songs: ImmutableList<PlaylistSongUi>
+)
+
+internal data class PlaylistSongUi(
+    val id: String,
+    val title: String,
+    val artist: String?,
+    val artworkUrl: String?,
+    val isCurrent: Boolean,
+    val isPlaying: Boolean
 )

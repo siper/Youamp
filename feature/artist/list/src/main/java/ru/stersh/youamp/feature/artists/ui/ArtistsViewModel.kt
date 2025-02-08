@@ -2,6 +2,8 @@ package ru.stersh.youamp.feature.artists.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +37,7 @@ internal class ArtistsViewModel(private val artistsRepository: ArtistsRepository
                 progress = true,
                 isRefreshing = false,
                 error = false,
-                items = emptyList()
+                items = persistentListOf()
             )
         }
         subscribeArtists()
@@ -53,7 +55,7 @@ internal class ArtistsViewModel(private val artistsRepository: ArtistsRepository
                             progress = false,
                             isRefreshing = false,
                             error = true,
-                            items = emptyList()
+                            items = persistentListOf()
                         )
                     }
                 }
@@ -63,7 +65,7 @@ internal class ArtistsViewModel(private val artistsRepository: ArtistsRepository
                             progress = false,
                             isRefreshing = false,
                             error = false,
-                            items = artists
+                            items = artists.toPersistentList()
                         )
                     }
                 }

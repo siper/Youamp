@@ -1,18 +1,22 @@
 package ru.stersh.youamp.feature.server.list.ui
 
-import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.utils.mapItems
 import ru.stersh.youamp.feature.server.list.domain.ServerListRepository
 
 internal class ServerListViewModel(
     private val serverListRepository: ServerListRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow<StateUi>(StateUi.Progress)
+    private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
         get() = _state
 
@@ -20,20 +24,13 @@ internal class ServerListViewModel(
         viewModelScope.launch {
             serverListRepository
                 .getServerList()
-                .map { servers ->
-                    StateUi.Content(
-                        items = servers.map {
-                            ServerUi(
-                                id = it.id,
-                                title = it.title,
-                                url = it.url,
-                                isActive = it.isActive
-                            )
-                        }
-                    )
-                }
-                .collect {
-                    _state.value = it
+                .mapItems { it.toUi() }
+                .map { it.toPersistentList() }
+                .flowOn(Dispatchers.IO)
+                .collect { servers ->
+                    _state.update {
+                        it.copy(progress = false, items = servers)
+                    }
                 }
         }
     }
@@ -44,11 +41,5 @@ internal class ServerListViewModel(
 
     fun setActiveServer(serverId: Long) = viewModelScope.launch {
         serverListRepository.setActiveServer(serverId)
-    }
-
-    @Immutable
-    sealed interface StateUi {
-        data class Content(val items: List<ServerUi>) : StateUi
-        data object Progress : StateUi
     }
 }

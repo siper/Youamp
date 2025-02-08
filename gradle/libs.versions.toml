@@ -49,6 +49,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+immutableCollections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.8" }
 
 
 compose-bom = "androidx.compose:compose-bom:2025.01.01"

@@ -28,8 +28,8 @@ internal class PersonalViewModel(
     private val apiProvider: ApiProvider
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(PersonalScreenStateUi())
-    val state: StateFlow<PersonalScreenStateUi>
+    private val _state = MutableStateFlow(StateUi())
+    val state: StateFlow<StateUi>
         get() = _state
 
     private var stateJob: Job? = null

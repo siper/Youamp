@@ -1,6 +1,6 @@
-package ru.stresh.youamp.feature.artist.favorites.ui
+package ru.stresh.youamp.feature.song.random.ui
 
-import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 
 internal data class StateUi(
     val progress: Boolean = true,
@@ -9,13 +9,13 @@ internal data class StateUi(
     val data: DataUi? = null
 )
 
-@Immutable
 internal data class DataUi(
-    val artists: List<ArtistUi>
+    val songs: ImmutableList<SongUi>
 )
 
-internal class ArtistUi(
+internal class SongUi(
     val id: String,
-    val name: String,
+    val title: String,
+    val artist: String?,
     val artworkUrl: String?
 )

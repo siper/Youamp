@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.feature.search.R
 import ru.stersh.youamp.shared.player.queue.AudioSource
@@ -312,58 +313,58 @@ private fun SearchScreenPreview() {
     SearchScreen(
         state = SearchStateUi(
             progress = false,
-            songs = listOf(
-                SearchResultUi.Song(
+            songs = persistentListOf(
+                Song(
                     id = "1",
                     title = "Coolest song in the world",
                     artist = "Coolest artist in the world",
                     artworkUrl = null
                 ),
-                SearchResultUi.Song(
+                Song(
                     id = "2",
                     title = "Coolest song in the world",
                     artist = "Coolest artist in the world",
                     artworkUrl = null
                 ),
-                SearchResultUi.Song(
+                Song(
                     id = "3",
                     title = "Coolest song in the world",
                     artist = "Coolest artist in the world",
                     artworkUrl = null
                 )
             ),
-            albums = listOf(
-                SearchResultUi.Album(
+            albums = persistentListOf(
+                Album(
                     id = "1",
                     title = "Coolest song in the world",
                     artist = "Coolest artist in the world",
                     artworkUrl = null
                 ),
-                SearchResultUi.Album(
+                Album(
                     id = "2",
                     title = "Coolest song in the world",
                     artist = "Coolest artist in the world",
                     artworkUrl = null
                 ),
-                SearchResultUi.Album(
+                Album(
                     id = "3",
                     title = "Coolest song in the world",
                     artist = "Coolest artist in the world",
                     artworkUrl = null
                 )
             ),
-            artists = listOf(
-                SearchResultUi.Artist(
+            artists = persistentListOf(
+                Artist(
                     id = "1",
                     name = "Coolest song in the world",
                     artworkUrl = null
                 ),
-                SearchResultUi.Artist(
+                Artist(
                     id = "2",
                     name = "Coolest song in the world",
                     artworkUrl = null
                 ),
-                SearchResultUi.Artist(
+                Artist(
                     id = "3",
                     name = "Coolest song in the world",
                     artworkUrl = null

@@ -57,12 +57,14 @@ fun MiniPlayer(
 @Composable
 @Preview
 private fun MiniPlayerPreview() {
-    val state = StateUi.Content(
-        title = "Test title",
-        artist = "Test artist",
-        artworkUrl = "",
-        isPlaying = true,
-        progress = 0.5f
+    val state = StateUi(
+        data = PlayerDataUi(
+            title = "Test title",
+            artist = "Test artist",
+            artworkUrl = "",
+            isPlaying = true,
+            progress = 0.5f
+        )
     )
     MiniPlayer(
         state = state,
@@ -89,12 +91,12 @@ private fun MiniPlayer(
                 durationMillis = 100
             )
         ),
-        visible = state is StateUi.Content,
+        visible = !state.invisible,
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
             .then(modifier)
     ) {
-        if (state !is StateUi.Content) {
+        if (state.data == null) {
             return@AnimatedVisibility
         }
         Surface(
@@ -107,7 +109,7 @@ private fun MiniPlayer(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Artwork(
-                    artworkUrl = state.artworkUrl,
+                    artworkUrl = state.data.artworkUrl,
                     placeholder = Icons.Rounded.Album,
                     modifier = Modifier
                         .size(88.dp)
@@ -118,22 +120,22 @@ private fun MiniPlayer(
                     modifier = Modifier.weight(1f)
                 ) {
                     SingleLineText(
-                        text = state.title.orEmpty(),
+                        text = state.data.title.orEmpty(),
                         style = MaterialTheme.typography.titleMedium
                     )
                     SingleLineText(
-                        text = state.artist.orEmpty(),
+                        text = state.data.artist.orEmpty(),
                         color = MaterialTheme.colorScheme.secondary
                     )
                 }
                 Box(contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
-                        progress = { state.progress },
+                        progress = { state.data.progress },
                         strokeCap = StrokeCap.Round
                     )
                     PlayPauseButton(
                         modifier = Modifier.size(72.dp),
-                        isPlaying = state.isPlaying,
+                        isPlaying = state.data.isPlaying,
                         onIsPlayedChanged = { onPlayPauseClick() }
                     )
                 }

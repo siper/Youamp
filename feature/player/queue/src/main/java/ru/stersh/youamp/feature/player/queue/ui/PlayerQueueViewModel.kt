@@ -2,10 +2,14 @@ package ru.stersh.youamp.feature.player.queue.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.utils.swap
@@ -41,6 +45,8 @@ internal class PlayerQueueViewModel(
                     )
                 }
             }
+                .map { it.toPersistentList() }
+                .flowOn(Dispatchers.IO)
                 .collect {
                     _state.value = _state.value.copy(songs = it, progress = false)
                 }
@@ -97,7 +103,7 @@ internal class PlayerQueueViewModel(
 
     fun moveSong(from: Int, to: Int) = viewModelScope.launch {
         _state.update {
-            it.copy(songs = it.songs.swap(from, to))
+            it.copy(songs = it.songs.swap(from, to).toPersistentList())
         }
         playerQueueManager.moveSong(from, to)
     }

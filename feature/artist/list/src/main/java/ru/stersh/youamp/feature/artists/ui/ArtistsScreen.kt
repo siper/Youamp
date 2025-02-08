@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
@@ -199,7 +200,7 @@ private fun ArtistItem(
 @Preview
 private fun ArtistsScreenPreview() {
     YouampPlayerTheme {
-        val items = listOf(
+        val items = persistentListOf(
             ArtistUi(
                 id = "1",
                 name = "Test",

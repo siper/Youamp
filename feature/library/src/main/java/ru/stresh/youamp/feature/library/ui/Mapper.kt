@@ -1,13 +1,18 @@
 package ru.stresh.youamp.feature.library.ui
 
+import kotlinx.collections.immutable.toPersistentList
 import ru.stresh.youamp.feature.library.domain.Album
 import ru.stresh.youamp.feature.library.domain.Artist
 import ru.stresh.youamp.feature.library.domain.Library
 
 internal fun Library.toUi(): DataUi {
     return DataUi(
-        artists = artists.map { it.toUi() },
-        albums = albums.map { it.toUi() },
+        artists = artists
+            .map { it.toUi() }
+            .toPersistentList(),
+        albums = albums
+            .map { it.toUi() }
+            .toPersistentList(),
     )
 }
 

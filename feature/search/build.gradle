@@ -19,4 +19,5 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.coil.compose)
     implementation(libs.bundles.koin)
+    implementation(libs.immutableCollections)
 }

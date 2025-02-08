@@ -1,18 +1,23 @@
 package ru.stersh.youamp.feature.artist.ui
 
-import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 
-@Immutable
 internal data class ArtistInfoStateUi(
     val progress: Boolean = true,
     val error: Boolean = true,
     val content: ArtistInfoUi? = null
 )
 
-@Immutable
 internal data class ArtistInfoUi(
     val artworkUrl: String? = null,
     val name: String,
     val isFavorite: Boolean,
-    val albums: List<AlbumUi>
+    val albums: ImmutableList<AlbumUi>
+)
+
+internal data class AlbumUi(
+    val id: String,
+    val title: String,
+    val artist: String?,
+    val artworkUrl: String?
 )

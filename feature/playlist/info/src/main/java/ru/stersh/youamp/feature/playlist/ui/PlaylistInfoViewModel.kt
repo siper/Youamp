@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.playlist.domain.PlaylistInfoRepository
@@ -80,6 +81,7 @@ internal class PlaylistInfoViewModel(
         playlistInfoJob = viewModelScope.launch {
             playlistInfoRepository
                 .getPlaylistInfo(id)
+                .map { it.toUi() }
                 .flowOn(Dispatchers.IO)
                 .catch { throwable ->
                     Timber.w(throwable)
@@ -95,7 +97,7 @@ internal class PlaylistInfoViewModel(
                         it.copy(
                             progress = false,
                             error = false,
-                            playlistInfo = playlistInfo.toUi()
+                            playlistInfo = playlistInfo
                         )
                     }
                 }

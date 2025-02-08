@@ -20,14 +20,14 @@ internal class SongInfoViewModel(
     private val songFavoritesStorage: SongFavoritesStorage
 ) : ViewModel() {
 
-    val state: StateFlow<SongInfoStateUi>
+    val state: StateFlow<State>
         get() = _state
 
-    private val _state = MutableStateFlow(SongInfoStateUi())
+    private val _state = MutableStateFlow(State())
     private var getSongJob: Job? = null
 
     fun loadSongInfo(songId: String, showAlbum: Boolean) {
-        _state.value = SongInfoStateUi(showAlbum = showAlbum)
+        _state.value = State(showAlbum = showAlbum)
         getSongJob?.cancel()
         getSongJob = viewModelScope.launch {
             try {

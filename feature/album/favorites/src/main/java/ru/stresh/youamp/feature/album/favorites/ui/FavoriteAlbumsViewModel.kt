@@ -2,11 +2,13 @@ package ru.stresh.youamp.feature.album.favorites.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -74,6 +76,7 @@ internal class FavoriteAlbumsViewModel(
             favoriteAlbumsRepository
                 .getFavorites()
                 .map { it.toUi() }
+                .flowOn(Dispatchers.IO)
                 .catch { throwable ->
                     Timber.w(throwable)
                     _state.update {
