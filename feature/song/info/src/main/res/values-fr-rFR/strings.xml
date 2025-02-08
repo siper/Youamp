@@ -4,4 +4,6 @@
     <string name="play_next_in_queue_title">Jouer le suivant dans la file d\'attente</string>
     <string name="go_to_album_title">Aller à l\'album</string>
     <string name="go_to_artist_title">Aller à l\'artiste</string>
+    <string name="add_to_favorites">Ajouter aux favoris</string>
+    <string name="remove_from_favorites">Supprimer des favoris</string>
 </resources>

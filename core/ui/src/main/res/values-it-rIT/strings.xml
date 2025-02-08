@@ -8,4 +8,7 @@
     <string name="error_message">Riprova. Se l\'errore si verifica più volte, contatta lo sviluppatore.</string>
     <string name="error_title">Oops, qualcosa è andato storto</string>
     <string name="empty_state_title">Ancora nulla da vedere qua…</string>
+    <string name="user_avatar_title">Avatar utente</string>
+    <string name="dislike_title">Non mi piace</string>
+    <string name="like_title">Mi Piace</string>
 </resources>

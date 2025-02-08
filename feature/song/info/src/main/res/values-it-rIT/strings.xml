@@ -4,4 +4,6 @@
     <string name="play_next_in_queue_title">Riproduci prossimo in coda</string>
     <string name="go_to_album_title">Vai all\'album</string>
     <string name="go_to_artist_title">Vai all\'artista</string>
+    <string name="add_to_favorites">Aggiungi ai preferiti</string>
+    <string name="remove_from_favorites">Rimuovi dai preferiti</string>
 </resources>

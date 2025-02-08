@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_queue_title">Jouer liste de lecture</string>
+    <string name="play_song_title">Lire le titre</string>
+    <string name="remove_from_queue_title">Retirer de la file d\'attente</string>
 </resources>

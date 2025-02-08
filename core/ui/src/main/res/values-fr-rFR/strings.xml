@@ -2,9 +2,13 @@
 <resources>
     <string name="navigate_back_description">Revenir en arrière</string>
     <string name="shuffle_title">Aléatoire</string>
-    <string name="play_all_title">Tout Lire</string>
+    <string name="play_all_title">Tout lire</string>
     <string name="placeholder_image_description">Image de substitution</string>
     <string name="error_button_title">Réessayer</string>
     <string name="error_message">Réessayez. Si l\'erreur se produit plusieurs fois, contactez le développeur.</string>
     <string name="error_title">Oups, une erreur est arrivée</string>
+    <string name="empty_state_title">Il n\'y a rien encore ici…</string>
+    <string name="user_avatar_title">Avatar de l’utilisateur</string>
+    <string name="dislike_title">Je n\'aime pas</string>
+    <string name="like_title">J’aime</string>
 </resources>
