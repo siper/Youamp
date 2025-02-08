@@ -17,7 +17,7 @@
 
 Youamp music player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack
 compose,
-media3 and other modern android libraries. Developing is still in progress and many features are not available now.
+media3 and other modern android libraries.
 
 ## Features
 
