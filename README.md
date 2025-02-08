@@ -27,7 +27,7 @@ media3 and other modern android libraries. Developing is still in progress and m
 - Play songs
 - Add multiple Subsonic servers
 - Play queue with song ordering
-- Like songs
+- Like songs, Albums and Artists
 - Sync play queue and current play song position with server
 
 ## Screenshots
