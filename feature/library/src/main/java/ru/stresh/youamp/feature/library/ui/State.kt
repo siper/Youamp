@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 internal data class StateUi(
     val progress: Boolean = true,
     val error: Boolean = false,
+    val refreshing: Boolean = false,
     val data: DataUi? = null
 )
 

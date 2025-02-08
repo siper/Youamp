@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.derivedStateOf
@@ -54,6 +55,7 @@ fun ExploreScreen(
         onSearchClick = onSearchClick,
         onSongClick = onSongClick,
         onRandomSongsClick = onRandomSongsClick,
+        onRefresh = viewModel::refresh,
         onRetry = viewModel::retry,
         onPlayPauseAudioSource = viewModel::onPlayPauseAudioSource,
     )
@@ -66,6 +68,7 @@ private fun ExploreScreen(
     onSongClick: (id: String) -> Unit,
     onRandomSongsClick: () -> Unit,
     onRetry: () -> Unit,
+    onRefresh: () -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -78,28 +81,33 @@ private fun ExploreScreen(
             }
         }
     }
-    StateLayout(
-        state = layoutState,
-        content = {
-            Content(
-                state = state,
-                modifier = modifier,
-                onSearchClick = onSearchClick,
-                onSongClick = onSongClick,
-                onRandomSongsClick = onRandomSongsClick,
-                onPlayPauseAudioSource = onPlayPauseAudioSource
-            )
-        },
-        progress = {
-            Progress()
-        },
-        error = {
-            ErrorLayout(onRetry = onRetry)
-        },
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    )
+    PullToRefreshBox(
+        isRefreshing = state.refreshing,
+        onRefresh = onRefresh
+    ) {
+        StateLayout(
+            state = layoutState,
+            content = {
+                Content(
+                    state = state,
+                    modifier = modifier,
+                    onSearchClick = onSearchClick,
+                    onSongClick = onSongClick,
+                    onRandomSongsClick = onRandomSongsClick,
+                    onPlayPauseAudioSource = onPlayPauseAudioSource
+                )
+            },
+            progress = {
+                Progress()
+            },
+            error = {
+                ErrorLayout(onRetry = onRetry)
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+        )
+    }
 }
 
 @Composable
@@ -227,10 +235,10 @@ private fun Progress(
     }
 }
 
-@Immutable
 internal data class StateUi(
     val progress: Boolean = true,
     val error: Boolean = false,
+    val refreshing: Boolean = false,
     val data: DataUi? = null
 )
 
@@ -246,6 +254,7 @@ private fun ExploreScreenPreview() {
         ExploreScreen(
             state = StateUi(),
             onRetry = {},
+            onRefresh = {},
             onSongClick = {},
             onRandomSongsClick = {},
             onPlayPauseAudioSource = {},

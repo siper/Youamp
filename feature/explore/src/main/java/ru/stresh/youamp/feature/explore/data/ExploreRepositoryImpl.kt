@@ -51,6 +51,10 @@ internal class ExploreRepositoryImpl(
         }
     }
 
+    override suspend fun refresh() {
+        songRandomStorage.refresh()
+    }
+
     private fun PlayingSource?.isSongPlaying(serverId: Long, songId: String): Boolean {
         if (this == null) {
             return false

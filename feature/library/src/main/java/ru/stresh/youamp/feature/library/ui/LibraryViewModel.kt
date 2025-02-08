@@ -48,7 +48,8 @@ internal class LibraryViewModel(
                     _state.update {
                         it.copy(
                             progress = false,
-                            error = true
+                            error = true,
+                            refreshing = false
                         )
                     }
                 }
@@ -56,6 +57,8 @@ internal class LibraryViewModel(
                     _state.update {
                         it.copy(
                             progress = false,
+                            refreshing = false,
+                            error = false,
                             data = explore
                         )
                     }
@@ -71,6 +74,14 @@ internal class LibraryViewModel(
                 error = false,
                 data = null
             )
+        }
+        subscribeState()
+    }
+
+    fun refresh() {
+        stateJob?.cancel()
+        _state.update {
+            it.copy(refreshing = true)
         }
         subscribeState()
     }
