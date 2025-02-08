@@ -41,4 +41,6 @@ data class Artist(
     val artistImageUrl: String?,
     @Json(name = "album")
     val albums: List<Album>?,
+    @Json(name = "userRating")
+    val userRating: Int?
 )

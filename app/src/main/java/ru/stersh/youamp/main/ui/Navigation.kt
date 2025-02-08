@@ -60,3 +60,9 @@ object FavoriteSongs
 
 @Serializable
 object RandomSongs
+
+@Serializable
+object FavoriteAlbums
+
+@Serializable
+object FavoriteArtists
