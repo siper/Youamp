@@ -10,9 +10,9 @@ import org.koin.dsl.module
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.core.room.roomModule
 import ru.stersh.youamp.feature.album.albumInfoModule
-import ru.stersh.youamp.feature.albums.albumsModule
+import ru.stersh.youamp.feature.albums.albumListModule
 import ru.stersh.youamp.feature.artist.artistInfoModule
-import ru.stersh.youamp.feature.artists.artistsModule
+import ru.stersh.youamp.feature.artists.artistListModule
 import ru.stersh.youamp.feature.main.mainModule
 import ru.stersh.youamp.feature.personal.personalModule
 import ru.stersh.youamp.feature.player.mini.playerMiniModule
@@ -33,9 +33,11 @@ import ru.stersh.youamp.shared.player.playerSharedModule
 import ru.stresh.youamp.core.properties.app.AppProperties
 import ru.stresh.youamp.core.propertiesModule
 import ru.stresh.youamp.feature.about.aboutModule
+import ru.stresh.youamp.feature.album.favorites.albumFavoritesModule
+import ru.stresh.youamp.feature.artist.favorites.artistFavoritesModule
 import ru.stresh.youamp.feature.explore.exploreModule
-import ru.stresh.youamp.feature.favorite.list.favoriteListModule
 import ru.stresh.youamp.feature.library.libraryModule
+import ru.stresh.youamp.feature.song.favorites.songFavoritesModule
 import ru.stresh.youamp.feature.song.random.songRandomModule
 import ru.stresh.youamp.shared.favorites.favoritesSharedModule
 import ru.stresh.youamp.shared.song.random.songRandomSharedModule
@@ -63,22 +65,24 @@ private val feature = listOf(
     playerScreenModule,
     playerQueueScreenModule,
     albumInfoModule,
-    albumsModule,
-    artistsModule,
+    albumFavoritesModule,
+    albumListModule,
+    artistListModule,
     artistInfoModule,
+    artistFavoritesModule,
     serverCreateModule,
     serverListModule,
     playlistListModule,
-    searchModule,
     playlistInfoModule,
-    favoriteListModule,
+    searchModule,
+    songFavoritesModule,
+    songInfoModule,
+    songRandomModule,
     aboutModule,
     personalModule,
     exploreModule,
     mainModule,
-    libraryModule,
-    songInfoModule,
-    songRandomModule
+    libraryModule
 )
 
 private val impl = module {

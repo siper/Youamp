@@ -50,10 +50,12 @@ import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen
 import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
 import ru.stresh.youamp.feature.about.ui.AboutScreen
+import ru.stresh.youamp.feature.album.favorites.ui.FavoriteAlbumsScreen
+import ru.stresh.youamp.feature.artist.favorites.ui.FavoriteArtistsScreen
 import ru.stresh.youamp.feature.explore.ui.ExploreScreen
-import ru.stresh.youamp.feature.favorite.list.ui.FavoriteSongsScreen
 import ru.stresh.youamp.feature.library.ui.LibraryScreen
 import ru.stresh.youamp.feature.settings.ui.SettingsScreen
+import ru.stresh.youamp.feature.song.favorites.ui.FavoriteSongsScreen
 import ru.stresh.youamp.feature.song.random.ui.RandomSongsScreen
 
 class MainActivity : ComponentActivity() {
@@ -143,8 +145,8 @@ class MainActivity : ComponentActivity() {
                             onPlaylistClick = { rootNavController.navigate(PlaylistInfo(it)) },
                             onPlaylistsClick = { rootNavController.navigate(Playlists) },
                             onFavoriteSongsClick = { rootNavController.navigate(FavoriteSongs) },
-                            onFavoriteAlbumsClick = {},
-                            onFavoriteArtistsClick = {}
+                            onFavoriteAlbumsClick = { rootNavController.navigate(FavoriteAlbums) },
+                            onFavoriteArtistsClick = { rootNavController.navigate(FavoriteArtists) }
                         )
                     },
                     explore = {
@@ -433,6 +435,40 @@ class MainActivity : ComponentActivity() {
                                 songId = it,
                                 showAlbum = true
                             )
+                        }
+                    )
+                }
+            }
+            composable<FavoriteAlbums> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    FavoriteAlbumsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onAlbumClick = {
+                            rootNavController.navigate(AlbumInfo(it))
+                        }
+                    )
+                }
+            }
+            composable<FavoriteArtists> {
+                ScreenWithMiniPlayer(
+                    viewModelStoreOwner = viewModelStoreOwner,
+                    onMiniPlayerClick = {
+                        rootNavController.navigate(Player)
+                    }
+                ) {
+                    FavoriteArtistsScreen(
+                        onBackClick = {
+                            rootNavController.popBackStack()
+                        },
+                        onArtistClick = {
+                            rootNavController.navigate(ArtistInfo(it))
                         }
                     )
                 }

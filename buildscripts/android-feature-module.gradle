@@ -7,6 +7,10 @@ android {
             freeCompilerArgs.add('-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi')
         }
     }
+    composeCompiler {
+        reportsDestination = layout.buildDirectory.dir("compose_compiler")
+        metricsDestination = layout.buildDirectory.dir("compose_compiler")
+    }
     buildFeatures {
         compose true
     }
