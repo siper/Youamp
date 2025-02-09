@@ -2,8 +2,12 @@ package ru.stersh.youamp.feature.server.list.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Dns
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -40,6 +43,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
+import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.SkeletonScope
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.server.list.R
 
@@ -94,11 +99,11 @@ private fun ServerListScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
         if (state.progress) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            Progress(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
+            )
         } else {
             LazyColumn(
                 modifier = Modifier.padding(it)
@@ -117,6 +122,49 @@ private fun ServerListScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun Progress(modifier: Modifier = Modifier) {
+    SkeletonLayout(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ProgressItem()
+            ProgressItem()
+            ProgressItem()
+        }
+    }
+}
+
+@Composable
+private fun SkeletonScope.ProgressItem() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        SkeletonItem(
+            modifier = Modifier.size(48.dp),
+            shape = CircleShape
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier.weight(1f)
+        ) {
+            SkeletonItem(modifier = Modifier.size(100.dp, 16.dp))
+            SkeletonItem(modifier = Modifier.size(160.dp, 16.dp))
+        }
+        SkeletonItem(
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .size(24.dp),
+            shape = CircleShape
+        )
     }
 }
 
