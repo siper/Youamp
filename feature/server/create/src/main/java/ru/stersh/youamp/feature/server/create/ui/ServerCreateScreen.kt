@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -213,7 +214,10 @@ private fun ContentState(
                         onValidateInput(input)
                     }
                 },
-                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    autoCorrectEnabled = false
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp)
