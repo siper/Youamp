@@ -4,14 +4,16 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItem
@@ -35,6 +37,8 @@ import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.ArtworkMaskColor
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.DragAndDropLazyColumn
+import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.SkeletonScope
 import ru.stersh.youamp.core.ui.SongPlayAnimation
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.player.queue.R
@@ -85,13 +89,11 @@ private fun PlayerQueueScreen(
         }
     ) { padding ->
         if (state.progress) {
-            Box(
+            Progress(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-            ) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
+            )
         } else {
             DragAndDropLazyColumn(
                 items = state.songs,
@@ -111,6 +113,49 @@ private fun PlayerQueueScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun Progress(modifier: Modifier = Modifier) {
+    SkeletonLayout(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ProgressItem()
+            ProgressItem()
+            ProgressItem()
+        }
+    }
+}
+
+@Composable
+private fun SkeletonScope.ProgressItem() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        SkeletonItem(
+            modifier = Modifier.size(48.dp),
+            shape = MaterialTheme.shapes.medium
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier.weight(1f)
+        ) {
+            SkeletonItem(modifier = Modifier.size(160.dp, 16.dp))
+            SkeletonItem(modifier = Modifier.size(100.dp, 16.dp))
+        }
+        SkeletonItem(
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .size(24.dp, 12.dp),
+            shape = MaterialTheme.shapes.small
+        )
     }
 }
 
@@ -197,6 +242,22 @@ private fun PlayerQueueScreenPreview() {
                 )
             )
         )
+        PlayerQueueScreen(
+            state = state,
+            onSongClick = {},
+            onSongLongClick = {},
+            onMoveSong = { from, to -> },
+            onBackClick = {}
+        )
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+private fun PlayerQueueScreenProgressPreview() {
+    YouampPlayerTheme {
+        val state = StateUi()
         PlayerQueueScreen(
             state = state,
             onSongClick = {},
