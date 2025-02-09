@@ -118,12 +118,6 @@ class MainActivity : ComponentActivity() {
                 },
             ) {
                 MainScreen(
-                    bigPlayer = {
-                        PlayerScreen(
-                            onBackClick = { rootNavController.popBackStack() },
-                            onPlayQueueClick = { rootNavController.navigate(PlayQueue) }
-                        )
-                    },
                     miniPlayer = {
                         MiniPlayer(
                             viewModelStoreOwner = viewModelStoreOwner,

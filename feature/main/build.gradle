@@ -18,4 +18,5 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.koin)
+    implementation(libs.compose.material3.adaptiveNavigationSuite)
 }

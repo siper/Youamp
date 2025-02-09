@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="albums_title">Albums</string>
-    <string name="artists_title">Artists</string>
-    <string name="playlists_title">Playlists</string>
-    <string name="favorites_title">Favorites</string>
+    <string name="personal_title">Personal</string>
+    <string name="explore_title">Explore</string>
+    <string name="library_title">Library</string>
 </resources>
