@@ -1,7 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="albums_title">Àlbums</string>
-    <string name="artists_title">Artistes</string>
-    <string name="playlists_title">Llistes de reproducció</string>
-    <string name="favorites_title">Preferits</string>
-</resources>
+<resources></resources>

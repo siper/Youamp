@@ -2,31 +2,24 @@ package ru.stersh.youamp.feature.main.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 
@@ -44,7 +37,6 @@ internal data class MainStateUi(
 @Composable
 fun MainScreen(
     miniPlayer: @Composable () -> Unit,
-    bigPlayer: @Composable () -> Unit,
     personal: @Composable () -> Unit,
     explore: @Composable () -> Unit,
     library: @Composable () -> Unit,
@@ -57,7 +49,6 @@ fun MainScreen(
     MainScreen(
         state = state,
         miniPlayer = miniPlayer,
-        bigPlayer = bigPlayer,
         personal = personal,
         explore = explore,
         library = library,
@@ -65,113 +56,53 @@ fun MainScreen(
         onSettingsClick = onSettingsClick
     )
 }
-
-private val PERSONAL = "personal"
-private val EXPLORE = "explore"
-private val LIBRARY = "library"
-
 @Composable
 internal fun MainScreen(
     state: MainStateUi,
     miniPlayer: @Composable () -> Unit,
-    bigPlayer: @Composable () -> Unit,
     personal: @Composable () -> Unit,
     explore: @Composable () -> Unit,
     library: @Composable () -> Unit,
     onAvatarClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
-    val navController = rememberNavController()
-    ExpandableScaffold(
-        topBar = {
+    var currentDestination by rememberSaveable { mutableStateOf(MainDestination.PERSONAL) }
+    NavigationSuiteScaffold(
+        navigationSuiteItems = {
+            MainDestination.entries.forEach { dest ->
+                item(
+                    icon = {
+                        Icon(
+                            imageVector = dest.icon,
+                            contentDescription = null
+                        )
+                    },
+                    label = {
+                        Text(text = stringResource(dest.titleResId))
+                    },
+                    selected = currentDestination == dest,
+                    onClick = {
+                        currentDestination = dest
+                    }
+                )
+            }
+        }
+    ) {
+        Column {
             Toolbar(
                 serverName = state.serverInfo?.name,
                 avatarUrl = state.serverInfo?.avatarUrl,
                 onAvatarClick = onAvatarClick,
                 onSettingsClick = onSettingsClick
             )
-        },
-        collapsedContent = {
-            miniPlayer()
-        },
-        expandedContent = {
-            bigPlayer()
-        },
-        bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                NavigationBarItem(
-                    selected = currentDestination?.hierarchy?.any { it.route == PERSONAL } == true,
-                    onClick = {
-                        navController.navigate(PERSONAL) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    label = {
-                        Text(text = "Personal")
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Person,
-                            contentDescription = null
-                        )
-                    },
-                )
-                NavigationBarItem(
-                    selected = currentDestination?.hierarchy?.any { it.route == EXPLORE } == true,
-                    onClick = {
-                        navController.navigate(EXPLORE) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    label = {
-                        Text(text = "Explore")
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Search,
-                            contentDescription = null
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    selected = currentDestination?.hierarchy?.any { it.route == LIBRARY } == true,
-                    onClick = {
-                        navController.navigate(LIBRARY) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    label = {
-                        Text(text = "Library")
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.MusicNote,
-                            contentDescription = null
-                        )
-                    }
-                )
+            Box(modifier = Modifier.weight(1f)) {
+                when (currentDestination) {
+                    MainDestination.PERSONAL -> personal()
+                    MainDestination.EXPLORE -> explore()
+                    MainDestination.LIBRARY -> library()
+                }
             }
-        },
-        modifier = Modifier.fillMaxSize()
-    ) {
-        NavHost(navController, startDestination = PERSONAL) {
-            composable(PERSONAL) { personal() }
-            composable(EXPLORE) { explore() }
-            composable(LIBRARY) { library() }
+            miniPlayer()
         }
     }
 }
@@ -197,7 +128,6 @@ private fun MainScreenPreview() {
                         )
                 )
             },
-            bigPlayer = {},
             personal = { },
             explore = {},
             library = {},
