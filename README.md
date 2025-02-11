@@ -114,7 +114,7 @@ If you want help to make Youamp better, you can:
           <br />
           <sub><b>tct123</b></sub></a>
         <br />
-        <sub><b>24 words</b></sub>
+        <sub><b>72 words</b></sub>
       </td>
     </tr>
     <tr>
