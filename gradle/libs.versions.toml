@@ -17,6 +17,7 @@ espresso-core = "3.6.1"
 appcompat = "1.7.0"
 paging = "3.3.5"
 material3 = "1.3.1"
+material3-adaptive = "1.0.0"
 
 [libraries]
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -64,6 +65,9 @@ compose-material3 = { module = "androidx.compose.material3:material3", version.r
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3-adaptiveNavigationSuite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite", version.ref = "material3" }
+compose-material3-adaptive = { module = "androidx.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
+compose-material3-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout", version.ref = "material3-adaptive" }
+compose-material3-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
 compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "compose-icons" }
 compose-constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0"
 material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }

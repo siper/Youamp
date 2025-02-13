@@ -17,8 +17,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.SkipNext
+import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,12 +29,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.window.core.layout.WindowWidthSizeClass
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.SingleLineText
@@ -39,6 +44,7 @@ import ru.stersh.youamp.feature.player.mini.R
 
 @Composable
 fun MiniPlayer(
+    windowWidthSizeClass: WindowWidthSizeClass,
     viewModelStoreOwner: ViewModelStoreOwner,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -48,38 +54,29 @@ fun MiniPlayer(
 
     MiniPlayer(
         state = state,
+        windowWidthSizeClass = windowWidthSizeClass,
         onClick = onClick,
+        onNext = viewModel::next,
+        onPrevious = viewModel::previous,
         onPlayPauseClick = viewModel::playPause,
         modifier = modifier
     )
 }
 
 @Composable
-@Preview
-private fun MiniPlayerPreview() {
-    val state = StateUi(
-        data = PlayerDataUi(
-            title = "Test title",
-            artist = "Test artist",
-            artworkUrl = "",
-            isPlaying = true,
-            progress = 0.5f
-        )
-    )
-    MiniPlayer(
-        state = state,
-        onClick = {},
-        onPlayPauseClick = {}
-    )
-}
-
-@Composable
 private fun MiniPlayer(
     state: StateUi,
+    windowWidthSizeClass: WindowWidthSizeClass,
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
     onPlayPauseClick: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val containerColor = when (windowWidthSizeClass) {
+        WindowWidthSizeClass.COMPACT -> MaterialTheme.colorScheme.secondaryContainer
+        else -> MaterialTheme.colorScheme.surface
+    }
     AnimatedVisibility(
         enter = expandVertically(
             animationSpec = tween(
@@ -93,7 +90,7 @@ private fun MiniPlayer(
         ),
         visible = !state.invisible,
         modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .background(color = containerColor)
             .then(modifier)
     ) {
         if (state.data == null) {
@@ -101,44 +98,145 @@ private fun MiniPlayer(
         }
         Surface(
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable { onClick.invoke() },
-            color = MaterialTheme.colorScheme.secondaryContainer
+                .fillMaxWidth(),
+            color = containerColor
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            when (windowWidthSizeClass) {
+                WindowWidthSizeClass.COMPACT -> {
+                    PlayerCompact(
+                        data = state.data,
+                        onClick = onClick,
+                        onPlayPauseClick = onPlayPauseClick
+                    )
+                }
+
+                WindowWidthSizeClass.MEDIUM,
+                WindowWidthSizeClass.EXPANDED -> {
+                    PlayerExpanded(
+                        data = state.data,
+                        onClick = onClick,
+                        onNext = onNext,
+                        onPrevious = onPrevious,
+                        onPlayPauseClick = onPlayPauseClick
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlayerCompact(
+    data: PlayerDataUi,
+    onClick: () -> Unit,
+    onPlayPauseClick: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
+        Artwork(
+            artworkUrl = data.artworkUrl,
+            placeholder = Icons.Rounded.Album,
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .padding(start = 24.dp)
+                .size(56.dp)
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(1f)
+        ) {
+            SingleLineText(
+                text = data.title.orEmpty(),
+                style = MaterialTheme.typography.titleMedium
+            )
+            SingleLineText(
+                text = data.artist.orEmpty(),
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
+        Box(contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(
+                progress = { data.progress },
+                strokeCap = StrokeCap.Round
+            )
+            PlayPauseButton(
+                modifier = Modifier.size(72.dp),
+                isPlaying = data.isPlaying,
+                onIsPlayedChanged = { onPlayPauseClick() }
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlayerExpanded(
+    data: PlayerDataUi,
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
+    onClick: () -> Unit,
+    onPlayPauseClick: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(16.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .background(
+                MaterialTheme.colorScheme.secondaryContainer,
+                shape = MaterialTheme.shapes.medium
+            )
+            .clickable(onClick = onClick)
+    ) {
+        Artwork(
+            artworkUrl = data.artworkUrl,
+            placeholder = Icons.Rounded.Album,
+            modifier = Modifier
+                .size(88.dp)
+                .padding(12.dp)
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(1f)
+        ) {
+            SingleLineText(
+                text = data.title.orEmpty(),
+                style = MaterialTheme.typography.titleMedium
+            )
+            SingleLineText(
+                text = data.artist.orEmpty(),
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(
+                onClick = onPrevious
             ) {
-                Artwork(
-                    artworkUrl = state.data.artworkUrl,
-                    placeholder = Icons.Rounded.Album,
-                    modifier = Modifier
-                        .size(88.dp)
-                        .padding(12.dp)
+                Icon(
+                    imageVector = Icons.Rounded.SkipPrevious,
+                    contentDescription = null
                 )
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    SingleLineText(
-                        text = state.data.title.orEmpty(),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    SingleLineText(
-                        text = state.data.artist.orEmpty(),
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                }
-                Box(contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(
-                        progress = { state.data.progress },
-                        strokeCap = StrokeCap.Round
-                    )
-                    PlayPauseButton(
-                        modifier = Modifier.size(72.dp),
-                        isPlaying = state.data.isPlaying,
-                        onIsPlayedChanged = { onPlayPauseClick() }
-                    )
-                }
+            }
+            Box(contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    progress = { data.progress },
+                    strokeCap = StrokeCap.Round
+                )
+                PlayPauseButton(
+                    modifier = Modifier.size(72.dp),
+                    isPlaying = data.isPlaying,
+                    onIsPlayedChanged = { onPlayPauseClick() }
+                )
+            }
+            IconButton(
+                onClick = onNext
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.SkipNext,
+                    contentDescription = null
+                )
             }
         }
     }
@@ -167,4 +265,27 @@ private fun PlayPauseButton(
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun MiniPlayerPreview() {
+    val state = StateUi(
+        data = PlayerDataUi(
+            title = "Test title",
+            artist = "Test artist",
+            artworkUrl = "",
+            isPlaying = true,
+            progress = 0.5f
+        ),
+        invisible = false
+    )
+    MiniPlayer(
+        state = state,
+        windowWidthSizeClass = WindowWidthSizeClass.COMPACT,
+        onClick = {},
+        onNext = {},
+        onPrevious = {},
+        onPlayPauseClick = {}
+    )
 }

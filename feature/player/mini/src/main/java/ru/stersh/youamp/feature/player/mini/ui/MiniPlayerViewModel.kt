@@ -58,4 +58,12 @@ internal class MiniPlayerViewModel(
             playerControls.play()
         }
     }
+
+    fun next() {
+        playerControls.next()
+    }
+
+    fun previous() {
+        playerControls.previous()
+    }
 }
