@@ -110,4 +110,5 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.timber)
     implementation(libs.kotlin.coroutines.guava)
+    implementation(libs.compose.material3.adaptive)
 }

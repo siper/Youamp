@@ -29,7 +29,9 @@ internal class PersonalRepositoryImpl(
 
     override suspend fun getPersonal(): Flow<Personal> {
         return combine(
-            apiProvider.flowApi(),
+            apiProvider
+                .flowApi()
+                .map { it.getPlaylists() },
             queueAudioSourceManager
                 .playingSource()
                 .flatMapLatest { source ->
@@ -42,10 +44,9 @@ internal class PersonalRepositoryImpl(
             songFavoritesStorage.flowSongs(),
             albumFavoritesStorage.flowAlbums(),
             artistFavoritesStorage.flowArtists()
-        ) { api, playingSource, songs, albums, artists ->
+        ) { playlists, playingSource, songs, albums, artists ->
             val serverId = requireNotNull(apiProvider.getApiId())
-            val playlists = api
-                .getPlaylists()
+            val playlists = playlists
                 .map { playlist ->
                     Playlist(
                         id = playlist.id,
