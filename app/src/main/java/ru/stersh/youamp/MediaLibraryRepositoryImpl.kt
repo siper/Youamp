@@ -22,8 +22,8 @@ internal class MediaLibraryRepositoryImpl(
     }
 
     override suspend fun getPlaylistSongs(playlistId: String): List<MediaLibrary.Song> {
-        return apiProvider
-            .getApi()
+        val api = apiProvider.getApi()
+        return api
             .getPlaylist(playlistId)
             .let { playlist ->
                 playlist.entry?.mapNotNull {
@@ -34,9 +34,25 @@ internal class MediaLibraryRepositoryImpl(
                         id = it.id,
                         title = it.title,
                         artist = it.artist,
-                        coverUrl = apiProvider.getApi().getCoverArtUrl(it.coverArt, auth = true)
+                        streamUrl = api.streamUrl(it.id),
+                        coverUrl = api.getCoverArtUrl(it.coverArt, auth = true)
                     )
                 }.orEmpty()
+            }
+    }
+
+    override suspend fun getSong(songId: String): MediaLibrary.Song {
+        val api = apiProvider.getApi()
+        return api
+            .getSong(songId)
+            .let { song ->
+                MediaLibrary.Song(
+                    id = song.id,
+                    title = song.title,
+                    artist = song.artist,
+                    streamUrl = api.streamUrl(song.id),
+                    coverUrl = api.getCoverArtUrl(song.coverArt, auth = true)
+                )
             }
     }
 }

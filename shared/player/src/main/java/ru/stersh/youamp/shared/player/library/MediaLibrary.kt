@@ -6,7 +6,8 @@ object MediaLibrary {
         val id: String,
         val title: String,
         val artist: String?,
-        val coverUrl: String?
+        val coverUrl: String?,
+        val streamUrl: String
     )
 
     data class Album(
