@@ -29,6 +29,7 @@ import ru.stersh.youamp.main.data.ServerExistRepositoryImpl
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
+import ru.stersh.youamp.shared.player.library.MediaLibraryRepository
 import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
 import ru.stersh.youamp.player.PlayerProviderImpl
 import ru.stersh.youamp.shared.player.playerSharedModule
@@ -106,5 +107,6 @@ private val impl = module {
 private val main = module {
     factory<ServerExistRepository> { ServerExistRepositoryImpl(get()) }
     single<AvatarUrlRepository> { AvatarUrlRepositoryImpl(get()) }
+    single<MediaLibraryRepository> { MediaLibraryRepositoryImpl(get()) }
     viewModel { MainViewModel(get(), get()) }
 }
