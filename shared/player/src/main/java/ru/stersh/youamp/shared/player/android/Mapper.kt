@@ -15,6 +15,7 @@ internal fun MediaLibrary.Song.toMediaItem(): MediaItem {
             MediaMetadata
                 .Builder()
                 .setTitle(title)
+                .setArtist(artist)
                 .setArtworkUri(coverUrl?.toUri())
                 .setIsPlayable(true)
                 .setIsBrowsable(false)

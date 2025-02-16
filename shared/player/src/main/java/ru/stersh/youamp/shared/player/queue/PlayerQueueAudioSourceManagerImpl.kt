@@ -177,7 +177,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
     private suspend fun getSong(source: AudioSource.RawSong): MediaItem {
         val songUri = apiProvider
             .getApi()
-            .downloadUrl(source.id)
+            .streamUrl(source.id)
             .toUri()
 
         val starredRating = HeartRating(source.starred != null)
@@ -197,16 +197,10 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .setOverallRating(rating)
             .setArtworkUri(source.artworkUrl?.toUri())
             .build()
-        val requestMetadata = MediaItem
-            .RequestMetadata
-            .Builder()
-            .setMediaUri(songUri)
-            .build()
         return MediaItem
             .Builder()
             .setMediaId(source.id)
             .setMediaMetadata(metadata)
-            .setRequestMetadata(requestMetadata)
             .setUri(songUri)
             .build()
     }
@@ -214,7 +208,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
     private suspend fun PlaylistEntry.toMediaItem(): MediaItem {
         val songUri = apiProvider
             .getApi()
-            .downloadUrl(id)
+            .streamUrl(id)
             .toUri()
 
         val artworkUri = apiProvider
@@ -238,16 +232,10 @@ internal class PlayerQueueAudioSourceManagerImpl(
             .setOverallRating(rating)
             .setArtworkUri(artworkUri)
             .build()
-        val requestMetadata = MediaItem
-            .RequestMetadata
-            .Builder()
-            .setMediaUri(songUri)
-            .build()
         return MediaItem
             .Builder()
             .setMediaId(id)
             .setMediaMetadata(metadata)
-            .setRequestMetadata(requestMetadata)
             .setUri(songUri)
             .build()
     }

@@ -38,16 +38,10 @@ suspend fun Song.toMediaItem(apiProvider: ApiProvider): MediaItem {
         .setUserRating(starredRating)
         .setArtworkUri(artworkUri)
         .build()
-    val requestMetadata = MediaItem
-        .RequestMetadata
-        .Builder()
-        .setMediaUri(songUri)
-        .build()
     return MediaItem
         .Builder()
         .setMediaId(id)
         .setMediaMetadata(metadata)
-        .setRequestMetadata(requestMetadata)
         .setUri(songUri)
         .build()
 }
