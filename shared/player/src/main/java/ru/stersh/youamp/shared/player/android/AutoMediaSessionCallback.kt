@@ -27,20 +27,6 @@ internal class AutoMediaSessionCallback(
     private val mediaLibraryRepository: MediaLibraryRepository
 ) : MediaLibrarySession.Callback {
 
-    override fun onAddMediaItems(
-        mediaSession: MediaSession,
-        controller: MediaSession.ControllerInfo,
-        mediaItems: MutableList<MediaItem>,
-    ): ListenableFuture<MutableList<MediaItem>> {
-        val updatedMediaItems = mediaItems.map { mediaItem ->
-            mediaItem
-                .buildUpon()
-                .setUri(mediaItem.requestMetadata.mediaUri)
-                .build()
-        }.toMutableList()
-        return Futures.immediateFuture(updatedMediaItems)
-    }
-
     override fun onGetLibraryRoot(
         session: MediaLibrarySession,
         browser: MediaSession.ControllerInfo,
@@ -122,14 +108,8 @@ internal class AutoMediaSessionCallback(
         startIndex: Int,
         startPositionMs: Long
     ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
-        val item = mediaItems.firstOrNull() ?: return super.onSetMediaItems(
-            mediaSession,
-            controller,
-            mediaItems,
-            startIndex,
-            startPositionMs
-        )
-        if (MediaLibrary.isPlaylist(item.mediaId)) {
+        val item = mediaItems.firstOrNull { MediaLibrary.isPlaylist(it.mediaId) }
+        if (item != null) {
             return scope.future {
                 mediaLibraryRepository
                     .getPlaylistSongs(MediaLibrary.clearPlaylistId(item.mediaId))
@@ -139,13 +119,13 @@ internal class AutoMediaSessionCallback(
                     }
             }
         }
-        return scope.future {
-            mediaLibraryRepository
-                .getSong(item.mediaId)
-                .let {
-                    MediaSession.MediaItemsWithStartPosition(listOf(it.toMediaItem()), 0, 0L)
-                }
-        }
+        return super.onSetMediaItems(
+            mediaSession,
+            controller,
+            mediaItems,
+            startIndex,
+            startPositionMs
+        )
     }
 
     override fun onGetSearchResult(
