@@ -55,7 +55,7 @@ paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pag
 immutableCollections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.8" }
 
 
-compose-bom = "androidx.compose:compose-bom:2025.01.01"
+compose-bom = "androidx.compose:compose-bom:2025.02.00"
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
