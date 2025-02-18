@@ -133,6 +133,13 @@ If you want help to make Youamp better, you can:
         <sub><b>15 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/Smashterix"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16892183/medium/7f7bdce476354a91303f20bc4801b34e.jpeg" />
+          <br />
+          <sub><b>Eli Minator (Smashterix)</b></sub></a>
+        <br />
+        <sub><b>13 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
           <br />
           <sub><b>January Mara (januarymara185)</b></sub></a>
