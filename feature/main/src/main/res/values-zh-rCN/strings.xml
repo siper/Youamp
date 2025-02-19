@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="albums_title">专辑</string>
+    <string name="artists_title">艺术家</string>
+    <string name="playlists_title">歌单</string>
+    <string name="favorites_title">收藏夹</string>
+</resources>
