@@ -65,7 +65,14 @@ If you want help to make Youamp better, you can:
           <br />
           <sub><b>Kirill Zhukov (Stersh)</b></sub></a>
         <br />
-        <sub><b>4086 words</b></sub>
+        <sub><b>4108 words</b></sub>
+      </td>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
+          <br />
+          <sub><b>myrad2267</b></sub></a>
+        <br />
+        <sub><b>269 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
@@ -73,13 +80,6 @@ If you want help to make Youamp better, you can:
           <sub><b>isard</b></sub></a>
         <br />
         <sub><b>266 words</b></sub>
-      </td>
-      <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/myrad2267"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16479243/medium/c22b8ec9a9a428794a97f0933122d6bb.png" />
-          <br />
-          <sub><b>myrad2267</b></sub></a>
-        <br />
-        <sub><b>264 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/CraftWorks"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15747391/medium/334632c01b9b9321cdaa5f555e70b0e7.png" />
@@ -131,6 +131,13 @@ If you want help to make Youamp better, you can:
           <sub><b>Jann Bern (gfreak70)</b></sub></a>
         <br />
         <sub><b>15 words</b></sub>
+      </td>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/Smashterix"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16892183/medium/7f7bdce476354a91303f20bc4801b34e.jpeg" />
+          <br />
+          <sub><b>Eli Minator (Smashterix)</b></sub></a>
+        <br />
+        <sub><b>13 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
