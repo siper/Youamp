@@ -1,9 +1,9 @@
-package ru.stersh.youamp.core.room
+package ru.stresh.youamp.core.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import ru.stersh.youamp.core.room.server.SubsonicServerDao
-import ru.stersh.youamp.core.room.server.SubsonicServerDb
+import ru.stresh.youamp.core.db.server.SubsonicServerDao
+import ru.stresh.youamp.core.db.server.SubsonicServerDb
 
 @Database(
     entities = [SubsonicServerDb::class],

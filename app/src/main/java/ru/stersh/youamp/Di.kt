@@ -3,12 +3,12 @@ package ru.stersh.youamp
 import android.app.Application
 import android.content.Context
 import androidx.core.net.toUri
+import androidx.room.RoomDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.core.room.roomModule
 import ru.stersh.youamp.feature.album.albumInfoModule
 import ru.stersh.youamp.feature.albums.albumListModule
 import ru.stersh.youamp.feature.artist.artistInfoModule
@@ -29,11 +29,14 @@ import ru.stersh.youamp.main.data.ServerExistRepositoryImpl
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
-import ru.stersh.youamp.shared.player.library.MediaLibraryRepository
 import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
 import ru.stersh.youamp.player.PlayerProviderImpl
+import ru.stersh.youamp.shared.player.library.MediaLibraryRepository
 import ru.stersh.youamp.shared.player.playerSharedModule
 import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stresh.youamp.core.db.Database
+import ru.stresh.youamp.core.db.dbModule
+import ru.stresh.youamp.core.db.getDatabaseBuilder
 import ru.stresh.youamp.core.properties.app.AppProperties
 import ru.stresh.youamp.core.propertiesModule
 import ru.stresh.youamp.feature.about.aboutModule
@@ -55,7 +58,7 @@ internal fun setupDi(application: Application) {
 
 private val core = listOf(
     propertiesModule,
-    roomModule
+    dbModule
 )
 
 private val shared = listOf(
@@ -102,6 +105,7 @@ private val impl = module {
     single<ApiProvider> { ApiProviderImpl(get()) }
     single<PlayerProvider> { PlayerProviderImpl(get()) }
     single { ApiSonicPlayQueueSyncer(get(), get()) }
+    single<RoomDatabase.Builder<Database>> { getDatabaseBuilder(get()) }
 }
 
 private val main = module {

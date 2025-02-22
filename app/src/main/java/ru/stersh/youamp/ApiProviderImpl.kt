@@ -7,8 +7,8 @@ import ru.stersh.youamp.core.api.ApiDefaults
 import ru.stersh.youamp.core.api.SubsonicApi
 import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.core.api.provider.NoActiveServerSettingsFound
-import ru.stersh.youamp.core.room.server.SubsonicServerDao
-import ru.stersh.youamp.core.room.server.SubsonicServerDb
+import ru.stresh.youamp.core.db.server.SubsonicServerDao
+import ru.stresh.youamp.core.db.server.SubsonicServerDb
 import java.util.concurrent.ConcurrentHashMap
 
 internal class ApiProviderImpl(

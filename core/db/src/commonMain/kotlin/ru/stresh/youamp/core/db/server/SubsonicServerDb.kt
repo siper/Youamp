@@ -1,4 +1,4 @@
-package ru.stersh.youamp.core.room.server
+package ru.stresh.youamp.core.db.server
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

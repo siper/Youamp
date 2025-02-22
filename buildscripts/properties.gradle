@@ -1,5 +1,5 @@
 project.ext {
-    minSdk = 21
+    minSdk = 24
     targetSdk = 35
     compileSdk = 35
 }
