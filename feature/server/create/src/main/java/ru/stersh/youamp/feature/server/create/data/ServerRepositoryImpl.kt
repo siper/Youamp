@@ -2,10 +2,10 @@ package ru.stersh.youamp.feature.server.create.data
 
 import ru.stersh.youamp.core.api.ApiDefaults
 import ru.stersh.youamp.core.api.SubsonicApi
-import ru.stersh.youamp.core.room.server.SubsonicServerDao
-import ru.stersh.youamp.core.room.server.SubsonicServerDb
 import ru.stersh.youamp.feature.server.create.domain.Server
 import ru.stersh.youamp.feature.server.create.domain.ServerRepository
+import ru.stresh.youamp.core.db.server.SubsonicServerDao
+import ru.stresh.youamp.core.db.server.SubsonicServerDb
 
 internal class ServerRepositoryImpl(
     private val serverDao: SubsonicServerDao,

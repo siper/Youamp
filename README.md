@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img alt="Min sdk badge" src="https://img.shields.io/badge/21-grey?style=flat&logo=android&logoColor=minSdk&label=Min%20sdk&color=blue">
+  <img alt="Min sdk badge" src="https://img.shields.io/badge/24-grey?style=flat&logo=android&logoColor=minSdk&label=Min%20sdk&color=blue">
   <a title="Crowdin" target="_blank" href="https://crowdin.com/project/youamp"><img src="https://badges.crowdin.net/youamp/localized.svg"></a>
   <img alt="License bage" src="https://img.shields.io/badge/MIT-grey?style=flat&label=License&color=blue">
 </p>

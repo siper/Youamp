@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.core.room.server.SubsonicServerDao
 import ru.stersh.youamp.feature.main.domain.ServerInfo
 import ru.stersh.youamp.feature.main.domain.ServerInfoRepository
+import ru.stresh.youamp.core.db.server.SubsonicServerDao
 
 internal class ServerInfoRepositoryImpl(
     private val subsonicServerDao: SubsonicServerDao,
