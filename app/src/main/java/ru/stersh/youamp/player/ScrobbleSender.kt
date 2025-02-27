@@ -2,7 +2,7 @@ package ru.stersh.youamp.player
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stresh.youamp.core.api.ApiProvider
 import timber.log.Timber
 
 internal class ScrobbleSender(

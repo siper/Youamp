@@ -2,13 +2,13 @@ package ru.stersh.youamp.feature.artist.data
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import ru.stersh.youamp.core.api.Album
-import ru.stersh.youamp.core.api.Artist
-import ru.stersh.youamp.core.api.SubsonicApi
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.subsonic.api.SubsonicApi
+import ru.stersh.subsonic.api.model.Album
+import ru.stersh.subsonic.api.model.Artist
 import ru.stersh.youamp.feature.artist.domain.ArtistAlbum
 import ru.stersh.youamp.feature.artist.domain.ArtistInfo
 import ru.stersh.youamp.feature.artist.domain.ArtistInfoRepository
+import ru.stresh.youamp.core.api.ApiProvider
 import ru.stresh.youamp.shared.favorites.ArtistFavoritesStorage
 
 internal class ArtistInfoRepositoryImpl(
@@ -19,7 +19,7 @@ internal class ArtistInfoRepositoryImpl(
     override suspend fun getArtistInfo(id: String): ArtistInfo = coroutineScope {
         val api = apiProvider.getApi()
         val favoriteArtists = async { artistFavoritesStorage.getArtists() }
-        val artistInfo = async { api.getArtist(id) }
+        val artistInfo = async { api.getArtist(id).data.artist }
         val isFavorite = favoriteArtists
             .await()
             .any { it.id == id }
@@ -32,7 +32,7 @@ internal class ArtistInfoRepositoryImpl(
             name = name,
             artworkUrl = api.getCoverArtUrl(coverArt),
             isFavorite = isFavorite,
-            albums = albums
+            albums = album
                 .orEmpty()
                 .map { it.toDomain(api) }
         )

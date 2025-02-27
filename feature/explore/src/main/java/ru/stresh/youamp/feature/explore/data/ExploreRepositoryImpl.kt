@@ -5,19 +5,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
-import ru.stersh.youamp.shared.player.queue.PlayingSource
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.player.Player
 import ru.stresh.youamp.feature.explore.domain.Explore
 import ru.stresh.youamp.feature.explore.domain.ExploreRepository
 import ru.stresh.youamp.feature.explore.domain.Song
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.queue.PlayingSource
 import ru.stresh.youamp.shared.song.random.SongRandomStorage
 
 internal class ExploreRepositoryImpl(
     private val apiProvider: ApiProvider,
     private val queueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playStateStore: PlayStateStore,
+    private val player: Player,
     private val songRandomStorage: SongRandomStorage
 ) : ExploreRepository {
     override fun getExplore(): Flow<Explore> {
@@ -30,8 +30,8 @@ internal class ExploreRepositoryImpl(
             queueAudioSourceManager
                 .playingSource()
                 .flatMapLatest { source ->
-                    playStateStore
-                        .isPlaying()
+                    player
+                        .getIsPlaying()
                         .map { isPlaying ->
                             source.takeIf { isPlaying }
                         }

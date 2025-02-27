@@ -1,9 +1,10 @@
 package ru.stersh.youamp.feature.search.data
 
-import ru.stersh.youamp.core.api.Album
-import ru.stersh.youamp.core.api.Artist
-import ru.stersh.youamp.core.api.Song
-import ru.stersh.youamp.core.api.SubsonicApi
+
+import ru.stersh.subsonic.api.SubsonicApi
+import ru.stersh.subsonic.api.model.Album
+import ru.stersh.subsonic.api.model.Artist
+import ru.stersh.subsonic.api.model.Song
 import ru.stersh.youamp.feature.search.domain.SearchResult
 
 internal fun List<Song>?.toDomainSongs(api: SubsonicApi): List<SearchResult.Song> {
@@ -25,7 +26,7 @@ internal fun Song.toDomain(api: SubsonicApi): SearchResult.Song {
         id = id,
         title = title,
         artist = artist,
-        artworkUrl = coverArt?.let { api.getCoverArtUrl(it) }
+        artworkUrl = api.getCoverArtUrl(coverArt)
     )
 }
 

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stresh.youamp.core.api.ApiProvider
 import java.util.concurrent.ConcurrentHashMap
 
 internal class FavoritesStorageImpl(
@@ -34,9 +34,9 @@ internal class FavoritesStorageImpl(
         val api = apiProvider.getApi(apiId) ?: return
         getLock(apiId).withLock {
             if (isFavorite) {
-                api.starSong(id)
+                api.star(id = arrayListOf(id))
             } else {
-                api.unstarSong(id)
+                api.unstar(id = arrayListOf(id))
             }
             updateFavorites(apiId)
         }
@@ -59,9 +59,9 @@ internal class FavoritesStorageImpl(
         val api = apiProvider.getApi(apiId) ?: return
         getLock(apiId).withLock {
             if (isFavorite) {
-                api.starAlbum(id)
+                api.star(albumId = arrayListOf(id))
             } else {
-                api.unstarAlbum(id)
+                api.unstar(albumId = arrayListOf(id))
             }
             updateFavorites(apiId)
         }
@@ -84,9 +84,9 @@ internal class FavoritesStorageImpl(
         val api = apiProvider.getApi(apiId) ?: return
         getLock(apiId).withLock {
             if (isFavorite) {
-                api.starArtist(id)
+                api.star(artistId = arrayListOf(id))
             } else {
-                api.unstarArtist(id)
+                api.unstar(artistId = arrayListOf(id))
             }
             updateFavorites(apiId)
         }
@@ -115,7 +115,7 @@ internal class FavoritesStorageImpl(
         val api = apiProvider.requireApi(id)
         val newFavorites = api.getStarred2()
         getFavorites(id).update(
-            songs = newFavorites.starred2Result.song?.map {
+            songs = newFavorites.data.starred2.song?.map {
                 Song(
                     id = it.id,
                     title = it.title,
@@ -127,7 +127,7 @@ internal class FavoritesStorageImpl(
                     userRating = it.userRating
                 )
             }.orEmpty(),
-            albums = newFavorites.starred2Result.album?.map {
+            albums = newFavorites.data.starred2.album?.map {
                 Album(
                     id = it.id,
                     title = requireNotNull(it.name ?: it.album),
@@ -137,7 +137,7 @@ internal class FavoritesStorageImpl(
                     userRating = it.userRating
                 )
             }.orEmpty(),
-            artists = newFavorites.starred2Result.artist?.map {
+            artists = newFavorites.data.starred2.artist?.map {
                 Artist(
                     id = it.id,
                     name = it.name,

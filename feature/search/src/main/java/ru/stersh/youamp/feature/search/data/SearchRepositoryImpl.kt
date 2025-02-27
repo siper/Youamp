@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import ru.stersh.youamp.core.api.SearchResult3
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.subsonic.api.model.SearchResult3
 import ru.stersh.youamp.core.utils.Content
 import ru.stersh.youamp.core.utils.Paginator
 import ru.stersh.youamp.feature.search.domain.SearchRepository
 import ru.stersh.youamp.feature.search.domain.SearchResult
+import ru.stresh.youamp.core.api.ApiProvider
 
 internal class SearchRepositoryImpl(private val apiProvider: ApiProvider) : SearchRepository {
 
@@ -82,7 +82,7 @@ internal class SearchRepositoryImpl(private val apiProvider: ApiProvider) : Sear
             albumOffset = albumsOffset,
             artistCount = SearchIdentifier.Page.PAGE_SIZE,
             artistOffset = artistsOffset
-        ).searchResult3
+        ).data.searchResult3
     }
 
     override suspend fun loadMoreSongs() {

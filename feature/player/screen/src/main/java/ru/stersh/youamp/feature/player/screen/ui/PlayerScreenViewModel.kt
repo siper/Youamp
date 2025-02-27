@@ -2,26 +2,23 @@ package ru.stersh.youamp.feature.player.screen.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.shared.player.controls.PlayerControls
-import ru.stersh.youamp.shared.player.favorites.CurrentSongFavorites
-import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
-import ru.stersh.youamp.shared.player.mode.PlayerModeStorage
-import ru.stersh.youamp.shared.player.progress.PlayerProgressStore
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.player.Player
+import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
 
 internal class PlayerScreenViewModel(
-    private val currentSongInfoStore: CurrentSongInfoStore,
-    private val playStateStore: PlayStateStore,
-    private val playerControls: PlayerControls,
-    private val playerProgressStore: PlayerProgressStore,
-    private val currentSongFavorites: CurrentSongFavorites,
-    private val playerModeStorage: PlayerModeStorage
+    private val player: Player,
+    private val songFavoritesStorage: SongFavoritesStorage
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(StateUi())
@@ -30,22 +27,22 @@ internal class PlayerScreenViewModel(
 
     init {
         viewModelScope.launch {
-            currentSongInfoStore
-                .getCurrentSongInfo()
+            player
+                .getCurrentMediaItem()
                 .filterNotNull()
-                .collect { songInfo ->
+                .collect { currentMediaItem ->
                     _state.update {
                         it.copy(
-                            artworkUrl = songInfo.coverArtUrl,
-                            title = songInfo.title,
-                            artist = songInfo.artist
+                            artworkUrl = currentMediaItem.artworkUrl,
+                            title = currentMediaItem.title,
+                            artist = currentMediaItem.artist
                         )
                     }
                 }
         }
         viewModelScope.launch {
-            playStateStore
-                .isPlaying()
+            player
+                .getIsPlaying()
                 .collect { isPlaying ->
                     _state.update {
                         it.copy(
@@ -55,8 +52,8 @@ internal class PlayerScreenViewModel(
                 }
         }
         viewModelScope.launch {
-            playerProgressStore
-                .playerProgress()
+            player
+                .getProgress()
                 .filterNotNull()
                 .collect { progress ->
                     _state.update {
@@ -69,7 +66,7 @@ internal class PlayerScreenViewModel(
                 }
         }
         viewModelScope.launch {
-            playerModeStorage
+            player
                 .getRepeatMode()
                 .collect { repeatMode ->
                     _state.update {
@@ -80,7 +77,7 @@ internal class PlayerScreenViewModel(
                 }
         }
         viewModelScope.launch {
-            playerModeStorage
+            player
                 .getShuffleMode()
                 .collect { shuffleMode ->
                     _state.update {
@@ -91,8 +88,21 @@ internal class PlayerScreenViewModel(
                 }
         }
         viewModelScope.launch {
-            currentSongFavorites
-                .isFavorite()
+            player
+                .getCurrentMediaItem()
+                .map { it?.id }
+                .flatMapLatest { currentSongId ->
+                    if (currentSongId == null) {
+                        flowOf(false)
+                    } else {
+                        songFavoritesStorage
+                            .flowSongs()
+                            .map { songs ->
+                                songs.any { it.id == currentSongId }
+                            }
+                    }
+                }
+                .flowOn(Dispatchers.IO)
                 .collect { isFavorite ->
                     _state.update {
                         it.copy(
@@ -104,39 +114,44 @@ internal class PlayerScreenViewModel(
     }
 
     fun seekTo(progress: Float) = viewModelScope.launch {
-        val totalMs = playerProgressStore
-            .playerProgress()
+        val totalMs = player
+            .getProgress()
             .first()
             ?.totalTimeMs ?: return@launch
         val time = (totalMs * progress).toLong()
-        playerControls.seek(time)
+        player.seek(time)
     }
 
     fun next() = viewModelScope.launch {
-        playerControls.next()
+        player.next()
     }
 
     fun previous() = viewModelScope.launch {
-        playerControls.previous()
+        player.previous()
     }
 
     fun toggleFavorite(isFavorite: Boolean) = viewModelScope.launch {
-        currentSongFavorites.toggleFavorite(isFavorite)
+        val id = player
+            .getCurrentMediaItem()
+            .first()
+            ?.id
+            ?: return@launch
+        songFavoritesStorage.setSongFavorite(id, isFavorite)
     }
 
     fun playPause() = viewModelScope.launch {
         if (_state.value.isPlaying) {
-            playerControls.pause()
+            player.pause()
         } else {
-            playerControls.play()
+            player.play()
         }
     }
 
     fun shuffleModeChanged(shuffleMode: ShuffleModeUi) = viewModelScope.launch {
-        playerModeStorage.setShuffleMode(shuffleMode.toDomain())
+        player.setShuffleMode(shuffleMode.toDomain())
     }
 
     fun repeatModeChanged(repeatMode: RepeatModeUi) = viewModelScope.launch {
-        playerModeStorage.setRepeatMode(repeatMode.toDomain())
+        player.setRepeatMode(repeatMode.toDomain())
     }
 }

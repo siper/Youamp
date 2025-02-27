@@ -1,10 +1,8 @@
-apply from: "${project.rootDir}/buildscripts/properties.gradle"
-
 android {
-    compileSdkVersion project.compileSdk
+    compileSdkVersion libs.versions.android.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion project.minSdk
-        targetSdkVersion project.targetSdk
+        minSdkVersion libs.versions.android.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.android.targetSdk.get().toInteger()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

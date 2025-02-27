@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.artist.domain.ArtistFavoriteRepository
 import ru.stersh.youamp.feature.artist.domain.ArtistInfoRepository
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import timber.log.Timber
 
 internal class ArtistInfoViewModel(

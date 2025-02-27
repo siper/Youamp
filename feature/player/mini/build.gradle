@@ -13,7 +13,8 @@ android {
 dependencies {
     implementation project(":core:ui")
     implementation project(":core:api")
-    implementation project(":shared:player")
+    implementation project(":core:player")
+    implementation project(':shared:queue')
     implementation(libs.bundles.lifecycle)
     implementation(libs.coil.compose)
     implementation(libs.bundles.koin)

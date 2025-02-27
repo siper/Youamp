@@ -15,10 +15,11 @@ dependencies {
     implementation project(":core:utils")
     implementation project(":core:properties")
     implementation project(":core:api")
-    implementation project(":shared:player")
+    implementation project(":core:player")
+    implementation project(':shared:queue')
     implementation project(":shared:favorites")
     implementation(libs.bundles.lifecycle)
     implementation(libs.coil.compose)
     implementation(libs.bundles.koin)
-    implementation(libs.immutableCollections)
+    implementation(libs.kotlinx.collectionsImmutable)
 }

@@ -2,14 +2,14 @@ package ru.stersh.youamp.feature.album.data
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import ru.stersh.youamp.core.api.Album
-import ru.stersh.youamp.core.api.Song
-import ru.stersh.youamp.core.api.SubsonicApi
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.subsonic.api.SubsonicApi
+import ru.stersh.subsonic.api.model.Album
+import ru.stersh.subsonic.api.model.Song
 import ru.stersh.youamp.core.utils.formatSongDuration
 import ru.stersh.youamp.feature.album.domain.AlbumInfo
 import ru.stersh.youamp.feature.album.domain.AlbumInfoRepository
 import ru.stersh.youamp.feature.album.domain.AlbumSong
+import ru.stresh.youamp.core.api.ApiProvider
 import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
 
 internal class AlbumInfoRepositoryImpl(
@@ -20,7 +20,7 @@ internal class AlbumInfoRepositoryImpl(
     override suspend fun getAlbumInfo(id: String): AlbumInfo = coroutineScope {
         val api = apiProvider.getApi()
         val favoriteAlbums = async { albumFavoritesStorage.getAlbums() }
-        val albumInfo = async { api.getAlbum(id) }
+        val albumInfo = async { api.getAlbum(id).data.album }
         val isFavorite = favoriteAlbums
             .await()
             .any { it.id == id }

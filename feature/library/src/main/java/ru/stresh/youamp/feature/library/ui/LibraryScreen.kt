@@ -39,7 +39,7 @@ import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.library.R
-import ru.stersh.youamp.shared.player.queue.AudioSource
+import ru.stresh.youamp.shared.queue.AudioSource
 
 @Composable
 fun LibraryScreen(

@@ -12,20 +12,18 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.controls.PlayerControls
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
-import ru.stersh.youamp.shared.player.queue.equals
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.player.Player
 import ru.stresh.youamp.feature.explore.domain.ExploreRepository
+import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.queue.equals
 import timber.log.Timber
 
 internal class ExploreViewModel(
     private val repository: ExploreRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playStateStore: PlayStateStore,
-    private val playerControls: PlayerControls,
+    private val player: Player,
     private val apiProvider: ApiProvider
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
@@ -93,19 +91,19 @@ internal class ExploreViewModel(
                 .playingSource()
                 .first()
             val serverId = apiProvider.requireApiId()
-            val isPlaying = playStateStore
-                .isPlaying()
+            val isPlaying = player
+                .getIsPlaying()
                 .first()
             val isSourcePlaying = playingSource?.equals(
                 serverId,
                 source
             ) == true
             if (isSourcePlaying && isPlaying) {
-                playerControls.pause()
+                player.pause()
                 return@launch
             }
             if (isSourcePlaying) {
-                playerControls.play()
+                player.play()
                 return@launch
             }
             playerQueueAudioSourceManager.playSource(source)
