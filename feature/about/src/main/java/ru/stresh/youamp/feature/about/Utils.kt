@@ -1,14 +1,14 @@
-package ru.stersh.youamp.core.utils
+package ru.stresh.youamp.feature.about
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
+import androidx.core.net.toUri
 
-fun Context.launchSafeAnyUrl(url: String) {
+internal fun Context.launchSafeAnyUrl(url: String) {
     try {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
         return
     } catch (ignored: ActivityNotFoundException) {
     }

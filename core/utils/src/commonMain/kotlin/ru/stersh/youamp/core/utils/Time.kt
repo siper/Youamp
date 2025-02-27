@@ -1,4 +1,4 @@
-package ru.stresh.youamp.core.player
+package ru.stersh.youamp.core.utils
 
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.format.char

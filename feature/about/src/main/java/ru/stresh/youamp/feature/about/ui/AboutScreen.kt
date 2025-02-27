@@ -40,8 +40,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SingleLineText
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.core.utils.launchSafeAnyUrl
 import ru.stersh.youamp.feature.about.R
+import ru.stresh.youamp.feature.about.launchSafeAnyUrl
 
 @Composable
 fun AboutScreen(

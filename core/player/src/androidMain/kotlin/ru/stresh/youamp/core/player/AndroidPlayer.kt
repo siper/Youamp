@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import ru.stersh.youamp.core.utils.formatSongDuration
 
 internal class AndroidPlayer(private val player: androidx.media3.common.Player) : Player {
 

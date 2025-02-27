@@ -1,4 +1,4 @@
-package ru.stersh.youamp.core.utils
+package ru.stersh.youamp
 
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
