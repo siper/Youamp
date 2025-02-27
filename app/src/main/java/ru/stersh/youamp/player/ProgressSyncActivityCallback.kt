@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.core.utils.EmptyActivityLifecycleCallback
+import ru.stersh.youamp.EmptyActivityLifecycleCallback
 import ru.stersh.youamp.main.ui.MainActivity
 import ru.stresh.youamp.core.api.ApiProvider
 import ru.stresh.youamp.core.player.Player
