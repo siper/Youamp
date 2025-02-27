@@ -38,7 +38,6 @@ fun PlayButtonOutlined(
 }
 
 @Composable
-
 fun PlayButton(
     isPlaying: Boolean,
     onClick: () -> Unit,

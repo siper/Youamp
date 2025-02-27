@@ -7,8 +7,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.stringResource
+import youamp.core.ui.generated.resources.Res
+import youamp.core.ui.generated.resources.play_all_title
 
 @Composable
 fun PlayAllFabButton(
@@ -21,9 +23,9 @@ fun PlayAllFabButton(
     ) {
         Icon(
             imageVector = Icons.Rounded.PlayArrow,
-            contentDescription = stringResource(R.string.play_all_title)
+            contentDescription = stringResource(Res.string.play_all_title)
         )
-        Text(text = stringResource(R.string.play_all_title))
+        Text(text = stringResource(Res.string.play_all_title))
     }
 }
 

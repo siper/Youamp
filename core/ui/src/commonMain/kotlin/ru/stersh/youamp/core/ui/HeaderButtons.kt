@@ -20,10 +20,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import youamp.core.ui.generated.resources.Res
+import youamp.core.ui.generated.resources.dislike_title
+import youamp.core.ui.generated.resources.like_title
+import youamp.core.ui.generated.resources.play_all_title
+import youamp.core.ui.generated.resources.shuffle_title
 
 @Composable
 fun FavoriteButton(
@@ -32,9 +37,9 @@ fun FavoriteButton(
     modifier: Modifier = Modifier
 ) {
     val text = if (isFavorite) {
-        stringResource(R.string.dislike_title)
+        stringResource(Res.string.dislike_title)
     } else {
-        stringResource(R.string.like_title)
+        stringResource(Res.string.like_title)
     }
     ButtonLayout(
         button = {
@@ -78,13 +83,13 @@ fun PlayAllButton(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.PlayArrow,
-                    contentDescription = stringResource(R.string.play_all_title)
+                    contentDescription = stringResource(Res.string.play_all_title)
                 )
             }
         },
         title = {
             Text(
-                text = stringResource(R.string.play_all_title),
+                text = stringResource(Res.string.play_all_title),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
@@ -107,13 +112,13 @@ fun PlayShuffledButton(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Shuffle,
-                    contentDescription = stringResource(R.string.shuffle_title)
+                    contentDescription = stringResource(Res.string.shuffle_title)
                 )
             }
         },
         title = {
             Text(
-                text = stringResource(R.string.shuffle_title),
+                text = stringResource(Res.string.shuffle_title),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
