@@ -2,7 +2,6 @@ package ru.stersh.youamp
 
 import android.app.Application
 import android.content.Context
-import androidx.core.net.toUri
 import androidx.room.RoomDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -98,9 +97,9 @@ private val impl = module {
         AppProperties(
             name = get<Context>().getString(R.string.app_name),
             version = BuildConfig.VERSION_NAME,
-            githubUri = "https://github.com/siper/Youamp".toUri(),
-            fdroidUri = "https://f-droid.org/packages/ru.stersh.youamp/".toUri(),
-            crwodinUri = "https://crowdin.com/project/youamp".toUri()
+            githubUri = "https://github.com/siper/Youamp",
+            fdroidUri = "https://f-droid.org/packages/ru.stersh.youamp/",
+            crwodinUri = "https://crowdin.com/project/youamp"
         )
     }
     single<ApiProvider> { ApiProviderImpl(get()) }
