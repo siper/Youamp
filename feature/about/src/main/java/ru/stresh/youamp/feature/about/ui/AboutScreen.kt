@@ -1,7 +1,6 @@
 package ru.stresh.youamp.feature.about.ui
 
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,7 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SingleLineText
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.core.utils.launchSafeAnyUri
+import ru.stersh.youamp.core.utils.launchSafeAnyUrl
 import ru.stersh.youamp.feature.about.R
 
 @Composable
@@ -55,13 +54,13 @@ fun AboutScreen(
         state = state,
         onBackClick = onBackClick,
         onGithubClick = {
-            context.launchSafeAnyUri(state.githubUri)
+            context.launchSafeAnyUrl(state.githubUri)
         },
         onFDroidClick = {
-            context.launchSafeAnyUri(state.fdroidUri)
+            context.launchSafeAnyUrl(state.fdroidUri)
         },
         onCrowdinClick = {
-            context.launchSafeAnyUri(state.crwodinUri)
+            context.launchSafeAnyUrl(state.crwodinUri)
         }
     )
 }
@@ -229,9 +228,9 @@ private fun AboutScreenPreview() {
             state = AboutStateUi(
                 name = "Youamp",
                 version = "1.0.0-alpha04",
-                githubUri = Uri.EMPTY,
-                fdroidUri = Uri.EMPTY,
-                crwodinUri = Uri.EMPTY
+                githubUri = "",
+                fdroidUri = "",
+                crwodinUri = ""
             ),
             onBackClick = {},
             onGithubClick = {},
