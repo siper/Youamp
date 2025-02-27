@@ -4,21 +4,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.stersh.youamp.core.api.Album
-import ru.stersh.youamp.core.api.Artist
-import ru.stersh.youamp.core.api.ListType
-import ru.stersh.youamp.core.api.SubsonicApi
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
-import ru.stersh.youamp.shared.player.queue.PlayingSource
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stersh.subsonic.api.SubsonicApi
+import ru.stersh.subsonic.api.model.Album
+import ru.stersh.subsonic.api.model.Artist
+import ru.stersh.subsonic.api.model.ListType
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.player.Player
 import ru.stresh.youamp.feature.library.domain.Library
 import ru.stresh.youamp.feature.library.domain.LibraryRepository
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.queue.PlayingSource
 
 internal class LibraryRepositoryImpl(
     private val apiProvider: ApiProvider,
     private val queueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playStateStore: PlayStateStore
+    private val player: Player
 ) : LibraryRepository {
 
     override fun getLibrary(): Flow<Library> {
@@ -27,17 +27,27 @@ internal class LibraryRepositoryImpl(
                 .flowApi()
                 .map { api ->
                     ApiLibrary(
-                        albums = api.getAlbumList2(
-                            type = ListType.ALPHABETICAL_BY_NAME
-                        ),
-                        artists = api.getArtists()
+                        albums = api
+                            .getAlbumList2(
+                                type = ListType.ALPHABETICAL_BY_NAME
+                            )
+                            .data
+                            .albumList2
+                            .album
+                            .orEmpty(),
+                        artists = api
+                            .getArtists()
+                            .data
+                            .artists
+                            .index
+                            .flatMap { it.artist }
                     )
                 },
             queueAudioSourceManager
                 .playingSource()
                 .flatMapLatest { source ->
-                    playStateStore
-                        .isPlaying()
+                    player
+                        .getIsPlaying()
                         .map { isPlaying ->
                             source.takeIf { isPlaying }
                         }

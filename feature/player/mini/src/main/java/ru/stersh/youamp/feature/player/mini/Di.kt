@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import ru.stersh.youamp.feature.player.mini.ui.MiniPlayerViewModel
 
 val playerMiniModule = module {
-    viewModel { MiniPlayerViewModel(get(), get(), get(), get()) }
+    viewModel { MiniPlayerViewModel(get()) }
 }

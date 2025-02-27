@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stresh.youamp.core.api.ApiProvider
 import java.util.concurrent.ConcurrentHashMap
 
 internal class SongRandomStorageImpl(
@@ -57,7 +57,13 @@ internal class SongRandomStorageImpl(
 
     private suspend fun updateRandomSongs(id: Long) {
         val api = apiProvider.requireApi(id)
-        val newRandomSongs = api.getRandomSongs(30)
+        val newRandomSongs = api.getRandomSongs(
+            30,
+            genre = null,
+            fromYear = null,
+            toYear = null,
+            musicFolderId = null
+        ).data.randomSongs.song
         getRandomSongs(id).update(
             songs = newRandomSongs.map {
                 Song(

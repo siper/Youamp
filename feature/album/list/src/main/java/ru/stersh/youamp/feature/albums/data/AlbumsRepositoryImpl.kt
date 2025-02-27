@@ -1,9 +1,9 @@
 package ru.stersh.youamp.feature.albums.data
 
-import ru.stersh.youamp.core.api.ListType
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.subsonic.api.model.ListType
 import ru.stersh.youamp.feature.albums.domain.Album
 import ru.stersh.youamp.feature.albums.domain.AlbumsRepository
+import ru.stresh.youamp.core.api.ApiProvider
 
 internal class AlbumsRepositoryImpl(private val apiProvider: ApiProvider) : AlbumsRepository {
 
@@ -15,6 +15,10 @@ internal class AlbumsRepositoryImpl(private val apiProvider: ApiProvider) : Albu
                 offset = if (page == 1) 0 else (page - 1) * pageSize,
                 size = pageSize
             )
+            .data
+            .albumList2
+            .album
+            .orEmpty()
             .mapNotNull { album ->
                 Album(
                     id = album.id,

@@ -1,22 +1,21 @@
 package ru.stersh.youamp.player
 
-import androidx.media3.common.Player
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.provider.PlayerProvider
-import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
-import ru.stersh.youamp.shared.player.utils.mediaItems
-import ru.stersh.youamp.shared.player.utils.toMediaItem
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.player.Player
+import ru.stresh.youamp.shared.queue.toMediaItem
 import timber.log.Timber
 
 internal class ApiSonicPlayQueueSyncer(
-    private val playerProvider: PlayerProvider,
+    private val player: Player,
     private val apiProvider: ApiProvider
 ) {
 
@@ -24,9 +23,9 @@ internal class ApiSonicPlayQueueSyncer(
         apiProvider
             .flowApiId()
             .filterNotNull()
+            .distinctUntilChanged()
             .flatMapLatest {
                 flow<Nothing> {
-                    val player = playerProvider.get()
                     loadPlayQueue(player)
                     var playQueue = getPlayQueue(player)
                     while (true) {
@@ -48,6 +47,7 @@ internal class ApiSonicPlayQueueSyncer(
                 apiProvider
                     .getApi()
                     .getPlayQueue()
+                    .data
                     .playQueue
             }
                 .onFailure { Timber.w(it) }
@@ -55,38 +55,48 @@ internal class ApiSonicPlayQueueSyncer(
         } ?: return
 
         val items = playQueue.entry.map { it.toMediaItem(apiProvider) }
-        val currentIndex = items.indexOfFirst { it.mediaId == playQueue.current }
+        val currentIndex = items.indexOfFirst { it.id == playQueue.current }
         val position = playQueue.position
 
-        withContext(PlayerDispatcher) {
-            if (currentIndex != -1) {
-                player.setMediaItems(items, currentIndex, position ?: 0)
-            } else {
-                player.setMediaItems(items)
-            }
-            player.prepare()
+        if (currentIndex != -1) {
+            player.setMediaItems(items, currentIndex, position ?: 0)
+        } else {
+            player.setMediaItems(items)
         }
+        player.prepare()
     }
 
-    private suspend fun getPlayQueue(player: Player) = withContext(PlayerDispatcher) {
-        val items = player.mediaItems.map { it.mediaId }
-        val current = player.currentMediaItem?.mediaId
-        val position = player.currentPosition
-        return@withContext PlayQueue(
+    private suspend fun getPlayQueue(player: Player): PlayQueue {
+        val items = player
+            .getPlayQueue()
+            .first()
+            .map { it.id }
+        val current = player.getCurrentMediaItem().first()?.id
+        val position = player.getProgress().first()?.currentTimeMs ?: 0
+        return PlayQueue(
             items = items,
             current = current,
             position = position
         )
     }
 
-    private suspend fun syncPlayQueue(player: Player) = withContext(PlayerDispatcher) {
-        if (!player.isPlaying) {
-            return@withContext
+    private suspend fun syncPlayQueue(player: Player) {
+        if (!player.getIsPlaying().first()) {
+            return
         }
 
-        val items = player.mediaItems.map { it.mediaId }
-        val current = player.currentMediaItem?.mediaId
-        val position = player.currentPosition
+        val items = player
+            .getPlayQueue()
+            .first()
+            .map { it.id }
+        val current = player
+            .getCurrentMediaItem()
+            .first()
+            ?.id
+        val position = player
+            .getProgress()
+            .first()
+            ?.currentTimeMs ?: 0
 
         withContext(Dispatchers.IO) {
             runCatching {

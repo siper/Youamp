@@ -13,14 +13,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.utils.swap
-import ru.stersh.youamp.shared.player.controls.PlayerControls
-import ru.stersh.youamp.shared.player.queue.PlayerQueueManager
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.player.Player
 
 internal class PlayerQueueViewModel(
-    private val playerQueueManager: PlayerQueueManager,
-    private val playStateStore: PlayStateStore,
-    private val playerControls: PlayerControls
+    private val player: Player,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(StateUi())
@@ -30,16 +26,16 @@ internal class PlayerQueueViewModel(
     init {
         viewModelScope.launch {
             combine(
-                playerQueueManager.getQueue(),
-                playerQueueManager.currentPlayingItemPosition(),
-                playStateStore.isPlaying()
+                player.getPlayQueue(),
+                player.getCurrentItemPosition(),
+                player.getIsPlaying()
             ) { queue, currentPlayingIndex, isPlaying ->
                 return@combine queue.mapIndexed { index, item ->
                     SongUi(
-                        id = item.mediaId,
-                        title = item.mediaMetadata.title.toString(),
-                        artist = item.mediaMetadata.artist.toString(),
-                        artworkUrl = item.mediaMetadata.artworkUri?.toString(),
+                        id = item.id,
+                        title = item.title,
+                        artist = item.artist,
+                        artworkUrl = item.artworkUrl,
                         isCurrent = index == currentPlayingIndex,
                         isPlaying = index == currentPlayingIndex && isPlaying
                     )
@@ -54,31 +50,31 @@ internal class PlayerQueueViewModel(
     }
 
     fun playSong(index: Int) = viewModelScope.launch {
-        val currentPlayingIndex = playerQueueManager
-            .currentPlayingItemPosition()
+        val currentPlayingIndex = player
+            .getCurrentItemPosition()
             .first()
         if (currentPlayingIndex == index) {
-            val isPlaying = playStateStore
-                .isPlaying()
+            val isPlaying = player
+                .getIsPlaying()
                 .first()
 
             if (isPlaying) {
-                playerControls.pause()
+                player.pause()
             } else {
-                playerControls.play()
+                player.play()
             }
         } else {
-            playerQueueManager.playPosition(index)
+            player.playMediaItem(index)
         }
     }
 
     fun removeSong(index: Int) = viewModelScope.launch {
-        playerQueueManager.removeSong(index)
+        player.removeMediaItem(index)
     }
 
     fun openSongMenu(index: Int) = viewModelScope.launch {
-        val currentSong = playerQueueManager
-            .getQueue()
+        val currentSong = player
+            .getPlayQueue()
             .first()
             .getOrNull(index)
             ?: return@launch
@@ -86,9 +82,9 @@ internal class PlayerQueueViewModel(
         _state.update {
             it.copy(
                 menuSongState = MenuSongStateUi(
-                    title = currentSong.mediaMetadata.title?.toString(),
-                    artist = currentSong.mediaMetadata.artist?.toString(),
-                    artworkUrl = currentSong.mediaMetadata.artworkUri?.toString(),
+                    title = currentSong.title,
+                    artist = currentSong.artist,
+                    artworkUrl = currentSong.artworkUrl,
                     index = index
                 )
             )
@@ -105,6 +101,6 @@ internal class PlayerQueueViewModel(
         _state.update {
             it.copy(songs = it.songs.swap(from, to).toPersistentList())
         }
-        playerQueueManager.moveSong(from, to)
+        player.moveMediaItem(from, to)
     }
 }

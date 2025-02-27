@@ -8,5 +8,5 @@ import ru.stresh.youamp.feature.library.ui.LibraryViewModel
 
 val libraryModule = module {
     single<LibraryRepository> { LibraryRepositoryImpl(get(), get(), get()) }
-    viewModel { LibraryViewModel(get(), get(), get(), get(), get()) }
+    viewModel { LibraryViewModel(get(), get(), get(), get()) }
 }

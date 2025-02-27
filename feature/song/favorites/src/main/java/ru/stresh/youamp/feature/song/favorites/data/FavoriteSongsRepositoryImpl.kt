@@ -26,6 +26,7 @@ internal class FavoriteSongsRepositoryImpl(
             id = id,
             title = title,
             artist = artist,
+            album = album,
             artworkUrl = artworkUrl,
             userRating = userRating
         )

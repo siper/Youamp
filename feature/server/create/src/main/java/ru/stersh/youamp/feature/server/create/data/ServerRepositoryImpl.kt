@@ -1,9 +1,9 @@
 package ru.stersh.youamp.feature.server.create.data
 
-import ru.stersh.youamp.core.api.ApiDefaults
-import ru.stersh.youamp.core.api.SubsonicApi
+import ru.stersh.subsonic.api.SubsonicApi
 import ru.stersh.youamp.feature.server.create.domain.Server
 import ru.stersh.youamp.feature.server.create.domain.ServerRepository
+import ru.stresh.youamp.core.api.ApiDefaults
 import ru.stresh.youamp.core.db.server.SubsonicServerDao
 import ru.stresh.youamp.core.db.server.SubsonicServerDb
 
@@ -49,13 +49,13 @@ internal class ServerRepositoryImpl(
 
     override suspend fun testServer(server: Server) {
         val pingResponse = SubsonicApi(
-            url = server.url,
+            baseUrl = server.url,
             username = server.username,
             password = server.password,
             apiVersion = ApiDefaults.API_VERSION,
             clientId = ApiDefaults.CLIENT_ID,
             useLegacyAuth = server.useLegacyAuth
-        ).ping()
+        ).ping().data
 
         if (pingResponse.status != "ok") {
             error("Test server not success")

@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import ru.stersh.youamp.feature.player.queue.ui.PlayerQueueViewModel
 
 val playerQueueScreenModule = module {
-    viewModel { PlayerQueueViewModel(get(), get(), get()) }
+    viewModel { PlayerQueueViewModel(get()) }
 }

@@ -18,5 +18,5 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.bundles.koin)
     implementation(libs.timber)
-    implementation(libs.immutableCollections)
+    implementation(libs.kotlinx.collectionsImmutable)
 }

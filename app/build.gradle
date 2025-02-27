@@ -5,16 +5,14 @@ plugins {
     alias(libs.plugins.kotlin.compose.compiler)
 }
 
-apply from: "${project.rootDir}/buildscripts/properties.gradle"
-
 android {
     namespace "ru.stersh.youamp"
-    compileSdk project.compileSdk
+    compileSdk libs.versions.android.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "ru.stersh.youamp"
-        minSdk project.minSdk
-        targetSdk project.targetSdk
+        minSdk libs.versions.android.minSdk.get().toInteger()
+        targetSdk libs.versions.android.targetSdk.get().toInteger()
         versionCode 22
         versionName "2.0.0-beta05"
 
@@ -75,7 +73,8 @@ dependencies {
     implementation project(":core:db")
     implementation project(":core:utils")
     implementation project(":core:properties")
-    implementation project(":shared:player")
+    implementation project(":core:player")
+    implementation project(':shared:queue')
     implementation project(":shared:favorites")
     implementation project(":shared:song:random")
     implementation project(':feature:album:list')
@@ -109,6 +108,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.material)
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.timber)
     implementation(libs.kotlin.coroutines.guava)
     implementation(libs.compose.material3.adaptive)

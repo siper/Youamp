@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
 import ru.stresh.youamp.feature.song.favorites.domain.FavoriteSongsRepository
+import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import timber.log.Timber
 
 internal class FavoriteSongsViewModel(
@@ -69,9 +69,8 @@ internal class FavoriteSongsViewModel(
                 id = it.id,
                 title = it.title,
                 artist = it.artist,
-                artworkUrl = it.artworkUrl,
-                starred = true,
-                userRating = it.userRating
+                album = it.album,
+                artworkUrl = it.artworkUrl
             )
         }
         playerQueueAudioSourceManager.playSource(*sources.toTypedArray(), shuffled = shuffled)

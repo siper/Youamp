@@ -8,7 +8,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import ru.stersh.youamp.core.api.provider.ApiProvider
+import ru.stersh.youamp.audio.auto.AutoRepository
+import ru.stersh.youamp.audio.auto.AutoRepositoryImpl
 import ru.stersh.youamp.feature.album.albumInfoModule
 import ru.stersh.youamp.feature.albums.albumListModule
 import ru.stersh.youamp.feature.artist.artistInfoModule
@@ -30,13 +31,11 @@ import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
 import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
-import ru.stersh.youamp.player.PlayerProviderImpl
-import ru.stersh.youamp.shared.player.library.MediaLibraryRepository
-import ru.stersh.youamp.shared.player.playerSharedModule
-import ru.stersh.youamp.shared.player.provider.PlayerProvider
+import ru.stresh.youamp.core.api.ApiProvider
 import ru.stresh.youamp.core.db.Database
 import ru.stresh.youamp.core.db.dbModule
 import ru.stresh.youamp.core.db.getDatabaseBuilder
+import ru.stresh.youamp.core.player.playerCoreModule
 import ru.stresh.youamp.core.properties.app.AppProperties
 import ru.stresh.youamp.core.propertiesModule
 import ru.stresh.youamp.feature.about.aboutModule
@@ -47,6 +46,7 @@ import ru.stresh.youamp.feature.library.libraryModule
 import ru.stresh.youamp.feature.song.favorites.songFavoritesModule
 import ru.stresh.youamp.feature.song.random.songRandomModule
 import ru.stresh.youamp.shared.favorites.favoritesSharedModule
+import ru.stresh.youamp.shared.queue.queueSharedModule
 import ru.stresh.youamp.shared.song.random.songRandomSharedModule
 
 internal fun setupDi(application: Application) {
@@ -58,11 +58,12 @@ internal fun setupDi(application: Application) {
 
 private val core = listOf(
     propertiesModule,
-    dbModule
+    dbModule,
+    playerCoreModule
 )
 
 private val shared = listOf(
-    playerSharedModule,
+    queueSharedModule,
     favoritesSharedModule,
     songRandomSharedModule
 )
@@ -103,7 +104,6 @@ private val impl = module {
         )
     }
     single<ApiProvider> { ApiProviderImpl(get()) }
-    single<PlayerProvider> { PlayerProviderImpl(get()) }
     single { ApiSonicPlayQueueSyncer(get(), get()) }
     single<RoomDatabase.Builder<Database>> { getDatabaseBuilder(get()) }
 }
@@ -111,6 +111,6 @@ private val impl = module {
 private val main = module {
     factory<ServerExistRepository> { ServerExistRepositoryImpl(get()) }
     single<AvatarUrlRepository> { AvatarUrlRepositoryImpl(get()) }
-    single<MediaLibraryRepository> { MediaLibraryRepositoryImpl(get()) }
+    single<AutoRepository> { AutoRepositoryImpl(get()) }
     viewModel { MainViewModel(get(), get()) }
 }

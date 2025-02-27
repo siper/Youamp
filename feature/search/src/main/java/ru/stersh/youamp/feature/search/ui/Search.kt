@@ -44,7 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.feature.search.R
-import ru.stersh.youamp.shared.player.queue.AudioSource
+import ru.stresh.youamp.shared.queue.AudioSource
 
 
 @Composable

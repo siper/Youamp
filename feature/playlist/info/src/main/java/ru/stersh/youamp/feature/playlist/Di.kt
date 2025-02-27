@@ -7,8 +7,8 @@ import ru.stersh.youamp.feature.playlist.domain.PlaylistInfoRepository
 import ru.stersh.youamp.feature.playlist.ui.PlaylistInfoViewModel
 
 val playlistInfoModule = module {
-    single<PlaylistInfoRepository> { PlaylistInfoRepositoryImpl(get(), get(), get()) }
+    single<PlaylistInfoRepository> { PlaylistInfoRepositoryImpl(get(), get()) }
     viewModel { (id: String) ->
-        PlaylistInfoViewModel(id, get(), get(), get(), get(), get())
+        PlaylistInfoViewModel(id, get(), get(), get())
     }
 }

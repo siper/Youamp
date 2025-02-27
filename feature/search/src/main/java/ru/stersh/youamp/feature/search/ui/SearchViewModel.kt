@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.search.domain.SearchRepository
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 
 internal class SearchViewModel(
     private val searchRepository: SearchRepository,

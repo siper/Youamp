@@ -4,24 +4,24 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.feature.personal.domain.Album
 import ru.stersh.youamp.feature.personal.domain.Artist
 import ru.stersh.youamp.feature.personal.domain.Personal
 import ru.stersh.youamp.feature.personal.domain.PersonalRepository
 import ru.stersh.youamp.feature.personal.domain.Playlist
 import ru.stersh.youamp.feature.personal.domain.Song
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
-import ru.stersh.youamp.shared.player.queue.PlayingSource
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.player.Player
 import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
 import ru.stresh.youamp.shared.favorites.ArtistFavoritesStorage
 import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.shared.queue.PlayingSource
 
 internal class PersonalRepositoryImpl(
     private val apiProvider: ApiProvider,
     private val queueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playStateStore: PlayStateStore,
+    private val player: Player,
     private val songFavoritesStorage: SongFavoritesStorage,
     private val albumFavoritesStorage: AlbumFavoritesStorage,
     private val artistFavoritesStorage: ArtistFavoritesStorage
@@ -31,12 +31,12 @@ internal class PersonalRepositoryImpl(
         return combine(
             apiProvider
                 .flowApi()
-                .map { it.getPlaylists() },
+                .map { it.getPlaylists().data.playlists.playlist.orEmpty() },
             queueAudioSourceManager
                 .playingSource()
                 .flatMapLatest { source ->
-                    playStateStore
-                        .isPlaying()
+                    player
+                        .getIsPlaying()
                         .map { isPlaying ->
                             source.takeIf { isPlaying }
                         }
@@ -58,31 +58,31 @@ internal class PersonalRepositoryImpl(
                     )
                 }
             val personalSongs = songs.map { song ->
-                    Song(
-                        id = song.id,
-                        title = song.title,
-                        artist = song.artist,
-                        artworkUrl = song.artworkUrl,
-                        isPlaying = playingSource?.isSongPlaying(serverId, song.id) == true
-                    )
-                }
+                Song(
+                    id = song.id,
+                    title = song.title,
+                    artist = song.artist,
+                    artworkUrl = song.artworkUrl,
+                    isPlaying = playingSource?.isSongPlaying(serverId, song.id) == true
+                )
+            }
             val personalAlbums = albums.map { album ->
-                    Album(
-                        id = album.id,
-                        title = album.title,
-                        artist = album.artist,
-                        artworkUrl = album.artworkUrl,
-                        isPlaying = playingSource?.isAlbumPlaying(serverId, album.id) == true
-                    )
-                }
+                Album(
+                    id = album.id,
+                    title = album.title,
+                    artist = album.artist,
+                    artworkUrl = album.artworkUrl,
+                    isPlaying = playingSource?.isAlbumPlaying(serverId, album.id) == true
+                )
+            }
             val personalArtists = artists.map { artist ->
-                    Artist(
-                        id = artist.id,
-                        name = artist.name,
-                        artworkUrl = artist.artworkUrl,
-                        isPlaying = playingSource?.isArtistPlaying(serverId, artist.id) == true
-                    )
-                }
+                Artist(
+                    id = artist.id,
+                    name = artist.name,
+                    artworkUrl = artist.artworkUrl,
+                    isPlaying = playingSource?.isArtistPlaying(serverId, artist.id) == true
+                )
+            }
             return@combine Personal(
                 playlists = playlists,
                 songs = personalSongs,

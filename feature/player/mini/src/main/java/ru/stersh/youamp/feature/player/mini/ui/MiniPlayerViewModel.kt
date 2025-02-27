@@ -9,16 +9,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.shared.player.controls.PlayerControls
-import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
-import ru.stersh.youamp.shared.player.progress.PlayerProgressStore
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.player.Player
 
 internal class MiniPlayerViewModel(
-    private val currentSongInfoStore: CurrentSongInfoStore,
-    private val playStateStore: PlayStateStore,
-    private val playerControls: PlayerControls,
-    private val playerProgressStore: PlayerProgressStore
+    private val player: Player
 ) : ViewModel() {
     private val _state = MutableStateFlow<StateUi>(StateUi())
     val state: StateFlow<StateUi>
@@ -27,17 +21,17 @@ internal class MiniPlayerViewModel(
     init {
         viewModelScope.launch {
             combine(
-                currentSongInfoStore.getCurrentSongInfo(),
-                playStateStore.isPlaying(),
-                playerProgressStore
-                    .playerProgress()
+                player.getCurrentMediaItem(),
+                player.getIsPlaying(),
+                player
+                    .getProgress()
                     .mapNotNull { it?.progressPercent }
-            ) { songInfo, isPlaying, progress ->
-                return@combine songInfo?.let {
+            ) { currentMediaItem, isPlaying, progress ->
+                return@combine currentMediaItem?.let {
                     PlayerDataUi(
-                        title = songInfo.title,
-                        artist = songInfo.artist,
-                        artworkUrl = songInfo.coverArtUrl,
+                        title = currentMediaItem.title,
+                        artist = currentMediaItem.artist,
+                        artworkUrl = currentMediaItem.artworkUrl,
                         isPlaying = isPlaying,
                         progress = progress
                     )
@@ -52,18 +46,21 @@ internal class MiniPlayerViewModel(
     }
 
     fun playPause() = viewModelScope.launch {
-        if (playStateStore.isPlaying().first()) {
-            playerControls.pause()
+        if (player
+                .getIsPlaying()
+                .first()
+        ) {
+            player.pause()
         } else {
-            playerControls.play()
+            player.play()
         }
     }
 
-    fun next() {
-        playerControls.next()
+    fun next() = viewModelScope.launch {
+        player.next()
     }
 
-    fun previous() {
-        playerControls.previous()
+    fun previous() = viewModelScope.launch {
+        player.previous()
     }
 }

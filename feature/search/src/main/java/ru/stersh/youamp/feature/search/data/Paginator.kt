@@ -2,7 +2,7 @@ package ru.stersh.youamp.feature.search.data
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.stersh.youamp.core.api.SearchResult3
+import ru.stersh.subsonic.api.model.SearchResult3
 import ru.stersh.youamp.core.utils.Paginator
 
 internal fun searchPaginator(

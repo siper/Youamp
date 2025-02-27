@@ -38,8 +38,8 @@ import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.explore.R
-import ru.stersh.youamp.shared.player.queue.AudioSource
 import ru.stresh.youamp.feature.explore.ui.components.SearchBar
+import ru.stresh.youamp.shared.queue.AudioSource
 
 @Composable
 fun ExploreScreen(

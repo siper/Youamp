@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
+import ru.stresh.youamp.core.api.ApiProvider
 import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
+import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import timber.log.Timber
 
 internal class SongInfoViewModel(
@@ -32,7 +32,7 @@ internal class SongInfoViewModel(
         getSongJob = viewModelScope.launch {
             try {
                 val api = apiProvider.getApi()
-                val song = api.getSong(songId)
+                val song = api.getSong(songId).data.song
                 _state.update {
                     it.copy(
                         artworkUrl = api.getCoverArtUrl(song.coverArt),

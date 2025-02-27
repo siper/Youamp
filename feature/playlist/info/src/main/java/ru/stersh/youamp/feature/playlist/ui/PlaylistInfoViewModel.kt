@@ -13,20 +13,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.playlist.domain.PlaylistInfoRepository
-import ru.stersh.youamp.shared.player.controls.PlayerControls
-import ru.stersh.youamp.shared.player.metadata.CurrentSongInfoStore
-import ru.stersh.youamp.shared.player.queue.AudioSource
-import ru.stersh.youamp.shared.player.queue.PlayerQueueAudioSourceManager
-import ru.stersh.youamp.shared.player.state.PlayStateStore
+import ru.stresh.youamp.core.player.Player
+import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import timber.log.Timber
 
 internal class PlaylistInfoViewModel(
     private val id: String,
     private val playlistInfoRepository: PlaylistInfoRepository,
-    private val playerStateStore: PlayStateStore,
-    private val currentSongInfoStore: CurrentSongInfoStore,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val playerControls: PlayerControls,
+    private val player: Player
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PlaylistInfoScreenStateUi())
@@ -48,20 +44,20 @@ internal class PlaylistInfoViewModel(
     }
 
     fun onPlaySong(songId: String) = viewModelScope.launch {
-        val currentSongInfo = currentSongInfoStore
-            .getCurrentSongInfo()
+        val currentMediaItem = player
+            .getCurrentMediaItem()
             .first()
-        if (currentSongInfo == null || currentSongInfo.id != songId) {
+        if (currentMediaItem == null || currentMediaItem.id != songId) {
             playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id, songId))
             return@launch
         }
-        val isPlaying = playerStateStore
-            .isPlaying()
+        val isPlaying = player
+            .getIsPlaying()
             .first()
         if (isPlaying) {
-            playerControls.pause()
+            player.pause()
         } else {
-            playerControls.play()
+            player.play()
         }
     }
 

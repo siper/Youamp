@@ -3,10 +3,10 @@ package ru.stersh.youamp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import ru.stersh.youamp.core.api.ApiDefaults
-import ru.stersh.youamp.core.api.SubsonicApi
-import ru.stersh.youamp.core.api.provider.ApiProvider
-import ru.stersh.youamp.core.api.provider.NoActiveServerSettingsFound
+import ru.stersh.subsonic.api.SubsonicApi
+import ru.stresh.youamp.core.api.ApiDefaults
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.api.NoActiveServerSettingsFound
 import ru.stresh.youamp.core.db.server.SubsonicServerDao
 import ru.stresh.youamp.core.db.server.SubsonicServerDb
 import java.util.concurrent.ConcurrentHashMap
@@ -74,7 +74,7 @@ internal class ApiProviderImpl(
 
     private fun createNewApi(subsonicServer: SubsonicServerDb): SubsonicApi {
         return SubsonicApi(
-            url = subsonicServer.url,
+            baseUrl = subsonicServer.url,
             username = subsonicServer.username,
             password = subsonicServer.password,
             apiVersion = ApiDefaults.API_VERSION,

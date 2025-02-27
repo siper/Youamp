@@ -3,21 +3,20 @@ package ru.stersh.youamp.player
 import android.app.Activity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ru.stersh.youamp.core.api.provider.ApiProvider
 import ru.stersh.youamp.core.utils.EmptyActivityLifecycleCallback
 import ru.stersh.youamp.main.ui.MainActivity
-import ru.stersh.youamp.shared.player.progress.PlayerProgressStore
-import ru.stersh.youamp.shared.player.provider.PlayerProvider
-import ru.stersh.youamp.shared.player.utils.PlayerDispatcher
+import ru.stresh.youamp.core.api.ApiProvider
+import ru.stresh.youamp.core.player.Player
 
 internal class ProgressSyncActivityCallback(
-    private val playerProgressStore: PlayerProgressStore,
-    private val playerProvider: PlayerProvider,
+    private val player: Player,
     private val apiProvider: ApiProvider
 ) : EmptyActivityLifecycleCallback() {
     private var scrobbleSender: ScrobbleSender? = null
@@ -26,12 +25,14 @@ internal class ProgressSyncActivityCallback(
         if (activity !is MainActivity) {
             return
         }
-        playerProgressStore
-            .playerProgress()
+        player
+            .getProgress()
             .filterNotNull()
             .onEach { progress ->
-                val player = playerProvider.get()
-                val currentItemId = withContext(PlayerDispatcher) { player.currentMediaItem?.mediaId } ?: return@onEach
+                val currentItemId = player
+                    .getCurrentMediaItem()
+                    .first()?.id
+                    ?: return@onEach
                 if (currentItemId != scrobbleSender?.id) {
                     scrobbleSender = ScrobbleSender(currentItemId, apiProvider)
                 }
@@ -47,6 +48,7 @@ internal class ProgressSyncActivityCallback(
                     }
                 }
             }
+            .flowOn(Dispatchers.IO)
             .launchIn(activity.lifecycleScope)
     }
 
