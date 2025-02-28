@@ -1,20 +1,31 @@
 package ru.stersh.youamp.core.ui
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.font.Font
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import org.jetbrains.compose.resources.Font
+import youamp.core.ui.generated.resources.Res
+import youamp.core.ui.generated.resources.montserrat_bold
+import youamp.core.ui.generated.resources.montserrat_italic
+import youamp.core.ui.generated.resources.montserrat_light
+import youamp.core.ui.generated.resources.montserrat_medium
+import youamp.core.ui.generated.resources.montserrat_regular
 
-private val MontserratFontFamily = FontFamily(
-    Font(R.font.montserrat_light, FontWeight.Light),
-    Font(R.font.montserrat_regular, FontWeight.Normal),
-    Font(R.font.montserrat_italic, FontWeight.Normal, FontStyle.Italic),
-    Font(R.font.montserrat_medium, FontWeight.Medium),
-    Font(R.font.montserrat_bold, FontWeight.Bold)
+@Composable
+private fun MontserratFontFamily() = FontFamily(
+    Font(Res.font.montserrat_light, FontWeight.Light),
+    Font(Res.font.montserrat_regular, FontWeight.Normal),
+    Font(Res.font.montserrat_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(Res.font.montserrat_medium, FontWeight.Medium),
+    Font(Res.font.montserrat_bold, FontWeight.Bold)
 )
 
-val Typography = Typography().defaultFontFamily(fontFamily = MontserratFontFamily)
+@Composable
+internal fun Typography(): Typography {
+    return Typography().defaultFontFamily(fontFamily = MontserratFontFamily())
+}
 
 private fun Typography.defaultFontFamily(fontFamily: FontFamily): Typography {
     return this.copy(

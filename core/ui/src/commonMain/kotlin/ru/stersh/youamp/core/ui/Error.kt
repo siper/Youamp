@@ -12,10 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import youamp.core.ui.generated.resources.Res
+import youamp.core.ui.generated.resources.error_button_title
+import youamp.core.ui.generated.resources.error_message
+import youamp.core.ui.generated.resources.error_title
 
 
 @Composable
@@ -45,18 +49,18 @@ fun Error(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
-            text = stringResource(R.string.error_title)
+            text = stringResource(Res.string.error_title)
         )
 
         Text(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.outline,
-            text = stringResource(R.string.error_message)
+            text = stringResource(Res.string.error_message)
         )
 
         Button(onClick = onRetry) {
-            Text(text = stringResource(R.string.error_button_title))
+            Text(text = stringResource(Res.string.error_button_title))
         }
     }
 }

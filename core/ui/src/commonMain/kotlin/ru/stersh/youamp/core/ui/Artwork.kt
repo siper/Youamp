@@ -21,10 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
+import org.jetbrains.compose.resources.stringResource
+import youamp.core.ui.generated.resources.Res
+import youamp.core.ui.generated.resources.placeholder_image_description
 
 @Composable
 fun Artwork(
@@ -36,7 +38,7 @@ fun Artwork(
 ) {
     SubcomposeAsyncImage(
         model = artworkUrl,
-        contentDescription = stringResource(R.string.placeholder_image_description),
+        contentDescription = stringResource(Res.string.placeholder_image_description),
         modifier = modifier
             .clip(shape)
             .background(MaterialTheme.colorScheme.surfaceContainerHighest),

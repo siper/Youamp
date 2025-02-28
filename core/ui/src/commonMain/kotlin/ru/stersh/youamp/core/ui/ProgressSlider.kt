@@ -2,7 +2,6 @@
 
 package ru.stersh.youamp.core.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -67,7 +66,7 @@ fun ProgressSlider(
         interactionSource = interactionSource,
         onDragStopped = { onValueChangeFinished?.invoke() }
     )
-    val clicks = Modifier.pointerInput("Progress clicks") {
+    val clicks = Modifier.pointerInput(Unit) {
         detectTapGestures { offset ->
             val currentThumbX = valueToXPositionPx(valueState, valueRange, width.toFloat())
             val newThumbX = offset.x
@@ -200,7 +199,6 @@ private fun Thumb(
 
 @Composable
 @Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun ProgressSliderPreview() {
     YouampPlayerTheme {
         Surface {

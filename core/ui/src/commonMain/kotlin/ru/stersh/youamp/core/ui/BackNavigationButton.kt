@@ -6,7 +6,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
+import youamp.core.ui.generated.resources.Res
+import youamp.core.ui.generated.resources.navigate_back_description
 
 @Composable
 fun BackNavigationButton(
@@ -19,7 +21,7 @@ fun BackNavigationButton(
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-            contentDescription = stringResource(R.string.navigate_back_description)
+            contentDescription = stringResource(Res.string.navigate_back_description)
         )
     }
 }
