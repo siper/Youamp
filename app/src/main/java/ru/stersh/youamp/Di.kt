@@ -9,8 +9,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.stersh.youamp.audio.auto.AutoRepository
 import ru.stersh.youamp.audio.auto.AutoRepositoryImpl
-import ru.stersh.youamp.feature.album.albumInfoModule
-import ru.stersh.youamp.feature.albums.albumListModule
+import ru.stersh.youamp.feature.album.info.albumInfoModule
+import ru.stersh.youamp.feature.album.list.albumListModule
 import ru.stersh.youamp.feature.artist.artistInfoModule
 import ru.stersh.youamp.feature.artists.artistListModule
 import ru.stersh.youamp.feature.main.mainModule

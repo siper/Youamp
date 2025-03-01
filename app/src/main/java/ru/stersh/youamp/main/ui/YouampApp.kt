@@ -32,8 +32,8 @@ import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.album.ui.AlbumInfoScreen
-import ru.stersh.youamp.feature.albums.ui.AlbumsScreen
+import ru.stersh.youamp.feature.album.info.ui.AlbumInfoScreen
+import ru.stersh.youamp.feature.album.list.ui.AlbumsScreen
 import ru.stersh.youamp.feature.artist.ui.ArtistInfoScreen
 import ru.stersh.youamp.feature.artists.ui.ArtistsScreen
 import ru.stersh.youamp.feature.main.ui.MainScreen

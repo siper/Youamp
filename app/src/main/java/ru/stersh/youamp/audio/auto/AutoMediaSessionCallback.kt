@@ -1,7 +1,6 @@
 package ru.stersh.youamp.audio.auto
 
 import android.content.Context
-import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -19,6 +18,7 @@ import kotlinx.coroutines.guava.future
 import ru.stersh.youamp.audio.auto.MediaLibrary.LIBRARY_PLAYLISTS_ID
 import ru.stersh.youamp.audio.auto.MediaLibrary.LIBRARY_ROOT_ID
 
+@UnstableApi
 internal class AutoMediaSessionCallback(
     private val context: Context,
     private val scope: CoroutineScope,
@@ -45,7 +45,6 @@ internal class AutoMediaSessionCallback(
         return Futures.immediateFuture(root)
     }
 
-    @OptIn(UnstableApi::class)
     override fun onGetChildren(
         session: MediaLibrarySession,
         browser: MediaSession.ControllerInfo,
@@ -98,7 +97,6 @@ internal class AutoMediaSessionCallback(
         }
     }
 
-    @OptIn(UnstableApi::class)
     override fun onSetMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
