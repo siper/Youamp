@@ -11,26 +11,20 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material3)
-                api(compose.materialIconsExtended)
-                api(compose.ui)
-                api(compose.uiTooling)
-                api(compose.preview)
+                implementation(project(":core:ui"))
+                implementation(project(":core:properties"))
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose.kmp)
+                implementation(libs.lifecycle.viewmodel)
+                implementation(libs.compose.icons.simple)
                 implementation(compose.components.resources)
-                implementation(libs.coil.compose)
             }
         }
     }
 }
 
 android {
-    namespace = "ru.stersh.youamp.core.ui"
-    sourceSets["main"].res.srcDirs(
-        "src/commonMain/resources",
-        "src/androidMain/resources"
-    )
+    namespace = "ru.stersh.youamp.feature.about"
     defaultConfig {
         compileSdk = libs.versions.android.compileSdk
             .get()
