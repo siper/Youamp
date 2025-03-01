@@ -31,6 +31,7 @@ android-targetSdk = "35"
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-compose-kmp = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-guava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-guava", version.ref = "kotlin-coroutines" }

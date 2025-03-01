@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItem
@@ -27,8 +28,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,12 +35,25 @@ import compose.icons.SimpleIcons
 import compose.icons.simpleicons.Crowdin
 import compose.icons.simpleicons.FDroid
 import compose.icons.simpleicons.Github
-import org.koin.androidx.compose.koinViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SingleLineText
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.about.R
+import ru.stersh.youamp.feature.about.AppIcon
 import ru.stresh.youamp.feature.about.launchSafeAnyUrl
+import youamp.feature.about.generated.resources.Res
+import youamp.feature.about.generated.resources.about_title
+import youamp.feature.about.generated.resources.app_icon_description
+import youamp.feature.about.generated.resources.crowdin_icon_description
+import youamp.feature.about.generated.resources.crowdin_subtitle
+import youamp.feature.about.generated.resources.crowdin_title
+import youamp.feature.about.generated.resources.f_droid_icon_description
+import youamp.feature.about.generated.resources.f_droid_subtitle
+import youamp.feature.about.generated.resources.f_droid_title
+import youamp.feature.about.generated.resources.github_icon_description
+import youamp.feature.about.generated.resources.github_subtitle
+import youamp.feature.about.generated.resources.github_title
 
 @Composable
 fun AboutScreen(
@@ -65,6 +77,7 @@ fun AboutScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AboutScreen(
     state: AboutStateUi,
@@ -81,7 +94,7 @@ private fun AboutScreen(
                     BackNavigationButton(onClick = onBackClick)
                 },
                 title = {
-                    Text(text = stringResource(R.string.about_title))
+                    Text(text = stringResource(Res.string.about_title))
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -99,8 +112,8 @@ private fun AboutScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_app_icon),
-                contentDescription = stringResource(R.string.app_icon_description),
+                imageVector = AppIcon,
+                contentDescription = stringResource(Res.string.app_icon_description),
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .shadow(10.dp, shape = CircleShape)
@@ -147,18 +160,18 @@ private fun CrowdinItem(
         leadingContent = {
             Icon(
                 imageVector = SimpleIcons.Crowdin,
-                contentDescription = stringResource(R.string.crowdin_icon_description),
+                contentDescription = stringResource(Res.string.crowdin_icon_description),
                 modifier = Modifier.size(36.dp)
             )
         },
         headlineContent = {
             SingleLineText(
-                text = stringResource(R.string.crowdin_title)
+                text = stringResource(Res.string.crowdin_title)
             )
         },
         supportingContent = {
             SingleLineText(
-                text = stringResource(R.string.crowdin_subtitle)
+                text = stringResource(Res.string.crowdin_subtitle)
             )
         },
         modifier = modifier.clickable(onClick = onClick)
@@ -174,18 +187,18 @@ private fun FDroidItem(
         leadingContent = {
             Icon(
                 imageVector = SimpleIcons.FDroid,
-                contentDescription = stringResource(R.string.f_droid_icon_description),
+                contentDescription = stringResource(Res.string.f_droid_icon_description),
                 modifier = Modifier.size(36.dp)
             )
         },
         headlineContent = {
             SingleLineText(
-                text = stringResource(R.string.f_droid_title)
+                text = stringResource(Res.string.f_droid_title)
             )
         },
         supportingContent = {
             SingleLineText(
-                text = stringResource(R.string.f_droid_subtitle)
+                text = stringResource(Res.string.f_droid_subtitle)
             )
         },
         modifier = modifier.clickable(onClick = onClick)
@@ -201,18 +214,18 @@ private fun GithubItem(
         leadingContent = {
             Icon(
                 imageVector = SimpleIcons.Github,
-                contentDescription = stringResource(R.string.github_icon_description),
+                contentDescription = stringResource(Res.string.github_icon_description),
                 modifier = Modifier.size(36.dp)
             )
         },
         headlineContent = {
             SingleLineText(
-                text = stringResource(R.string.github_title)
+                text = stringResource(Res.string.github_title)
             )
         },
         supportingContent = {
             SingleLineText(
-                text = stringResource(R.string.github_subtitle)
+                text = stringResource(Res.string.github_subtitle)
             )
         },
         modifier = modifier.clickable(onClick = onClick)
