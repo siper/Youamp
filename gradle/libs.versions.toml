@@ -4,7 +4,7 @@ koin = "4.1.0-Beta5"
 kotlin = "2.1.10"
 kotlin-coroutines = "1.10.1"
 lifecycle = "2.8.7"
-room = "2.7.0-beta01"
+room = "2.7.0-rc01"
 timber = "5.0.1"
 media = "1.5.1"
 google-material = "1.12.0"
@@ -39,6 +39,7 @@ kotlin-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+kermit = { module = "co.touchlab:kermit", version = "2.0.4" }
 navigation-compose = "androidx.navigation:navigation-compose:2.8.7"
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
