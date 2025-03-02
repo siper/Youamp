@@ -7,7 +7,6 @@ plugins {
 
 kotlin {
     androidTarget()
-
     sourceSets {
         commonMain {
             dependencies {
@@ -27,21 +26,18 @@ kotlin {
 
 android {
     namespace = "ru.stersh.youamp.core.ui"
-    sourceSets["main"].res.srcDirs(
-        "src/commonMain/resources",
-        "src/androidMain/resources"
-    )
+    compileSdk = libs.versions.android.compileSdk
+        .get()
+        .toInt()
     defaultConfig {
-        compileSdk = libs.versions.android.compileSdk
-            .get()
-            .toInt()
         minSdk = libs.versions.android.minSdk
             .get()
             .toInt()
     }
-    buildFeatures {
-        compose = true
-    }
+    sourceSets["main"].res.srcDirs(
+        "src/commonMain/resources",
+        "src/androidMain/resources"
+    )
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21

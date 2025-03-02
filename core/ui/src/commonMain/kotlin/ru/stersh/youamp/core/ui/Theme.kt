@@ -31,6 +31,8 @@ private val LightColorScheme = lightColorScheme(
     scrim = Color(0x4D1C1B1F)
 )
 
+expect val dynamicColorAvailable: Boolean
+
 @Composable
 fun YouampPlayerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -38,9 +40,13 @@ fun YouampPlayerTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor -> {
+        dynamicColor && dynamicColorAvailable -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) {
+                dynamicDarkColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            }
         }
 
         darkTheme -> DarkColorScheme
