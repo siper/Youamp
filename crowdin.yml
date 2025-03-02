@@ -1,12 +1,12 @@
 files:
-  - source: /feature/**/src/main/res/values/strings.xml
-    translation: /feature/**/src/main/res/values-%android_code%/strings.xml
-  - source: /app/src/main/res/values/strings.xml
-    translation: /app/src/main/res/values-%android_code%/strings.xml
-  - source: /core/**/src/main/res/values/strings.xml
-    translation: /core/**/src/main/res/values-%android_code%/strings.xml
-  - source: /shared/**/src/main/res/values/strings.xml
-    translation: /shared/**/src/main/res/values-%android_code%/strings.xml
+  - source: /feature/**/src/commonMain/composeResources/values/strings.xml
+    translation: /feature/**/src/commonMain/composeResources/values-%android_code%/strings.xml
+  - source: /app/src/commonMain/composeResources/values/strings.xml
+    translation: /app/src/commonMain/composeResources/values-%android_code%/strings.xml
+  - source: /core/**/src/commonMain/composeResources/values/strings.xml
+    translation: /core/**/src/commonMain/composeResources/values-%android_code%/strings.xml
+  - source: /shared/**/src/commonMain/composeResources/values/strings.xml
+    translation: /shared/**/src/commonMain/composeResources/values-%android_code%/strings.xml
   - source: /fastlane/metadata/android/en-US/full_description.txt
     translation: /fastlane/metadata/android/%locale%/full_description.txt
   - source: /fastlane/metadata/android/en-US/short_description.txt
