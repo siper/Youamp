@@ -2,6 +2,7 @@ package ru.stresh.youamp.feature.library.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,6 @@ import ru.stresh.youamp.feature.library.domain.LibraryRepository
 import ru.stresh.youamp.shared.queue.AudioSource
 import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import ru.stresh.youamp.shared.queue.equals
-import timber.log.Timber
 
 internal class LibraryViewModel(
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
@@ -44,7 +44,7 @@ internal class LibraryViewModel(
                 .map { it.toUi() }
                 .flowOn(Dispatchers.IO)
                 .catch { throwable ->
-                    Timber.w(throwable)
+                    Logger.w(throwable) { "Filed to load library" }
                     _state.update {
                         it.copy(
                             progress = false,

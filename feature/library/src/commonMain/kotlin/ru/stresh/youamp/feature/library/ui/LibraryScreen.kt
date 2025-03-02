@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -24,11 +25,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.androidx.compose.koinViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.ErrorLayout
@@ -38,8 +39,10 @@ import ru.stersh.youamp.core.ui.SectionTitle
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.library.R
 import ru.stresh.youamp.shared.queue.AudioSource
+import youamp.feature.library.generated.resources.Res
+import youamp.feature.library.generated.resources.albums_title
+import youamp.feature.library.generated.resources.artists_title
 
 @Composable
 fun LibraryScreen(
@@ -63,6 +66,7 @@ fun LibraryScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LibraryScreen(
     state: StateUi,
@@ -134,7 +138,7 @@ private fun Content(
         if (data.albums.isNotEmpty()) {
             item {
                 SectionTitle(
-                    title = stringResource(R.string.albums_title),
+                    title = stringResource(Res.string.albums_title),
                     onClick = onAlbumsClick
                 )
             }
@@ -172,7 +176,7 @@ private fun Content(
         if (data.artists.isNotEmpty()) {
             item {
                 SectionTitle(
-                    title = stringResource(R.string.artists_title),
+                    title = stringResource(Res.string.artists_title),
                     onClick = onArtistsClick
                 )
             }
