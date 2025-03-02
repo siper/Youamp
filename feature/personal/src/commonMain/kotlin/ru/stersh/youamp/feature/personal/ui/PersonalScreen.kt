@@ -15,17 +15,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
-import org.koin.androidx.compose.koinViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.EmptyLayout
@@ -39,8 +40,12 @@ import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.personal.R
 import ru.stresh.youamp.shared.queue.AudioSource
+import youamp.feature.personal.generated.resources.Res
+import youamp.feature.personal.generated.resources.albums_title
+import youamp.feature.personal.generated.resources.artists_title
+import youamp.feature.personal.generated.resources.playlists_title
+import youamp.feature.personal.generated.resources.songs_title
 
 @Composable
 fun PersonalScreen(
@@ -72,6 +77,7 @@ fun PersonalScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PersonalScreen(
     state: StateUi,
@@ -237,7 +243,7 @@ private fun Content(
         if (data.playlists.isNotEmpty()) {
             item {
                 SectionTitle(
-                    title = stringResource(R.string.playlists_title),
+                    title = stringResource(Res.string.playlists_title),
                     onClick = onPlaylistsClick
                 )
             }
@@ -271,7 +277,7 @@ private fun Content(
         if (data.songs.isNotEmpty()) {
             item {
                 SectionTitle(
-                    title = stringResource(R.string.songs_title),
+                    title = stringResource(Res.string.songs_title),
                     onClick = onFavoriteSongsClick
                 )
             }
@@ -320,7 +326,7 @@ private fun Content(
         if (data.albums.isNotEmpty()) {
             item {
                 SectionTitle(
-                    title = stringResource(R.string.albums_title),
+                    title = stringResource(Res.string.albums_title),
                     onClick = onFavoriteAlbumsClick
                 )
             }
@@ -359,7 +365,7 @@ private fun Content(
         if (data.artists.isNotEmpty()) {
             item {
                 SectionTitle(
-                    title = stringResource(R.string.artists_title),
+                    title = stringResource(Res.string.artists_title),
                     onClick = onFavoriteArtistsClick
                 )
             }
