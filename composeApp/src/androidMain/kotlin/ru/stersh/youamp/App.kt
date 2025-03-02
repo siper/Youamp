@@ -13,13 +13,14 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import ru.stersh.youamp.audio.player.PlayQueueSyncActivityCallback
 import ru.stersh.youamp.audio.player.ProgressSyncActivityCallback
+import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
 import ru.stresh.youamp.core.api.ApiProvider
 import ru.stresh.youamp.core.player.Player
 
 class App : Application() {
     private val apiProvider: ApiProvider by inject()
     private val player: Player by inject()
-    private val playQueueSyncer: ru.stersh.youamp.player.ApiSonicPlayQueueSyncer by inject()
+    private val playQueueSyncer: ApiSonicPlayQueueSyncer by inject()
 
     override fun onCreate() {
         super.onCreate()
