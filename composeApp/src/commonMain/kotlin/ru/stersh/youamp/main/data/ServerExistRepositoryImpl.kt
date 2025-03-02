@@ -5,8 +5,7 @@ import kotlinx.coroutines.flow.map
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stresh.youamp.core.db.server.SubsonicServerDao
 
-internal class ServerExistRepositoryImpl(private val serverDao: SubsonicServerDao) :
-    ServerExistRepository {
+internal class ServerExistRepositoryImpl(private val serverDao: SubsonicServerDao) : ServerExistRepository {
 
     override suspend fun hasServer(): Flow<Boolean> {
         return serverDao
