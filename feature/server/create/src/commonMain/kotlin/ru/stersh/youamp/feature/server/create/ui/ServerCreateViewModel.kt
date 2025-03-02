@@ -2,6 +2,7 @@ package ru.stersh.youamp.feature.server.create.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.server.create.domain.ServerRepository
-import timber.log.Timber
 
 internal class ServerCreateViewModel(
     private val serverId: Long?,
@@ -69,7 +69,7 @@ internal class ServerCreateViewModel(
                 _testResult.send(ServerTestResultUi.Success)
             },
             onFailure = {
-                Timber.w(it)
+                Logger.w(it) { "Filed to test server" }
                 _testResult.send(ServerTestResultUi.Error)
             }
         )

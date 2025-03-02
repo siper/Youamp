@@ -16,6 +16,7 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -39,8 +40,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -49,10 +48,29 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.compose.koinViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.BackNavigationButton
-import ru.stersh.youamp.feature.server.create.R
+import youamp.feature.server.create.generated.resources.Res
+import youamp.feature.server.create.generated.resources.additional_settings_title
+import youamp.feature.server.create.generated.resources.edit_server_title
+import youamp.feature.server.create.generated.resources.hide_password_description
+import youamp.feature.server.create.generated.resources.new_server_title
+import youamp.feature.server.create.generated.resources.server_add_action_title
+import youamp.feature.server.create.generated.resources.server_address_title
+import youamp.feature.server.create.generated.resources.server_icon_description
+import youamp.feature.server.create.generated.resources.server_name_title
+import youamp.feature.server.create.generated.resources.server_password_title
+import youamp.feature.server.create.generated.resources.server_save_action_title
+import youamp.feature.server.create.generated.resources.server_test_error_message
+import youamp.feature.server.create.generated.resources.server_test_success_message
+import youamp.feature.server.create.generated.resources.server_test_title
+import youamp.feature.server.create.generated.resources.server_use_legacy_auth_title
+import youamp.feature.server.create.generated.resources.server_username_title
+import youamp.feature.server.create.generated.resources.show_password_description
+import youamp.feature.server.create.generated.resources.use_legacy_auth_subtitle
+import youamp.feature.server.create.generated.resources.user_icon_description
 
 @Composable
 fun ServerScreen(
@@ -65,7 +83,9 @@ fun ServerScreen(
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
+
+    val successTestMessage = stringResource(Res.string.server_test_success_message)
+    val errorTestMessage = stringResource(Res.string.server_test_error_message)
 
     LaunchedEffect(Unit) {
         viewModel
@@ -80,9 +100,9 @@ fun ServerScreen(
             .testResult
             .onEach {
                 if (it == ServerTestResultUi.Success) {
-                    snackbarHostState.showSnackbar(context.getString(R.string.server_test_success_message))
+                    snackbarHostState.showSnackbar(successTestMessage)
                 } else {
-                    snackbarHostState.showSnackbar(context.getString(R.string.server_test_error_message))
+                    snackbarHostState.showSnackbar(errorTestMessage)
                 }
             }
             .launchIn(this)
@@ -99,6 +119,7 @@ fun ServerScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ServerScreen(
     snackbarHostState: SnackbarHostState,
@@ -120,9 +141,9 @@ private fun ServerScreen(
                 title = {
                     Text(
                         text = if (isNewServer) {
-                            stringResource(R.string.new_server_title)
+                            stringResource(Res.string.new_server_title)
                         } else {
-                            stringResource(R.string.edit_server_title)
+                            stringResource(Res.string.edit_server_title)
                         }
                     )
                 },
@@ -185,13 +206,13 @@ private fun ContentState(
             Row(verticalAlignment = Alignment.Top) {
                 Icon(
                     imageVector = Icons.Rounded.Dns,
-                    contentDescription = stringResource(R.string.server_icon_description),
+                    contentDescription = stringResource(Res.string.server_icon_description),
                     modifier = Modifier.padding(top = 8.dp, end = 16.dp)
                 )
                 OutlinedTextField(
                     value = name,
                     label = {
-                        Text(text = stringResource(R.string.server_name_title))
+                        Text(text = stringResource(Res.string.server_name_title))
                     },
                     onValueChange = {
                         if (name != it) {
@@ -206,7 +227,7 @@ private fun ContentState(
             OutlinedTextField(
                 value = url,
                 label = {
-                    Text(text = stringResource(R.string.server_address_title))
+                    Text(text = stringResource(Res.string.server_address_title))
                 },
                 onValueChange = {
                     if (url != it) {
@@ -231,13 +252,13 @@ private fun ContentState(
             Row(verticalAlignment = Alignment.Top) {
                 Icon(
                     imageVector = Icons.Rounded.Person,
-                    contentDescription = stringResource(R.string.user_icon_description),
+                    contentDescription = stringResource(Res.string.user_icon_description),
                     modifier = Modifier.padding(top = 8.dp, end = 16.dp)
                 )
                 OutlinedTextField(
                     value = username,
                     label = {
-                        Text(text = stringResource(R.string.server_username_title))
+                        Text(text = stringResource(Res.string.server_username_title))
                     },
                     onValueChange = {
                         if (username != it) {
@@ -254,7 +275,7 @@ private fun ContentState(
             OutlinedTextField(
                 value = password,
                 label = {
-                    Text(text = stringResource(R.string.server_password_title))
+                    Text(text = stringResource(Res.string.server_password_title))
                 },
                 onValueChange = {
                     if (password != it) {
@@ -278,9 +299,9 @@ private fun ContentState(
                                 Icons.Rounded.VisibilityOff
                             },
                             contentDescription = if (passwordVisible) {
-                                stringResource(R.string.hide_password_description)
+                                stringResource(Res.string.hide_password_description)
                             } else {
-                                stringResource(R.string.show_password_description)
+                                stringResource(Res.string.show_password_description)
                             }
                         )
                     }
@@ -293,7 +314,7 @@ private fun ContentState(
 
         Column {
             Text(
-                text = stringResource(R.string.additional_settings_title),
+                text = stringResource(Res.string.additional_settings_title),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -302,12 +323,12 @@ private fun ContentState(
             ListItem(
                 headlineContent = {
                     Text(
-                        text = stringResource(R.string.server_use_legacy_auth_title)
+                        text = stringResource(Res.string.server_use_legacy_auth_title)
                     )
                 },
                 supportingContent = {
                     Text(
-                        text = stringResource(R.string.use_legacy_auth_subtitle)
+                        text = stringResource(Res.string.use_legacy_auth_subtitle)
                     )
                 },
                 trailingContent = {
@@ -334,7 +355,7 @@ private fun ContentState(
                         .weight(0.5f)
                         .padding(end = 8.dp)
                 ) {
-                    Text(text = stringResource(R.string.server_test_title))
+                    Text(text = stringResource(Res.string.server_test_title))
                 }
                 Button(
                     onClick = {
@@ -347,9 +368,9 @@ private fun ContentState(
                 ) {
                     Text(
                         text = if (isNewServer) {
-                            stringResource(R.string.server_add_action_title)
+                            stringResource(Res.string.server_add_action_title)
                         } else {
-                            stringResource(R.string.server_save_action_title)
+                            stringResource(Res.string.server_save_action_title)
                         }
                     )
                 }
