@@ -41,8 +41,8 @@ import ru.stersh.youamp.feature.personal.ui.PersonalScreen
 import ru.stersh.youamp.feature.player.mini.ui.MiniPlayer
 import ru.stersh.youamp.feature.player.queue.ui.PlayerQueueScreen
 import ru.stersh.youamp.feature.player.screen.ui.PlayerScreen
-import ru.stersh.youamp.feature.playlist.ui.PlaylistInfoScreen
-import ru.stersh.youamp.feature.playlists.ui.PlaylistsScreen
+import ru.stersh.youamp.feature.playlist.info.ui.PlaylistInfoScreen
+import ru.stersh.youamp.feature.playlist.list.ui.PlaylistsScreen
 import ru.stersh.youamp.feature.search.ui.SearchScreen
 import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen

@@ -18,8 +18,8 @@ import ru.stersh.youamp.feature.personal.personalModule
 import ru.stersh.youamp.feature.player.mini.playerMiniModule
 import ru.stersh.youamp.feature.player.queue.playerQueueScreenModule
 import ru.stersh.youamp.feature.player.screen.playerScreenModule
-import ru.stersh.youamp.feature.playlist.playlistInfoModule
-import ru.stersh.youamp.feature.playlists.playlistListModule
+import ru.stersh.youamp.feature.playlist.info.playlistInfoModule
+import ru.stersh.youamp.feature.playlist.list.playlistListModule
 import ru.stersh.youamp.feature.search.searchModule
 import ru.stersh.youamp.feature.server.create.serverCreateModule
 import ru.stersh.youamp.feature.server.list.serverListModule
