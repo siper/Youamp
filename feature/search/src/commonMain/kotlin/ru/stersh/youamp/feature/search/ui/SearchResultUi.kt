@@ -26,14 +26,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.search.R
+import youamp.feature.search.generated.resources.Res
+import youamp.feature.search.generated.resources.add_to_queue_title
+import youamp.feature.search.generated.resources.album_info_title
+import youamp.feature.search.generated.resources.artist_info_title
+import youamp.feature.search.generated.resources.more_action_description
+import youamp.feature.search.generated.resources.play_title
 
 @Composable
 internal fun SongItem(
@@ -72,7 +77,7 @@ internal fun SongItem(
                 IconButton(onClick = onMoreClick) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(R.string.more_action_description)
+                        contentDescription = stringResource(Res.string.more_action_description)
                     )
                 }
             }
@@ -119,7 +124,7 @@ internal fun AlbumItem(
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(R.string.more_action_description)
+                        contentDescription = stringResource(Res.string.more_action_description)
                     )
                 }
                 DropdownMenu(
@@ -128,21 +133,21 @@ internal fun AlbumItem(
                     modifier = Modifier.align(Alignment.Center)
                 ) {
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.play_title)) },
+                        text = { Text(text = stringResource(Res.string.play_title)) },
                         onClick = {
                             onPlay(item.id)
                             menuExpanded = false
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.add_to_queue_title)) },
+                        text = { Text(text = stringResource(Res.string.add_to_queue_title)) },
                         onClick = {
                             onAddToQueue(item.id)
                             menuExpanded = false
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(R.string.album_info_title)) },
+                        text = { Text(text = stringResource(Res.string.album_info_title)) },
                         onClick = {
                             onOpenInfo(item.id)
                             menuExpanded = false
@@ -186,7 +191,7 @@ internal fun ArtistItem(
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(R.string.more_action_description)
+                        contentDescription = stringResource(Res.string.more_action_description)
                     )
                 }
                 DropdownMenu(
@@ -195,21 +200,21 @@ internal fun ArtistItem(
                     modifier = Modifier.align(Alignment.Center)
                 ) {
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(R.string.play_title)) },
+                        text = { Text(text = stringResource(Res.string.play_title)) },
                         onClick = {
                             onPlay(item.id)
                             menuExpanded = false
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(R.string.add_to_queue_title)) },
+                        text = { Text(text = stringResource(Res.string.add_to_queue_title)) },
                         onClick = {
                             onAddToQueue(item.id)
                             menuExpanded = false
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(R.string.artist_info_title)) },
+                        text = { Text(text = stringResource(Res.string.artist_info_title)) },
                         onClick = {
                             onOpenInfo(item.id)
                             menuExpanded = false

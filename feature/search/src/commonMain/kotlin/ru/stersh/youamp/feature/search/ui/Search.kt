@@ -37,14 +37,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
-import org.koin.androidx.compose.koinViewModel
-import ru.stersh.youamp.feature.search.R
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import ru.stresh.youamp.shared.queue.AudioSource
+import youamp.feature.search.generated.resources.Res
+import youamp.feature.search.generated.resources.albums_title
+import youamp.feature.search.generated.resources.artists_title
+import youamp.feature.search.generated.resources.clear_search_title
+import youamp.feature.search.generated.resources.close_search_title
+import youamp.feature.search.generated.resources.load_more_title
+import youamp.feature.search.generated.resources.search_hint_title
+import youamp.feature.search.generated.resources.songs_title
 
 
 @Composable
@@ -106,7 +113,7 @@ private fun SearchScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                        contentDescription = stringResource(R.string.close_search_title),
+                        contentDescription = stringResource(Res.string.close_search_title),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -128,7 +135,7 @@ private fun SearchScreen(
                     decorationBox = { innerTextFiled ->
                         if (value.isEmpty()) {
                             Text(
-                                text = stringResource(id = R.string.search_hint_title),
+                                text = stringResource(Res.string.search_hint_title),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.bodyLarge
                             )
@@ -146,7 +153,7 @@ private fun SearchScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Clear,
-                        contentDescription = stringResource(R.string.clear_search_title),
+                        contentDescription = stringResource(Res.string.clear_search_title),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -179,7 +186,7 @@ private fun SearchScreen(
                                 key = "songs_title"
                             ) {
                                 Text(
-                                    text = stringResource(R.string.songs_title),
+                                    text = stringResource(Res.string.songs_title),
                                     style = MaterialTheme.typography.titleMedium,
                                     modifier = Modifier.padding(16.dp)
                                 )
@@ -212,7 +219,7 @@ private fun SearchScreen(
                                 key = "albums_title"
                             ) {
                                 Text(
-                                    text = stringResource(R.string.albums_title),
+                                    text = stringResource(Res.string.albums_title),
                                     style = MaterialTheme.typography.titleMedium,
                                     modifier = Modifier.padding(16.dp)
                                 )
@@ -251,7 +258,7 @@ private fun SearchScreen(
                                 key = "artists_title"
                             ) {
                                 Text(
-                                    text = stringResource(R.string.artists_title),
+                                    text = stringResource(Res.string.artists_title),
                                     style = MaterialTheme.typography.titleMedium,
                                     modifier = Modifier.padding(16.dp)
                                 )
@@ -300,7 +307,7 @@ private fun LoadMoreButton(
         SuggestionChip(
             onClick = { onLoadMore() },
             label = {
-                Text(text = stringResource(R.string.load_more_title))
+                Text(text = stringResource(Res.string.load_more_title))
             },
             modifier = Modifier.align(Alignment.Center)
         )
