@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Dns
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -35,18 +36,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
-import org.koin.androidx.compose.koinViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SkeletonScope
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.server.list.R
+import youamp.feature.server.list.generated.resources.Res
+import youamp.feature.server.list.generated.resources.activate_server_title
+import youamp.feature.server.list.generated.resources.add_server_title
+import youamp.feature.server.list.generated.resources.delete_server_title
+import youamp.feature.server.list.generated.resources.edit_server_title
+import youamp.feature.server.list.generated.resources.server_screen_title
 
 @Composable
 fun ServerListScreen(
@@ -67,6 +73,7 @@ fun ServerListScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ServerListScreen(
     state: StateUi,
@@ -87,12 +94,12 @@ private fun ServerListScreen(
                     IconButton(onClick = { onAddServerClick() }) {
                         Icon(
                             imageVector = Icons.Rounded.Add,
-                            contentDescription = stringResource(R.string.add_server_title)
+                            contentDescription = stringResource(Res.string.add_server_title)
                         )
                     }
                 },
                 title = {
-                    Text(text = stringResource(R.string.server_screen_title))
+                    Text(text = stringResource(Res.string.server_screen_title))
                 }
             )
         },
@@ -217,7 +224,7 @@ private fun ServerItem(
                 ) {
                     if (!item.isActive) {
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(R.string.activate_server_title)) },
+                            text = { Text(text = stringResource(Res.string.activate_server_title)) },
                             onClick = {
                                 menuExpanded = false
                                 onActive(item.id)
@@ -225,7 +232,7 @@ private fun ServerItem(
                         )
                     }
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(R.string.edit_server_title)) },
+                        text = { Text(text = stringResource(Res.string.edit_server_title)) },
                         onClick = {
                             menuExpanded = false
                             onEdit(item.id)
@@ -233,7 +240,7 @@ private fun ServerItem(
                     )
                     if (!item.isActive) {
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(R.string.delete_server_title)) },
+                            text = { Text(text = stringResource(Res.string.delete_server_title)) },
                             onClick = {
                                 menuExpanded = false
                                 onDelete(item.id)
