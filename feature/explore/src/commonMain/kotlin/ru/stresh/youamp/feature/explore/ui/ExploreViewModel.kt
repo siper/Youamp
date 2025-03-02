@@ -2,6 +2,7 @@ package ru.stresh.youamp.feature.explore.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,6 @@ import ru.stresh.youamp.feature.explore.domain.ExploreRepository
 import ru.stresh.youamp.shared.queue.AudioSource
 import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import ru.stresh.youamp.shared.queue.equals
-import timber.log.Timber
 
 internal class ExploreViewModel(
     private val repository: ExploreRepository,
@@ -68,7 +68,7 @@ internal class ExploreViewModel(
             it.copy(refreshing = true)
         }
         runCatching { repository.refresh() }
-            .onFailure { Timber.w(it) }
+            .onFailure { Logger.w(it) { "Filed to refresh" } }
         stateJob?.cancel()
         subscribeState()
     }

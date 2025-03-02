@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -24,11 +25,11 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.androidx.compose.koinViewModel
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButton
@@ -37,9 +38,10 @@ import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.explore.R
 import ru.stresh.youamp.feature.explore.ui.components.SearchBar
 import ru.stresh.youamp.shared.queue.AudioSource
+import youamp.feature.explore.generated.resources.Res
+import youamp.feature.explore.generated.resources.random_songs_title
 
 @Composable
 fun ExploreScreen(
@@ -60,6 +62,7 @@ fun ExploreScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExploreScreen(
     state: StateUi,
@@ -132,7 +135,7 @@ private fun Content(
         state.data?.randomSongs?.let { randomSongs ->
             item {
                 SectionTitle(
-                    title = stringResource(R.string.random_songs_title),
+                    title = stringResource(Res.string.random_songs_title),
                     onClick = onRandomSongsClick
                 )
             }

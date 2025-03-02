@@ -23,11 +23,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.stersh.youamp.feature.explore.R
+import org.jetbrains.compose.resources.stringResource
+import youamp.feature.explore.generated.resources.Res
+import youamp.feature.explore.generated.resources.search_hint_title
+import youamp.feature.explore.generated.resources.search_title
 
 @Composable
 internal fun SearchBar(
@@ -54,12 +56,12 @@ internal fun SearchBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Search,
-                    contentDescription = stringResource(R.string.search_title),
+                    contentDescription = stringResource(Res.string.search_title),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Text(
-                    text = stringResource(R.string.search_hint_title),
+                    text = stringResource(Res.string.search_hint_title),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
