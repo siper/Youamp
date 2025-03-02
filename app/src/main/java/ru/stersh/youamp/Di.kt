@@ -11,8 +11,8 @@ import ru.stersh.youamp.audio.auto.AutoRepository
 import ru.stersh.youamp.audio.auto.AutoRepositoryImpl
 import ru.stersh.youamp.feature.album.info.albumInfoModule
 import ru.stersh.youamp.feature.album.list.albumListModule
-import ru.stersh.youamp.feature.artist.artistInfoModule
-import ru.stersh.youamp.feature.artists.artistListModule
+import ru.stersh.youamp.feature.artist.info.artistInfoModule
+import ru.stersh.youamp.feature.artist.list.artistListModule
 import ru.stersh.youamp.feature.main.mainModule
 import ru.stersh.youamp.feature.personal.personalModule
 import ru.stersh.youamp.feature.player.mini.playerMiniModule

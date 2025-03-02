@@ -34,8 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.feature.album.info.ui.AlbumInfoScreen
 import ru.stersh.youamp.feature.album.list.ui.AlbumsScreen
-import ru.stersh.youamp.feature.artist.ui.ArtistInfoScreen
-import ru.stersh.youamp.feature.artists.ui.ArtistsScreen
+import ru.stersh.youamp.feature.artist.info.ui.ArtistInfoScreen
+import ru.stersh.youamp.feature.artist.list.ui.ArtistsScreen
 import ru.stersh.youamp.feature.main.ui.MainScreen
 import ru.stersh.youamp.feature.personal.ui.PersonalScreen
 import ru.stersh.youamp.feature.player.mini.ui.MiniPlayer
