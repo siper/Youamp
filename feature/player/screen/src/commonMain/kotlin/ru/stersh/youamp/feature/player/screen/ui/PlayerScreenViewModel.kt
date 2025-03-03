@@ -2,6 +2,7 @@ package ru.stersh.youamp.feature.player.screen.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -136,7 +137,8 @@ internal class PlayerScreenViewModel(
             .first()
             ?.id
             ?: return@launch
-        songFavoritesStorage.setSongFavorite(id, isFavorite)
+        runCatching { songFavoritesStorage.setSongFavorite(id, isFavorite) }
+            .onFailure { Logger.w(it) { "Filed to like song" } }
     }
 
     fun playPause() = viewModelScope.launch {
