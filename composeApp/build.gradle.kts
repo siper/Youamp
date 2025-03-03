@@ -97,8 +97,8 @@ android {
         targetSdk = libs.versions.android.targetSdk
             .get()
             .toInt()
-        versionCode = 22
-        versionName = "2.0.0-beta05"
+        versionCode = 23
+        versionName = "2.0.0-beta06"
     }
     packaging {
         resources {
