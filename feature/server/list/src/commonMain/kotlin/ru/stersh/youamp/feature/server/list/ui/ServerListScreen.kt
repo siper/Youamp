@@ -100,7 +100,8 @@ private fun ServerListScreen(
                 },
                 title = {
                     Text(text = stringResource(Res.string.server_screen_title))
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
