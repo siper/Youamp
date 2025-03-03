@@ -21,6 +21,7 @@ kotlin {
                 implementation(libs.coil.compose)
                 implementation(libs.koin.compose)
                 implementation(libs.lifecycle.viewmodel)
+                implementation(libs.kermit)
             }
         }
     }
