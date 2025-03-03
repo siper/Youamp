@@ -20,7 +20,7 @@ platform :android do
       name: ENV['VERSION_TAG'],
       tag_name: ENV['VERSION_TAG'],
       is_generate_release_notes: true,
-      upload_assets: ["app/build/outputs/apk/release/app-release.apk"]
+      upload_assets: ["composeApp/build/outputs/apk/release/composeApp-release.apk"]
     )
   end
 
