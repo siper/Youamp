@@ -15,6 +15,8 @@ kotlin {
             .toInt()
     }
 
+    jvm("desktop")
+
     sourceSets {
         commonMain {
             dependencies {

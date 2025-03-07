@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.core.utils.fold
 import ru.stersh.youamp.core.utils.pageLoader
 import ru.stersh.youamp.core.utils.result
 import ru.stersh.youamp.feature.album.list.domain.AlbumsRepository
-import ru.stresh.youamp.core.api.ApiProvider
 
 internal class AlbumsViewModel(
     private val albumsRepository: AlbumsRepository,

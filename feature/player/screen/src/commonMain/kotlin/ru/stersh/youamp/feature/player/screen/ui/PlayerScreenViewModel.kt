@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stresh.youamp.core.player.Player
-import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
+import ru.stersh.youamp.core.player.Player
+import ru.stersh.youamp.shared.favorites.SongFavoritesStorage
 
 internal class PlayerScreenViewModel(
     private val player: Player,

@@ -1,6 +1,6 @@
 package ru.stersh.youamp.audio.auto
 
-import ru.stresh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.api.ApiProvider
 
 
 internal class AutoRepositoryImpl(

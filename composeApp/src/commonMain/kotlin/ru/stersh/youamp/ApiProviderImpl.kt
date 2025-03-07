@@ -4,11 +4,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import ru.stersh.subsonic.api.SubsonicApi
-import ru.stresh.youamp.core.api.ApiDefaults
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.api.NoActiveServerSettingsFound
-import ru.stresh.youamp.core.db.server.SubsonicServerDao
-import ru.stresh.youamp.core.db.server.SubsonicServerDb
+import ru.stersh.youamp.core.api.ApiDefaults
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.api.NoActiveServerSettingsFound
+import ru.stersh.youamp.core.db.server.SubsonicServerDao
+import ru.stersh.youamp.core.db.server.SubsonicServerDb
 import java.util.concurrent.ConcurrentHashMap
 
 internal class ApiProviderImpl(

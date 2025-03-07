@@ -37,11 +37,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -258,7 +258,7 @@ private fun ServerItem(
 }
 
 @Composable
-@Preview(name = "Content")
+@Preview
 private fun ServerListScreenPreview() {
     val state = StateUi(
         progress = false,
@@ -290,7 +290,7 @@ private fun ServerListScreenPreview() {
 }
 
 @Composable
-@Preview(name = "Progress")
+@Preview
 private fun ServerListScreenProgressPreview() {
     val state = StateUi()
     YouampPlayerTheme {

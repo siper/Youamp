@@ -1,9 +1,9 @@
 package ru.stersh.youamp.feature.album.list.data
 
 import ru.stersh.subsonic.api.model.ListType
+import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.feature.album.list.domain.Album
 import ru.stersh.youamp.feature.album.list.domain.AlbumsRepository
-import ru.stresh.youamp.core.api.ApiProvider
 
 internal class AlbumsRepositoryImpl(private val apiProvider: ApiProvider) : AlbumsRepository {
 

@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import ru.stersh.subsonic.api.model.Playlist
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.player.Player
 import ru.stersh.youamp.feature.playlist.info.domain.PlaylistInfo
 import ru.stersh.youamp.feature.playlist.info.domain.PlaylistInfoRepository
 import ru.stersh.youamp.feature.playlist.info.domain.PlaylistSong
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.player.Player
 
 internal class PlaylistInfoRepositoryImpl(
     private val apiProvider: ApiProvider,

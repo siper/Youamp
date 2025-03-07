@@ -4,19 +4,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.player.Player
 import ru.stersh.youamp.feature.personal.domain.Album
 import ru.stersh.youamp.feature.personal.domain.Artist
 import ru.stersh.youamp.feature.personal.domain.Personal
 import ru.stersh.youamp.feature.personal.domain.PersonalRepository
 import ru.stersh.youamp.feature.personal.domain.Playlist
 import ru.stersh.youamp.feature.personal.domain.Song
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.player.Player
-import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
-import ru.stresh.youamp.shared.favorites.ArtistFavoritesStorage
-import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
-import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
-import ru.stresh.youamp.shared.queue.PlayingSource
+import ru.stersh.youamp.shared.favorites.AlbumFavoritesStorage
+import ru.stersh.youamp.shared.favorites.ArtistFavoritesStorage
+import ru.stersh.youamp.shared.favorites.SongFavoritesStorage
+import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stersh.youamp.shared.queue.PlayingSource
 
 internal class PersonalRepositoryImpl(
     private val apiProvider: ApiProvider,

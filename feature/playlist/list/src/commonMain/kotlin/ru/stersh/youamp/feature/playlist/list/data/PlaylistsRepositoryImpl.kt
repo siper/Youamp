@@ -2,9 +2,9 @@ package ru.stersh.youamp.feature.playlist.list.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.feature.playlist.list.domain.Playlist
 import ru.stersh.youamp.feature.playlist.list.domain.PlaylistsRepository
-import ru.stresh.youamp.core.api.ApiProvider
 
 internal class PlaylistsRepositoryImpl(private val apiProvider: ApiProvider) : PlaylistsRepository {
 

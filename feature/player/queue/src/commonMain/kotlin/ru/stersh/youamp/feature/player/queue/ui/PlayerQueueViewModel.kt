@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.player.Player
 import ru.stersh.youamp.core.utils.swap
-import ru.stresh.youamp.core.player.Player
 
 internal class PlayerQueueViewModel(
     private val player: Player,

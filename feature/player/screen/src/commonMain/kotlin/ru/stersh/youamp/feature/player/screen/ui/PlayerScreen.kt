@@ -1,6 +1,5 @@
 package ru.stersh.youamp.feature.player.screen.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -29,10 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
@@ -276,10 +275,7 @@ private fun PlayerLayout(
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview
-@Preview(name = "5-inch Device Landscape", widthDp = 640, heightDp = 360)
-@Preview(name = "10-inch Tablet Landscape", widthDp = 960, heightDp = 600)
 private fun PlayerScreenPreview() {
     YouampPlayerTheme {
         val state = StateUi(

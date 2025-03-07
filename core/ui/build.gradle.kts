@@ -7,6 +7,9 @@ plugins {
 
 kotlin {
     androidTarget()
+
+    jvm("desktop")
+
     sourceSets {
         commonMain {
             dependencies {
@@ -16,7 +19,7 @@ kotlin {
                 api(compose.materialIconsExtended)
                 api(compose.ui)
                 api(compose.uiTooling)
-                api(compose.preview)
+                api(compose.components.uiToolingPreview)
                 implementation(compose.components.resources)
                 implementation(libs.coil.compose)
             }

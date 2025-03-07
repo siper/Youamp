@@ -5,11 +5,11 @@ import kotlinx.coroutines.coroutineScope
 import ru.stersh.subsonic.api.SubsonicApi
 import ru.stersh.subsonic.api.model.Album
 import ru.stersh.subsonic.api.model.Artist
+import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.feature.artist.info.domain.ArtistAlbum
 import ru.stersh.youamp.feature.artist.info.domain.ArtistInfo
 import ru.stersh.youamp.feature.artist.info.domain.ArtistInfoRepository
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.shared.favorites.ArtistFavoritesStorage
+import ru.stersh.youamp.shared.favorites.ArtistFavoritesStorage
 
 internal class ArtistInfoRepositoryImpl(
     private val apiProvider: ApiProvider,

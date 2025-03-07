@@ -25,18 +25,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.window.core.layout.WindowWidthSizeClass
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.SingleLineText
@@ -76,7 +76,7 @@ private fun MiniPlayer(
     modifier: Modifier = Modifier
 ) {
     val containerColor = when (windowWidthSizeClass) {
-        WindowWidthSizeClass.COMPACT -> MaterialTheme.colorScheme.secondaryContainer
+        WindowWidthSizeClass.Compact -> MaterialTheme.colorScheme.secondaryContainer
         else -> MaterialTheme.colorScheme.surface
     }
     AnimatedVisibility(
@@ -104,7 +104,7 @@ private fun MiniPlayer(
             color = containerColor
         ) {
             when (windowWidthSizeClass) {
-                WindowWidthSizeClass.COMPACT -> {
+                WindowWidthSizeClass.Compact -> {
                     PlayerCompact(
                         data = state.data,
                         onClick = onClick,
@@ -112,8 +112,8 @@ private fun MiniPlayer(
                     )
                 }
 
-                WindowWidthSizeClass.MEDIUM,
-                WindowWidthSizeClass.EXPANDED -> {
+                WindowWidthSizeClass.Medium,
+                WindowWidthSizeClass.Expanded -> {
                     PlayerExpanded(
                         data = state.data,
                         onClick = onClick,
@@ -284,7 +284,7 @@ private fun MiniPlayerPreview() {
     )
     MiniPlayer(
         state = state,
-        windowWidthSizeClass = WindowWidthSizeClass.COMPACT,
+        windowWidthSizeClass = WindowWidthSizeClass.Compact,
         onClick = {},
         onNext = {},
         onPrevious = {},

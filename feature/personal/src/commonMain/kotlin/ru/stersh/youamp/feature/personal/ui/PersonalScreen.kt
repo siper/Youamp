@@ -21,11 +21,11 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.ArtistItem
@@ -40,7 +40,7 @@ import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stresh.youamp.shared.queue.AudioSource
+import ru.stersh.youamp.shared.queue.AudioSource
 import youamp.feature.personal.generated.resources.Res
 import youamp.feature.personal.generated.resources.albums_title
 import youamp.feature.personal.generated.resources.artists_title
