@@ -28,7 +28,7 @@ jobs:
       - name: Lint
         run: ./gradlew lint
 
-  build:
+  build_android:
     name: Build apk
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -50,3 +50,19 @@ jobs:
 
       - name: Build
         run: ./gradlew composeApp:assemble
+
+  build_desktop:
+    name: Build Desktop App
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Desktop App
+        uses: openMF/kmp-build-desktop-app-action@v1.0.0
+        with:
+          desktop_package_name: 'ru.stersh.youamp'
+          build_type: 'Release'
