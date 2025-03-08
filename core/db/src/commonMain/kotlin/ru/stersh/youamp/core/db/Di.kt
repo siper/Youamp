@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val dbModule = module {
     single {
-        get<RoomDatabase.Builder<Database>>()
+        get<RoomDatabase.Builder<AppDatabase>>()
             .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
             .setQueryCoroutineContext(Dispatchers.IO)
             .setDriver(BundledSQLiteDriver())
@@ -16,6 +16,6 @@ val dbModule = module {
     }
 
     single {
-        get<Database>().subsonicServerDao()
+        get<AppDatabase>().subsonicServerDao()
     }
 }

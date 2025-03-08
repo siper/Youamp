@@ -6,7 +6,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import ru.stersh.youamp.audio.auto.AutoRepository
 import ru.stersh.youamp.audio.auto.AutoRepositoryImpl
-import ru.stersh.youamp.core.db.Database
+import ru.stersh.youamp.core.db.AppDatabase
 import ru.stersh.youamp.core.db.getDatabaseBuilder
 import ru.stersh.youamp.core.properties.app.AppProperties
 
@@ -21,5 +21,5 @@ val androidModule: Module = module {
             crwodinUrl = "https://crowdin.com/project/youamp"
         )
     }
-    single<RoomDatabase.Builder<Database>> { getDatabaseBuilder(get()) }
+    single<RoomDatabase.Builder<AppDatabase>> { getDatabaseBuilder(get()) }
 }
