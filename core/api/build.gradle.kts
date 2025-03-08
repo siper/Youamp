@@ -10,6 +10,8 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
+    jvm("desktop")
+
     sourceSets {
         commonMain {
             dependencies {

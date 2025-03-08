@@ -1,7 +1,7 @@
 package ru.stersh.youamp.feature.player.screen.ui
 
-import ru.stresh.youamp.core.player.RepeatMode
-import ru.stresh.youamp.core.player.ShuffleMode
+import ru.stersh.youamp.core.player.RepeatMode
+import ru.stersh.youamp.core.player.ShuffleMode
 
 
 internal fun RepeatMode.toUi(): RepeatModeUi {

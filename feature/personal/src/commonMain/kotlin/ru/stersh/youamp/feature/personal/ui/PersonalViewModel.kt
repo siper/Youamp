@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.player.Player
 import ru.stersh.youamp.feature.personal.domain.PersonalRepository
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.player.Player
-import ru.stresh.youamp.shared.queue.AudioSource
-import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
-import ru.stresh.youamp.shared.queue.equals
+import ru.stersh.youamp.shared.queue.AudioSource
+import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stersh.youamp.shared.queue.equals
 
 internal class PersonalViewModel(
     private val personalRepository: PersonalRepository,

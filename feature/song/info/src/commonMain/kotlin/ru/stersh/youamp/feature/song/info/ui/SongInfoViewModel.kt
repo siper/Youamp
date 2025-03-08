@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.shared.favorites.SongFavoritesStorage
-import ru.stresh.youamp.shared.queue.AudioSource
-import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.shared.favorites.SongFavoritesStorage
+import ru.stersh.youamp.shared.queue.AudioSource
+import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
 
 internal class SongInfoViewModel(
     private val apiProvider: ApiProvider,

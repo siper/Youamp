@@ -1,23 +1,21 @@
 package ru.stersh.youamp.core.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
+val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80,
     scrim = Color(0x4D1C1B1F)
 )
 
-private val LightColorScheme = lightColorScheme(
+val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
@@ -31,7 +29,8 @@ private val LightColorScheme = lightColorScheme(
     scrim = Color(0x4D1C1B1F)
 )
 
-expect val dynamicColorAvailable: Boolean
+@Composable
+expect fun getColorScheme(darkTheme: Boolean, dynamicColor: Boolean): ColorScheme
 
 @Composable
 fun YouampPlayerTheme(
@@ -39,19 +38,7 @@ fun YouampPlayerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && dynamicColorAvailable -> {
-            val context = LocalContext.current
-            if (darkTheme) {
-                dynamicDarkColorScheme(context)
-            } else {
-                dynamicLightColorScheme(context)
-            }
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = getColorScheme(darkTheme, dynamicColor)
 
     MaterialTheme(
         colorScheme = colorScheme,

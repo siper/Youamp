@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" height="128" />
+  <img src="/composeApp/src/commonMain/composeResources/drawable-xxxhdpi/ic_launcher_round.webp" height="128" />
 </p>
 
 <p align="center">

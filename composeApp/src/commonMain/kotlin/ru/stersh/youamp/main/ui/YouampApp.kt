@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,14 +31,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import androidx.window.core.layout.WindowSizeClass
-import androidx.window.core.layout.WindowWidthSizeClass
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.feature.about.ui.AboutScreen
+import ru.stersh.youamp.feature.album.favorites.ui.FavoriteAlbumsScreen
 import ru.stersh.youamp.feature.album.info.ui.AlbumInfoScreen
 import ru.stersh.youamp.feature.album.list.ui.AlbumsScreen
+import ru.stersh.youamp.feature.artist.favorites.ui.FavoriteArtistsScreen
 import ru.stersh.youamp.feature.artist.info.ui.ArtistInfoScreen
 import ru.stersh.youamp.feature.artist.list.ui.ArtistsScreen
+import ru.stersh.youamp.feature.explore.ui.ExploreScreen
+import ru.stersh.youamp.feature.library.ui.LibraryScreen
 import ru.stersh.youamp.feature.main.ui.MainScreen
 import ru.stersh.youamp.feature.personal.ui.PersonalScreen
 import ru.stersh.youamp.feature.player.mini.ui.MiniPlayer
@@ -47,15 +52,10 @@ import ru.stersh.youamp.feature.playlist.list.ui.PlaylistsScreen
 import ru.stersh.youamp.feature.search.ui.SearchScreen
 import ru.stersh.youamp.feature.server.create.ui.ServerScreen
 import ru.stersh.youamp.feature.server.list.ui.ServerListScreen
+import ru.stersh.youamp.feature.settings.ui.SettingsScreen
+import ru.stersh.youamp.feature.song.favorites.ui.FavoriteSongsScreen
 import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
-import ru.stresh.youamp.feature.about.ui.AboutScreen
-import ru.stresh.youamp.feature.album.favorites.ui.FavoriteAlbumsScreen
-import ru.stresh.youamp.feature.artist.favorites.ui.FavoriteArtistsScreen
-import ru.stresh.youamp.feature.explore.ui.ExploreScreen
-import ru.stresh.youamp.feature.library.ui.LibraryScreen
-import ru.stresh.youamp.feature.settings.ui.SettingsScreen
-import ru.stresh.youamp.feature.song.favorites.ui.FavoriteSongsScreen
-import ru.stresh.youamp.feature.song.random.ui.RandomSongsScreen
+import ru.stersh.youamp.feature.song.random.ui.RandomSongsScreen
 
 @Composable
 fun YouampApp(
@@ -119,7 +119,7 @@ private fun Content(
             MainScreen(
                 miniPlayer = {
                     MiniPlayer(
-                        windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                        windowWidthSizeClass = windowSizeClass.widthSizeClass,
                         viewModelStoreOwner = viewModelStoreOwner,
                         onClick = {
                             rootNavController.navigate(Player)
@@ -185,7 +185,7 @@ private fun Content(
         }
         composable<AlbumInfo> { backStackEntry ->
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -278,7 +278,7 @@ private fun Content(
         }
         composable<ArtistInfo> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -297,7 +297,7 @@ private fun Content(
         }
         composable<PlaylistInfo> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -313,7 +313,7 @@ private fun Content(
         }
         composable<Settings> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -334,7 +334,7 @@ private fun Content(
         }
         composable<About> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -349,7 +349,7 @@ private fun Content(
         }
         composable<Albums> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -367,7 +367,7 @@ private fun Content(
         }
         composable<Artists> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -385,7 +385,7 @@ private fun Content(
         }
         composable<Playlists> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -403,7 +403,7 @@ private fun Content(
         }
         composable<FavoriteSongs> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -424,7 +424,7 @@ private fun Content(
         }
         composable<RandomSongs> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -445,7 +445,7 @@ private fun Content(
         }
         composable<FavoriteAlbums> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -463,7 +463,7 @@ private fun Content(
         }
         composable<FavoriteArtists> {
             ScreenWithMiniPlayer(
-                windowWidthSizeClass = windowSizeClass.windowWidthSizeClass,
+                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -513,7 +513,7 @@ private fun Content(
 
 @Composable
 internal fun ScreenWithMiniPlayer(
-    windowWidthSizeClass: WindowWidthSizeClass,
+    widthSizeClass: WindowWidthSizeClass,
     viewModelStoreOwner: ViewModelStoreOwner,
     onMiniPlayerClick: () -> Unit,
     content: @Composable () -> Unit
@@ -527,7 +527,7 @@ internal fun ScreenWithMiniPlayer(
             content.invoke()
         }
         MiniPlayer(
-            windowWidthSizeClass = windowWidthSizeClass,
+            windowWidthSizeClass = widthSizeClass,
             viewModelStoreOwner = viewModelStoreOwner,
             onClick = onMiniPlayerClick,
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)

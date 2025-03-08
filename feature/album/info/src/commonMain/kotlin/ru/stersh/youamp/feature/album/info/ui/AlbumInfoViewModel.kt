@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.album.info.domain.AlbumFavoriteRepository
 import ru.stersh.youamp.feature.album.info.domain.AlbumInfoRepository
-import ru.stresh.youamp.shared.queue.AudioSource
-import ru.stresh.youamp.shared.queue.PlayerQueueAudioSourceManager
+import ru.stersh.youamp.shared.queue.AudioSource
+import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
 
 internal class AlbumInfoViewModel(
     private val id: String,

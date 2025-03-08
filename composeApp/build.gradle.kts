@@ -1,3 +1,5 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.application)
@@ -9,10 +11,10 @@ plugins {
 kotlin {
     androidTarget()
 
-//    jvm("desktop")
+    jvm("desktop")
 
     sourceSets {
-//        val desktopMain by getting
+        val desktopMain by getting
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -24,7 +26,6 @@ kotlin {
             implementation(libs.kotlin.coroutines.guava)
             implementation(libs.kotlin.coroutines.android)
             implementation(libs.coil.network.okhttp)
-            implementation(libs.coil.network.okhttp)
             implementation(libs.material)
         }
         commonMain.dependencies {
@@ -34,14 +35,15 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.material3AdaptiveNavigationSuite)
             implementation(libs.kermit)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.coil.compose)
-            implementation(libs.compose.material3.adaptive)
             implementation(libs.bundles.lifecycle)
             implementation(libs.kotlin.serialization.core)
             implementation(libs.navigation.compose)
+            implementation(libs.compose.material3.windowSizeClass)
 
             implementation(project(":core:api"))
             implementation(project(":core:ui"))
@@ -77,9 +79,14 @@ kotlin {
             implementation(project(":feature:song:random"))
         }
 
-//        desktopMain.dependencies {
-//            implementation(compose.desktop.currentOs)
-//        }
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(compose.components.resources)
+            implementation(libs.kotlin.coroutines.swing)
+            implementation(libs.coil.network.okhttp)
+            implementation(libs.sl4j)
+            implementation(libs.sl4j.simple)
+        }
     }
 }
 
@@ -139,14 +146,14 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-//compose.desktop {
-//    application {
-//        mainClass = "ru.stersh.youamp.MainKt"
-//
-//        nativeDistributions {
-//            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-//            packageName = "ru.stersh.youamp"
-//            packageVersion = "1.0.0"
-//        }
-//    }
-//}
+compose.desktop {
+    application {
+        mainClass = "ru.stersh.youamp.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "ru.stersh.youamp"
+            packageVersion = "1.0.0"
+        }
+    }
+}

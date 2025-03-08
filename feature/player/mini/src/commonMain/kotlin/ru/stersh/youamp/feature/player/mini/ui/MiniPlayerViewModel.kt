@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.stresh.youamp.core.player.Player
+import ru.stersh.youamp.core.player.Player
 
 internal class MiniPlayerViewModel(
     private val player: Player

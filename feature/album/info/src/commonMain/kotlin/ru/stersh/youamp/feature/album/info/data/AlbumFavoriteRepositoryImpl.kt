@@ -1,7 +1,7 @@
 package ru.stersh.youamp.feature.album.info.data
 
 import ru.stersh.youamp.feature.album.info.domain.AlbumFavoriteRepository
-import ru.stresh.youamp.shared.favorites.AlbumFavoritesStorage
+import ru.stersh.youamp.shared.favorites.AlbumFavoritesStorage
 
 internal class AlbumFavoriteRepositoryImpl(
     private val albumFavoritesStorage: AlbumFavoritesStorage

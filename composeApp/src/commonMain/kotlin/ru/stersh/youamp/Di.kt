@@ -3,10 +3,19 @@ package ru.stersh.youamp
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.db.dbModule
+import ru.stersh.youamp.core.player.playerCoreModule
+import ru.stersh.youamp.core.propertiesModule
+import ru.stersh.youamp.feature.about.aboutModule
+import ru.stersh.youamp.feature.album.favorites.albumFavoritesModule
 import ru.stersh.youamp.feature.album.info.albumInfoModule
 import ru.stersh.youamp.feature.album.list.albumListModule
+import ru.stersh.youamp.feature.artist.favorites.artistFavoritesModule
 import ru.stersh.youamp.feature.artist.info.artistInfoModule
 import ru.stersh.youamp.feature.artist.list.artistListModule
+import ru.stersh.youamp.feature.explore.exploreModule
+import ru.stersh.youamp.feature.library.libraryModule
 import ru.stersh.youamp.feature.main.mainModule
 import ru.stersh.youamp.feature.personal.personalModule
 import ru.stersh.youamp.feature.player.mini.playerMiniModule
@@ -17,25 +26,16 @@ import ru.stersh.youamp.feature.playlist.list.playlistListModule
 import ru.stersh.youamp.feature.search.searchModule
 import ru.stersh.youamp.feature.server.create.serverCreateModule
 import ru.stersh.youamp.feature.server.list.serverListModule
+import ru.stersh.youamp.feature.song.favorites.songFavoritesModule
 import ru.stersh.youamp.feature.song.info.songInfoModule
+import ru.stersh.youamp.feature.song.random.songRandomModule
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
 import ru.stersh.youamp.main.domain.ServerExistRepository
 import ru.stersh.youamp.main.ui.MainViewModel
 import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.db.dbModule
-import ru.stresh.youamp.core.player.playerCoreModule
-import ru.stresh.youamp.core.propertiesModule
-import ru.stresh.youamp.feature.about.aboutModule
-import ru.stresh.youamp.feature.album.favorites.albumFavoritesModule
-import ru.stresh.youamp.feature.artist.favorites.artistFavoritesModule
-import ru.stresh.youamp.feature.explore.exploreModule
-import ru.stresh.youamp.feature.library.libraryModule
-import ru.stresh.youamp.feature.song.favorites.songFavoritesModule
-import ru.stresh.youamp.feature.song.random.songRandomModule
-import ru.stresh.youamp.shared.favorites.favoritesSharedModule
-import ru.stresh.youamp.shared.queue.queueSharedModule
-import ru.stresh.youamp.shared.song.random.songRandomSharedModule
+import ru.stersh.youamp.shared.favorites.favoritesSharedModule
+import ru.stersh.youamp.shared.queue.queueSharedModule
+import ru.stersh.youamp.shared.song.random.songRandomSharedModule
 
 
 private val core = listOf(

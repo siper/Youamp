@@ -8,6 +8,8 @@ plugins {
 kotlin {
     androidTarget()
 
+    jvm("desktop")
+
     sourceSets {
         commonMain {
             dependencies {
@@ -17,7 +19,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(libs.coil.compose)
                 implementation(libs.koin.compose)
-                implementation(libs.lifecycle.viewmodel)
+                implementation(libs.bundles.lifecycle)
                 implementation(libs.compose.icons.simple)
             }
         }

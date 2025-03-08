@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.player.Player
-import ru.stresh.youamp.shared.queue.toMediaItem
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.player.Player
+import ru.stersh.youamp.shared.queue.toMediaItem
 
 internal class ApiSonicPlayQueueSyncer(
     private val player: Player,

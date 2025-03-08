@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.EmptyActivityLifecycleCallback
 import ru.stersh.youamp.MainActivity
+import ru.stersh.youamp.core.api.ApiProvider
+import ru.stersh.youamp.core.player.Player
 import ru.stersh.youamp.player.ScrobbleSender
-import ru.stresh.youamp.core.api.ApiProvider
-import ru.stresh.youamp.core.player.Player
 
 internal class ProgressSyncActivityCallback(
     private val player: Player,

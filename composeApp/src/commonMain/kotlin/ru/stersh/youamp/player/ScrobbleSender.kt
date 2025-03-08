@@ -1,9 +1,9 @@
 package ru.stersh.youamp.player
 
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.stresh.youamp.core.api.ApiProvider
-import co.touchlab.kermit.Logger
+import ru.stersh.youamp.core.api.ApiProvider
 
 internal class ScrobbleSender(
     val id: String,

@@ -2,8 +2,8 @@ package ru.stersh.youamp.main.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.main.domain.AvatarUrlRepository
-import ru.stresh.youamp.core.api.ApiProvider
 
 internal class AvatarUrlRepositoryImpl(
     private val apiProvider: ApiProvider
