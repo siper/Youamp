@@ -119,6 +119,13 @@ If you want help to make Youamp better, you can:
     </tr>
     <tr>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/0ae0"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16926479/medium/057ded864ac90ee8a9133990e283282c.png" />
+          <br />
+          <sub><b>0ae0</b></sub></a>
+        <br />
+        <sub><b>26 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/John_Ethan"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16850011/medium/beb9b59e234ff94a96b8e0ab3485f8a8_default.png" />
           <br />
           <sub><b>John_Ethan</b></sub></a>
