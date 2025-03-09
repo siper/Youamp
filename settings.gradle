@@ -14,7 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Youamp"
 
-include ':composeApp'
+include ':androidApp'
+include ':desktopApp'
+include ':app'
 include ':core:api'
 include ':core:utils'
 include ':core:ui'

@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew lint
 
   build_android:
-    name: Build apk
+    name: Build android
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -49,10 +49,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build
-        run: ./gradlew composeApp:assemble
+        run: ./gradlew androidApp:assemble
 
   build_desktop:
-    name: Build Desktop App
+    name: Build desktop
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -71,4 +71,4 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build
-        run: ./gradlew packageReleaseDistributionForCurrentOS
+        run: ./gradlew desktopApp:packageReleaseDistributionForCurrentOS
