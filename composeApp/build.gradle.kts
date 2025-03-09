@@ -155,5 +155,8 @@ compose.desktop {
             packageName = "ru.stersh.youamp"
             packageVersion = "1.0.0"
         }
+        buildTypes.release.proguard {
+            isEnabled = false
+        }
     }
 }
