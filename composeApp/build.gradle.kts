@@ -156,7 +156,7 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
         buildTypes.release.proguard {
-            version.set("7.4.0")
+            isEnabled = false
         }
     }
 }
