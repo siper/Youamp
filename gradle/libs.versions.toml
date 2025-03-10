@@ -64,7 +64,7 @@ subsonicApi = { module = "ru.stersh:subsonic-api", version = "1.0.7" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin-stdlib" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin-test" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-javafx-media = { module = "org.openjfx:javafx-media", version = "21.0.6" }
+javafx-media = { module = "org.openjfx:javafx-media", version = "23.0.2" }
 
 compose-material3-windowSizeClass = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-multiplatform" }
 compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "compose-icons" }
