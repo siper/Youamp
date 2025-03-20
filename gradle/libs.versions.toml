@@ -75,7 +75,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "core" }
 sl4j = { module = "org.slf4j:slf4j-api", version = "2.0.17" }
-sl4j-simple = { module = "org.slf4j:slf4j-simple", version = "2.0.16" }
+sl4j-simple = { module = "org.slf4j:slf4j-simple", version = "2.0.17" }
 
 [bundles]
 lifecycle = [
