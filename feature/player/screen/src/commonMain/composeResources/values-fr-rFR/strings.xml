@@ -4,8 +4,8 @@
     <string name="shuffle_mode_description">Mode aléatoire</string>
     <string name="repeat_mode_description">Mode répétition</string>
     <string name="favorite_song_description">Chanson favorite</string>
-    <string name="pause_button_description">Bouton Pause</string>
-    <string name="play_button_description">Bouton Lire</string>
+    <string name="pause_button_description">Bouton pause</string>
+    <string name="play_button_description">Bouton lire</string>
     <string name="previous_song_description">Chanson précédente</string>
     <string name="next_song_description">Chanson suivante</string>
 </resources>

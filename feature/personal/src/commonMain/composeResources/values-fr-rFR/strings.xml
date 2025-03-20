@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pause_action_title">Pause</string>
-    <string name="play_action_title">Jouer</string>
+    <string name="play_action_title">Lire</string>
     <string name="artists_2">%s et %s</string>
     <string name="artists_many">%s, %s et autres</string>
     <string name="songs_title">Chansons</string>
