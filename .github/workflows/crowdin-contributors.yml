@@ -21,7 +21,7 @@ jobs:
           contributors_per_line: 8
           max_contributors: 32
           image_size: 64
-          min_words_contributed: 0
+          min_words_contributed: 3
           files: README.md
           crowdin_project_link: https://crowdin.com/project/youamp
         env:
