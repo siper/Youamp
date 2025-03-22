@@ -153,20 +153,6 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>3 words</b></sub>
       </td>
-      <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/bit97"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16948253/medium/86f28a2781e8e142cec6ac8cfa47d049.jpeg" />
-          <br />
-          <sub><b>Federico Bitondo (bit97)</b></sub></a>
-        <br />
-        <sub><b>1 words</b></sub>
-      </td>
-      <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/ghose"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/12617257/medium/7a0122f352a94d95be10780bb83f63ef.jpg" />
-          <br />
-          <sub><b>⁂ josé m. (ghose)</b></sub></a>
-        <br />
-        <sub><b>0 words</b></sub>
-      </td>
     </tr>
   </tbody>
 </table><a href="https://crowdin.com/project/youamp" target="_blank">Translate in Crowdin 🚀</a>
