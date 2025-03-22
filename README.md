@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/androidApp/src/commonMain/composeResources/drawable-xxxhdpi/ic_launcher_round.webp" height="128" />
+  <img src="/androidApp/src/androidMain/res/drawable-xxxhdpi/ic_launcher_round.webp" height="128" />
 </p>
 
 <p align="center">
