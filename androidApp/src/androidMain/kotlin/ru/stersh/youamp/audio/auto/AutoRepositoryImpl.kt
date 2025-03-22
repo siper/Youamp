@@ -34,7 +34,7 @@ internal class AutoRepositoryImpl(
             .playlist
             .entry
             ?.mapNotNull {
-                if (it.isDir || it.isVideo == true) {
+                if (it.isDir == true || it.isVideo == true) {
                     return@mapNotNull null
                 }
                 Auto.Song(

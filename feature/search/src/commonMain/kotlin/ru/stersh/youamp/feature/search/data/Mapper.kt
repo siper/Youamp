@@ -9,7 +9,7 @@ import ru.stersh.youamp.feature.search.domain.SearchResult
 
 internal fun List<Song>?.toDomainSongs(api: SubsonicApi): List<SearchResult.Song> {
     return this
-        ?.filter { !it.isDir && it.isVideo != true }
+        ?.filter { it.isDir != true && it.isVideo != true }
         ?.map { it.toDomain(api) }.orEmpty()
 }
 
