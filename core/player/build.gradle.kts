@@ -40,7 +40,8 @@ kotlin {
 
         val desktopMain by getting {
             dependencies {
-                val fxSuffix = when (osdetector.classifier) {
+                val javafxVersion = "21.0.6"
+                val osSuffix = when (osdetector.classifier) {
                     "linux-x86_64" -> "linux"
                     "linux-aarch_64" -> "linux-aarch64"
                     "windows-x86_64" -> "win"
@@ -48,12 +49,12 @@ kotlin {
                     "osx-aarch_64" -> "mac-aarch64"
                     else -> throw IllegalStateException("Unknown OS: ${osdetector.classifier}")
                 }
-                implementation("org.openjfx:javafx-base:21.0.6:${fxSuffix}")
-                implementation("org.openjfx:javafx-media:21.0.6:${fxSuffix}")
-                implementation("org.openjfx:javafx-swing:21.0.6:${fxSuffix}")
-                implementation("org.openjfx:javafx-web:21.0.6:${fxSuffix}")
-                implementation("org.openjfx:javafx-controls:21.0.6:${fxSuffix}")
-                implementation("org.openjfx:javafx-graphics:21.0.6:${fxSuffix}")
+                implementation("org.openjfx:javafx-base:${javafxVersion}:${osSuffix}")
+                implementation("org.openjfx:javafx-media:${javafxVersion}:${osSuffix}")
+                implementation("org.openjfx:javafx-swing:${javafxVersion}:${osSuffix}")
+                implementation("org.openjfx:javafx-web:${javafxVersion}:${osSuffix}")
+                implementation("org.openjfx:javafx-controls:${javafxVersion}:${osSuffix}")
+                implementation("org.openjfx:javafx-graphics:${javafxVersion}:${osSuffix}")
             }
         }
     }
