@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.HeaderLayout
+import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -150,26 +152,33 @@ private fun Content(
 }
 
 @Composable
-
 private fun Header(
     info: PlaylistInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit
 ) {
     HeaderLayout(
-        title = {
+        image = {
             Artwork(
                 artworkUrl = info.artworkUrl,
                 placeholder = Icons.Rounded.MusicNote,
                 modifier = Modifier
-                    .padding(horizontal = 48.dp)
+                    .then(
+                        if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                            Modifier
+                                .padding(horizontal = 48.dp)
+                                .fillMaxWidth()
+                        } else {
+                            Modifier
+                        }
+                    )
                     .aspectRatio(1f)
-                    .fillMaxWidth()
             )
-
+        },
+        title = {
             Text(
                 text = info.title,
-                style = MaterialTheme.typography.titleLarge
+                modifier = Modifier.fillMaxWidth()
             )
         },
         actions = {

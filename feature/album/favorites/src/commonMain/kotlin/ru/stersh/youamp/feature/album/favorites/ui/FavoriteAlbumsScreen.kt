@@ -16,8 +16,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -32,7 +34,6 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.HeaderLayout
-import ru.stersh.youamp.core.ui.HeaderTitle
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -116,7 +117,7 @@ private fun FavoriteAlbumsScreen(
                         ) {
                             HeaderLayout(
                                 title = {
-                                    HeaderTitle(text = stringResource(Res.string.favorite_albums_title))
+                                    Text(text = stringResource(Res.string.favorite_albums_title))
                                 },
                                 actions = {
                                     PlayAllButton(
@@ -166,6 +167,7 @@ private fun Progress() {
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview
 @Composable
 private fun FavoriteAlbumsScreenPreview() {

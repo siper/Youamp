@@ -5,9 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.CompositionLocalProvider
 import ru.stersh.youamp.app.ui.YouampApp
+import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 
 class MainActivity : ComponentActivity() {
 
@@ -16,8 +17,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(this)
-            YouampApp(windowSizeClass)
+            CompositionLocalProvider(LocalWindowSizeClass provides calculateWindowSizeClass(this)) {
+                YouampApp()
+            }
         }
     }
 }

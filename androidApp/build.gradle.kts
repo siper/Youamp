@@ -33,7 +33,6 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.coil.compose)
             implementation(libs.kermit)
-            implementation(libs.compose.material3.windowSizeClass)
 
             implementation(project(":app"))
         }

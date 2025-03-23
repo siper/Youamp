@@ -36,7 +36,6 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.HeaderLayout
-import ru.stersh.youamp.core.ui.HeaderTitle
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -119,7 +118,10 @@ private fun FavoriteSongsScreen(
                             ) {
                                 HeaderLayout(
                                     title = {
-                                        HeaderTitle(text = stringResource(Res.string.favorite_songs_title))
+                                        Text(
+                                            text = stringResource(Res.string.favorite_songs_title),
+                                            modifier = Modifier.singleHeader()
+                                        )
                                     },
                                     actions = {
                                         PlayAllButton(

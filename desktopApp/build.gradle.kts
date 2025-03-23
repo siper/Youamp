@@ -28,7 +28,6 @@ kotlin {
             implementation(libs.bundles.lifecycle)
             implementation(libs.kotlin.serialization.core)
             implementation(libs.navigation.compose)
-            implementation(libs.compose.material3.windowSizeClass)
 
             implementation(project(":app"))
         }

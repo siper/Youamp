@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -206,7 +204,6 @@ private fun ContentState(
 }
 
 @Composable
-
 private fun Header(
     state: AlbumInfoUi,
     onPlayAll: () -> Unit,
@@ -214,43 +211,34 @@ private fun Header(
     onFavoriteChange: (isFavorite: Boolean) -> Unit
 ) {
     HeaderLayout(
-        title = {
+        image = {
             Artwork(
                 artworkUrl = state.artworkUrl,
                 placeholder = Icons.Rounded.Album,
                 modifier = Modifier
-                    .padding(horizontal = 48.dp)
                     .aspectRatio(1f)
-                    .fillMaxWidth()
             )
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            ) {
-                Text(
-                    text = state.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
-                )
-
-                val subtitle = if (state.year != null) {
-                    "${state.artist} · ${state.year}"
-                } else {
-                    state.artist
-                }
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.secondary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
-                )
+        },
+        title = {
+            Text(
+                text = state.title,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        subtitle = {
+            val subtitle = if (state.year != null) {
+                "${state.artist} · ${state.year}"
+            } else {
+                state.artist
             }
+            Text(
+                text = subtitle,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.fillMaxWidth()
+            )
         },
         actions = {
             PlayAllButton(
@@ -296,22 +284,6 @@ private fun AlbumSongItem(
             Text(text = song.duration)
         },
         modifier = Modifier.clickable(onClick = onClick)
-    )
-}
-
-@Preview
-@Composable
-private fun AlbumSongItemPreview() {
-    val song = AlbumSongUi(
-        id = "1",
-        title = "Coolest song in the world with very long title",
-        duration = "12:00",
-        track = 1,
-        artist = "Someone"
-    )
-    AlbumSongItem(
-        song = song,
-        onClick = {}
     )
 }
 

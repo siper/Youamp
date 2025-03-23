@@ -1,8 +1,8 @@
 package ru.stersh.youamp
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -17,9 +17,10 @@ import okhttp3.OkHttpClient
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.context.startKoin
 import org.koin.mp.KoinPlatform
+import ru.stersh.youamp.app.ui.YouampApp
 import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.core.properties.app.AppProperties
-import ru.stersh.youamp.app.ui.YouampApp
+import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import youamp.desktopapp.generated.resources.Res
 import youamp.desktopapp.generated.resources.ic_launcher_round
 
@@ -88,7 +89,8 @@ fun main() = application {
         title = appProperties.name,
         icon = painterResource(Res.drawable.ic_launcher_round)
     ) {
-        val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
-        YouampApp(windowSizeClass)
+        CompositionLocalProvider(LocalWindowSizeClass provides calculateWindowSizeClass()) {
+            YouampApp()
+        }
     }
 }

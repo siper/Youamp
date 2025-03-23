@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,8 +42,9 @@ fun ArtistItem(
             ArtistArtwork(artworkUrl)
         },
         modifier = modifier
-            .clip(ArtistShape)
+            .clip(ArtistItemDefaults.Shape)
             .clickable(onClick = onClick)
+            .requiredWidth(ArtistItemDefaults.Width)
     )
 }
 
@@ -63,7 +65,7 @@ fun ArtistItem(
         },
         playButton = playButton,
         modifier = modifier
-            .clip(ArtistShape)
+            .clip(ArtistItemDefaults.Shape)
             .clickable(onClick = onClick)
     )
 }
@@ -201,6 +203,16 @@ private fun ArtistLayout(
 
 @Stable
 private val ArtistShape = RoundedCornerShape(36.dp)
+
+@Stable
+object ArtistItemDefaults {
+
+    @Stable
+    val Width = 160.dp
+
+    @Stable
+    val Shape = RoundedCornerShape(36.dp)
+}
 
 @Composable
 @Preview
