@@ -8,18 +8,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,14 +33,17 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.AlbumItem
+import ru.stersh.youamp.core.ui.AlbumItemDefaults
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.FavoriteButton
 import ru.stersh.youamp.core.ui.HeaderLayout
+import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.YouampPlayerTheme
 
 
 @Composable
@@ -121,12 +125,15 @@ private fun Content(
     onAlbumClick: (albumId: String) -> Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.padding(padding)
+        columns = GridCells.Adaptive(160.dp),
+        modifier = Modifier.padding(padding),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item(
             key = "header",
-            span = { GridItemSpan(2) },
+            span = { GridItemSpan(maxLineSpan) },
             contentType = "header"
         ) {
             Header(
@@ -137,22 +144,16 @@ private fun Content(
             )
         }
 
-        itemsIndexed(
+        items(
             items = state.albums,
-            key = { _, item -> "album_${item.id}" },
-            contentType = { _, _ -> "album" }
-        ) { index, item ->
-            val column = index % 2
+            key = { "album_${it.id}" },
+            contentType = { "album" }
+        ) {
             AlbumItem(
-                title = item.title,
-                artist = item.artist,
-                artworkUrl = item.artworkUrl,
-                onClick = { onAlbumClick(item.id) },
-                modifier = if (column == 0) {
-                    Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
-                } else {
-                    Modifier.padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                }
+                title = it.title,
+                artist = it.artist,
+                artworkUrl = it.artworkUrl,
+                onClick = { onAlbumClick(it.id) }
             )
         }
     }
@@ -163,20 +164,26 @@ private fun Header(
     state: ArtistInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
-    onFavoriteChange: (isFavorite: Boolean) -> Unit
+    onFavoriteChange: (isFavorite: Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val windowWidthSizeClass = LocalWindowSizeClass.current.widthSizeClass
     HeaderLayout(
-        title = {
+        image = {
             CircleArtwork(
                 artworkUrl = state.artworkUrl,
                 placeholder = Icons.Rounded.Person,
-                modifier = Modifier
-                    .padding(horizontal = 48.dp)
-                    .size(160.dp)
+                modifier = if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
+                    Modifier.size(160.dp)
+                } else {
+                    Modifier
+                }
             )
+        },
+        title = {
             Text(
                 text = state.name,
-                style = MaterialTheme.typography.titleLarge
+                modifier = Modifier.fillMaxWidth()
             )
         },
         actions = {
@@ -190,7 +197,8 @@ private fun Header(
                 isFavorite = state.isFavorite,
                 onChange = onFavoriteChange
             )
-        }
+        },
+        modifier = modifier
     )
 }
 
@@ -198,8 +206,10 @@ private fun Header(
 private fun Progress(padding: PaddingValues) {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.padding(padding)
+            columns = GridCells.Adaptive(160.dp),
+            modifier = Modifier.padding(padding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item(
                 key = "header",
@@ -240,22 +250,15 @@ private fun Progress(padding: PaddingValues) {
                 }
             }
 
-            itemsIndexed(
-                items = (0..10).toList(),
-                key = { _, item -> "skeleton_$item" },
-                contentType = { _, _ -> "album" }
-            ) { index, _ ->
-                val column = index % 2
+            items(
+                count = 10,
+                key = { "skeleton_$it" },
+                contentType = { "album" }
+            ) {
                 SkeletonItem(
-                    modifier = if (column == 0) {
-                        Modifier
-                            .height(240.dp)
-                            .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
-                    } else {
-                        Modifier
-                            .height(240.dp)
-                            .padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                    }
+                    modifier = Modifier
+                        .height(240.dp)
+                        .width(AlbumItemDefaults.Width)
                 )
             }
         }
@@ -285,7 +288,7 @@ private fun ArtistInfoScreenPreview() {
             artworkUrl = null
         )
     )
-    MaterialTheme {
+    YouampPlayerTheme {
         ArtistInfoScreen(
             state = ArtistInfoStateUi(
                 progress = false,

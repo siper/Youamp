@@ -42,6 +42,7 @@ import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongPlayAnimation
+import ru.stersh.youamp.core.ui.isCompactWidth
 
 
 @Composable
@@ -150,26 +151,33 @@ private fun Content(
 }
 
 @Composable
-
 private fun Header(
     info: PlaylistInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit
 ) {
     HeaderLayout(
-        title = {
+        image = {
             Artwork(
                 artworkUrl = info.artworkUrl,
                 placeholder = Icons.Rounded.MusicNote,
                 modifier = Modifier
-                    .padding(horizontal = 48.dp)
+                    .then(
+                        if (isCompactWidth) {
+                            Modifier
+                                .padding(horizontal = 48.dp)
+                                .fillMaxWidth()
+                        } else {
+                            Modifier
+                        }
+                    )
                     .aspectRatio(1f)
-                    .fillMaxWidth()
             )
-
+        },
+        title = {
             Text(
                 text = info.title,
-                style = MaterialTheme.typography.titleLarge
+                modifier = Modifier.fillMaxWidth()
             )
         },
         actions = {

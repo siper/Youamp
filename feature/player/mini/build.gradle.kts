@@ -22,7 +22,6 @@ kotlin {
                 implementation(libs.coil.compose)
                 implementation(libs.koin.compose)
                 implementation(libs.bundles.lifecycle)
-                implementation(libs.compose.material3.windowSizeClass)
             }
         }
     }

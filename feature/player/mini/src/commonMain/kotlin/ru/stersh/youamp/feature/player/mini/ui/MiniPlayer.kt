@@ -39,6 +39,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.Artwork
+import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.SingleLineText
 import youamp.feature.player.mini.generated.resources.Res
 import youamp.feature.player.mini.generated.resources.pause_button_description
@@ -46,7 +47,6 @@ import youamp.feature.player.mini.generated.resources.play_button_description
 
 @Composable
 fun MiniPlayer(
-    windowWidthSizeClass: WindowWidthSizeClass,
     viewModelStoreOwner: ViewModelStoreOwner,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -56,7 +56,6 @@ fun MiniPlayer(
 
     MiniPlayer(
         state = state,
-        windowWidthSizeClass = windowWidthSizeClass,
         onClick = onClick,
         onNext = viewModel::next,
         onPrevious = viewModel::previous,
@@ -68,11 +67,11 @@ fun MiniPlayer(
 @Composable
 private fun MiniPlayer(
     state: StateUi,
-    windowWidthSizeClass: WindowWidthSizeClass,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onPlayPauseClick: () -> Unit,
     onClick: () -> Unit,
+    windowWidthSizeClass: WindowWidthSizeClass = LocalWindowSizeClass.current.widthSizeClass,
     modifier: Modifier = Modifier
 ) {
     val containerColor = when (windowWidthSizeClass) {

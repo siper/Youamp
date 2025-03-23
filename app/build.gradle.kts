@@ -1,6 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import ru.stersh.youamp.AppBuildInfo
-
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.composeMultiplatform)
@@ -30,7 +27,6 @@ kotlin {
             implementation(libs.bundles.lifecycle)
             implementation(libs.kotlin.serialization.core)
             implementation(libs.navigation.compose)
-            implementation(libs.compose.material3.windowSizeClass)
 
             api(project(":core:api"))
             api(project(":core:ui"))

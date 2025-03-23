@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -58,9 +56,7 @@ import ru.stersh.youamp.feature.song.info.ui.SongInfoScreen
 import ru.stersh.youamp.feature.song.random.ui.RandomSongsScreen
 
 @Composable
-fun YouampApp(
-    windowSizeClass: WindowSizeClass
-) {
+fun YouampApp() {
     YouampPlayerTheme {
         val viewModel: MainViewModel = koinViewModel()
 
@@ -72,7 +68,6 @@ fun YouampApp(
         when (state.screen) {
             MainScreen.Main -> {
                 Content(
-                    windowSizeClass = windowSizeClass,
                     rootNavController = rootNavController,
                     viewModelStoreOwner = viewModelStoreOwner
                 )
@@ -95,7 +90,6 @@ fun YouampApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content(
-    windowSizeClass: WindowSizeClass,
     rootNavController: NavHostController,
     viewModelStoreOwner: ViewModelStoreOwner
 ) {
@@ -119,7 +113,6 @@ private fun Content(
             MainScreen(
                 miniPlayer = {
                     MiniPlayer(
-                        windowWidthSizeClass = windowSizeClass.widthSizeClass,
                         viewModelStoreOwner = viewModelStoreOwner,
                         onClick = {
                             rootNavController.navigate(Player)
@@ -185,7 +178,6 @@ private fun Content(
         }
         composable<AlbumInfo> { backStackEntry ->
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -278,7 +270,6 @@ private fun Content(
         }
         composable<ArtistInfo> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -297,7 +288,6 @@ private fun Content(
         }
         composable<PlaylistInfo> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -313,7 +303,6 @@ private fun Content(
         }
         composable<Settings> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -334,7 +323,6 @@ private fun Content(
         }
         composable<About> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -349,7 +337,6 @@ private fun Content(
         }
         composable<Albums> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -367,7 +354,6 @@ private fun Content(
         }
         composable<Artists> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -385,7 +371,6 @@ private fun Content(
         }
         composable<Playlists> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -403,7 +388,6 @@ private fun Content(
         }
         composable<FavoriteSongs> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -424,7 +408,6 @@ private fun Content(
         }
         composable<RandomSongs> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -445,7 +428,6 @@ private fun Content(
         }
         composable<FavoriteAlbums> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -463,7 +445,6 @@ private fun Content(
         }
         composable<FavoriteArtists> {
             ScreenWithMiniPlayer(
-                widthSizeClass = windowSizeClass.widthSizeClass,
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
@@ -513,7 +494,6 @@ private fun Content(
 
 @Composable
 internal fun ScreenWithMiniPlayer(
-    widthSizeClass: WindowWidthSizeClass,
     viewModelStoreOwner: ViewModelStoreOwner,
     onMiniPlayerClick: () -> Unit,
     content: @Composable () -> Unit
@@ -527,7 +507,6 @@ internal fun ScreenWithMiniPlayer(
             content.invoke()
         }
         MiniPlayer(
-            windowWidthSizeClass = widthSizeClass,
             viewModelStoreOwner = viewModelStoreOwner,
             onClick = onMiniPlayerClick,
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
