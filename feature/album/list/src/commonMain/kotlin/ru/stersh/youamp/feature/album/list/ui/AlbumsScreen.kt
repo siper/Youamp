@@ -18,7 +18,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -34,10 +33,10 @@ import ru.stersh.youamp.core.ui.AlbumItemDefaults
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
-import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.OnBottomReached
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.album.list.generated.resources.Res
 import youamp.feature.album.list.generated.resources.albums_title
 
@@ -132,7 +131,7 @@ private fun Content(
     onAlbumClick: (id: String) -> Unit
 ) {
     LazyVerticalGrid(
-        columns = if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+        columns = if (isCompactWidth) {
             GridCells.Fixed(2)
         } else {
             GridCells.Adaptive(AlbumItemDefaults.Width)

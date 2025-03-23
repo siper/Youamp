@@ -39,12 +39,14 @@ import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import ru.stersh.youamp.core.ui.ArtistItemDefaults
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.artist.list.generated.resources.Res
 import youamp.feature.artist.list.generated.resources.artists_title
 
@@ -115,10 +117,14 @@ private fun ArtistsScreen(
 
                 else -> {
                     LazyVerticalGrid(
-                        columns = GridCells.Adaptive(160.dp),
+                        columns = if (isCompactWidth) {
+                            GridCells.Fixed(2)
+                        } else {
+                            GridCells.Adaptive(ArtistItemDefaults.Width)
+                        },
                         contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(
@@ -140,10 +146,14 @@ private fun ArtistsScreen(
 private fun Progress() {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
+            columns = if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(ArtistItemDefaults.Width)
+            },
             contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(
                 items = (0..12).toList()

@@ -21,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,11 +38,11 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.HeaderLayout
-import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongPlayAnimation
+import ru.stersh.youamp.core.ui.isCompactWidth
 
 
 @Composable
@@ -164,7 +163,7 @@ private fun Header(
                 placeholder = Icons.Rounded.MusicNote,
                 modifier = Modifier
                     .then(
-                        if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                        if (isCompactWidth) {
                             Modifier
                                 .padding(horizontal = 48.dp)
                                 .fillMaxWidth()

@@ -28,6 +28,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import ru.stersh.youamp.core.ui.AlbumItemDefaults
 import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
@@ -36,6 +37,7 @@ import ru.stersh.youamp.core.ui.HeaderLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.artist.favorites.generated.resources.Res
 import youamp.feature.artist.favorites.generated.resources.favorite_artists_title
 
@@ -103,10 +105,14 @@ private fun FavoriteArtistsScreen(
 
                 state.data?.artists != null -> {
                     LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                        columns = if (isCompactWidth) {
+                            GridCells.Fixed(2)
+                        } else {
+                            GridCells.Adaptive(AlbumItemDefaults.Width)
+                        },
                         contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item(

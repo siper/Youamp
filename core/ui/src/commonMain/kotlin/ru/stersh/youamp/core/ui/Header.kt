@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
@@ -30,10 +28,9 @@ fun HeaderLayout(
     title: @Composable HeaderTitleScope.() -> Unit = {},
     subtitle: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    windowSizeClass: WindowSizeClass = LocalWindowSizeClass.current,
     modifier: Modifier = Modifier
 ) {
-    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+    if (isExpandedWidth) {
         HeaderLayoutExpanded(
             image = image,
             title = title,
