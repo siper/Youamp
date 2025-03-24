@@ -4,4 +4,6 @@
     <string name="play_next_in_queue_title">Reprodueix la següent en la cua</string>
     <string name="go_to_album_title">Vés a l\'àlbum</string>
     <string name="go_to_artist_title">Vés a l\'artista</string>
+    <string name="add_to_favorites">Afegeix als preferits</string>
+    <string name="remove_from_favorites">Elimina dels preferits</string>
 </resources>
