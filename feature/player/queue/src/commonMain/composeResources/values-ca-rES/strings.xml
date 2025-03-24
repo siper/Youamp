@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="play_queue_title">Reproduir cua</string>
+    <string name="play_queue_title">Reprodueix la cua</string>
+    <string name="play_song_title">Reprodueix la cançó</string>
+    <string name="remove_from_queue_title">Elimina de la cua</string>
 </resources>
