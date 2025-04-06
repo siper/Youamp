@@ -1,7 +1,7 @@
 [versions]
 android-plugin = "8.9.0"
 koin = "4.1.0-Beta5"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 kotlin-coroutines = "1.10.1"
 lifecycle = "2.8.7"
 room = "2.7.0-rc02"
@@ -11,10 +11,7 @@ compose-icons = "1.1.1"
 junit = "4.13.2"
 junit-version = "1.2.1"
 espresso-core = "3.6.1"
-appcompat = "1.7.0"
 paging = "3.3.6"
-kotlin-stdlib = "2.1.10"
-kotlin-test = "2.1.10"
 runner = "1.6.2"
 core = "1.6.1"
 sqlite = "2.4.0"
@@ -58,8 +55,8 @@ paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pag
 kotlinx-collectionsImmutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.8" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.6.2" }
 subsonicApi = { module = "ru.stersh:subsonic-api", version = "1.0.8" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin-stdlib" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin-test" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 compose-material3-windowSizeClass = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-multiplatform" }
@@ -67,7 +64,6 @@ compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons"
 material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-version" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "core" }
 sl4j = { module = "org.slf4j:slf4j-api", version = "2.0.17" }
@@ -88,5 +84,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-ksp = { id = "com.google.devtools.ksp", version = "2.1.10-1.0.31" }
+ksp = { id = "com.google.devtools.ksp", version = "2.1.20-1.0.32" }
 osdetector = { id = "com.google.osdetector", version = "1.7.3" }
