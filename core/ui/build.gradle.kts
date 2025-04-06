@@ -11,19 +11,17 @@ kotlin {
     jvm("desktop")
 
     sourceSets {
-        commonMain {
-            dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material3)
-                api(compose.materialIconsExtended)
-                api(compose.ui)
-                api(compose.uiTooling)
-                api(compose.components.uiToolingPreview)
-                api(libs.compose.material3.windowSizeClass)
-                implementation(compose.components.resources)
-                implementation(libs.coil.compose)
-            }
+        commonMain.dependencies {
+            api(compose.runtime)
+            api(compose.foundation)
+            api(compose.material3)
+            api(compose.materialIconsExtended)
+            api(compose.ui)
+            api(compose.uiTooling)
+            api(compose.components.uiToolingPreview)
+            api(libs.compose.material3.windowSizeClass)
+            implementation(compose.components.resources)
+            implementation(libs.coil.compose)
         }
     }
 }
@@ -38,10 +36,6 @@ android {
             .get()
             .toInt()
     }
-    sourceSets["main"].res.srcDirs(
-        "src/commonMain/resources",
-        "src/androidMain/resources"
-    )
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
