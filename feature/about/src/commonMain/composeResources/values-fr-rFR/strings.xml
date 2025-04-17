@@ -5,7 +5,7 @@
     <string name="f_droid_icon_description">Icône F-Droid</string>
     <string name="f_droid_subtitle">Vérifier les mises à jour</string>
     <string name="crowdin_icon_description">Icône Crowdin</string>
-    <string name="crowdin_subtitle">Aide à traduire</string>
+    <string name="crowdin_subtitle">Aider à traduire</string>
     <string name="about_title">A propos</string>
-    <string name="app_icon_description">Icône de l\'application</string>
+    <string name="app_icon_description">Icône de l’application</string>
 </resources>

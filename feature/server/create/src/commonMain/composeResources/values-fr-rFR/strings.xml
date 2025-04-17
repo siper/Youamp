@@ -8,14 +8,14 @@
     <string name="server_address_title">Adresse</string>
     <string name="server_username_title">Nom d’utilisateur</string>
     <string name="server_password_title">Mot de passe</string>
-    <string name="server_use_legacy_auth_title">Utiliser l\'ancienne authentification</string>
+    <string name="server_use_legacy_auth_title">Utiliser l’ancienne authentification</string>
     <string name="server_test_title">Test</string>
     <string name="server_add_action_title">Ajouter</string>
     <string name="server_save_action_title">Sauvegarder</string>
     <string name="hide_password_description">Masquer le mot de passe</string>
     <string name="show_password_description">Afficher le mot de passe</string>
     <string name="server_icon_description">Icône du serveur</string>
-    <string name="user_icon_description">Image de l\'utilisateur</string>
-    <string name="use_legacy_auth_subtitle">Certains serveurs ne prennent pas en charge l\'authentification avec un sel. Si vous avez des problèmes de connexion, activez cette option</string>
+    <string name="user_icon_description">Image de l’utilisateur</string>
+    <string name="use_legacy_auth_subtitle">Certains serveurs ne prennent pas en charge l’authentification avec un sel. Si vous avez des problèmes de connexion, activez cette option</string>
     <string name="additional_settings_title">Paramètres supplémentaires</string>
 </resources>
