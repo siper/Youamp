@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_title">Lire</string>
-    <string name="add_to_queue_title">Ajouter à la file d\'attente</string>
-    <string name="artist_info_title">Informations sur l\'artiste</string>
-    <string name="album_info_title">Infos sur l\'album</string>
+    <string name="add_to_queue_title">Ajouter à la file d’attente</string>
+    <string name="artist_info_title">Informations sur l’artiste</string>
+    <string name="album_info_title">Infos sur l’album</string>
     <string name="songs_title">Chansons</string>
-    <string name="load_more_title">Charger plus d\'éléments</string>
+    <string name="load_more_title">Charger plus d’éléments</string>
     <string name="albums_title">Albums</string>
     <string name="artists_title">Artistes</string>
     <string name="close_search_title">Fermer la recherche</string>
