@@ -103,12 +103,21 @@ If you want help to make Youamp better, you can:
         <sub><b>245 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/BoboTiG"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13486702/medium/a9dd2899e7897813a68c47def248b142.jpeg" />
+          <br />
+          <sub><b>Mickaël Schoentgen (BoboTiG)</b></sub></a>
+        <br />
+        <sub><b>165 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/ctrlVnt"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16872155/medium/5d6936a3ed5809ea8d6898f3f49b247c.png" />
           <br />
           <sub><b>Riccardo Venturini (ctrlVnt)</b></sub></a>
         <br />
         <sub><b>92 words</b></sub>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/tct123"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15267698/medium/322d599848cfa45502662989d2208a22.jpg" />
           <br />
@@ -116,8 +125,13 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>72 words</b></sub>
       </td>
-    </tr>
-    <tr>
+      <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/SortingFarmer"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17044906/medium/96921de630db584b78c475a33091111d.png" />
+          <br />
+          <sub><b>David Bengraf (SortingFarmer) (SortingFarmer)</b></sub></a>
+        <br />
+        <sub><b>28 words</b></sub>
+      </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/0ae0"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16926479/medium/057ded864ac90ee8a9133990e283282c.png" />
           <br />
