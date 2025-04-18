@@ -1,7 +1,7 @@
-Youamp est un lecteur de musique pour les serveurs Subsonic avec une interface Material You moderne et un haut niveau de confidentialité, qui est assurée par l'absence de trackers, de publicité et d'analyse. Le code source est ouvert, donc tout le monde peut améliorer Youamp.
+Youamp est un lecteur de musique pour les serveurs Subsonic avec une interface Material You moderne et un haut niveau de confidentialité, qui est assurée par l’absence de trackers, de publicité et d’analyse. Le code source est ouvert, donc tout le monde peut améliorer Youamp.
 
 Les fonctionnalités suivantes sont actuellement prises en charge :
 • Voir la liste des artistes, albums et listes de lecture
-• Recherche d'artistes, d'albums et de chansons
+• Recherche d’artistes, d’albums et de chansons
 • Lire de la musique
 • Ajouter un nombre illimité de serveurs Subsonic
