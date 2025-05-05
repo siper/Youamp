@@ -1,6 +1,6 @@
 [versions]
 android-plugin = "8.9.2"
-koin = "4.1.0-Beta7"
+koin = "4.1.0-Beta8"
 kotlin = "2.1.20"
 kotlin-coroutines = "1.10.2"
 lifecycle = "2.8.7"
