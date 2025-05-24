@@ -40,7 +40,7 @@ jobs:
         if: matrix.target == 'android'
         run: |
           ./gradlew :androidApp:assembleRelease \
-            -Pandroid.injected.signing.store.file=keystore.jks \
+            -Pandroid.injected.signing.store.file=/home/runner/work/Youamp/Youamp/androidApp/keystore.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTORE_KEY_ALIAS }} \
             -Pandroid.injected.signing.key.password=${{ secrets.KEYSTORE_KEY_PASSWORD }}
