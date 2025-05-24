@@ -32,28 +32,20 @@ internal class ProgressSyncActivityCallback(
             .onEach { progress ->
                 val currentItemId = player
                     .getCurrentMediaItem()
-                    .first()?.id
+                    .first()
+                    ?.id
                     ?: return@onEach
                 if (currentItemId != scrobbleSender?.id) {
                     scrobbleSender = ScrobbleSender(currentItemId, apiProvider)
                 }
                 val sender = scrobbleSender ?: return@onEach
-                if (progress.currentTimeMs > SEND_SCROBBLE_EVENT_TIME && !sender.scrobbleSent) {
+                if (progress.currentTimeMs >= (progress.totalTimeMs / 2) && !sender.scrobbleSent) {
                     activity.lifecycleScope.launch {
                         sender.trySendScrobble()
-                    }
-                }
-                if ((progress.currentTimeMs + SEND_SCROBBLE_EVENT_TIME) >= progress.totalTimeMs && !sender.submissionSent) {
-                    activity.lifecycleScope.launch {
-                        sender.trySendSubmission()
                     }
                 }
             }
             .flowOn(Dispatchers.IO)
             .launchIn(activity.lifecycleScope)
-    }
-
-    companion object {
-        private const val SEND_SCROBBLE_EVENT_TIME = 5000L
     }
 }

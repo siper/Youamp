@@ -11,8 +11,6 @@ class ScrobbleSender(
 ) {
     var scrobbleSent = false
         private set
-    var submissionSent = false
-        private set
 
     private val sendMutex = Mutex()
 
@@ -29,21 +27,5 @@ class ScrobbleSender(
                 )
             scrobbleSent = true
         }.onFailure { Logger.w(it) { "trySendScrobble error" } }
-    }
-
-    suspend fun trySendSubmission() = sendMutex.withLock {
-        if (submissionSent) {
-            return@withLock
-        }
-        runCatching {
-            apiProvider
-                .getApi()
-                .scrobble(
-                    id = id,
-                    time = System.currentTimeMillis(),
-                    submission = true,
-                )
-            submissionSent = true
-        }.onFailure { Logger.w(it) { "trySendSubmission error" } }
     }
 }
