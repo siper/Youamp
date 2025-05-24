@@ -85,9 +85,9 @@ jobs:
             Multiplatform release for Android, Windows, macOS and Linux.
             See artifacts for each platform.
           files: |
-            artifacts/android-build/*.apk
-            artifacts/linux-build/*
-            artifacts/macos-build/*
-            artifacts/windows-build/*
+            artifacts/**/*.apk
+            artifacts/**/*.deb
+            artifacts/**/*.dmg
+            artifacts/**/*.msi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
