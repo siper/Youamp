@@ -32,7 +32,7 @@ jobs:
       - name: Decode Keystore
         if: matrix.target == 'android'
         run: |
-          echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
+          echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > /home/runner/work/Youamp/Youamp/androidApp/keystore.jks
         env:
           KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
 
