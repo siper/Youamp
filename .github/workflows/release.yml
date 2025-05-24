@@ -39,7 +39,7 @@ jobs:
       - name: Build Android
         if: matrix.target == 'android'
         run: |
-          ./gradlew :app:assembleRelease \
+          ./gradlew :androidApp:assembleRelease \
             -Pandroid.injected.signing.store.file=/home/runner/work/Youamp/Youamp/androidApp/keystore.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTORE_KEY_ALIAS }} \
@@ -48,7 +48,7 @@ jobs:
       - name: Build Desktop
         if: matrix.target != 'android'
         run: |
-          ./gradlew :app:createDistributable \
+          ./gradlew :desktopApp:createDistributable \
             -Ptarget=${{ matrix.target }}
 
       - name: Upload artifacts
