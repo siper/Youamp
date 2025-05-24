@@ -61,8 +61,12 @@ internal class SongInfoViewModel(
         playerQueueAudioSourceManager.playSource(AudioSource.Song(songId))
     }
 
-    fun playAfterCurrent(songId: String) = viewModelScope.launch {
-        playerQueueAudioSourceManager.addAfterCurrent(AudioSource.Song(songId))
+    fun addToQueueNext(songId: String) = viewModelScope.launch {
+        playerQueueAudioSourceManager.addNext(AudioSource.Song(songId))
+    }
+
+    fun addToQueueLast(songId: String) = viewModelScope.launch {
+        playerQueueAudioSourceManager.addLast(AudioSource.Song(songId))
     }
 
     fun addToFavorites(songId: String) = viewModelScope.launch {

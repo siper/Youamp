@@ -45,7 +45,8 @@ internal class PlayerQueueAudioSourceManagerImpl(
         setPlayingSource(source.first())
     }
 
-    override suspend fun addSource(vararg source: AudioSource, shuffled: Boolean) = withContext(Dispatchers.IO) {
+    override suspend fun addLast(vararg source: AudioSource, shuffled: Boolean) =
+        withContext(Dispatchers.IO) {
         val newSongs = source.flatMap { getMediaItemsFromSource(it) }
         if (shuffled) {
             player.addMediaItems(newSongs.shuffled())
@@ -55,7 +56,8 @@ internal class PlayerQueueAudioSourceManagerImpl(
         clearPlayingSource()
     }
 
-    override suspend fun addAfterCurrent(vararg source: AudioSource, shuffled: Boolean) = withContext(Dispatchers.IO) {
+    override suspend fun addNext(vararg source: AudioSource, shuffled: Boolean) =
+        withContext(Dispatchers.IO) {
         val newSongs = source.flatMap { getMediaItemsFromSource(it) }
         val index = (player
             .getCurrentItemPosition()

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_title">Играть</string>
-    <string name="play_next_in_queue_title">Играть следующей в очереди</string>
+    <string name="add_to_queue_next_title">Добавить следующей в очереди</string>
+    <string name="add_to_queue_last_title">Добавить последней в очереди</string>
     <string name="go_to_album_title">Перейти к альбому</string>
     <string name="go_to_artist_title">Перейти к исполнителю</string>
     <string name="add_to_favorites">Добавить в избранное</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_title">播放</string>
-    <string name="play_next_in_queue_title">播放队列中的下一个</string>
+    <string name="add_to_queue_next_title">播放队列中的下一个</string>
     <string name="go_to_album_title">查看专辑</string>
     <string name="go_to_artist_title">查看艺人</string>
 </resources>
