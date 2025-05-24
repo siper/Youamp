@@ -55,7 +55,9 @@ android {
             .toInt()
         versionCode = AppBuildInfo.VERSION_CODE
         versionName = AppBuildInfo.VERSION_NAME
+        base.archivesName = "Youamp-${versionName}"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
