@@ -1,44 +1,89 @@
-name: Build and Upload release
+name: Build and Release KMP Application
 
 on:
   push:
     tags:
       - 'v*'
 
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
 jobs:
-  CI:
-    name: Build and Upload release
+  build:
+    name: Build for all targets
     runs-on: ubuntu-latest
-
-    env:
-      KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
-      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
-      KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-      VERSION_TAG: ${{ github.ref_name }}
-
+    strategy:
+      matrix:
+        target: [ android, linux, macos, windows ]
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
-          java-version: 21
-          distribution: "temurin"
+          distribution: 'temurin'
+          java-version: '21'
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup Android SDK
+        if: matrix.target == 'android'
+        uses: android-actions/setup-android@v3
+
+      - name: Decode Keystore
+        if: matrix.target == 'android'
+        run: |
+          echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > keystore.jks
+        env:
+          KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
+
+      - name: Build Android
+        if: matrix.target == 'android'
+        run: |
+          ./gradlew :androidApp:assembleRelease \
+            -Pandroid.injected.signing.store.file=keystore.jks \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTORE_KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+
+      - name: Build Desktop
+        if: matrix.target != 'android'
+        run: |
+          ./gradlew :desktopApp:createDistributable \
+            -Ptarget=${{ matrix.target }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
-          ruby-version: '3.2.3'
-          bundler-cache: true
+          name: ${{ matrix.target }}-build
+          path: |
+            androidApp/build/outputs/apk/release/*.apk
+            desktopApp/build/compose/binaries/main/app/${{ matrix.target }}/*
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+  create-release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Generate .jks file
-        run: echo ${{secrets.KEYSTORE_JKS}} | base64 -d > /home/runner/work/Youamp/Youamp/keystore.jks
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
 
-      - name: Publish github release with fastlane
-        run: bundle exec fastlane github
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+          body: |
+            Multiplatform release for Android, Windows, macOS and Linux.
+            See artifacts for each platform.
+          files: |
+            artifacts/android-build/*.apk
+            artifacts/linux-build/*
+            artifacts/macos-build/*
+            artifacts/windows-build/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
