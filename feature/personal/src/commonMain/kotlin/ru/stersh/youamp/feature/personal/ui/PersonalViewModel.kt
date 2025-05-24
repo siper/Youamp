@@ -2,6 +2,7 @@ package ru.stersh.youamp.feature.personal.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +44,7 @@ internal class PersonalViewModel(
                 .map { it.toUi() }
                 .flowOn(Dispatchers.IO)
                 .catch {
+                    Logger.w(it) { "Error subscribing state" }
                     _state.update {
                         it.copy(
                             progress = false,

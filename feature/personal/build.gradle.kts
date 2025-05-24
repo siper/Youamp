@@ -26,6 +26,7 @@ kotlin {
                 implementation(libs.koin.compose)
                 implementation(libs.bundles.lifecycle)
                 implementation(libs.kotlinx.collectionsImmutable)
+                implementation(libs.kermit)
             }
         }
     }

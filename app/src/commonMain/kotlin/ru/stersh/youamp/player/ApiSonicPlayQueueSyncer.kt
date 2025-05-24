@@ -50,7 +50,7 @@ class ApiSonicPlayQueueSyncer(
                     .data
                     .playQueue
             }
-                .onFailure { Logger.e(it) { "loadPlayQueue error" } }
+                .onFailure { Logger.w(it) { "loadPlayQueue error" } }
                 .getOrNull()
         } ?: return
 
