@@ -56,7 +56,9 @@ jobs:
           name: ${{ matrix.target }}-build
           path: |
             androidApp/build/outputs/apk/release/*.apk
-            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*
+            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*.dmg
+            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*.exe
+            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*.deb
 
   create-release:
     name: Create Release
@@ -81,8 +83,8 @@ jobs:
             See artifacts for each platform.
           files: |
             artifacts/android-build/*.apk
-            artifacts/linux-build/*
-            artifacts/macos-build/*
-            artifacts/windows-build/*
+            artifacts/linux-build/*.deb
+            artifacts/macos-build/*.dmg
+            artifacts/windows-build/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
