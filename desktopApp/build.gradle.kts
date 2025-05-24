@@ -49,7 +49,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = AppBuildInfo.PACKAGE_NAME
+            packageName = "Youamp"
             packageVersion = AppBuildInfo.CLEAR_VERSION_NAME
         }
         buildTypes.release.proguard {
