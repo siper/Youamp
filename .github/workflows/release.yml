@@ -48,8 +48,7 @@ jobs:
       - name: Build Desktop
         if: matrix.target != 'android'
         run: |
-          ./gradlew :desktopApp:createDistributable \
-            -Ptarget=${{ matrix.target }}
+          ./gradlew :desktopApp:packageDistributionForCurrentOS
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -57,7 +56,9 @@ jobs:
           name: ${{ matrix.target }}-build
           path: |
             androidApp/build/outputs/apk/release/*.apk
-            desktopApp/build/compose/binaries/main/app/${{ matrix.target }}/*
+            desktopApp/build/compose/binaries/main/msi/*.msi
+            desktopApp/build/compose/binaries/main/deb/*.deb
+            desktopApp/build/compose/binaries/main/dmg/*.dmg
 
   create-release:
     name: Create Release
