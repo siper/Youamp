@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AddToQueue
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
@@ -30,9 +31,10 @@ import ru.stersh.youamp.core.ui.SongMenu
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import youamp.feature.song.info.generated.resources.Res
 import youamp.feature.song.info.generated.resources.add_to_favorites
+import youamp.feature.song.info.generated.resources.add_to_queue_last_title
+import youamp.feature.song.info.generated.resources.add_to_queue_next_title
 import youamp.feature.song.info.generated.resources.go_to_album_title
 import youamp.feature.song.info.generated.resources.go_to_artist_title
-import youamp.feature.song.info.generated.resources.play_next_in_queue_title
 import youamp.feature.song.info.generated.resources.play_title
 import youamp.feature.song.info.generated.resources.remove_from_favorites
 
@@ -68,8 +70,12 @@ fun SongInfoScreen(
                 viewModel.play(id)
                 onDismiss()
             },
-            onPlayNextInQueue = {
-                viewModel.playAfterCurrent(id)
+            onAddToQueueNext = {
+                viewModel.addToQueueNext(id)
+                onDismiss()
+            },
+            onAddToQueueLast = {
+                viewModel.addToQueueLast(id)
                 onDismiss()
             },
             onAddToFavorites = {
@@ -91,7 +97,8 @@ private fun SongInfoScreen(
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
     onPlay: () -> Unit,
-    onPlayNextInQueue: () -> Unit,
+    onAddToQueueNext: () -> Unit,
+    onAddToQueueLast: () -> Unit,
     onAddToFavorites: () -> Unit,
     onRemoveFromFavorites: () -> Unit
 ) {
@@ -132,16 +139,26 @@ private fun SongInfoScreen(
         item(
             icon = {
                 Icon(
-                    imageVector = Icons.Rounded.QueuePlayNext,
-                    contentDescription = stringResource(Res.string.play_next_in_queue_title),
+                    imageVector = Icons.Rounded.AddToQueue,
+                    contentDescription = stringResource(Res.string.add_to_queue_last_title),
                 )
             },
             title = {
-                Text(text = stringResource(Res.string.play_next_in_queue_title))
+                Text(text = stringResource(Res.string.add_to_queue_last_title))
             },
-            onClick = {
-                onPlayNextInQueue()
-            }
+            onClick = onAddToQueueLast
+        )
+        item(
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.QueuePlayNext,
+                    contentDescription = stringResource(Res.string.add_to_queue_next_title),
+                )
+            },
+            title = {
+                Text(text = stringResource(Res.string.add_to_queue_next_title))
+            },
+            onClick = onAddToQueueNext
         )
 
         if (state.showAlbum && state.albumId != null) {
@@ -226,9 +243,10 @@ private fun AlbumInfoScreenPreview() {
             onPlay = {},
             onOpenAlbum = {},
             onOpenArtist = {},
-            onPlayNextInQueue = {},
+            onAddToQueueNext = {},
             onAddToFavorites = {},
             onRemoveFromFavorites = {},
+            onAddToQueueLast = {},
         )
     }
 }

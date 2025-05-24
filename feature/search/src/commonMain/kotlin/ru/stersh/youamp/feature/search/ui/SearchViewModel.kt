@@ -58,7 +58,7 @@ internal class SearchViewModel(
     }
 
     fun addToQueue(source: AudioSource) = viewModelScope.launch {
-        playerQueueAudioSourceManager.addSource(source)
+        playerQueueAudioSourceManager.addLast(source)
     }
 
     fun onQueryChange(query: String) = viewModelScope.launch {

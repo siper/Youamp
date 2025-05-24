@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_title">Abspielen</string>
-    <string name="play_next_in_queue_title">Als Nächstes abspielen</string>
+    <string name="add_to_queue_next_title">Als Nächstes abspielen</string>
     <string name="go_to_album_title">Zum Album gehen</string>
     <string name="go_to_artist_title">Zum Interpreten gehen</string>
     <string name="add_to_favorites">Zu Favoriten hinzufügen</string>
