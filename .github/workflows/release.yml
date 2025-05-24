@@ -1,4 +1,4 @@
-name: Build and Release KMP Application
+name: Build and Release
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
       - name: Build Android
         if: matrix.target == 'android'
         run: |
-          ./gradlew :androidApp:assembleRelease \
+          ./gradlew :app:assembleRelease \
             -Pandroid.injected.signing.store.file=/home/runner/work/Youamp/Youamp/androidApp/keystore.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTORE_KEY_ALIAS }} \
@@ -48,17 +48,16 @@ jobs:
       - name: Build Desktop
         if: matrix.target != 'android'
         run: |
-          ./gradlew :desktopApp:createDistributable
+          ./gradlew :app:createDistributable \
+            -Ptarget=${{ matrix.target }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}-build
           path: |
-            androidApp/build/outputs/apk/release/*.apk
-            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*.dmg
-            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*.exe
-            desktopApp/build/compose/binaries/main/app/ru.stersh.youamp/*.deb
+            app/build/outputs/apk/release/*.apk
+            app/build/compose/binaries/main/app/${{ matrix.target }}/*
 
   create-release:
     name: Create Release
@@ -67,11 +66,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+          merge-multiple: true
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -83,8 +85,8 @@ jobs:
             See artifacts for each platform.
           files: |
             artifacts/android-build/*.apk
-            artifacts/linux-build/*.deb
-            artifacts/macos-build/*.dmg
-            artifacts/windows-build/*.exe
+            artifacts/linux-build/*
+            artifacts/macos-build/*
+            artifacts/windows-build/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
