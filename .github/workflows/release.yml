@@ -77,7 +77,7 @@ jobs:
           merge-multiple: true
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref }}
@@ -85,6 +85,9 @@ jobs:
             Multiplatform release for Android, Windows, macOS and Linux.
             See artifacts for each platform.
           files: |
-            artifacts/*
+            artifacts/android-build/*.apk
+            artifacts/linux-build/*
+            artifacts/macos-build/*
+            artifacts/windows-build/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
