@@ -43,6 +43,7 @@ internal class ExploreViewModel(
                 .map { it.toUi() }
                 .flowOn(Dispatchers.IO)
                 .catch {
+                    Logger.w(it) { "Error subscribing state" }
                     _state.update {
                         it.copy(
                             refreshing = false,

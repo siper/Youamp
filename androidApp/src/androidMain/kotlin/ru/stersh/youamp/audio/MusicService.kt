@@ -14,11 +14,11 @@ import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.android.inject
 import ru.stersh.youamp.audio.auto.AutoMediaSessionCallback
 import ru.stersh.youamp.audio.auto.AutoRepository
+import ru.stersh.youamp.core.player.PlayerHandler
 import co.touchlab.kermit.Logger as Log
 
 class MusicService : MediaLibraryService() {
@@ -65,8 +65,10 @@ class MusicService : MediaLibraryService() {
     }
 
     override fun onDestroy() {
-        mediaSession.release()
-        player.release()
+        PlayerHandler.post {
+            mediaSession.release()
+            player.release()
+        }
         super.onDestroy()
     }
 
