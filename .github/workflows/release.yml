@@ -56,8 +56,8 @@ jobs:
         with:
           name: ${{ matrix.target }}-build
           path: |
-            app/build/outputs/apk/release/*.apk
-            app/build/compose/binaries/main/app/${{ matrix.target }}/*
+            androidApp/build/outputs/apk/release/*.apk
+            desktopApp/build/compose/binaries/main/app/${{ matrix.target }}/*
 
   create-release:
     name: Create Release
