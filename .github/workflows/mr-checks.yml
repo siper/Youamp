@@ -5,10 +5,23 @@ on:
     branches: [ master ]
 
 jobs:
+  check_commits:
+    name: Check commits
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: webiny/action-conventional-commits@v1.3.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   lint:
     name: Run lint checks
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    needs: check_commits
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,6 +45,7 @@ jobs:
     name: Build android
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    needs: [ check_commits, lint ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,6 +68,7 @@ jobs:
   build_desktop:
     name: Build desktop
     runs-on: ubuntu-latest
+    needs: [ check_commits, lint ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
