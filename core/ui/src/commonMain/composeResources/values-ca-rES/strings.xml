@@ -8,4 +8,7 @@
     <string name="error_message">Torneu a provar. Si l\'errada persisteix, contacteu amb el desenvolupador.</string>
     <string name="error_title">Aix, alguna cosa no ha anat bé</string>
     <string name="empty_state_title">No hi ha res aquí encara…</string>
+    <string name="user_avatar_title">Avatar de l\'usuari</string>
+    <string name="dislike_title">No m\'agrada</string>
+    <string name="like_title">M\'agrada</string>
 </resources>

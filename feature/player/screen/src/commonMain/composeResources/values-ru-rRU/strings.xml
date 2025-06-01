@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="play_queue_description">Play queue</string>
+    <string name="play_queue_description">Очередь воспроизведения</string>
     <string name="shuffle_mode_description">Режим перемешивания</string>
     <string name="repeat_mode_description">Режим повтора</string>
     <string name="favorite_song_description">Любимая песня</string>

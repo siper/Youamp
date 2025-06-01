@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="navigate_back_description">Zurück</string>
-    <string name="shuffle_title">Shuffle</string>
+    <string name="shuffle_title">Mischen</string>
     <string name="play_all_title">Alle abspielen</string>
     <string name="placeholder_image_description">Platzhalter-Bild</string>
     <string name="error_button_title">Erneut versuchen</string>
