@@ -11,3 +11,6 @@ files:
     translation: /fastlane/metadata/android/%locale%/full_description.txt
   - source: /fastlane/metadata/android/en-US/short_description.txt
     translation: /fastlane/metadata/android/%locale%/short_description.txt
+
+commit_message: "chore(lang): new translations %original_file_name% from crowdin"
+append_commit_message: false
