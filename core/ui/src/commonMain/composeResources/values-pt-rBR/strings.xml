@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigate_back_description">Navegar de volta</string>
+    <string name="shuffle_title">Embaralhar</string>
+    <string name="play_all_title">Tocar tudo</string>
+    <string name="placeholder_image_description">Placeholder da imagem</string>
+    <string name="error_button_title">Tentar novamente</string>
+    <string name="error_message">Tente novamente. Se o erro ocorrer diversas vezes, entre em contato com os desenvolvedores.</string>
+    <string name="error_title">Epa, algo deu errado</string>
+    <string name="empty_state_title">Ainda não há nada aqui…</string>
+    <string name="user_avatar_title">Avatar de usuário</string>
+    <string name="dislike_title">Deslike</string>
+    <string name="like_title">Like</string>
+</resources>
