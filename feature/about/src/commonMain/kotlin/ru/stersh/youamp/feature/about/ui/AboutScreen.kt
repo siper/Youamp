@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import compose.icons.SimpleIcons
@@ -38,8 +39,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.SingleLineText
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
-import ru.stersh.youamp.feature.about.AppIcon
-import ru.stersh.youamp.feature.about.launchSafeAnyUrl
 import youamp.feature.about.generated.resources.Res
 import youamp.feature.about.generated.resources.about_title
 import youamp.feature.about.generated.resources.app_icon_description
@@ -59,17 +58,18 @@ fun AboutScreen(
 ) {
     val viewModel: AboutAppViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val uriHandler = LocalUriHandler.current
     AboutScreen(
         state = state,
         onBackClick = onBackClick,
         onGithubClick = {
-            launchSafeAnyUrl(state.githubUri)
+            uriHandler.openUri(state.githubUri)
         },
         onFDroidClick = {
-            launchSafeAnyUrl(state.fdroidUri)
+            uriHandler.openUri(state.fdroidUri)
         },
         onCrowdinClick = {
-            launchSafeAnyUrl(state.crwodinUri)
+            uriHandler.openUri(state.crwodinUri)
         }
     )
 }

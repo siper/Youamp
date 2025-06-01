@@ -1,4 +1,4 @@
-package ru.stersh.youamp.feature.about
+package ru.stersh.youamp.feature.about.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -139,7 +139,7 @@ private var _AppIcon: ImageVector? = null
 
 @Preview
 @Composable
-private fun Preview(): Unit {
+private fun Preview() {
     Box(modifier = Modifier.padding(12.dp)) {
         Image(imageVector = AppIcon, contentDescription = "")
     }
