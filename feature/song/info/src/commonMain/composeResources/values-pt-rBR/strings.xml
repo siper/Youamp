@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_title">Reproduzir</string>
+    <string name="add_to_queue_next_title">Adicionar à fila</string>
+    <string name="add_to_queue_last_title">Adicionar à fila por último</string>
+    <string name="go_to_album_title">Ir para o álbum</string>
+    <string name="go_to_artist_title">Ir para o artista</string>
+    <string name="add_to_favorites">Adicionar aos favoritos</string>
+    <string name="remove_from_favorites">Remover dos favoritos</string>
+</resources>
