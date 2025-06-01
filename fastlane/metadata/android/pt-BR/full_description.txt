@@ -1,0 +1,7 @@
+Youamp é um reprodutor de músicas para servidores Subsônicos, com uma interface moderna do Material You e um alto nível de privacidade, que é garantido pela falta de rastreadores, publicidade e análise. O código fonte é open-source, então qualquer pessoa pode melhorar o Youamp.
+
+A seguinte funcionalidade é suportada no momento:
+• Veja uma lista de artistas, álbuns e playlists
+• Procurar por artistas, álbuns e músicas
+• Reproduzir música
+• Adicione um número ilimitado de servidores subsônicos

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_test_success_message">Teste concluído</string>
+    <string name="server_test_error_message">Erro de Teste</string>
+    <string name="new_server_title">Novo Servidor SubSônico</string>
+    <string name="edit_server_title">Editar servidor</string>
+    <string name="server_name_title">Nome</string>
+    <string name="server_address_title">Endereço</string>
+    <string name="server_username_title">Nome de usuário</string>
+    <string name="server_password_title">Senha</string>
+    <string name="server_use_legacy_auth_title">Usar autenticação legada</string>
+    <string name="server_test_title">Teste</string>
+    <string name="server_add_action_title">Adicionar</string>
+    <string name="server_save_action_title">Salvar</string>
+    <string name="hide_password_description">Esconder a Senha</string>
+    <string name="show_password_description">Mostrar a senha</string>
+    <string name="server_icon_description">Ícone do servidor</string>
+    <string name="user_icon_description">Ícone de usuário</string>
+    <string name="use_legacy_auth_subtitle">Alguns servidores não suportam a autenticação sal. Se você tiver problemas com a conexão, ative esta opção</string>
+    <string name="additional_settings_title">Configurações adicionais</string>
+</resources>

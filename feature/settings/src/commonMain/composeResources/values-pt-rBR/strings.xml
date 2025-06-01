@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_title">Sobre</string>
+    <string name="about_subtitle">Informações do aplicativo, links de feedback</string>
+    <string name="servers_title">Servidores</string>
+    <string name="servers_subtitle">Gerenciar seus servidores subsónicos</string>
+    <string name="about_icon_description">Sobre o ícone</string>
+    <string name="servers_icon_description">Ícone do servidor</string>
+    <string name="settings_title">Configurações</string>
+</resources>
