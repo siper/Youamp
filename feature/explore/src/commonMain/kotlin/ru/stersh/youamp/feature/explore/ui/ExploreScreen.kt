@@ -33,11 +33,13 @@ import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButton
-import ru.stersh.youamp.core.ui.SectionTitle
+import ru.stersh.youamp.core.ui.Section
+import ru.stersh.youamp.core.ui.SectionScrollActions
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.currentPlatform
 import ru.stersh.youamp.feature.explore.ui.components.SearchBar
 import ru.stersh.youamp.shared.queue.AudioSource
 import youamp.feature.explore.generated.resources.Res
@@ -134,44 +136,48 @@ private fun Content(
         }
         state.data?.randomSongs?.let { randomSongs ->
             item {
-                SectionTitle(
-                    title = stringResource(Res.string.random_songs_title),
-                    onClick = onRandomSongsClick
-                )
-            }
-            item {
                 val lazyListState = rememberLazyListState()
-                LazyRow(
-                    state = lazyListState,
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                    modifier = Modifier.fillMaxWidth()
+                Section(
+                    title = stringResource(Res.string.random_songs_title),
+                    onClick = onRandomSongsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(lazyListState)
+                        }
+                    }
                 ) {
-                    randomSongs.forEachIndexed { index, songChunk ->
-                        item {
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(4.dp),
-                                modifier = Modifier.requiredWidth(336.dp)
-                            ) {
-                                songChunk.forEach { item ->
-                                    SongCardItem(
-                                        title = item.title,
-                                        artist = item.artist,
-                                        artworkUrl = item.artworkUrl,
-                                        onClick = {
-                                            onSongClick(item.id)
-                                        },
-                                        playButton = {
-                                            PlayButton(
-                                                isPlaying = item.isPlaying,
-                                                onClick = {
-                                                    onPlayPauseAudioSource(AudioSource.Song(item.id))
-                                                }
-                                            )
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                    )
+                    LazyRow(
+                        state = lazyListState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        randomSongs.forEachIndexed { index, songChunk ->
+                            item {
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                                    modifier = Modifier.requiredWidth(336.dp)
+                                ) {
+                                    songChunk.forEach { item ->
+                                        SongCardItem(
+                                            title = item.title,
+                                            artist = item.artist,
+                                            artworkUrl = item.artworkUrl,
+                                            onClick = {
+                                                onSongClick(item.id)
+                                            },
+                                            playButton = {
+                                                PlayButton(
+                                                    isPlaying = item.isPlaying,
+                                                    onClick = {
+                                                        onPlayPauseAudioSource(AudioSource.Song(item.id))
+                                                    }
+                                                )
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
                                 }
                             }
                         }

@@ -35,10 +35,12 @@ import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButtonOutlined
-import ru.stersh.youamp.core.ui.SectionTitle
+import ru.stersh.youamp.core.ui.Section
+import ru.stersh.youamp.core.ui.SectionScrollActions
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.currentPlatform
 import ru.stersh.youamp.shared.queue.AudioSource
 import youamp.feature.library.generated.resources.Res
 import youamp.feature.library.generated.resources.albums_title
@@ -137,75 +139,83 @@ private fun Content(
     ) {
         if (data.albums.isNotEmpty()) {
             item {
-                SectionTitle(
+                val albumsListState = rememberLazyListState()
+                Section(
                     title = stringResource(Res.string.albums_title),
-                    onClick = onAlbumsClick
-                )
-            }
-            item {
-                val lazyListState = rememberLazyListState()
-                LazyRow(
-                    state = lazyListState,
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = onAlbumsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(albumsListState)
+                        }
+                    }
                 ) {
-                    items(data.albums) {
-                        AlbumItem(
-                            title = it.title,
-                            artist = it.artist,
-                            artworkUrl = it.artworkUrl,
-                            playButton = {
-                                PlayButtonOutlined(
-                                    isPlaying = it.isPlaying,
-                                    onClick = {
-                                        onPlayPauseAudioSource(AudioSource.Album(it.id))
-                                    }
-                                )
-                            },
-                            onClick = {
-                                onAlbumClick(it.id)
-                            },
-                            modifier = Modifier.requiredWidth(160.dp)
-                        )
+                    LazyRow(
+                        state = albumsListState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = albumsListState),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(data.albums) {
+                            AlbumItem(
+                                title = it.title,
+                                artist = it.artist,
+                                artworkUrl = it.artworkUrl,
+                                playButton = {
+                                    PlayButtonOutlined(
+                                        isPlaying = it.isPlaying,
+                                        onClick = {
+                                            onPlayPauseAudioSource(AudioSource.Album(it.id))
+                                        }
+                                    )
+                                },
+                                onClick = {
+                                    onAlbumClick(it.id)
+                                },
+                                modifier = Modifier.requiredWidth(160.dp)
+                            )
+                        }
                     }
                 }
             }
         }
         if (data.artists.isNotEmpty()) {
             item {
-                SectionTitle(
-                    title = stringResource(Res.string.artists_title),
-                    onClick = onArtistsClick
-                )
-            }
-            item {
                 val lazyListState = rememberLazyListState()
-                LazyRow(
-                    state = lazyListState,
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                    modifier = Modifier.fillMaxWidth()
+                Section(
+                    title = stringResource(Res.string.artists_title),
+                    onClick = onArtistsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(lazyListState)
+                        }
+                    }
                 ) {
-                    items(data.artists) {
-                        ArtistItem(
-                            name = it.name,
-                            artworkUrl = it.artworkUrl,
-                            playButton = {
-                                PlayButtonOutlined(
-                                    isPlaying = it.isPlaying,
-                                    onClick = {
-                                        onPlayPauseAudioSource(AudioSource.Artist(it.id))
-                                    }
-                                )
-                            },
-                            onClick = {
-                                onArtistClick(it.id)
-                            },
-                            modifier = Modifier.requiredWidth(160.dp)
-                        )
+                    LazyRow(
+                        state = lazyListState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(data.artists) {
+                            ArtistItem(
+                                name = it.name,
+                                artworkUrl = it.artworkUrl,
+                                playButton = {
+                                    PlayButtonOutlined(
+                                        isPlaying = it.isPlaying,
+                                        onClick = {
+                                            onPlayPauseAudioSource(AudioSource.Artist(it.id))
+                                        }
+                                    )
+                                },
+                                onClick = {
+                                    onArtistClick(it.id)
+                                },
+                                modifier = Modifier.requiredWidth(160.dp)
+                            )
+                        }
                     }
                 }
             }
