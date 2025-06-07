@@ -59,7 +59,7 @@ internal class PlayerScreenViewModel(
                 .collect { progress ->
                     _state.update {
                         it.copy(
-                            progress = progress.currentTimeMs.toFloat() / progress.totalTimeMs,
+                            progress = progress.percent,
                             currentTime = progress.currentTime,
                             totalTime = progress.totalTime
                         )
