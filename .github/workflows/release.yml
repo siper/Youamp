@@ -108,6 +108,9 @@ jobs:
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
+        permissions:
+          contents: write
+          attestations: read
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref }}
