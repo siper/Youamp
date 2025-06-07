@@ -6,5 +6,5 @@ data class PlayerProgress(
     val currentTime: String,
     val totalTime: String,
 ) {
-    val progressPercent: Float = currentTimeMs.toFloat() / totalTimeMs
+    val percent: Float = (currentTimeMs.toFloat() / totalTimeMs).takeIf { !it.isNaN() } ?: 0f
 }

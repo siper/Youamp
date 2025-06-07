@@ -25,7 +25,7 @@ internal class MiniPlayerViewModel(
                 player.getIsPlaying(),
                 player
                     .getProgress()
-                    .mapNotNull { it?.progressPercent }
+                    .mapNotNull { it?.percent }
             ) { currentMediaItem, isPlaying, progress ->
                 return@combine currentMediaItem?.let {
                     PlayerDataUi(
