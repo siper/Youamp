@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -35,6 +34,7 @@ import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButton
 import ru.stersh.youamp.core.ui.PlayButtonOutlined
 import ru.stersh.youamp.core.ui.PlaylistItem
+import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.Section
 import ru.stersh.youamp.core.ui.SectionScrollActions
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -101,7 +101,7 @@ private fun PersonalScreen(
         state.data?.isEmpty == true -> LayoutStateUi.Empty
         else -> LayoutStateUi.Content
     }
-    PullToRefreshBox(
+    PullToRefresh(
         isRefreshing = state.refreshing, onRefresh = onRefresh
     ) {
         StateLayout(

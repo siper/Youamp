@@ -24,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -44,6 +43,7 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.core.ui.isCompactWidth
@@ -93,7 +93,7 @@ private fun ArtistsScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        PullToRefreshBox(
+        PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
             modifier = Modifier.padding(it)
