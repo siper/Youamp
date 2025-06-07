@@ -118,11 +118,14 @@ private fun FavoriteArtistsScreen(
                         item(
                             contentType = "header",
                             key = "header",
-                            span = { GridItemSpan(2) }
+                            span = { GridItemSpan(maxCurrentLineSpan) }
                         ) {
                             HeaderLayout(
                                 title = {
-                                    Text(text = stringResource(Res.string.favorite_artists_title))
+                                    Text(
+                                        text = stringResource(Res.string.favorite_artists_title),
+                                        modifier = Modifier.singleHeader()
+                                    )
                                 },
                                 actions = {
                                     PlayAllButton(
