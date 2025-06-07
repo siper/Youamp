@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -35,6 +34,7 @@ import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButtonOutlined
+import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.Section
 import ru.stersh.youamp.core.ui.SectionScrollActions
 import ru.stersh.youamp.core.ui.SkeletonLayout
@@ -89,7 +89,7 @@ internal fun LibraryScreen(
             }
         }
     }
-    PullToRefreshBox(
+    PullToRefresh(
         isRefreshing = state.refreshing,
         onRefresh = onRefresh
     ) {

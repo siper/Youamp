@@ -19,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -37,6 +36,7 @@ import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.HeaderLayout
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
+import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import youamp.feature.song.random.generated.resources.Res
 import youamp.feature.song.random.generated.resources.random_songs_title
@@ -82,7 +82,7 @@ private fun RandomSongsScreen(
             )
         }
     ) {
-        PullToRefreshBox(
+        PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
             modifier = Modifier.padding(it)
