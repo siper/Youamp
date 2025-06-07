@@ -37,9 +37,11 @@ import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.PlaylistItemDefaults
 import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.playlist.list.generated.resources.Res
 import youamp.feature.playlist.list.generated.resources.playlists_title
 
@@ -110,7 +112,11 @@ private fun PlaylistsScreen(
 
                 else -> {
                     LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                        columns = if (isCompactWidth) {
+                            GridCells.Fixed(2)
+                        } else {
+                            GridCells.Adaptive(PlaylistItemDefaults.Width)
+                        },
                         state = rememberLazyGridState(),
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
