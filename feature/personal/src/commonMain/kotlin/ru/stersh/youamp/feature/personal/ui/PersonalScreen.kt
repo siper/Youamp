@@ -35,11 +35,13 @@ import ru.stersh.youamp.core.ui.LayoutStateUi
 import ru.stersh.youamp.core.ui.PlayButton
 import ru.stersh.youamp.core.ui.PlayButtonOutlined
 import ru.stersh.youamp.core.ui.PlaylistItem
-import ru.stersh.youamp.core.ui.SectionTitle
+import ru.stersh.youamp.core.ui.Section
+import ru.stersh.youamp.core.ui.SectionScrollActions
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongCardItem
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.currentPlatform
 import ru.stersh.youamp.shared.queue.AudioSource
 import youamp.feature.personal.generated.resources.Res
 import youamp.feature.personal.generated.resources.albums_title
@@ -100,8 +102,7 @@ private fun PersonalScreen(
         else -> LayoutStateUi.Content
     }
     PullToRefreshBox(
-        isRefreshing = state.refreshing,
-        onRefresh = onRefresh
+        isRefreshing = state.refreshing, onRefresh = onRefresh
     ) {
         StateLayout(
             state = layoutState,
@@ -128,8 +129,7 @@ private fun PersonalScreen(
             empty = {
                 EmptyLayout()
             },
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         )
     }
@@ -141,16 +141,13 @@ private fun Progress(
 ) {
     SkeletonLayout(modifier = modifier) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(
-                horizontal = 24.dp,
-                vertical = 16.dp
+            verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(
+                horizontal = 24.dp, vertical = 16.dp
             )
         ) {
             SkeletonItem(
                 modifier = Modifier.size(
-                    200.dp,
-                    48.dp
+                    200.dp, 48.dp
                 )
             )
             Row(
@@ -158,27 +155,23 @@ private fun Progress(
             ) {
                 SkeletonItem(
                     modifier = Modifier.size(
-                        160.dp,
-                        200.dp
+                        160.dp, 200.dp
                     )
                 )
                 SkeletonItem(
                     modifier = Modifier.size(
-                        160.dp,
-                        200.dp
+                        160.dp, 200.dp
                     )
                 )
                 SkeletonItem(
                     modifier = Modifier.size(
-                        160.dp,
-                        200.dp
+                        160.dp, 200.dp
                     )
                 )
             }
             SkeletonItem(
                 modifier = Modifier.size(
-                    200.dp,
-                    48.dp
+                    200.dp, 48.dp
                 )
             )
             Column(
@@ -186,20 +179,17 @@ private fun Progress(
             ) {
                 SkeletonItem(
                     modifier = Modifier.size(
-                        336.dp,
-                        64.dp
+                        336.dp, 64.dp
                     )
                 )
                 SkeletonItem(
                     modifier = Modifier.size(
-                        336.dp,
-                        64.dp
+                        336.dp, 64.dp
                     )
                 )
                 SkeletonItem(
                     modifier = Modifier.size(
-                        336.dp,
-                        64.dp
+                        336.dp, 64.dp
                     )
                 )
             }
@@ -235,40 +225,38 @@ private fun Content(
         return
     }
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background),
+        modifier = modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(bottom = 24.dp)
     ) {
         if (data.playlists.isNotEmpty()) {
             item {
-                SectionTitle(
+                val playlistsState = rememberLazyListState()
+                Section(
                     title = stringResource(Res.string.playlists_title),
-                    onClick = onPlaylistsClick
-                )
-            }
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    data.playlists.forEach {
-                        item {
-                            PlaylistItem(
-                                title = it.title,
-                                playButton = {
-                                    PlayButtonOutlined(
-                                        isPlaying = it.isPlaying,
-                                        onClick = {
-                                            onPlayPauseAudioSource(AudioSource.Playlist(it.id))
-                                        }
-                                    )
-                                },
-                                onClick = {
-                                    onPlaylistClick(it.id)
-                                },
-                                modifier = Modifier.requiredWidth(160.dp)
-                            )
+                    onClick = onPlaylistsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(playlistsState)
+                        }
+                    }) {
+                    LazyRow(
+                        state = playlistsState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        data.playlists.forEach {
+                            item {
+                                PlaylistItem(
+                                    title = it.title, playButton = {
+                                        PlayButtonOutlined(
+                                            isPlaying = it.isPlaying, onClick = {
+                                                onPlayPauseAudioSource(AudioSource.Playlist(it.id))
+                                            })
+                                    }, onClick = {
+                                        onPlaylistClick(it.id)
+                                    }, modifier = Modifier.requiredWidth(160.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -276,23 +264,24 @@ private fun Content(
         }
         if (data.songs.isNotEmpty()) {
             item {
-                SectionTitle(
-                    title = stringResource(Res.string.songs_title),
-                    onClick = onFavoriteSongsClick
-                )
-            }
-            item {
                 val lazyListState = rememberLazyListState()
-                LazyRow(
-                    state = lazyListState,
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                    modifier = Modifier.fillMaxWidth()
+                Section(
+                    title = stringResource(Res.string.songs_title),
+                    onClick = onFavoriteSongsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(lazyListState)
+                        }
+                    }
                 ) {
-                    data
-                        .songs
-                        .forEach { songChunk ->
+                    LazyRow(
+                        state = lazyListState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        data.songs.forEach { songChunk ->
                             item {
                                 Column(
                                     verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -308,11 +297,11 @@ private fun Content(
                                             },
                                             playButton = {
                                                 PlayButton(
-                                                    isPlaying = item.isPlaying,
-                                                    onClick = {
-                                                        onPlayPauseAudioSource(AudioSource.Song(item.id))
-                                                    }
-                                                )
+                                                    isPlaying = item.isPlaying, onClick = {
+                                                        onPlayPauseAudioSource(
+                                                            AudioSource.Song(item.id)
+                                                        )
+                                                    })
                                             },
                                             modifier = Modifier.fillMaxWidth()
                                         )
@@ -320,25 +309,29 @@ private fun Content(
                                 }
                             }
                         }
+                    }
                 }
             }
         }
         if (data.albums.isNotEmpty()) {
             item {
-                SectionTitle(
+                val lazyListState = rememberLazyListState()
+                Section(
                     title = stringResource(Res.string.albums_title),
-                    onClick = onFavoriteAlbumsClick
-                )
-            }
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = onFavoriteAlbumsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(lazyListState)
+                        }
+                    }
                 ) {
-                    data
-                        .albums
-                        .forEach {
+                    LazyRow(
+                        state = lazyListState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        data.albums.forEach {
                             item {
                                 AlbumItem(
                                     title = it.title,
@@ -346,11 +339,9 @@ private fun Content(
                                     artworkUrl = it.artworkUrl,
                                     playButton = {
                                         PlayButtonOutlined(
-                                            isPlaying = it.isPlaying,
-                                            onClick = {
+                                            isPlaying = it.isPlaying, onClick = {
                                                 onPlayPauseAudioSource(AudioSource.Album(it.id))
-                                            }
-                                        )
+                                            })
                                     },
                                     onClick = {
                                         onAlbumClick(it.id)
@@ -359,36 +350,43 @@ private fun Content(
                                 )
                             }
                         }
+                    }
                 }
+            }
+            item {
+
             }
         }
         if (data.artists.isNotEmpty()) {
             item {
-                SectionTitle(
+                val lazyListState = rememberLazyListState()
+                Section(
                     title = stringResource(Res.string.artists_title),
-                    onClick = onFavoriteArtistsClick
-                )
-            }
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = onFavoriteArtistsClick,
+                    actions = {
+                        if (!currentPlatform.mobile) {
+                            SectionScrollActions(lazyListState)
+                        }
+                    }
                 ) {
-                    data
-                        .artists
-                        .forEach {
+                    LazyRow(
+                        state = lazyListState,
+                        contentPadding = PaddingValues(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        data.artists.forEach {
                             item {
                                 ArtistItem(
                                     name = it.name,
                                     artworkUrl = it.artworkUrl,
                                     playButton = {
                                         PlayButtonOutlined(
-                                            isPlaying = it.isPlaying,
-                                            onClick = {
-                                                onPlayPauseAudioSource(AudioSource.Artist(it.id))
-                                            }
-                                        )
+                                            isPlaying = it.isPlaying, onClick = {
+                                                onPlayPauseAudioSource(
+                                                    AudioSource.Artist(it.id)
+                                                )
+                                            })
                                     },
                                     onClick = {
                                         onArtistClick(it.id)
@@ -397,6 +395,7 @@ private fun Content(
                                 )
                             }
                         }
+                    }
                 }
             }
         }
@@ -413,31 +412,15 @@ private fun PersonalScreenPreview() {
             data = PersonalDataUi(
                 playlists = persistentListOf(
                     PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = true
+                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = false
+                    ), PlaylistUi(
+                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = false
+                    ), PlaylistUi(
+                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = false
+                    ), PlaylistUi(
+                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = true
                     )
-                ),
-                songs = persistentListOf(
+                ), songs = persistentListOf(
                     persistentListOf(
                         SongUi(
                             id = "Indra",
@@ -445,38 +428,33 @@ private fun PersonalScreenPreview() {
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ),
-                        SongUi(
+                        ), SongUi(
                             id = "Raffaele",
                             title = "Brittny",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ),
-                        SongUi(
+                        ), SongUi(
                             id = "Patsy",
                             title = "Brittiney",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
                         )
-                    ),
-                    persistentListOf(
+                    ), persistentListOf(
                         SongUi(
                             id = "Julieta",
                             title = "Tykia",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ),
-                        SongUi(
+                        ), SongUi(
                             id = "Kofi",
                             title = "Lyla",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ),
-                        SongUi(
+                        ), SongUi(
                             id = "Kofi",
                             title = "Lyla",
                             artist = null,
@@ -484,8 +462,7 @@ private fun PersonalScreenPreview() {
                             isPlaying = false
                         )
                     )
-                ),
-                albums = persistentListOf(
+                ), albums = persistentListOf(
                     AlbumUi(
                         id = "Kashif",
                         title = "Tremaine",
@@ -493,19 +470,11 @@ private fun PersonalScreenPreview() {
                         artworkUrl = null,
                         isPlaying = false
                     )
-                ),
-                artists = persistentListOf(
+                ), artists = persistentListOf(
                     ArtistUi(
-                        id = "Soloman",
-                        name = "Eliana",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    ArtistUi(
-                        id = "Tari",
-                        name = "Shamir",
-                        artworkUrl = null,
-                        isPlaying = false
+                        id = "Soloman", name = "Eliana", artworkUrl = null, isPlaying = false
+                    ), ArtistUi(
+                        id = "Tari", name = "Shamir", artworkUrl = null, isPlaying = false
                     )
                 )
             ),
@@ -522,7 +491,6 @@ private fun PersonalScreenPreview() {
             onPlaylistsClick = {},
             onFavoriteSongsClick = {},
             onFavoriteAlbumsClick = {},
-            onFavoriteArtistsClick = {}
-        )
+            onFavoriteArtistsClick = {})
     }
 }
