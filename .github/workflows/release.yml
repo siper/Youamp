@@ -94,6 +94,9 @@ jobs:
     name: Create Release
     needs: [ build-desktop, build-android ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      attestations: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -108,9 +111,6 @@ jobs:
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
-        permissions:
-          contents: write
-          attestations: read
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref }}
