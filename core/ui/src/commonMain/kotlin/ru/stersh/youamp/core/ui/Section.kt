@@ -103,6 +103,12 @@ private fun Title(
 private val LazyListState.lastVisibleItemIndex: Int
     get() = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
 
+private val LazyListState.lastVisibleItemOffset: Int
+    get() = layoutInfo.visibleItemsInfo.lastOrNull()?.offset ?: 0
+
+private val LazyListState.lastVisibleItemSize: Int
+    get() = layoutInfo.visibleItemsInfo.lastOrNull()?.size ?: 0
+
 private val LazyListState.lastItemIndex: Int
     get() = layoutInfo.totalItemsCount - 1
 
@@ -123,7 +129,8 @@ fun SectionScrollActions(
     }
     val scrollForwardButtonEnabled by remember(listState) {
         derivedStateOf {
-            listState.lastVisibleItemIndex != listState.lastItemIndex
+            listState.lastVisibleItemIndex != listState.lastItemIndex ||
+                    listState.lastVisibleItemOffset + listState.lastVisibleItemSize > listState.layoutInfo.viewportEndOffset
         }
     }
     val scope = rememberCoroutineScope()
