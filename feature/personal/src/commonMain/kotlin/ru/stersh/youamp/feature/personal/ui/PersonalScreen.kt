@@ -27,6 +27,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
+import ru.stersh.youamp.core.ui.AlbumItemDefaults
 import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
@@ -346,7 +347,7 @@ private fun Content(
                                     onClick = {
                                         onAlbumClick(it.id)
                                     },
-                                    modifier = Modifier.requiredWidth(160.dp)
+                                    modifier = Modifier.requiredWidth(AlbumItemDefaults.Width)
                                 )
                             }
                         }
