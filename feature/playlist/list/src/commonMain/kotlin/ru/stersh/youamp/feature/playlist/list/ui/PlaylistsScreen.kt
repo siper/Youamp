@@ -142,14 +142,18 @@ private fun PlaylistsScreen(
 private fun Progress() {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(PlaylistItemDefaults.Width)
+            },
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
                 key = { it },
-                items = (0..10).toList()
+                items = (0..20).toList()
             ) {
                 SkeletonItem(
                     modifier = Modifier.height(220.dp)

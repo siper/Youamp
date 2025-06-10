@@ -1,14 +1,13 @@
 package ru.stersh.youamp.feature.artist.info.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -44,6 +43,7 @@ import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
+import ru.stersh.youamp.core.ui.isCompactWidth
 
 
 @Composable
@@ -205,61 +205,79 @@ private fun Header(
 @Composable
 private fun Progress(padding: PaddingValues) {
     SkeletonLayout {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
-            modifier = Modifier.padding(padding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item(
-                key = "header",
-                span = { GridItemSpan(2) },
-                contentType = "header"
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
+        Column(modifier = Modifier.padding(padding)) {
+            HeaderLayout(
+                image = {
                     SkeletonItem(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(160.dp)
+                        modifier = if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                            Modifier.size(160.dp)
+                        } else {
+                            Modifier.fillMaxWidth()
+                                .aspectRatio(1f)
+                        }.clip(CircleShape)
                     )
-
-                    SkeletonItem(
-                        modifier = Modifier.size(width = 200.dp, height = 32.dp)
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
+                },
+                title = {
+                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            SkeletonItem(
+                                modifier = Modifier.size(280.dp, 32.dp)
+                                    .fillMaxWidth()
+                                    .align(Alignment.Center)
+                            )
+                        }
+                    } else {
                         SkeletonItem(
-                            modifier = Modifier
-                                .height(38.dp)
-                                .weight(0.5f)
+                            modifier = Modifier.size(300.dp, 48.dp)
                         )
+                    }
+                },
+                subtitle = {
+                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            SkeletonItem(
+                                modifier = Modifier.size(220.dp, 24.dp)
+                                    .fillMaxWidth()
+                                    .padding(top = 4.dp)
+                                    .align(Alignment.Center)
+                            )
+                        }
+                    } else {
                         SkeletonItem(
                             modifier = Modifier
-                                .height(38.dp)
-                                .weight(0.5f)
+                                .size(220.dp, 24.dp)
+                                .padding(top = 4.dp)
+                        )
+                    }
+                },
+                actions = {
+                    repeat(2) {
+                        SkeletonItem(
+                            modifier = Modifier.size(64.dp)
+                                .clip(CircleShape)
                         )
                     }
                 }
-            }
-
-            items(
-                count = 10,
-                key = { "skeleton_$it" },
-                contentType = { "album" }
+            )
+            LazyVerticalGrid(
+                columns = if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(AlbumItemDefaults.Width)
+                },
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                userScrollEnabled = false
             ) {
-                SkeletonItem(
-                    modifier = Modifier
-                        .height(240.dp)
-                        .width(AlbumItemDefaults.Width)
-                )
+                repeat(20) {
+                    item {
+                        SkeletonItem(
+                            modifier = Modifier
+                                .size(AlbumItemDefaults.Width, 220.dp)
+                        )
+                    }
+                }
             }
         }
     }
