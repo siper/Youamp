@@ -6,16 +6,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,22 +25,26 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumItemDefaults
+import ru.stersh.youamp.core.ui.AlbumSkeleton
 import ru.stersh.youamp.core.ui.ArtistItem
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
-import ru.stersh.youamp.core.ui.PlayButton
-import ru.stersh.youamp.core.ui.PlayButtonOutlined
 import ru.stersh.youamp.core.ui.PlaylistItem
+import ru.stersh.youamp.core.ui.PlaylistItemDefaults
+import ru.stersh.youamp.core.ui.PlaylistSkeleton
 import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.Section
 import ru.stersh.youamp.core.ui.SectionScrollActions
+import ru.stersh.youamp.core.ui.SectionSkeleton
 import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.SongCardChunkSkeleton
+import ru.stersh.youamp.core.ui.SongCardDefaults
 import ru.stersh.youamp.core.ui.SongCardItem
+import ru.stersh.youamp.core.ui.SongCardType
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.core.ui.currentPlatform
-import ru.stersh.youamp.shared.queue.AudioSource
 import youamp.feature.personal.generated.resources.Res
 import youamp.feature.personal.generated.resources.albums_title
 import youamp.feature.personal.generated.resources.artists_title
@@ -68,7 +69,6 @@ fun PersonalScreen(
         state = state,
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
-        onPlayPauseAudioSource = viewModel::onPlayPauseAudioSource,
         onSongClick = onSongClick,
         onAlbumClick = onAlbumClick,
         onArtistClick = onArtistClick,
@@ -80,13 +80,11 @@ fun PersonalScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PersonalScreen(
     state: StateUi,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
-    onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     onPlaylistsClick: () -> Unit,
     onFavoriteSongsClick: () -> Unit,
     onFavoriteAlbumsClick: () -> Unit,
@@ -103,14 +101,14 @@ private fun PersonalScreen(
         else -> LayoutStateUi.Content
     }
     PullToRefresh(
-        isRefreshing = state.refreshing, onRefresh = onRefresh
+        isRefreshing = state.refreshing,
+        onRefresh = onRefresh
     ) {
         StateLayout(
             state = layoutState,
             content = {
                 Content(
                     data = state.data,
-                    onPlayPauseAudioSource = onPlayPauseAudioSource,
                     onSongClick = onSongClick,
                     onAlbumClick = onAlbumClick,
                     onArtistClick = onArtistClick,
@@ -130,69 +128,60 @@ private fun PersonalScreen(
             empty = {
                 EmptyLayout()
             },
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         )
     }
 }
 
 @Composable
-private fun Progress(
-    modifier: Modifier = Modifier
-) {
+private fun Progress(modifier: Modifier = Modifier) {
     SkeletonLayout(modifier = modifier) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(
-                horizontal = 24.dp, vertical = 16.dp
-            )
+        LazyColumn(
+            modifier = Modifier.padding(
+                horizontal = 24.dp
+            ),
+            userScrollEnabled = false
         ) {
-            SkeletonItem(
-                modifier = Modifier.size(
-                    200.dp, 48.dp
-                )
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        160.dp, 200.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        160.dp, 200.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        160.dp, 200.dp
-                    )
-                )
+            item {
+                SectionSkeleton()
             }
-            SkeletonItem(
-                modifier = Modifier.size(
-                    200.dp, 48.dp
-                )
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        336.dp, 64.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        336.dp, 64.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        336.dp, 64.dp
-                    )
-                )
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false
+                ) {
+                    repeat(3) {
+                        item { PlaylistSkeleton() }
+                    }
+                }
+            }
+            item {
+                SectionSkeleton()
+            }
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false
+                ) {
+                    repeat(2) {
+                        item { SongCardChunkSkeleton() }
+                    }
+                }
+            }
+            item {
+                SectionSkeleton()
+            }
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false
+                ) {
+                    repeat(3) {
+                        item { AlbumSkeleton() }
+                    }
+                }
             }
         }
     }
@@ -211,7 +200,6 @@ private fun ProgressPreview() {
 @Composable
 private fun Content(
     data: PersonalDataUi?,
-    onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     onPlaylistsClick: () -> Unit,
     onFavoriteSongsClick: () -> Unit,
     onFavoriteAlbumsClick: () -> Unit,
@@ -226,7 +214,10 @@ private fun Content(
         return
     }
     LazyColumn(
-        modifier = modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(bottom = 24.dp)
     ) {
         if (data.playlists.isNotEmpty()) {
@@ -239,23 +230,21 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(playlistsState)
                         }
-                    }) {
+                    }
+                ) {
                     LazyRow(
                         state = playlistsState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         data.playlists.forEach {
                             item {
                                 PlaylistItem(
-                                    title = it.title, playButton = {
-                                        PlayButtonOutlined(
-                                            isPlaying = it.isPlaying, onClick = {
-                                                onPlayPauseAudioSource(AudioSource.Playlist(it.id))
-                                            })
-                                    }, onClick = {
+                                    title = it.title,
+                                    onClick = {
                                         onPlaylistClick(it.id)
-                                    }, modifier = Modifier.requiredWidth(160.dp)
+                                    },
+                                    modifier = Modifier.requiredWidth(PlaylistItemDefaults.Width)
                                 )
                             }
                         }
@@ -285,10 +274,10 @@ private fun Content(
                         data.songs.forEach { songChunk ->
                             item {
                                 Column(
-                                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                                    modifier = Modifier.requiredWidth(336.dp)
+                                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                                    modifier = Modifier.requiredWidth(SongCardDefaults.Width),
                                 ) {
-                                    songChunk.forEach { item ->
+                                    songChunk.forEachIndexed { index, item ->
                                         SongCardItem(
                                             title = item.title,
                                             artist = item.artist,
@@ -296,15 +285,14 @@ private fun Content(
                                             onClick = {
                                                 onSongClick(item.id)
                                             },
-                                            playButton = {
-                                                PlayButton(
-                                                    isPlaying = item.isPlaying, onClick = {
-                                                        onPlayPauseAudioSource(
-                                                            AudioSource.Song(item.id)
-                                                        )
-                                                    })
-                                            },
-                                            modifier = Modifier.fillMaxWidth()
+                                            type =
+                                                when (index) {
+                                                    0 -> SongCardType.Top
+                                                    1 -> SongCardType.Center
+                                                    2 -> SongCardType.Bottom
+                                                    else -> SongCardType.Default
+                                                },
+                                            modifier = Modifier.fillMaxWidth(),
                                         )
                                     }
                                 }
@@ -338,12 +326,6 @@ private fun Content(
                                     title = it.title,
                                     artist = it.artist,
                                     artworkUrl = it.artworkUrl,
-                                    playButton = {
-                                        PlayButtonOutlined(
-                                            isPlaying = it.isPlaying, onClick = {
-                                                onPlayPauseAudioSource(AudioSource.Album(it.id))
-                                            })
-                                    },
                                     onClick = {
                                         onAlbumClick(it.id)
                                     },
@@ -353,9 +335,6 @@ private fun Content(
                         }
                     }
                 }
-            }
-            item {
-
             }
         }
         if (data.artists.isNotEmpty()) {
@@ -381,18 +360,9 @@ private fun Content(
                                 ArtistItem(
                                     name = it.name,
                                     artworkUrl = it.artworkUrl,
-                                    playButton = {
-                                        PlayButtonOutlined(
-                                            isPlaying = it.isPlaying, onClick = {
-                                                onPlayPauseAudioSource(
-                                                    AudioSource.Artist(it.id)
-                                                )
-                                            })
-                                    },
                                     onClick = {
                                         onArtistClick(it.id)
-                                    },
-                                    modifier = Modifier.requiredWidth(160.dp)
+                                    }
                                 )
                             }
                         }
@@ -413,15 +383,31 @@ private fun PersonalScreenPreview() {
             data = PersonalDataUi(
                 playlists = persistentListOf(
                     PlaylistUi(
-                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = false
-                    ), PlaylistUi(
-                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = false
-                    ), PlaylistUi(
-                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = false
-                    ), PlaylistUi(
-                        id = "Verna", title = "Sedric", artworkUrl = null, isPlaying = true
-                    )
-                ), songs = persistentListOf(
+                        id = "Verna",
+                        title = "Sedric",
+                        artworkUrl = null,
+                        isPlaying = false
+                    ),
+                    PlaylistUi(
+                        id = "Verna",
+                        title = "Sedric",
+                        artworkUrl = null,
+                        isPlaying = false
+                    ),
+                    PlaylistUi(
+                        id = "Verna",
+                        title = "Sedric",
+                        artworkUrl = null,
+                        isPlaying = false
+                    ),
+                    PlaylistUi(
+                        id = "Verna",
+                        title = "Sedric",
+                        artworkUrl = null,
+                        isPlaying = true
+                    ),
+                ),
+                songs = persistentListOf(
                     persistentListOf(
                         SongUi(
                             id = "Indra",
@@ -429,41 +415,47 @@ private fun PersonalScreenPreview() {
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ), SongUi(
+                        ),
+                        SongUi(
                             id = "Raffaele",
                             title = "Brittny",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ), SongUi(
+                        ),
+                        SongUi(
                             id = "Patsy",
                             title = "Brittiney",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
                         )
-                    ), persistentListOf(
+                    ),
+                    persistentListOf(
                         SongUi(
                             id = "Julieta",
                             title = "Tykia",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ), SongUi(
+                        ),
+                        SongUi(
                             id = "Kofi",
                             title = "Lyla",
                             artist = null,
                             artworkUrl = null,
                             isPlaying = false
-                        ), SongUi(
+                        ),
+                        SongUi(
                             id = "Kofi",
                             title = "Lyla",
                             artist = null,
                             artworkUrl = null,
-                            isPlaying = false
+                            isPlaying = false,
                         )
                     )
-                ), albums = persistentListOf(
+                ),
+                albums = persistentListOf(
                     AlbumUi(
                         id = "Kashif",
                         title = "Tremaine",
@@ -471,20 +463,27 @@ private fun PersonalScreenPreview() {
                         artworkUrl = null,
                         isPlaying = false
                     )
-                ), artists = persistentListOf(
+                ),
+                artists = persistentListOf(
                     ArtistUi(
-                        id = "Soloman", name = "Eliana", artworkUrl = null, isPlaying = false
-                    ), ArtistUi(
-                        id = "Tari", name = "Shamir", artworkUrl = null, isPlaying = false
+                        id = "Soloman",
+                        name = "Eliana",
+                        artworkUrl = null,
+                        isPlaying = false
+                    ),
+                    ArtistUi(
+                        id = "Tari",
+                        name = "Shamir",
+                        artworkUrl = null,
+                        isPlaying = false
                     )
                 )
-            ),
+            )
         )
         PersonalScreen(
             state = state,
             onRetry = {},
             onRefresh = {},
-            onPlayPauseAudioSource = {},
             onSongClick = {},
             onAlbumClick = {},
             onArtistClick = {},
@@ -492,6 +491,7 @@ private fun PersonalScreenPreview() {
             onPlaylistsClick = {},
             onFavoriteSongsClick = {},
             onFavoriteAlbumsClick = {},
-            onFavoriteArtistsClick = {})
+            onFavoriteArtistsClick = {}
+        )
     }
 }

@@ -1,10 +1,8 @@
 package ru.stersh.youamp.feature.artist.info.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,12 +17,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
@@ -33,18 +28,18 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumItemDefaults
+import ru.stersh.youamp.core.ui.AlbumSkeleton
+import ru.stersh.youamp.core.ui.ArtistItemDefaults
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.CircleArtwork
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.FavoriteButton
 import ru.stersh.youamp.core.ui.HeaderLayout
-import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.core.ui.isCompactWidth
-
 
 @Composable
 fun ArtistInfoScreen(
@@ -76,7 +71,7 @@ private fun ArtistInfoScreen(
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
     onAlbumClick: (albumId: String) -> Unit,
     onRetry: () -> Unit,
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -125,7 +120,11 @@ private fun Content(
     onAlbumClick: (albumId: String) -> Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(160.dp),
+        columns = if (isCompactWidth) {
+            GridCells.Fixed(2)
+        } else {
+            GridCells.Adaptive(AlbumItemDefaults.Width)
+        },
         modifier = Modifier.padding(padding),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -167,14 +166,13 @@ private fun Header(
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val windowWidthSizeClass = LocalWindowSizeClass.current.widthSizeClass
     HeaderLayout(
         image = {
             CircleArtwork(
                 artworkUrl = state.artworkUrl,
                 placeholder = Icons.Rounded.Person,
-                modifier = if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
-                    Modifier.size(160.dp)
+                modifier = if (isCompactWidth) {
+                    Modifier.size(ArtistItemDefaults.Width)
                 } else {
                     Modifier
                 }
@@ -204,82 +202,77 @@ private fun Header(
 
 @Composable
 private fun Progress(padding: PaddingValues) {
-    SkeletonLayout {
-        Column(modifier = Modifier.padding(padding)) {
-            HeaderLayout(
-                image = {
-                    SkeletonItem(
-                        modifier = if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
-                            Modifier.size(160.dp)
-                        } else {
-                            Modifier.fillMaxWidth()
-                                .aspectRatio(1f)
-                        }.clip(CircleShape)
-                    )
-                },
-                title = {
-                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            SkeletonItem(
-                                modifier = Modifier.size(280.dp, 32.dp)
-                                    .fillMaxWidth()
-                                    .align(Alignment.Center)
-                            )
-                        }
-                    } else {
-                        SkeletonItem(
-                            modifier = Modifier.size(300.dp, 48.dp)
-                        )
-                    }
-                },
-                subtitle = {
-                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            SkeletonItem(
-                                modifier = Modifier.size(220.dp, 24.dp)
-                                    .fillMaxWidth()
-                                    .padding(top = 4.dp)
-                                    .align(Alignment.Center)
-                            )
-                        }
-                    } else {
-                        SkeletonItem(
-                            modifier = Modifier
-                                .size(220.dp, 24.dp)
-                                .padding(top = 4.dp)
-                        )
-                    }
-                },
-                actions = {
-                    repeat(2) {
-                        SkeletonItem(
-                            modifier = Modifier.size(64.dp)
-                                .clip(CircleShape)
-                        )
-                    }
-                }
-            )
-            LazyVerticalGrid(
-                columns = if (isCompactWidth) {
-                    GridCells.Fixed(2)
-                } else {
-                    GridCells.Adaptive(AlbumItemDefaults.Width)
-                },
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                userScrollEnabled = false
+    SkeletonLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)
+    ) {
+        LazyVerticalGrid(
+            columns = if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(AlbumItemDefaults.Width)
+            },
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            item(
+                span = { GridItemSpan(maxLineSpan) }
             ) {
-                repeat(20) {
-                    item {
+                HeaderLayout(
+                    image = {
+                        SkeletonItem(
+                            shape = CircleShape,
+                            modifier = if (isCompactWidth) {
+                                Modifier.size(ArtistItemDefaults.Width)
+                            } else {
+                                Modifier
+                            }
+                        )
+                    },
+                    title = {
                         SkeletonItem(
                             modifier = Modifier
-                                .size(AlbumItemDefaults.Width, 220.dp)
+                                .size(
+                                    400.dp,
+                                    40.dp
+                                )
                         )
-                    }
-                }
+                    },
+                    actions = {
+                        repeat(3) {
+                            SkeletonItem(
+                                shape = CircleShape,
+                                modifier = Modifier.size(64.dp)
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp)
+                )
+            }
+            repeat(10) {
+                item { AlbumSkeleton(showArtist = false) }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun ArtistInfoScreenProgressPreview() {
+    YouampPlayerTheme {
+        ArtistInfoScreen(
+            state = ArtistInfoStateUi(),
+            onPlayAll = {},
+            onAlbumClick = {},
+            onPlayShuffled = {},
+            onFavoriteChange = {},
+            onRetry = {},
+            onBackClick = {}
+        )
     }
 }
 

@@ -22,6 +22,7 @@ kotlin {
             api(libs.compose.material3.windowSizeClass)
             implementation(compose.components.resources)
             implementation(libs.coil.compose)
+            implementation(libs.kotlinx.collectionsImmutable)
         }
     }
 }

@@ -7,6 +7,15 @@ import ru.stersh.youamp.feature.personal.domain.PersonalRepository
 import ru.stersh.youamp.feature.personal.ui.PersonalViewModel
 
 val personalModule = module {
-    single<PersonalRepository> { PersonalRepositoryImpl(get(), get(), get(), get(), get(), get()) }
-    viewModel { PersonalViewModel(get(), get(), get(), get()) }
+    single<PersonalRepository> {
+        PersonalRepositoryImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
+    viewModel { PersonalViewModel(get()) }
 }
