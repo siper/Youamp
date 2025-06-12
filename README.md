@@ -135,7 +135,7 @@ If you want help to make Youamp better, you can:
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/SortingFarmer"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17044906/medium/96921de630db584b78c475a33091111d.png" />
           <br />
-          <sub><b>David Bengraf (SortingFarmer) (SortingFarmer)</b></sub></a>
+          <sub><b>SortingFarmer</b></sub></a>
         <br />
         <sub><b>28 words</b></sub>
       </td>
