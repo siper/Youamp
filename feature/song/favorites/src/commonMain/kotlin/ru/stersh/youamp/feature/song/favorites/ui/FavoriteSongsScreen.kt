@@ -1,36 +1,33 @@
 package ru.stersh.youamp.feature.song.favorites.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
-import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
@@ -39,6 +36,8 @@ import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.SongItem
+import ru.stersh.youamp.core.ui.SongSkeleton
 import youamp.feature.song.favorites.generated.resources.Res
 import youamp.feature.song.favorites.generated.resources.favorite_songs_title
 
@@ -138,8 +137,10 @@ private fun FavoriteSongsScreen(
                                 contentType = { "song" },
                                 key = { "song_${it.id}" }
                             ) { song ->
-                                FavoriteSongItem(
-                                    song = song,
+                                SongItem(
+                                    title = song.title,
+                                    artist = song.artist,
+                                    artworkUrl = song.artworkUrl,
                                     onClick = { onSongClick(song.id) }
                                 )
                             }
@@ -153,54 +154,70 @@ private fun FavoriteSongsScreen(
 
 @Composable
 private fun Progress() {
-    SkeletonLayout {
-        repeat(10) {
-            ListItem(
-                headlineContent = {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        SkeletonItem(modifier = Modifier.size(width = 130.dp, height = 16.dp))
-                        SkeletonItem(modifier = Modifier.size(width = 200.dp, height = 16.dp))
-                    }
-                },
-                leadingContent = {
-                    SkeletonItem(modifier = Modifier.size(48.dp))
-                }
-            )
+    SkeletonLayout(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                HeaderLayout(
+                    title = {
+                        Column(
+                            modifier = Modifier.singleHeader(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            SkeletonItem(
+                                modifier = Modifier
+                                    .size(
+                                        400.dp,
+                                        32.dp
+                                    )
+                            )
+                            SkeletonItem(
+                                modifier = Modifier
+                                    .size(
+                                        200.dp,
+                                        32.dp
+                                    )
+                            )
+                        }
+                    },
+                    actions = {
+                        SkeletonItem(
+                            shape = CircleShape,
+                            modifier = Modifier.size(64.dp)
+                        )
+                        SkeletonItem(
+                            shape = CircleShape,
+                            modifier = Modifier.size(64.dp)
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp)
+                )
+            }
+            repeat(10) {
+                item { SongSkeleton() }
+            }
         }
     }
 }
 
+@Preview
 @Composable
-private fun FavoriteSongItem(
-    song: SongUi,
-    onClick: () -> Unit
-) {
-    ListItem(
-        headlineContent = {
-            Text(
-                text = song.title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        supportingContent = {
-            song.artist?.let {
-                Text(
-                    text = it,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        },
-        leadingContent = {
-            Artwork(
-                artworkUrl = song.artworkUrl,
-                placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier.size(48.dp)
-            )
-        },
-        modifier = Modifier.clickable(onClick = onClick)
-    )
+private fun FavoriteSongsScreenProgressPreview() {
+    MaterialTheme {
+        FavoriteSongsScreen(
+            state = StateUi(),
+            onPlayAll = {},
+            onPlayShuffled = {},
+            onRetry = {},
+            onRefresh = {},
+            onSongClick = {},
+            onBackClick = {}
+        )
+    }
 }
 
 @Preview

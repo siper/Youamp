@@ -3,7 +3,6 @@ package ru.stersh.youamp.feature.album.list.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -29,6 +28,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumItemDefaults
+import ru.stersh.youamp.core.ui.AlbumSkeleton
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
@@ -160,20 +160,38 @@ private fun Content(
 private fun Progress() {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
+            columns = if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(AlbumItemDefaults.Width)
+            },
             contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxSize()
         ) {
             items(
                 key = { it },
                 items = (0..10).toList()
             ) {
-                SkeletonItem(
-                    modifier = Modifier.height(240.dp)
-                )
+                AlbumSkeleton()
             }
         }
+    }
+}
+
+@Composable
+@Preview
+private fun AlbumsScreenProgressPreview() {
+    YouampPlayerTheme {
+        AlbumsScreen(
+            state = AlbumsStateUi(),
+            onRefresh = {},
+            onRetry = {},
+            onBottomReached = {},
+            onAlbumClick = {},
+            onBackClick = {}
+        )
     }
 }
 

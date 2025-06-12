@@ -3,46 +3,42 @@ package ru.stersh.youamp.feature.library.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumItemDefaults
+import ru.stersh.youamp.core.ui.AlbumSkeleton
 import ru.stersh.youamp.core.ui.ArtistItem
+import ru.stersh.youamp.core.ui.ArtistSkeleton
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
-import ru.stersh.youamp.core.ui.PlayButtonOutlined
 import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.Section
 import ru.stersh.youamp.core.ui.SectionScrollActions
+import ru.stersh.youamp.core.ui.SectionSkeleton
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.core.ui.currentPlatform
-import ru.stersh.youamp.shared.queue.AudioSource
 import youamp.feature.library.generated.resources.Res
 import youamp.feature.library.generated.resources.albums_title
 import youamp.feature.library.generated.resources.artists_title
@@ -64,12 +60,10 @@ fun LibraryScreen(
         onAlbumsClick = onAlbumsClick,
         onArtistsClick = onArtistsClick,
         onRetry = viewModel::retry,
-        onRefresh = viewModel::refresh,
-        onPlayPauseAudioSource = viewModel::onPlayPauseAudioSource
+        onRefresh = viewModel::refresh
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LibraryScreen(
     state: StateUi,
@@ -77,7 +71,6 @@ internal fun LibraryScreen(
     onArtistClick: (id: String) -> Unit,
     onAlbumsClick: () -> Unit,
     onArtistsClick: () -> Unit,
-    onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
 ) {
@@ -103,7 +96,6 @@ internal fun LibraryScreen(
                     onArtistClick = onArtistClick,
                     onAlbumsClick = onAlbumsClick,
                     onArtistsClick = onArtistsClick,
-                    onPlayPauseAudioSource = onPlayPauseAudioSource
                 )
             },
             progress = {
@@ -126,7 +118,6 @@ private fun Content(
     onArtistClick: (id: String) -> Unit,
     onAlbumsClick: () -> Unit,
     onArtistsClick: () -> Unit,
-    onPlayPauseAudioSource: (source: AudioSource) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (data == null) {
@@ -162,14 +153,6 @@ private fun Content(
                                 title = it.title,
                                 artist = it.artist,
                                 artworkUrl = it.artworkUrl,
-                                playButton = {
-                                    PlayButtonOutlined(
-                                        isPlaying = it.isPlaying,
-                                        onClick = {
-                                            onPlayPauseAudioSource(AudioSource.Album(it.id))
-                                        }
-                                    )
-                                },
                                 onClick = {
                                     onAlbumClick(it.id)
                                 },
@@ -203,14 +186,6 @@ private fun Content(
                             ArtistItem(
                                 name = it.name,
                                 artworkUrl = it.artworkUrl,
-                                playButton = {
-                                    PlayButtonOutlined(
-                                        isPlaying = it.isPlaying,
-                                        onClick = {
-                                            onPlayPauseAudioSource(AudioSource.Artist(it.id))
-                                        }
-                                    )
-                                },
                                 onClick = {
                                     onArtistClick(it.id)
                                 },
@@ -229,66 +204,31 @@ private fun Progress(
     modifier: Modifier = Modifier
 ) {
     SkeletonLayout(modifier = modifier) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(
-                horizontal = 24.dp,
-                vertical = 16.dp
-            )
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            userScrollEnabled = false
         ) {
-            SkeletonItem(
-                modifier = Modifier.size(
-                    200.dp,
-                    48.dp
-                )
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        160.dp,
-                        200.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        160.dp,
-                        200.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        160.dp,
-                        200.dp
-                    )
-                )
+            item { SectionSkeleton() }
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false
+                ) {
+                    repeat(3) {
+                        item { AlbumSkeleton() }
+                    }
+                }
             }
-            SkeletonItem(
-                modifier = Modifier.size(
-                    200.dp,
-                    48.dp
-                )
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SkeletonItem(
-                    modifier = Modifier
-                        .size(
-                            160.dp,
-                            160.dp
-                        )
-                        .clip(CircleShape)
-                )
-                SkeletonItem(
-                    modifier = Modifier
-                        .size(
-                            160.dp,
-                            160.dp
-                        )
-                        .clip(CircleShape)
-                )
+            item { SectionSkeleton() }
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false
+                ) {
+                    repeat(3) {
+                        item { ArtistSkeleton() }
+                    }
+                }
             }
         }
     }
@@ -296,7 +236,7 @@ private fun Progress(
 
 @Composable
 @Preview
-private fun LibraryScreenPreview() {
+private fun LibraryScreenProgressPreview() {
     YouampPlayerTheme {
         LibraryScreen(
             state = StateUi(),
@@ -305,8 +245,50 @@ private fun LibraryScreenPreview() {
             onAlbumClick = {},
             onArtistClick = {},
             onArtistsClick = {},
-            onAlbumsClick = {},
-            onPlayPauseAudioSource = {}
+            onAlbumsClick = {}
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun LibraryScreenPreview() {
+    YouampPlayerTheme {
+        LibraryScreen(
+            state = StateUi(
+                progress = false,
+                data = DataUi(
+                    albums = persistentListOf(
+                        AlbumUi(
+                            id = "Kashif",
+                            title = "Tremaine",
+                            artist = "Slipknot",
+                            artworkUrl = null,
+                            isPlaying = false,
+                        ),
+                    ),
+                    artists = persistentListOf(
+                        ArtistUi(
+                            id = "Soloman",
+                            name = "Eliana",
+                            artworkUrl = null,
+                            isPlaying = false,
+                        ),
+                        ArtistUi(
+                            id = "Tari",
+                            name = "Shamir",
+                            artworkUrl = null,
+                            isPlaying = false,
+                        ),
+                    )
+                )
+            ),
+            onRetry = {},
+            onRefresh = {},
+            onAlbumClick = {},
+            onArtistClick = {},
+            onArtistsClick = {},
+            onAlbumsClick = {}
         )
     }
 }

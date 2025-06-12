@@ -1,18 +1,23 @@
 package ru.stersh.youamp.core.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -22,107 +27,55 @@ fun AlbumItem(
     onClick: () -> Unit,
     artist: String? = null,
     artworkUrl: String? = null,
-    playButton: @Composable () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    ElevatedCard(
-        shape = MaterialTheme.shapes.large,
-        onClick = onClick,
-        modifier = modifier
+    Column(
+        modifier = modifier.requiredWidth(AlbumItemDefaults.Width),
     ) {
-        AlbumLayout(
-            title = {
+        Card(
+            onClick = onClick,
+        ) {
+            Artwork(
+                artworkUrl = artworkUrl,
+                shape = MaterialTheme.shapes.medium,
+                placeholder = Icons.Rounded.Album,
+                modifier = Modifier.aspectRatio(1f),
+            )
+        }
+
+        Column(
+            modifier = Modifier.padding(top = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Left,
+                minLines = 1,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+
+            if (artist != null) {
                 Text(
-                    text = title,
+                    text = artist,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Left,
                     minLines = 1,
                     maxLines = 1,
-                    style = MaterialTheme.typography.labelLarge
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
-            },
-            artist = {
-                if (artist != null) {
-                    Text(
-                        text = artist,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Left,
-                        minLines = 1,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            },
-            artwork = {
-                Artwork(
-                    artworkUrl = artworkUrl,
-                    placeholder = Icons.Rounded.Album
-                )
-            },
-            playButton = playButton
-        )
-    }
-}
-
-@Composable
-private fun AlbumLayout(
-    title: @Composable () -> Unit,
-    artist: @Composable () -> Unit,
-    artwork: @Composable () -> Unit,
-    playButton: @Composable () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val density = LocalDensity.current
-    val contentPadding = 12.dp.roundToPx(density)
-    val titleTopPadding = 4.dp.roundToPx(density)
-    Layout(
-        contents = listOf(
-            title,
-            artist,
-            artwork,
-            playButton
-        ),
-        modifier = modifier
-    ) { measurables, constraints ->
-
-        val titlePlaceable = measurables[0]
-            .first()
-            .measure(constraints)
-        val artistPlaceable = measurables
-            .getOrNull(1)
-            ?.firstOrNull()
-            ?.measure(constraints)
-        val artworkPlaceable = measurables[2]
-            .first()
-            .measure(Constraints.fixed(constraints.maxWidth, constraints.maxWidth))
-        val playButtonPlaceable = measurables
-            .getOrNull(3)
-            ?.firstOrNull()
-            ?.measure(constraints)
-
-        val maxHeight = titlePlaceable.height + (artistPlaceable?.height ?: 0) +
-                artworkPlaceable.height + ((playButtonPlaceable?.height ?: 0) / 2) + titleTopPadding + contentPadding
-
-        layout(artworkPlaceable.width, maxHeight) {
-            artworkPlaceable.placeRelative(0, 0)
-            playButtonPlaceable?.placeRelative(
-                (artworkPlaceable.width / 2) - (playButtonPlaceable.width / 2),
-                artworkPlaceable.height - (playButtonPlaceable.height / 2)
-            )
-            val titleY = if (playButtonPlaceable != null) {
-                artworkPlaceable.height + titleTopPadding + (playButtonPlaceable.height / 2)
-            } else {
-                artworkPlaceable.height + titleTopPadding
             }
-            titlePlaceable.placeRelative(contentPadding, titleY)
-            artistPlaceable?.placeRelative(contentPadding, titleY + artistPlaceable.height)
         }
     }
 }
 
 @Stable
 object AlbumItemDefaults {
-
     @Stable
     val Width = 160.dp
 }
@@ -130,17 +83,19 @@ object AlbumItemDefaults {
 @Composable
 @Preview
 private fun AlbumItemPreview() {
-    MaterialTheme {
-        AlbumItem(
-            title = "Album",
-            artist = "artist",
-            playButton = {
-                PlayButtonOutlined(
-                    isPlaying = false,
-                    onClick = {},
-                )
-            },
-            onClick = {}
-        )
+    YouampPlayerTheme {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        ) {
+            AlbumItem(
+                title = "Album",
+                artist = "artist",
+                onClick = {},
+            )
+            SkeletonLayout {
+                AlbumSkeleton()
+            }
+        }
     }
 }

@@ -12,12 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -26,17 +24,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.LayoutStateUi
-import ru.stersh.youamp.core.ui.PlayButton
 import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.Section
 import ru.stersh.youamp.core.ui.SectionScrollActions
+import ru.stersh.youamp.core.ui.SectionSkeleton
 import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.SongCardChunkSkeleton
+import ru.stersh.youamp.core.ui.SongCardDefaults
 import ru.stersh.youamp.core.ui.SongCardItem
+import ru.stersh.youamp.core.ui.SongCardType
 import ru.stersh.youamp.core.ui.StateLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
 import ru.stersh.youamp.core.ui.currentPlatform
@@ -64,7 +66,6 @@ fun ExploreScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExploreScreen(
     state: StateUi,
@@ -156,10 +157,10 @@ private fun Content(
                         randomSongs.forEachIndexed { index, songChunk ->
                             item {
                                 Column(
-                                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                                    modifier = Modifier.requiredWidth(336.dp)
+                                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                                    modifier = Modifier.requiredWidth(SongCardDefaults.Width)
                                 ) {
-                                    songChunk.forEach { item ->
+                                    songChunk.forEachIndexed { index, item ->
                                         SongCardItem(
                                             title = item.title,
                                             artist = item.artist,
@@ -167,13 +168,11 @@ private fun Content(
                                             onClick = {
                                                 onSongClick(item.id)
                                             },
-                                            playButton = {
-                                                PlayButton(
-                                                    isPlaying = item.isPlaying,
-                                                    onClick = {
-                                                        onPlayPauseAudioSource(AudioSource.Song(item.id))
-                                                    }
-                                                )
+                                            type = when (index) {
+                                                0 -> SongCardType.Top
+                                                1 -> SongCardType.Center
+                                                2 -> SongCardType.Bottom
+                                                else -> SongCardType.Default
                                             },
                                             modifier = Modifier.fillMaxWidth()
                                         )
@@ -197,49 +196,49 @@ private fun Progress(
     modifier: Modifier = Modifier
 ) {
     SkeletonLayout(modifier = modifier) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        LazyColumn(
             modifier = Modifier.padding(
-                horizontal = 24.dp,
-                vertical = 16.dp
-            )
+                horizontal = 24.dp
+            ),
+            userScrollEnabled = false
         ) {
-            SkeletonItem(
-                shape = CircleShape,
-                modifier = Modifier
-                    .padding(vertical = 98.dp)
-                    .requiredHeight(56.dp)
-                    .fillMaxWidth()
-            )
-            SkeletonItem(
-                modifier = Modifier.size(
-                    200.dp,
-                    48.dp
-                )
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
+            item {
                 SkeletonItem(
-                    modifier = Modifier.size(
-                        336.dp,
-                        64.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        336.dp,
-                        64.dp
-                    )
-                )
-                SkeletonItem(
-                    modifier = Modifier.size(
-                        336.dp,
-                        64.dp
-                    )
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .padding(vertical = 98.dp)
+                        .requiredHeight(56.dp)
+                        .fillMaxWidth()
                 )
             }
+            item { SectionSkeleton() }
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false
+                ) {
+                    repeat(2) {
+                        item { SongCardChunkSkeleton() }
+                    }
+                }
+            }
         }
+    }
+}
+
+@Composable
+@Preview
+private fun ExploreScreenProgressPreview() {
+    YouampPlayerTheme {
+        ExploreScreen(
+            state = StateUi(),
+            onRetry = {},
+            onRefresh = {},
+            onSongClick = {},
+            onRandomSongsClick = {},
+            onPlayPauseAudioSource = {},
+            onSearchClick = {}
+        )
     }
 }
 
@@ -248,7 +247,37 @@ private fun Progress(
 private fun ExploreScreenPreview() {
     YouampPlayerTheme {
         ExploreScreen(
-            state = StateUi(),
+            state = StateUi(
+                progress = false,
+                error = false,
+                data = DataUi(
+                    randomSongs = persistentListOf(
+                        persistentListOf(
+                            SongUi(
+                                id = "Julieta",
+                                title = "Tykia",
+                                artist = null,
+                                artworkUrl = null,
+                                isPlaying = false,
+                            ),
+                            SongUi(
+                                id = "Kofi",
+                                title = "Lyla",
+                                artist = null,
+                                artworkUrl = null,
+                                isPlaying = false,
+                            ),
+                            SongUi(
+                                id = "Kofi",
+                                title = "Lyla",
+                                artist = "Kofi",
+                                artworkUrl = null,
+                                isPlaying = false,
+                            )
+                        )
+                    )
+                )
+            ),
             onRetry = {},
             onRefresh = {},
             onSongClick = {},

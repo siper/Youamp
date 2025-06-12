@@ -1,110 +1,65 @@
 package ru.stersh.youamp.core.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
 
 @Composable
 fun PlaylistItem(
     title: String,
     onClick: () -> Unit,
     artworkUrl: String? = null,
-    playButton: @Composable () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    ElevatedCard(
-        shape = MaterialTheme.shapes.large,
-        onClick = onClick,
-        modifier = modifier
+    Column(
+        modifier = modifier.requiredWidth(PlaylistItemDefaults.Width),
     ) {
-        PlaylistLayout(
-            title = {
-                Text(
-                    text = title,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Left,
-                    minLines = 1,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelLarge
-                )
-            },
-            artwork = {
-                Artwork(
-                    artworkUrl = artworkUrl,
-                    placeholder = Icons.Rounded.Album
-                )
-            },
-            playButton = playButton
-        )
-    }
-}
-
-@Composable
-private fun PlaylistLayout(
-    title: @Composable () -> Unit,
-    artwork: @Composable () -> Unit,
-    playButton: @Composable () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val density = LocalDensity.current
-    val contentPadding = 12.dp.roundToPx(density)
-    val titleTopPadding = 4.dp.roundToPx(density)
-    Layout(
-        contents = listOf(
-            title,
-            artwork,
-            playButton
-        ),
-        modifier = modifier
-    ) { measurables, constraints ->
-
-        val titlePlaceable = measurables[0]
-            .first()
-            .measure(constraints)
-        val artworkPlaceable = measurables[1]
-            .first()
-            .measure(Constraints.fixed(constraints.maxWidth, constraints.maxWidth))
-        val playButtonPlaceable = measurables
-            .getOrNull(2)
-            ?.firstOrNull()
-            ?.measure(constraints)
-
-        val maxHeight =
-            titlePlaceable.height + artworkPlaceable.height + titleTopPadding + contentPadding + ((playButtonPlaceable?.height
-                ?: 0) / 2)
-
-        layout(artworkPlaceable.width, maxHeight) {
-            artworkPlaceable.placeRelative(0, 0)
-            playButtonPlaceable?.placeRelative(
-                (artworkPlaceable.width / 2) - (playButtonPlaceable.width / 2),
-                artworkPlaceable.height - (playButtonPlaceable.height / 2)
+        ElevatedCard(
+            onClick = onClick,
+        ) {
+            Artwork(
+                artworkUrl = artworkUrl,
+                shape = MaterialTheme.shapes.medium,
+                placeholder = Icons.Rounded.MusicNote,
+                modifier = Modifier.aspectRatio(1f),
             )
-            val titleY = if (playButtonPlaceable != null) {
-                artworkPlaceable.height + titleTopPadding + (playButtonPlaceable.height / 2)
-            } else {
-                artworkPlaceable.height + titleTopPadding
-            }
-            titlePlaceable.placeRelative(contentPadding, titleY)
         }
+
+        Text(
+            text = title,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            textAlign = TextAlign.Left,
+            minLines = 1,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodyLarge,
+        )
     }
 }
 
 @Stable
 object PlaylistItemDefaults {
-
     @Stable
     val Width = 160.dp
 }
@@ -113,15 +68,17 @@ object PlaylistItemDefaults {
 @Preview
 private fun PlaylistItemPreview() {
     MaterialTheme {
-        PlaylistItem(
-            title = "Playlist",
-            playButton = {
-                PlayButtonOutlined(
-                    isPlaying = false,
-                    onClick = {},
-                )
-            },
-            onClick = {}
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        ) {
+            PlaylistItem(
+                title = "Playlist",
+                onClick = {},
+            )
+            SkeletonLayout {
+                PlaylistSkeleton()
+            }
+        }
     }
 }

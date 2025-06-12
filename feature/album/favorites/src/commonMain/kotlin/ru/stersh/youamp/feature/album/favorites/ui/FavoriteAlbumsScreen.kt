@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,15 +12,16 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,6 +31,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ru.stersh.youamp.core.ui.AlbumItem
 import ru.stersh.youamp.core.ui.AlbumItemDefaults
+import ru.stersh.youamp.core.ui.AlbumSkeleton
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
@@ -158,20 +161,78 @@ private fun FavoriteAlbumsScreen(
 
 @Composable
 private fun Progress() {
-    SkeletonLayout {
-        repeat(10) {
-            ListItem(
-                headlineContent = {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        SkeletonItem(modifier = Modifier.size(width = 130.dp, height = 16.dp))
-                        SkeletonItem(modifier = Modifier.size(width = 200.dp, height = 16.dp))
-                    }
-                },
-                leadingContent = {
-                    SkeletonItem(modifier = Modifier.size(48.dp))
-                }
-            )
+    SkeletonLayout(modifier = Modifier.fillMaxSize()) {
+        LazyVerticalGrid(
+            columns = if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(AlbumItemDefaults.Width)
+            },
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            item(
+                span = { GridItemSpan(maxLineSpan) }
+            ) {
+                HeaderLayout(
+                    title = {
+                        Column(
+                            modifier = Modifier.singleHeader(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            SkeletonItem(
+                                modifier = Modifier
+                                    .size(
+                                        400.dp,
+                                        32.dp
+                                    )
+                            )
+                            SkeletonItem(
+                                modifier = Modifier
+                                    .size(
+                                        200.dp,
+                                        32.dp
+                                    )
+                            )
+                        }
+                    },
+                    actions = {
+                        SkeletonItem(
+                            shape = CircleShape,
+                            modifier = Modifier.size(64.dp)
+                        )
+                        SkeletonItem(
+                            shape = CircleShape,
+                            modifier = Modifier.size(64.dp)
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 28.dp)
+                )
+            }
+            repeat(10) {
+                item { AlbumSkeleton() }
+            }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun FavoriteAlbumsScreenProgressPreview() {
+    MaterialTheme {
+        FavoriteAlbumsScreen(
+            state = StateUi(),
+            onPlayAll = {},
+            onPlayShuffled = {},
+            onRetry = {},
+            onRefresh = {},
+            onAlbumClick = {},
+            onBackClick = {}
+        )
     }
 }
 

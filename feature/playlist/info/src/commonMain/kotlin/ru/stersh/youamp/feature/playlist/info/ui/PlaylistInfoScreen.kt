@@ -1,8 +1,5 @@
 package ru.stersh.youamp.feature.playlist.info.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,18 +13,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
@@ -35,16 +29,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
-import ru.stersh.youamp.core.ui.ArtworkMaskColor
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.HeaderLayout
-import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
-import ru.stersh.youamp.core.ui.SongPlayAnimation
+import ru.stersh.youamp.core.ui.SongItem
+import ru.stersh.youamp.core.ui.SongSkeleton
 import ru.stersh.youamp.core.ui.isCompactWidth
 
 
@@ -144,8 +137,12 @@ private fun Content(
                 items = info.songs,
                 contentType = { "song" }
             ) {
-                PlaylistSongItem(
-                    song = it,
+                SongItem(
+                    title = it.title,
+                    artist = it.artist,
+                    artworkUrl = it.artworkUrl,
+                    isCurrent = it.isCurrent,
+                    isPlaying = it.isPlaying,
                     onClick = { onPlaySong(it.id) }
                 )
             }
@@ -168,8 +165,8 @@ private fun Header(
                     .then(
                         if (isCompactWidth) {
                             Modifier
-                                .padding(horizontal = 48.dp)
                                 .fillMaxWidth()
+                                .padding(48.dp)
                         } else {
                             Modifier
                         }
@@ -201,61 +198,55 @@ private fun Progress(padding: PaddingValues) {
             HeaderLayout(
                 image = {
                     SkeletonItem(
-                        modifier = Modifier
+                        modifier = if (isCompactWidth) {
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(48.dp)
+                        } else {
+                            Modifier
+                        }
                             .aspectRatio(1f)
-                            .fillMaxWidth()
                     )
                 },
                 title = {
-                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    if (isCompactWidth) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             SkeletonItem(
-                                modifier = Modifier.size(280.dp, 32.dp)
+                                modifier = Modifier
+                                    .size(
+                                        280.dp,
+                                        40.dp
+                                    )
                                     .fillMaxWidth()
                                     .align(Alignment.Center)
                             )
                         }
                     } else {
                         SkeletonItem(
-                            modifier = Modifier.size(300.dp, 48.dp)
+                            modifier = Modifier.size(
+                                300.dp,
+                                48.dp
+                            )
                         )
                     }
                 },
                 actions = {
                     repeat(2) {
                         SkeletonItem(
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier
+                                .size(64.dp)
                                 .clip(CircleShape)
                         )
                     }
                 }
             )
             LazyColumn(
-                userScrollEnabled = false
+                userScrollEnabled = false,
+                modifier = Modifier.padding(top = 24.dp)
             ) {
                 repeat(5) {
                     item {
-                        ListItem(
-                            headlineContent = {
-                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                    SkeletonItem(
-                                        modifier = Modifier.size(
-                                            width = 130.dp,
-                                            height = 16.dp
-                                        )
-                                    )
-                                    SkeletonItem(
-                                        modifier = Modifier.size(
-                                            width = 200.dp,
-                                            height = 16.dp
-                                        )
-                                    )
-                                }
-                            },
-                            leadingContent = {
-                                SkeletonItem(modifier = Modifier.size(48.dp))
-                            }
-                        )
+                        SongSkeleton()
                     }
                 }
             }
@@ -263,49 +254,19 @@ private fun Progress(padding: PaddingValues) {
     }
 }
 
+@Preview
 @Composable
-private fun PlaylistSongItem(
-    song: PlaylistSongUi,
-    onClick: () -> Unit
-) {
-    ListItem(
-        headlineContent = {
-            Text(
-                text = song.title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        supportingContent = {
-            song.artist?.let {
-                Text(
-                    text = it,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        },
-        leadingContent = {
-            Artwork(
-                artworkUrl = song.artworkUrl,
-                placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier.size(48.dp)
-            )
-            if (song.isCurrent) {
-                SongPlayAnimation(
-                    isPlaying = song.isPlaying,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            color = ArtworkMaskColor,
-                            shape = MaterialTheme.shapes.large
-                        )
-                        .padding(12.dp)
-                )
-            }
-        },
-        modifier = Modifier.clickable(onClick = onClick)
-    )
+private fun PlaylistInfoScreenProgressPreview() {
+    MaterialTheme {
+        PlaylistInfoScreen(
+            state = PlaylistInfoScreenStateUi(),
+            onRetry = {},
+            onPlayAll = {},
+            onPlayShuffled = {},
+            onPlaySong = {},
+            onBackClick = {}
+        )
+    }
 }
 
 @Preview

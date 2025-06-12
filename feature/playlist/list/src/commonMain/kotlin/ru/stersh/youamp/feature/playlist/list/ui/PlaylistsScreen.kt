@@ -2,10 +2,7 @@ package ru.stersh.youamp.feature.playlist.list.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,12 +10,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -26,18 +19,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
-import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.EmptyLayout
 import ru.stersh.youamp.core.ui.ErrorLayout
+import ru.stersh.youamp.core.ui.PlaylistItem
 import ru.stersh.youamp.core.ui.PlaylistItemDefaults
+import ru.stersh.youamp.core.ui.PlaylistSkeleton
 import ru.stersh.youamp.core.ui.PullToRefresh
 import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.YouampPlayerTheme
@@ -111,29 +105,41 @@ private fun PlaylistsScreen(
                 }
 
                 else -> {
-                    LazyVerticalGrid(
-                        columns = if (isCompactWidth) {
-                            GridCells.Fixed(2)
-                        } else {
-                            GridCells.Adaptive(PlaylistItemDefaults.Width)
-                        },
-                        state = rememberLazyGridState(),
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(
-                            items = state.items
-                        ) { playlist ->
-                            PlaylistItem(
-                                playlist = playlist,
-                                onPlaylistClick = onPlaylistClick
-                            )
-                        }
-                    }
+                    Content(
+                        items = state.items,
+                        onPlaylistClick = onPlaylistClick
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    items: ImmutableList<PlaylistUi>,
+    onPlaylistClick: (id: String) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = if (isCompactWidth) {
+            GridCells.Fixed(2)
+        } else {
+            GridCells.Adaptive(PlaylistItemDefaults.Width)
+        },
+        state = rememberLazyGridState(),
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(
+            items = items
+        ) { playlist ->
+            PlaylistItem(
+                title = playlist.name,
+                onClick = { onPlaylistClick.invoke(playlist.id) },
+                artworkUrl = playlist.artworkUrl
+            )
         }
     }
 }
@@ -148,48 +154,30 @@ private fun Progress() {
                 GridCells.Adaptive(PlaylistItemDefaults.Width)
             },
             contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            userScrollEnabled = false
         ) {
             items(
                 key = { it },
                 items = (0..20).toList()
             ) {
-                SkeletonItem(
-                    modifier = Modifier.height(220.dp)
-                )
+                PlaylistSkeleton()
             }
         }
     }
 }
 
 @Composable
-private fun PlaylistItem(
-    playlist: PlaylistUi,
-    onPlaylistClick: (id: String) -> Unit
-) {
-    ElevatedCard(
-        shape = MaterialTheme.shapes.large,
-        onClick = {
-            onPlaylistClick(playlist.id)
-        }
-    ) {
-        Artwork(
-            artworkUrl = playlist.artworkUrl,
-            placeholder = Icons.Rounded.MusicNote,
-            modifier = Modifier
-                .aspectRatio(1f)
-                .fillMaxWidth()
-        )
-        Text(
-            text = playlist.name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            textAlign = TextAlign.Left,
-            minLines = 1,
-            maxLines = 1,
-            style = MaterialTheme.typography.labelLarge
+@Preview
+private fun PlaylistsScreenProgressPreview() {
+    YouampPlayerTheme {
+        PlaylistsScreen(
+            state = PlaylistsStateUi(),
+            onRetry = {},
+            onRefresh = {},
+            onPlaylistClick = {},
+            onBackClick = {}
         )
     }
 }

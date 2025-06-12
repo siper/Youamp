@@ -1,7 +1,6 @@
 package ru.stersh.youamp.feature.album.info.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +18,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,10 +35,11 @@ import ru.stersh.youamp.core.ui.BackNavigationButton
 import ru.stersh.youamp.core.ui.ErrorLayout
 import ru.stersh.youamp.core.ui.FavoriteButton
 import ru.stersh.youamp.core.ui.HeaderLayout
-import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 import ru.stersh.youamp.core.ui.PlayAllButton
 import ru.stersh.youamp.core.ui.PlayShuffledButton
 import ru.stersh.youamp.core.ui.SkeletonLayout
+import ru.stersh.youamp.core.ui.SongSkeleton
+import ru.stersh.youamp.core.ui.isCompactWidth
 
 
 @Composable
@@ -98,7 +97,7 @@ private fun AlbumInfoScreen(
             }
 
             state.content != null -> {
-                ContentState(
+                Content(
                     state = state.content,
                     onPlayAll = onPlayAll,
                     onPlayShuffled = onPlayShuffled,
@@ -124,25 +123,36 @@ private fun Progress(padding: PaddingValues) {
                     )
                 },
                 title = {
-                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    if (isCompactWidth) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             SkeletonItem(
-                                modifier = Modifier.size(280.dp, 32.dp)
+                                modifier = Modifier
+                                    .size(
+                                        280.dp,
+                                        32.dp
+                                    )
                                     .fillMaxWidth()
                                     .align(Alignment.Center)
                             )
                         }
                     } else {
                         SkeletonItem(
-                            modifier = Modifier.size(300.dp, 48.dp)
+                            modifier = Modifier.size(
+                                300.dp,
+                                48.dp
+                            )
                         )
                     }
                 },
                 subtitle = {
-                    if (LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    if (isCompactWidth) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             SkeletonItem(
-                                modifier = Modifier.size(220.dp, 24.dp)
+                                modifier = Modifier
+                                    .size(
+                                        220.dp,
+                                        24.dp
+                                    )
                                     .fillMaxWidth()
                                     .padding(top = 4.dp)
                                     .align(Alignment.Center)
@@ -151,46 +161,31 @@ private fun Progress(padding: PaddingValues) {
                     } else {
                         SkeletonItem(
                             modifier = Modifier
-                                .size(220.dp, 24.dp)
+                                .size(
+                                    220.dp,
+                                    24.dp
+                                )
                                 .padding(top = 4.dp)
                         )
                     }
                 },
                 actions = {
-                    repeat(2) {
+                    repeat(3) {
                         SkeletonItem(
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier
+                                .size(64.dp)
                                 .clip(CircleShape)
                         )
                     }
                 }
             )
             LazyColumn(
-                userScrollEnabled = false
+                userScrollEnabled = false,
+                modifier = Modifier.padding(top = 28.dp)
             ) {
                 repeat(5) {
                     item {
-                        ListItem(
-                            headlineContent = {
-                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                    SkeletonItem(
-                                        modifier = Modifier.size(
-                                            width = 130.dp,
-                                            height = 16.dp
-                                        )
-                                    )
-                                    SkeletonItem(
-                                        modifier = Modifier.size(
-                                            width = 200.dp,
-                                            height = 16.dp
-                                        )
-                                    )
-                                }
-                            },
-                            leadingContent = {
-                                SkeletonItem(modifier = Modifier.size(48.dp))
-                            }
-                        )
+                        SongSkeleton()
                     }
                 }
             }
@@ -199,7 +194,7 @@ private fun Progress(padding: PaddingValues) {
 }
 
 @Composable
-private fun ContentState(
+private fun Content(
     state: AlbumInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
@@ -313,6 +308,20 @@ private fun AlbumSongItem(
             Text(text = song.duration)
         },
         modifier = Modifier.clickable(onClick = onClick)
+    )
+}
+
+@Preview
+@Composable
+private fun AlbumInfoScreenProgressPreview() {
+    AlbumInfoScreen(
+        state = AlbumInfoStateUi(),
+        onPlayAll = {},
+        onPlayShuffled = {},
+        onFavoriteChange = {},
+        onPlaySong = {},
+        onRetry = {},
+        onBackClick = {}
     )
 }
 
