@@ -3,7 +3,7 @@ package ru.stersh.youamp.feature.song.info.ui
 import androidx.compose.runtime.Immutable
 
 @Immutable
-internal data class State(
+internal data class StateUi(
     val title: String? = null,
     val artist: String? = null,
     val artistId: String? = null,
