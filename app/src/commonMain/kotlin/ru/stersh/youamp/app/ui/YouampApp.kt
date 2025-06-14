@@ -17,9 +17,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
@@ -27,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
@@ -93,8 +91,6 @@ private fun Content(
     rootNavController: NavHostController,
     viewModelStoreOwner: ViewModelStoreOwner
 ) {
-    var songInfoProperties by remember { mutableStateOf<SongInfoProperties?>(null) }
-
     NavHost(
         navController = rootNavController,
         startDestination = Main,
@@ -122,9 +118,11 @@ private fun Content(
                 personal = {
                     PersonalScreen(
                         onSongClick = {
-                            songInfoProperties = SongInfoProperties(
-                                songId = it,
-                                showAlbum = true
+                            rootNavController.navigate(
+                                SongInfo(
+                                    songId = it,
+                                    showAlbum = true
+                                )
                             )
                         },
                         onAlbumClick = { rootNavController.navigate(AlbumInfo(it)) },
@@ -145,9 +143,11 @@ private fun Content(
                             rootNavController.navigate(RandomSongs)
                         },
                         onSongClick = {
-                            songInfoProperties = SongInfoProperties(
-                                songId = it,
-                                showAlbum = true
+                            rootNavController.navigate(
+                                SongInfo(
+                                    songId = it,
+                                    showAlbum = true
+                                )
                             )
                         }
                     )
@@ -185,9 +185,11 @@ private fun Content(
             ) {
                 AlbumInfoScreen(
                     onOpenSongInfo = { songId ->
-                        songInfoProperties = SongInfoProperties(
-                            songId = songId,
-                            showAlbum = false
+                        rootNavController.navigate(
+                            SongInfo(
+                                songId = songId,
+                                showAlbum = false
+                            )
                         )
                     },
                     onBackClick = { rootNavController.popBackStack() },
@@ -253,9 +255,11 @@ private fun Content(
                     rootNavController.navigate(AlbumInfo(albumId))
                 },
                 onOpenSongInfo = { songId ->
-                    songInfoProperties = SongInfoProperties(
-                        songId = songId,
-                        showAlbum = true
+                    rootNavController.navigate(
+                        SongInfo(
+                            songId = songId,
+                            showAlbum = true
+                        )
                     )
                 },
                 onOpenArtistInfo = { artistId ->
@@ -398,9 +402,11 @@ private fun Content(
                         rootNavController.popBackStack()
                     },
                     onSongClick = {
-                        songInfoProperties = SongInfoProperties(
-                            songId = it,
-                            showAlbum = true
+                        rootNavController.navigate(
+                            SongInfo(
+                                songId = it,
+                                showAlbum = true
+                            )
                         )
                     }
                 )
@@ -418,9 +424,11 @@ private fun Content(
                         rootNavController.popBackStack()
                     },
                     onSongClick = {
-                        songInfoProperties = SongInfoProperties(
-                            songId = it,
-                            showAlbum = true
+                        rootNavController.navigate(
+                            SongInfo(
+                                songId = it,
+                                showAlbum = true
+                            )
                         )
                     }
                 )
@@ -460,34 +468,33 @@ private fun Content(
                 )
             }
         }
-    }
-    songInfoProperties?.let { songProperties ->
-        ModalBottomSheet(
-            containerColor = MaterialTheme.colorScheme.surface,
-            onDismissRequest = { songInfoProperties = null },
-            contentWindowInsets = {
-                WindowInsets(
-                    0.dp,
-                    0.dp,
-                    0.dp,
-                    0.dp
+        dialog<SongInfo> {
+            val songInfo = it.toRoute<SongInfo>()
+            ModalBottomSheet(
+                containerColor = MaterialTheme.colorScheme.surface,
+                onDismissRequest = { rootNavController.popBackStack() },
+                contentWindowInsets = {
+                    WindowInsets(
+                        0.dp,
+                        0.dp,
+                        0.dp,
+                        0.dp
+                    )
+                },
+                dragHandle = {}
+            ) {
+                SongInfoScreen(
+                    id = songInfo.songId,
+                    showAlbum = songInfo.showAlbum,
+                    onDismiss = { rootNavController.popBackStack() },
+                    onOpenAlbum = { albumId ->
+                        rootNavController.navigate(AlbumInfo(albumId))
+                    },
+                    onOpenArtist = { artistId ->
+                        rootNavController.navigate(ArtistInfo(artistId))
+                    }
                 )
-            },
-            dragHandle = {}
-        ) {
-            SongInfoScreen(
-                id = songProperties.songId,
-                showAlbum = songProperties.showAlbum,
-                onDismiss = {
-                    songInfoProperties = null
-                },
-                onOpenAlbum = { albumId ->
-                    rootNavController.navigate(AlbumInfo(albumId))
-                },
-                onOpenArtist = { artistId ->
-                    rootNavController.navigate(ArtistInfo(artistId))
-                }
-            )
+            }
         }
     }
 }

@@ -33,7 +33,8 @@ data class ServerEditor(val serverId: Long)
 @Serializable
 data class PlaylistInfo(val playlistId: String)
 
-data class SongInfoProperties(
+@Serializable
+data class SongInfo(
     val songId: String,
     val showAlbum: Boolean
 )

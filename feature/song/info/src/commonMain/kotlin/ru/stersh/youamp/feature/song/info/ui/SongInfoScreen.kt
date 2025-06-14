@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.Artwork
 import ru.stersh.youamp.core.ui.Error
 import ru.stersh.youamp.core.ui.SongMenu
@@ -42,20 +43,30 @@ import youamp.feature.song.info.generated.resources.remove_from_favorites
 @Composable
 fun SongInfoScreen(
     id: String,
+    showAlbum: Boolean = true,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
-    onDismiss: () -> Unit,
-    showAlbum: Boolean = true
+    onDismiss: () -> Unit
 ) {
-    val viewModel: SongInfoViewModel = koinViewModel()
+    val viewModel: SongInfoViewModel = koinViewModel<SongInfoViewModel> {
+        parametersOf(
+            id,
+            showAlbum
+        )
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect("load_track_state") {
-        viewModel.loadSongInfo(songId = id, showAlbum = showAlbum)
+    LaunchedEffect(Unit) {
+        viewModel
+            .dismiss
+            .collect {
+                onDismiss()
+            }
     }
+
     if (state.error) {
         Error(
-            onRetry = { viewModel.loadSongInfo(id, showAlbum) },
+            onRetry = viewModel::retry,
             modifier = Modifier
                 .padding(top = 16.dp)
                 .windowInsetsPadding(WindowInsets.navigationBars)
@@ -63,28 +74,22 @@ fun SongInfoScreen(
     } else {
         SongInfoScreen(
             state = state,
-            onDismiss = onDismiss,
             onOpenAlbum = onOpenAlbum,
             onOpenArtist = onOpenArtist,
             onPlay = {
                 viewModel.play(id)
-                onDismiss()
             },
             onAddToQueueNext = {
                 viewModel.addToQueueNext(id)
-                onDismiss()
             },
             onAddToQueueLast = {
                 viewModel.addToQueueLast(id)
-                onDismiss()
             },
             onAddToFavorites = {
                 viewModel.addToFavorites(id)
-                onDismiss()
             },
             onRemoveFromFavorites = {
                 viewModel.removeFromFavorites(id)
-                onDismiss()
             },
         )
     }
@@ -92,8 +97,7 @@ fun SongInfoScreen(
 
 @Composable
 private fun SongInfoScreen(
-    state: State,
-    onDismiss: () -> Unit,
+    state: StateUi,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
     onPlay: () -> Unit,
@@ -174,7 +178,6 @@ private fun SongInfoScreen(
                 },
                 onClick = {
                     onOpenAlbum(state.albumId)
-                    onDismiss()
                 }
             )
         }
@@ -192,7 +195,6 @@ private fun SongInfoScreen(
                 },
                 onClick = {
                     onOpenArtist(artistId)
-                    onDismiss()
                 }
             )
         }
@@ -232,14 +234,13 @@ private fun SongInfoScreen(
 private fun AlbumInfoScreenPreview() {
     YouampPlayerTheme {
         SongInfoScreen(
-            state = State(
+            state = StateUi(
                 title = "Test song",
                 artistId = "1",
                 albumId = "1",
                 artist = "Test artist",
                 progress = false
             ),
-            onDismiss = {},
             onPlay = {},
             onOpenAlbum = {},
             onOpenArtist = {},
