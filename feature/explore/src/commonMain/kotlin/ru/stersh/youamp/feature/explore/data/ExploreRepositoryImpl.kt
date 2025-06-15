@@ -18,8 +18,9 @@ internal class ExploreRepositoryImpl(
     private val apiProvider: ApiProvider,
     private val queueAudioSourceManager: PlayerQueueAudioSourceManager,
     private val player: Player,
-    private val songRandomStorage: SongRandomStorage
+    private val songRandomStorage: SongRandomStorage,
 ) : ExploreRepository {
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     override fun getExplore(): Flow<Explore> {
         return combine(
             apiProvider
@@ -35,18 +36,23 @@ internal class ExploreRepositoryImpl(
                         .map { isPlaying ->
                             source.takeIf { isPlaying }
                         }
-                }
+                },
         ) { apiId, randomSongs, playingSource ->
             return@combine Explore(
-                randomSongs = randomSongs.map { song ->
-                    Song(
-                        id = song.id,
-                        title = song.title,
-                        artist = song.artist,
-                        artworkUrl = song.artworkUrl,
-                        isPlaying = playingSource?.isSongPlaying(apiId, song.id) == true
-                    )
-                }
+                randomSongs =
+                    randomSongs.map { song ->
+                        Song(
+                            id = song.id,
+                            title = song.title,
+                            artist = song.artist,
+                            artworkUrl = song.artworkUrl,
+                            isPlaying =
+                                playingSource?.isSongPlaying(
+                                    apiId,
+                                    song.id,
+                                ) == true,
+                        )
+                    },
             )
         }
     }
@@ -55,10 +61,15 @@ internal class ExploreRepositoryImpl(
         songRandomStorage.refresh()
     }
 
-    private fun PlayingSource?.isSongPlaying(serverId: Long, songId: String): Boolean {
+    private fun PlayingSource?.isSongPlaying(
+        serverId: Long,
+        songId: String,
+    ): Boolean {
         if (this == null) {
             return false
         }
-        return this.serverId == serverId && this.id == songId && this.type == PlayingSource.Type.Song
+        return this.serverId == serverId &&
+            this.id == songId &&
+            this.type == PlayingSource.Type.Song
     }
 }

@@ -53,9 +53,7 @@ import youamp.feature.about.generated.resources.github_subtitle
 import youamp.feature.about.generated.resources.github_title
 
 @Composable
-fun AboutScreen(
-    onBackClick: () -> Unit
-) {
+fun AboutScreen(onBackClick: () -> Unit) {
     val viewModel: AboutAppViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
@@ -70,7 +68,7 @@ fun AboutScreen(
         },
         onCrowdinClick = {
             uriHandler.openUri(state.crwodinUri)
-        }
+        },
     )
 }
 
@@ -81,7 +79,7 @@ private fun AboutScreen(
     onBackClick: () -> Unit,
     onGithubClick: () -> Unit,
     onFDroidClick: () -> Unit,
-    onCrowdinClick: () -> Unit
+    onCrowdinClick: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -93,55 +91,61 @@ private fun AboutScreen(
                 title = {
                     Text(text = stringResource(Res.string.about_title))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         Column(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-                .verticalScroll(
-                    state = rememberScrollState()
-                ),
+            modifier =
+                Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .verticalScroll(
+                        state = rememberScrollState(),
+                    ),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Image(
                 imageVector = AppIcon,
                 contentDescription = stringResource(Res.string.app_icon_description),
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .shadow(10.dp, shape = CircleShape)
-                    .background(color = Color.White, shape = CircleShape)
-                    .size(160.dp)
+                modifier =
+                    Modifier
+                        .padding(top = 8.dp)
+                        .shadow(
+                            elevation = 10.dp,
+                            shape = CircleShape,
+                        ).background(
+                            color = Color.White,
+                            shape = CircleShape,
+                        ).size(160.dp),
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     text = state.name,
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Text(
                     text = state.version,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.secondary,
                 )
             }
 
             Column {
                 GithubItem(
-                    onClick = onGithubClick
+                    onClick = onGithubClick,
                 )
                 FDroidItem(
-                    onClick = onFDroidClick
+                    onClick = onFDroidClick,
                 )
                 CrowdinItem(
-                    onClick = onCrowdinClick
+                    onClick = onCrowdinClick,
                 )
             }
         }
@@ -151,81 +155,81 @@ private fun AboutScreen(
 @Composable
 private fun CrowdinItem(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ListItem(
         leadingContent = {
             Icon(
                 imageVector = SimpleIcons.Crowdin,
                 contentDescription = stringResource(Res.string.crowdin_icon_description),
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(36.dp),
             )
         },
         headlineContent = {
             SingleLineText(
-                text = stringResource(Res.string.crowdin_title)
+                text = stringResource(Res.string.crowdin_title),
             )
         },
         supportingContent = {
             SingleLineText(
-                text = stringResource(Res.string.crowdin_subtitle)
+                text = stringResource(Res.string.crowdin_subtitle),
             )
         },
-        modifier = modifier.clickable(onClick = onClick)
+        modifier = modifier.clickable(onClick = onClick),
     )
 }
 
 @Composable
 private fun FDroidItem(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ListItem(
         leadingContent = {
             Icon(
                 imageVector = SimpleIcons.FDroid,
                 contentDescription = stringResource(Res.string.f_droid_icon_description),
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(36.dp),
             )
         },
         headlineContent = {
             SingleLineText(
-                text = stringResource(Res.string.f_droid_title)
+                text = stringResource(Res.string.f_droid_title),
             )
         },
         supportingContent = {
             SingleLineText(
-                text = stringResource(Res.string.f_droid_subtitle)
+                text = stringResource(Res.string.f_droid_subtitle),
             )
         },
-        modifier = modifier.clickable(onClick = onClick)
+        modifier = modifier.clickable(onClick = onClick),
     )
 }
 
 @Composable
 private fun GithubItem(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ListItem(
         leadingContent = {
             Icon(
                 imageVector = SimpleIcons.Github,
                 contentDescription = stringResource(Res.string.github_icon_description),
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(36.dp),
             )
         },
         headlineContent = {
             SingleLineText(
-                text = stringResource(Res.string.github_title)
+                text = stringResource(Res.string.github_title),
             )
         },
         supportingContent = {
             SingleLineText(
-                text = stringResource(Res.string.github_subtitle)
+                text = stringResource(Res.string.github_subtitle),
             )
         },
-        modifier = modifier.clickable(onClick = onClick)
+        modifier = modifier.clickable(onClick = onClick),
     )
 }
 
@@ -234,17 +238,18 @@ private fun GithubItem(
 private fun AboutScreenPreview() {
     YouampPlayerTheme {
         AboutScreen(
-            state = AboutStateUi(
-                name = "Youamp",
-                version = "1.0.0-alpha04",
-                githubUri = "",
-                fdroidUri = "",
-                crwodinUri = ""
-            ),
+            state =
+                AboutStateUi(
+                    name = "Youamp",
+                    version = "1.0.0-alpha04",
+                    githubUri = "",
+                    fdroidUri = "",
+                    crwodinUri = "",
+                ),
             onBackClick = {},
             onGithubClick = {},
             onFDroidClick = {},
-            onCrowdinClick = {}
+            onCrowdinClick = {},
         )
     }
 }

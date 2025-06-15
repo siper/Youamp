@@ -32,13 +32,15 @@ kotlin {
 
 android {
     namespace = "ru.stersh.youamp.feature.song.random"
-    compileSdk = libs.versions.android.compileSdk
-        .get()
-        .toInt()
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk
+    compileSdk =
+        libs.versions.android.compileSdk
             .get()
             .toInt()
+    defaultConfig {
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
     buildFeatures {
         compose = true

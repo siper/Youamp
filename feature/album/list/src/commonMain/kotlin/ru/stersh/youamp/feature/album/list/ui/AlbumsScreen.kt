@@ -40,7 +40,6 @@ import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.album.list.generated.resources.Res
 import youamp.feature.album.list.generated.resources.albums_title
 
-
 @Composable
 fun AlbumsScreen(
     onBackClick: () -> Unit,
@@ -56,7 +55,7 @@ fun AlbumsScreen(
         onRetry = viewModel::retry,
         onBottomReached = viewModel::loadMore,
         onAlbumClick = onAlbumClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -80,15 +79,15 @@ private fun AlbumsScreen(
                 title = {
                     Text(text = stringResource(Res.string.albums_title))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             when {
                 state.progress -> {
@@ -101,9 +100,10 @@ private fun AlbumsScreen(
 
                 state.items.isEmpty() -> {
                     EmptyLayout(
-                        modifier = Modifier.verticalScroll(
-                            state = rememberScrollState()
-                        )
+                        modifier =
+                            Modifier.verticalScroll(
+                                state = rememberScrollState(),
+                            ),
                     )
                 }
 
@@ -112,7 +112,7 @@ private fun AlbumsScreen(
                     Content(
                         listState = listState,
                         state = state,
-                        onAlbumClick = onAlbumClick
+                        onAlbumClick = onAlbumClick,
                     )
 
                     listState.OnBottomReached {
@@ -128,29 +128,30 @@ private fun AlbumsScreen(
 private fun Content(
     listState: LazyGridState,
     state: AlbumsStateUi,
-    onAlbumClick: (id: String) -> Unit
+    onAlbumClick: (id: String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = if (isCompactWidth) {
-            GridCells.Fixed(2)
-        } else {
-            GridCells.Adaptive(AlbumItemDefaults.Width)
-        },
+        columns =
+            if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(AlbumItemDefaults.Width)
+            },
         state = listState,
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         items(
             key = { it.id },
-            items = state.items
+            items = state.items,
         ) { album ->
             AlbumItem(
                 title = album.title,
                 artist = album.artist,
                 artworkUrl = album.artworkUrl,
-                onClick = { onAlbumClick(album.id) }
+                onClick = { onAlbumClick(album.id) },
             )
         }
     }
@@ -160,19 +161,20 @@ private fun Content(
 private fun Progress() {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = if (isCompactWidth) {
-                GridCells.Fixed(2)
-            } else {
-                GridCells.Adaptive(AlbumItemDefaults.Width)
-            },
+            columns =
+                if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(AlbumItemDefaults.Width)
+                },
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             items(
                 key = { it },
-                items = (0..10).toList()
+                items = (0..10).toList(),
             ) {
                 AlbumSkeleton()
             }
@@ -190,7 +192,7 @@ private fun AlbumsScreenProgressPreview() {
             onRetry = {},
             onBottomReached = {},
             onAlbumClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -199,39 +201,41 @@ private fun AlbumsScreenProgressPreview() {
 @Preview
 private fun AlbumsScreenPreview() {
     YouampPlayerTheme {
-        val items = persistentListOf(
-            AlbumUi(
-                id = "1",
-                title = "Test",
-                artist = "Test artist",
-                artworkUrl = null
-            ),
-            AlbumUi(
-                id = "2",
-                title = "Test 2",
-                artist = "Test artist 2 ",
-                artworkUrl = null
-            ),
-            AlbumUi(
-                id = "3",
-                title = "Test 3",
-                artist = "Test artist 3",
-                artworkUrl = null
+        val items =
+            persistentListOf(
+                AlbumUi(
+                    id = "1",
+                    title = "Test",
+                    artist = "Test artist",
+                    artworkUrl = null,
+                ),
+                AlbumUi(
+                    id = "2",
+                    title = "Test 2",
+                    artist = "Test artist 2 ",
+                    artworkUrl = null,
+                ),
+                AlbumUi(
+                    id = "3",
+                    title = "Test 3",
+                    artist = "Test artist 3",
+                    artworkUrl = null,
+                ),
             )
-        )
-        val state = AlbumsStateUi(
-            progress = false,
-            isRefreshing = false,
-            error = false,
-            items = items
-        )
+        val state =
+            AlbumsStateUi(
+                progress = false,
+                isRefreshing = false,
+                error = false,
+                items = items,
+            )
         AlbumsScreen(
             state = state,
             onRefresh = {},
             onRetry = {},
             onBottomReached = {},
             onAlbumClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

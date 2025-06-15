@@ -5,5 +5,5 @@ internal data class Album(
     val title: String,
     val artist: String?,
     val artworkUrl: String?,
-    val userRating: Int?
+    val userRating: Int?,
 )

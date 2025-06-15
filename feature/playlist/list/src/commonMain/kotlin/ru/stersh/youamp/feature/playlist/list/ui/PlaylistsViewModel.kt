@@ -18,7 +18,7 @@ import ru.stersh.youamp.core.utils.mapItems
 import ru.stersh.youamp.feature.playlist.list.domain.PlaylistsRepository
 
 internal class PlaylistsViewModel(
-    private val playlistsRepository: PlaylistsRepository
+    private val playlistsRepository: PlaylistsRepository,
 ) : ViewModel() {
     private var loadJob: Job? = null
 
@@ -30,55 +30,56 @@ internal class PlaylistsViewModel(
         retry()
     }
 
-    fun retry() = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                progress = true,
-                isRefreshing = false,
-                error = false,
-                items = persistentListOf()
-            )
+    fun retry() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    progress = true,
+                    isRefreshing = false,
+                    error = false,
+                    items = persistentListOf(),
+                )
+            }
+            subscribePlaylists()
         }
-        subscribePlaylists()
-    }
 
-    fun refresh() = viewModelScope.launch {
-        _state.update {
-            it.copy(isRefreshing = true)
+    fun refresh() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isRefreshing = true)
+            }
+            subscribePlaylists()
         }
-        subscribePlaylists()
-    }
 
     private fun subscribePlaylists() {
         loadJob?.cancel()
-        loadJob = viewModelScope.launch {
-            playlistsRepository
-                .getPlaylists()
-                .mapItems { it.toUi() }
-                .map { it.toPersistentList() }
-                .flowOn(Dispatchers.IO)
-                .catch { throwable ->
-                    Logger.w(throwable) { "Filed to load playlists" }
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            isRefreshing = false,
-                            error = true,
-                            items = persistentListOf()
-                        )
+        loadJob =
+            viewModelScope.launch {
+                playlistsRepository
+                    .getPlaylists()
+                    .mapItems { it.toUi() }
+                    .map { it.toPersistentList() }
+                    .flowOn(Dispatchers.IO)
+                    .catch { throwable ->
+                        Logger.w(throwable) { "Filed to load playlists" }
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                isRefreshing = false,
+                                error = true,
+                                items = persistentListOf(),
+                            )
+                        }
+                    }.collect { playlists ->
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                isRefreshing = false,
+                                error = false,
+                                items = playlists,
+                            )
+                        }
                     }
-                }
-                .collect { playlists ->
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            isRefreshing = false,
-                            error = false,
-                            items = playlists
-                        )
-                    }
-                }
-        }
+            }
     }
-
 }

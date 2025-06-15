@@ -8,11 +8,22 @@ import ru.stersh.youamp.feature.album.info.domain.AlbumFavoriteRepository
 import ru.stersh.youamp.feature.album.info.domain.AlbumInfoRepository
 import ru.stersh.youamp.feature.album.info.ui.AlbumInfoViewModel
 
-val albumInfoModule = module {
-    single<AlbumInfoRepository> { AlbumInfoRepositoryImpl(get(), get()) }
-    single<AlbumFavoriteRepository> { AlbumFavoriteRepositoryImpl(get()) }
+val albumInfoModule =
+    module {
+        single<AlbumInfoRepository> {
+            AlbumInfoRepositoryImpl(
+                get(),
+                get(),
+            )
+        }
+        single<AlbumFavoriteRepository> { AlbumFavoriteRepositoryImpl(get()) }
 
-    viewModel { (id: String) ->
-        AlbumInfoViewModel(id, get(), get(), get())
+        viewModel { (id: String) ->
+            AlbumInfoViewModel(
+                id,
+                get(),
+                get(),
+                get(),
+            )
+        }
     }
-}

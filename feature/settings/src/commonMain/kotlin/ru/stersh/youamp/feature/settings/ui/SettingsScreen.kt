@@ -37,7 +37,7 @@ import youamp.feature.settings.generated.resources.settings_title
 fun SettingsScreen(
     onBackClick: () -> Unit,
     onServersClick: () -> Unit,
-    onAboutClick: () -> Unit
+    onAboutClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -47,24 +47,25 @@ fun SettingsScreen(
                 },
                 title = {
                     Text(text = stringResource(Res.string.settings_title))
-                }
+                },
             )
-        }
+        },
     ) {
         Column(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-                .verticalScroll(
-                    state = rememberScrollState()
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .verticalScroll(
+                        state = rememberScrollState(),
+                    ),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ListItem(
                 leadingContent = {
                     RoundedIcon(
                         imageVector = Icons.Rounded.Dns,
-                        contentDescription = stringResource(Res.string.servers_icon_description)
+                        contentDescription = stringResource(Res.string.servers_icon_description),
                     )
                 },
                 headlineContent = {
@@ -73,13 +74,13 @@ fun SettingsScreen(
                 supportingContent = {
                     SingleLineText(text = stringResource(Res.string.servers_subtitle))
                 },
-                modifier = Modifier.clickable(onClick = onServersClick)
+                modifier = Modifier.clickable(onClick = onServersClick),
             )
             ListItem(
                 leadingContent = {
                     RoundedIcon(
                         imageVector = Icons.Rounded.Info,
-                        contentDescription = stringResource(Res.string.about_icon_description)
+                        contentDescription = stringResource(Res.string.about_icon_description),
                     )
                 },
                 headlineContent = {
@@ -88,7 +89,7 @@ fun SettingsScreen(
                 supportingContent = {
                     SingleLineText(text = stringResource(Res.string.about_subtitle))
                 },
-                modifier = Modifier.clickable(onClick = onAboutClick)
+                modifier = Modifier.clickable(onClick = onAboutClick),
             )
         }
     }
@@ -101,7 +102,7 @@ private fun SettingsScreenPreview() {
         SettingsScreen(
             onBackClick = {},
             onServersClick = {},
-            onAboutClick = {}
+            onAboutClick = {},
         )
     }
 }

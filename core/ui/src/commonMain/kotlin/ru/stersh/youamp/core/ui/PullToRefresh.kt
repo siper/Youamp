@@ -13,19 +13,19 @@ fun PullToRefresh(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     if (currentPlatform.mobile) {
         PullToRefreshBox(
             isRefreshing = isRefreshing,
             onRefresh = onRefresh,
             content = content,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         Box(
             modifier = modifier,
-            content = content
+            content = content,
         )
     }
 }

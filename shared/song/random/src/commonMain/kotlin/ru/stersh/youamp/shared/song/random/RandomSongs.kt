@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 
 internal class RandomSongs {
-
     private val needFetch = MutableStateFlow(true)
 
     private val songs = MutableStateFlow<List<Song>>(emptyList())
@@ -15,15 +14,13 @@ internal class RandomSongs {
     val needFetchData: Boolean
         get() = needFetch.value
 
-    fun songs(): Flow<List<Song>> {
-        return needFetch
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun songs(): Flow<List<Song>> =
+        needFetch
             .filter { !it }
             .flatMapLatest { songs }
-    }
 
-    fun update(
-        songs: List<Song>
-    ) {
+    fun update(songs: List<Song>) {
         this.songs.update { songs }
         needFetch.update { false }
     }

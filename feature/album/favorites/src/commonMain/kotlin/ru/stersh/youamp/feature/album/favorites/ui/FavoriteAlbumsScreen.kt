@@ -47,7 +47,7 @@ import youamp.feature.album.favorites.generated.resources.favorite_albums_title
 @Composable
 fun FavoriteAlbumsScreen(
     onAlbumClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val viewModel: FavoriteAlbumsViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -59,7 +59,7 @@ fun FavoriteAlbumsScreen(
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onAlbumClick = onAlbumClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -72,7 +72,7 @@ private fun FavoriteAlbumsScreen(
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onAlbumClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -80,14 +80,14 @@ private fun FavoriteAlbumsScreen(
                 title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) {
         PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             when {
                 state.progress -> {
@@ -100,56 +100,58 @@ private fun FavoriteAlbumsScreen(
 
                 state.data != null && state.data.albums.isEmpty() -> {
                     EmptyLayout(
-                        modifier = Modifier.verticalScroll(
-                            state = rememberScrollState()
-                        )
+                        modifier =
+                            Modifier.verticalScroll(
+                                state = rememberScrollState(),
+                            ),
                     )
                 }
 
                 state.data?.albums != null -> {
                     LazyVerticalGrid(
-                        columns = if (isCompactWidth) {
-                            GridCells.Fixed(2)
-                        } else {
-                            GridCells.Adaptive(AlbumItemDefaults.Width)
-                        },
+                        columns =
+                            if (isCompactWidth) {
+                                GridCells.Fixed(2)
+                            } else {
+                                GridCells.Adaptive(AlbumItemDefaults.Width)
+                            },
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         item(
                             contentType = "header",
                             key = "header",
-                            span = { GridItemSpan(maxCurrentLineSpan) }
+                            span = { GridItemSpan(maxCurrentLineSpan) },
                         ) {
                             HeaderLayout(
                                 title = {
                                     Text(
                                         text = stringResource(Res.string.favorite_albums_title),
-                                        modifier = Modifier.singleHeader()
+                                        modifier = Modifier.singleHeader(),
                                     )
                                 },
                                 actions = {
                                     PlayAllButton(
-                                        onClick = onPlayAll
+                                        onClick = onPlayAll,
                                     )
                                     PlayShuffledButton(
-                                        onClick = onPlayShuffled
+                                        onClick = onPlayShuffled,
                                     )
-                                }
+                                },
                             )
                         }
                         items(
                             items = state.data.albums,
                             contentType = { "album" },
-                            key = { "album_${it.id}" }
+                            key = { "album_${it.id}" },
                         ) { album ->
                             AlbumItem(
                                 title = album.title,
                                 onClick = { onAlbumClick(album.id) },
                                 artist = album.artist,
-                                artworkUrl = album.artworkUrl
+                                artworkUrl = album.artworkUrl,
                             )
                         }
                     }
@@ -163,54 +165,58 @@ private fun FavoriteAlbumsScreen(
 private fun Progress() {
     SkeletonLayout(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
-            columns = if (isCompactWidth) {
-                GridCells.Fixed(2)
-            } else {
-                GridCells.Adaptive(AlbumItemDefaults.Width)
-            },
+            columns =
+                if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(AlbumItemDefaults.Width)
+                },
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item(
-                span = { GridItemSpan(maxLineSpan) }
+                span = { GridItemSpan(maxLineSpan) },
             ) {
                 HeaderLayout(
                     title = {
                         Column(
                             modifier = Modifier.singleHeader(),
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        400.dp,
-                                        32.dp
-                                    )
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            400.dp,
+                                            32.dp,
+                                        ),
                             )
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        200.dp,
-                                        32.dp
-                                    )
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            200.dp,
+                                            32.dp,
+                                        ),
                             )
                         }
                     },
                     actions = {
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         )
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         )
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 28.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 28.dp),
                 )
             }
             repeat(10) {
@@ -231,7 +237,7 @@ private fun FavoriteAlbumsScreenProgressPreview() {
             onRetry = {},
             onRefresh = {},
             onAlbumClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -240,46 +246,49 @@ private fun FavoriteAlbumsScreenProgressPreview() {
 @Composable
 private fun FavoriteAlbumsScreenPreview() {
     MaterialTheme {
-        val albums = persistentListOf(
-            AlbumUi(
-                id = "1",
-                title = "Best alubm in the world 1",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            AlbumUi(
-                id = "2",
-                title = "Best alubm in the world 2",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            AlbumUi(
-                id = "3",
-                title = "Best alubm in the world 3",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            AlbumUi(
-                id = "4",
-                title = "Best alubm in the world 4",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            AlbumUi(
-                id = "5",
-                title = "Best alubm in the world 5",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-        )
-        val state = StateUi(
-            progress = false,
-            isRefreshing = false,
-            error = false,
-            data = DataUi(
-                albums = albums
+        val albums =
+            persistentListOf(
+                AlbumUi(
+                    id = "1",
+                    title = "Best alubm in the world 1",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                AlbumUi(
+                    id = "2",
+                    title = "Best alubm in the world 2",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                AlbumUi(
+                    id = "3",
+                    title = "Best alubm in the world 3",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                AlbumUi(
+                    id = "4",
+                    title = "Best alubm in the world 4",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                AlbumUi(
+                    id = "5",
+                    title = "Best alubm in the world 5",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
             )
-        )
+        val state =
+            StateUi(
+                progress = false,
+                isRefreshing = false,
+                error = false,
+                data =
+                    DataUi(
+                        albums = albums,
+                    ),
+            )
         FavoriteAlbumsScreen(
             state = state,
             onPlayAll = {},
@@ -287,7 +296,7 @@ private fun FavoriteAlbumsScreenPreview() {
             onRetry = {},
             onRefresh = {},
             onAlbumClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

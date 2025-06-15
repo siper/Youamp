@@ -15,19 +15,19 @@ import androidx.compose.ui.unit.dp
 fun RoundedIcon(
     imageVector: ImageVector,
     contentDescription: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Icon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         tint = MaterialTheme.colorScheme.onSecondaryContainer,
-        modifier = Modifier
-            .size(48.dp)
-            .background(
-                color = MaterialTheme.colorScheme.secondaryContainer,
-                shape = CircleShape
-            )
-            .padding(8.dp)
-            .then(modifier)
+        modifier =
+            Modifier
+                .size(48.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = CircleShape,
+                ).padding(8.dp)
+                .then(modifier),
     )
 }

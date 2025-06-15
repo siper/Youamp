@@ -24,9 +24,8 @@ internal class LibraryViewModel(
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
     private val player: Player,
     private val apiProvider: ApiProvider,
-    private val repository: LibraryRepository
+    private val repository: LibraryRepository,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
         get() = _state
@@ -38,32 +37,32 @@ internal class LibraryViewModel(
     }
 
     private fun subscribeState() {
-        stateJob = viewModelScope.launch {
-            repository
-                .getLibrary()
-                .map { it.toUi() }
-                .flowOn(Dispatchers.IO)
-                .catch { throwable ->
-                    Logger.w(throwable) { "Filed to load library" }
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            error = true,
-                            refreshing = false
-                        )
+        stateJob =
+            viewModelScope.launch {
+                repository
+                    .getLibrary()
+                    .map { it.toUi() }
+                    .flowOn(Dispatchers.IO)
+                    .catch { throwable ->
+                        Logger.w(throwable) { "Filed to load library" }
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                error = true,
+                                refreshing = false,
+                            )
+                        }
+                    }.collect { explore ->
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                refreshing = false,
+                                error = false,
+                                data = explore,
+                            )
+                        }
                     }
-                }
-                .collect { explore ->
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            refreshing = false,
-                            error = false,
-                            data = explore
-                        )
-                    }
-                }
-        }
+            }
     }
 
     fun retry() {
@@ -72,7 +71,7 @@ internal class LibraryViewModel(
             it.copy(
                 progress = true,
                 error = false,
-                data = null
+                data = null,
             )
         }
         subscribeState()
@@ -88,17 +87,20 @@ internal class LibraryViewModel(
 
     fun onPlayPauseAudioSource(source: AudioSource) {
         viewModelScope.launch {
-            val playingSource = playerQueueAudioSourceManager
-                .playingSource()
-                .first()
+            val playingSource =
+                playerQueueAudioSourceManager
+                    .playingSource()
+                    .first()
             val serverId = apiProvider.requireApiId()
-            val isPlaying = player
-                .getIsPlaying()
-                .first()
-            val isSourcePlaying = playingSource?.equals(
-                serverId,
-                source
-            ) == true
+            val isPlaying =
+                player
+                    .getIsPlaying()
+                    .first()
+            val isSourcePlaying =
+                playingSource?.equals(
+                    serverId,
+                    source,
+                ) == true
             if (isSourcePlaying && isPlaying) {
                 player.pause()
                 return@launch

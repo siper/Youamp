@@ -11,7 +11,6 @@ import ru.stersh.youamp.app.ui.YouampApp
 import ru.stersh.youamp.core.ui.LocalWindowSizeClass
 
 class MainActivity : ComponentActivity() {
-
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

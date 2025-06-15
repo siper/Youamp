@@ -5,19 +5,21 @@ import kotlinx.datetime.format.char
 
 private const val ONE_HOUR_MS = 3600000L
 
-private val hourTimeFormat = LocalTime.Format {
-    hour()
-    char(':')
-    minute()
-    char(':')
-    second()
-}
+private val hourTimeFormat =
+    LocalTime.Format {
+        hour()
+        char(':')
+        minute()
+        char(':')
+        second()
+    }
 
-private val minuteTimeFormat = LocalTime.Format {
-    minute()
-    char(':')
-    second()
-}
+private val minuteTimeFormat =
+    LocalTime.Format {
+        minute()
+        char(':')
+        second()
+    }
 
 fun formatSongDuration(time: Long): String {
     val dateTime = LocalTime.fromMillisecondOfDay(time.toInt())
@@ -28,6 +30,4 @@ fun formatSongDuration(time: Long): String {
     }
 }
 
-fun formatSongDuration(time: Int): String {
-    return formatSongDuration(time.toLong())
-}
+fun formatSongDuration(time: Int): String = formatSongDuration(time.toLong())

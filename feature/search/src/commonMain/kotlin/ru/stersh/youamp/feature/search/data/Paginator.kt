@@ -7,7 +7,7 @@ import ru.stersh.youamp.core.utils.Paginator
 
 internal fun searchPaginator(
     query: String,
-    onLoadData: suspend (identifier: SearchIdentifier) -> SearchResult3
+    onLoadData: suspend (identifier: SearchIdentifier) -> SearchResult3,
 ): Paginator<SearchPaginatorResult, SearchIdentifier> {
     var hasNextSongsPage = true
     var hasNextAlbumsPage = true
@@ -28,7 +28,7 @@ internal fun searchPaginator(
                     searchResult3 = data,
                     hasMoreSongs = hasNextSongsPage,
                     hasMoreAlbums = hasNextAlbumsPage,
-                    hasMoreArtists = hasNextArtistsPage
+                    hasMoreArtists = hasNextArtistsPage,
                 )
             }
         },
@@ -60,7 +60,7 @@ internal fun searchPaginator(
 
                 else -> SearchIdentifier(query)
             }
-        }
+        },
     )
 }
 
@@ -68,7 +68,7 @@ data class SearchPaginatorResult(
     val searchResult3: SearchResult3,
     val hasMoreSongs: Boolean,
     val hasMoreAlbums: Boolean,
-    val hasMoreArtists: Boolean
+    val hasMoreArtists: Boolean,
 )
 
 enum class SearchLoadPage { Song, Album, Artist }
@@ -77,11 +77,12 @@ internal data class SearchIdentifier(
     val query: String,
     val songsPage: Page = Page.First,
     val albumsPage: Page = Page.First,
-    val artistsPage: Page = Page.First
+    val artistsPage: Page = Page.First,
 ) {
     @JvmInline
-    value class Page(private val page: Int) {
-
+    value class Page(
+        private val page: Int,
+    ) {
         val offset: Int
             get() {
                 return if (page == 1) {
@@ -91,12 +92,9 @@ internal data class SearchIdentifier(
                 }
             }
 
-        fun inc(): Page {
-            return Page(page.inc())
-        }
+        fun inc(): Page = Page(page.inc())
 
         companion object {
-
             val First: Page
                 get() = Page(1)
 

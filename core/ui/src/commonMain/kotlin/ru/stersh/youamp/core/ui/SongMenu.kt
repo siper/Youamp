@@ -46,7 +46,7 @@ fun SongMenu(
     items.invoke(scope)
 
     Surface(
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.surface,
     ) {
         if (progress) {
             Progress(scope.items.size)
@@ -55,7 +55,7 @@ fun SongMenu(
                 artwork = artwork,
                 title = title,
                 artist = artist,
-                menuItems = scope.items
+                menuItems = scope.items,
             )
         }
     }
@@ -65,46 +65,67 @@ fun SongMenu(
 private fun Progress(menuItemCount: Int) {
     SkeletonLayout {
         Column(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .windowInsetsPadding(WindowInsets.navigationBars),
-            horizontalAlignment = Alignment.Start
+            modifier =
+                Modifier
+                    .padding(top = 8.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
+            horizontalAlignment = Alignment.Start,
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+                modifier =
+                    Modifier.padding(
+                        horizontal = 24.dp,
+                        vertical = 16.dp,
+                    ),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 SkeletonItem(
-                    modifier = Modifier.size(64.dp)
+                    modifier = Modifier.size(64.dp),
                 )
                 Column(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     SkeletonItem(
-                        modifier = Modifier.size(height = 12.dp, width = 80.dp)
+                        modifier =
+                            Modifier.size(
+                                height = 12.dp,
+                                width = 80.dp,
+                            ),
                     )
                     SkeletonItem(
-                        modifier = Modifier.size(height = 12.dp, width = 68.dp)
+                        modifier =
+                            Modifier.size(
+                                height = 12.dp,
+                                width = 68.dp,
+                            ),
                     )
                 }
             }
 
             HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(vertical = 12.dp)
+                modifier = Modifier.padding(vertical = 12.dp),
             ) {
                 repeat(menuItemCount) {
                     SkeletonItem(
-                        modifier = Modifier
-                            .padding(horizontal = 24.dp)
-                            .size(height = 32.dp, width = Random.nextInt(100, 264).dp)
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 24.dp)
+                                .size(
+                                    height = 32.dp,
+                                    width =
+                                        Random
+                                            .nextInt(
+                                                100,
+                                                264,
+                                            ).dp,
+                                ).fillMaxWidth(),
                     )
                 }
             }
@@ -117,34 +138,42 @@ private fun Content(
     artwork: @Composable () -> Unit,
     title: @Composable () -> Unit,
     artist: @Composable () -> Unit,
-    menuItems: List<@Composable () -> Unit>
+    menuItems: List<@Composable () -> Unit>,
 ) {
     Column(
-        modifier = Modifier
-            .padding(top = 8.dp)
-            .windowInsetsPadding(WindowInsets.navigationBars),
+        modifier =
+            Modifier
+                .padding(top = 8.dp)
+                .windowInsetsPadding(WindowInsets.navigationBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+            modifier =
+                Modifier.padding(
+                    horizontal = 24.dp,
+                    vertical = 16.dp,
+                ),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier = Modifier.size(64.dp)
+                modifier = Modifier.size(64.dp),
             ) {
                 artwork()
             }
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 CompositionLocalProvider(
-                    LocalTextStyle provides MaterialTheme.typography.bodyLarge
+                    LocalTextStyle provides MaterialTheme.typography.bodyLarge,
                 ) {
                     title()
                 }
                 CompositionLocalProvider(
-                    LocalTextStyle provides MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.secondary),
+                    LocalTextStyle provides
+                        MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.secondary,
+                        ),
                 ) {
                     artist()
                 }
@@ -152,7 +181,7 @@ private fun Content(
         }
 
         HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         menuItems.forEach {
@@ -166,26 +195,29 @@ private fun MenuItem(
     icon: @Composable () -> Unit,
     title: @Composable () -> Unit,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val shape = remember { RoundedCornerShape(16.dp) }
     Row(
-        modifier = Modifier
-            .clip(shape)
-            .clickable(onClick = onClick)
-            .padding(vertical = 12.dp, horizontal = 24.dp)
-            .then(modifier),
+        modifier =
+            Modifier
+                .clip(shape)
+                .clickable(onClick = onClick)
+                .padding(
+                    vertical = 12.dp,
+                    horizontal = 24.dp,
+                ).then(modifier),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         CompositionLocalProvider(
-            LocalContentColor provides MaterialTheme.colorScheme.secondary
+            LocalContentColor provides MaterialTheme.colorScheme.secondary,
         ) {
             icon()
         }
         Box(modifier = Modifier.weight(1f)) {
             CompositionLocalProvider(
-                LocalTextStyle provides MaterialTheme.typography.bodyMedium
+                LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             ) {
                 title()
             }
@@ -194,28 +226,26 @@ private fun MenuItem(
 }
 
 interface SongMenuScope {
-
     fun item(
         icon: @Composable () -> Unit,
         title: @Composable () -> Unit,
-        onClick: () -> Unit
+        onClick: () -> Unit,
     )
 }
 
 private class SongMenuScopeImpl : SongMenuScope {
-
     val items = mutableListOf<@Composable () -> Unit>()
 
     override fun item(
         icon: @Composable () -> Unit,
         title: @Composable () -> Unit,
-        onClick: () -> Unit
+        onClick: () -> Unit,
     ) {
         items.add {
             MenuItem(
                 icon = icon,
                 title = title,
-                onClick = onClick
+                onClick = onClick,
             )
         }
     }
@@ -232,7 +262,7 @@ private fun AlbumInfoScreenPreview() {
                     Artwork(
                         artworkUrl = null,
                         placeholder = Icons.Rounded.Album,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 },
                 title = {
@@ -246,31 +276,29 @@ private fun AlbumInfoScreenPreview() {
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.PlayArrow,
-                                contentDescription = null
+                                contentDescription = null,
                             )
                         },
                         title = {
                             Text(text = "Play")
                         },
                         onClick = {
-
-                        }
+                        },
                     )
                     item(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.QueuePlayNext,
-                                contentDescription = null
+                                contentDescription = null,
                             )
                         },
                         title = {
                             Text(text = "Play next in queue")
                         },
                         onClick = {
-
-                        }
+                        },
                     )
-                }
+                },
             )
         }
     }

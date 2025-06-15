@@ -4,5 +4,4 @@ internal data class Playlist(
     val id: String,
     val name: String,
     val artworkUrl: String?,
-    val isPlaying: Boolean
 )

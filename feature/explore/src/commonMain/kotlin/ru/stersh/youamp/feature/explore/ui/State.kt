@@ -7,7 +7,7 @@ internal data class StateUi(
     val progress: Boolean = true,
     val refreshing: Boolean = false,
     val error: Boolean = false,
-    val data: DataUi? = null
+    val data: DataUi? = null,
 )
 
 internal data class DataUi(
@@ -19,5 +19,5 @@ internal data class SongUi(
     val title: String,
     val artist: String?,
     val artworkUrl: String?,
-    val isPlaying: Boolean
+    val isPlaying: Boolean,
 )

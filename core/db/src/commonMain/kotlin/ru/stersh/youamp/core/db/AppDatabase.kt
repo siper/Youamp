@@ -14,7 +14,6 @@ import ru.stersh.youamp.core.db.server.SubsonicServerDb
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun subsonicServerDao(): SubsonicServerDao
 }
 

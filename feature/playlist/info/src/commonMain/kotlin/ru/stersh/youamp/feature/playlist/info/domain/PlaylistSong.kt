@@ -6,5 +6,5 @@ internal data class PlaylistSong(
     val artist: String?,
     val artworkUrl: String?,
     val isCurrent: Boolean,
-    val isPlaying: Boolean
+    val isPlaying: Boolean,
 )

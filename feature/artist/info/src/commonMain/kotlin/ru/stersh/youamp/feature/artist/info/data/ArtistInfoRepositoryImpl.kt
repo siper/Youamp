@@ -13,37 +13,45 @@ import ru.stersh.youamp.shared.favorites.ArtistFavoritesStorage
 
 internal class ArtistInfoRepositoryImpl(
     private val apiProvider: ApiProvider,
-    private val artistFavoritesStorage: ArtistFavoritesStorage
+    private val artistFavoritesStorage: ArtistFavoritesStorage,
 ) : ArtistInfoRepository {
+    override suspend fun getArtistInfo(id: String): ArtistInfo =
+        coroutineScope {
+            val api = apiProvider.getApi()
+            val favoriteArtists = async { artistFavoritesStorage.getArtists() }
+            val artistInfo = async { api.getArtist(id).data.artist }
+            val isFavorite =
+                favoriteArtists
+                    .await()
+                    .any { it.id == id }
 
-    override suspend fun getArtistInfo(id: String): ArtistInfo = coroutineScope {
-        val api = apiProvider.getApi()
-        val favoriteArtists = async { artistFavoritesStorage.getArtists() }
-        val artistInfo = async { api.getArtist(id).data.artist }
-        val isFavorite = favoriteArtists
-            .await()
-            .any { it.id == id }
+            return@coroutineScope artistInfo
+                .await()
+                .toDomain(
+                    api,
+                    isFavorite,
+                )
+        }
 
-        return@coroutineScope artistInfo.await().toDomain(api, isFavorite)
-    }
-
-    private fun Artist.toDomain(api: SubsonicApi, isFavorite: Boolean): ArtistInfo {
-        return ArtistInfo(
+    private fun Artist.toDomain(
+        api: SubsonicApi,
+        isFavorite: Boolean,
+    ): ArtistInfo =
+        ArtistInfo(
             name = name,
             artworkUrl = api.getCoverArtUrl(coverArt),
             isFavorite = isFavorite,
-            albums = album
-                .orEmpty()
-                .map { it.toDomain(api) }
+            albums =
+                album
+                    .orEmpty()
+                    .map { it.toDomain(api) },
         )
-    }
 
-    private fun Album.toDomain(api: SubsonicApi): ArtistAlbum {
-        return ArtistAlbum(
+    private fun Album.toDomain(api: SubsonicApi): ArtistAlbum =
+        ArtistAlbum(
             id = id,
             title = requireNotNull(name ?: album),
             artist = null,
-            artworkUrl = api.getCoverArtUrl(coverArt)
+            artworkUrl = api.getCoverArtUrl(coverArt),
         )
-    }
 }

@@ -16,28 +16,28 @@ internal class Favorites {
     val needFetchData: Boolean
         get() = needFetch.value
 
-    fun songs(): Flow<List<Song>> {
-        return needFetch
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun songs(): Flow<List<Song>> =
+        needFetch
             .filter { !it }
             .flatMapLatest { songs }
-    }
 
-    fun albums(): Flow<List<Album>> {
-        return needFetch
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun albums(): Flow<List<Album>> =
+        needFetch
             .filter { !it }
             .flatMapLatest { albums }
-    }
 
-    fun artists(): Flow<List<Artist>> {
-        return needFetch
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    fun artists(): Flow<List<Artist>> =
+        needFetch
             .filter { !it }
             .flatMapLatest { artists }
-    }
 
     fun update(
         songs: List<Song>,
         albums: List<Album>,
-        artists: List<Artist>
+        artists: List<Artist>,
     ) {
         this.songs.update { songs }
         this.albums.update { albums }

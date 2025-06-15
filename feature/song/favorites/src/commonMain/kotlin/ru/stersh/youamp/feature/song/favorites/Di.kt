@@ -6,7 +6,13 @@ import ru.stersh.youamp.feature.song.favorites.data.FavoriteSongsRepositoryImpl
 import ru.stersh.youamp.feature.song.favorites.domain.FavoriteSongsRepository
 import ru.stersh.youamp.feature.song.favorites.ui.FavoriteSongsViewModel
 
-val songFavoritesModule = module {
-    single<FavoriteSongsRepository> { FavoriteSongsRepositoryImpl(get()) }
-    viewModel { FavoriteSongsViewModel(get(), get()) }
-}
+val songFavoritesModule =
+    module {
+        single<FavoriteSongsRepository> { FavoriteSongsRepositoryImpl(get()) }
+        viewModel {
+            FavoriteSongsViewModel(
+                get(),
+                get(),
+            )
+        }
+    }

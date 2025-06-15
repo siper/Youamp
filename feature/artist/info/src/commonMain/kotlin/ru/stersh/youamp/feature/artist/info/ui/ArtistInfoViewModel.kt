@@ -16,9 +16,8 @@ internal class ArtistInfoViewModel(
     private val id: String,
     private val artistInfoRepository: ArtistInfoRepository,
     private val artistFavoriteRepository: ArtistFavoriteRepository,
-    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
+    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(ArtistInfoStateUi())
     val state: StateFlow<ArtistInfoStateUi>
         get() = _state
@@ -27,60 +26,72 @@ internal class ArtistInfoViewModel(
         loadArtist()
     }
 
-    fun playShuffled() = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Artist(id), shuffled = true)
-    }
+    fun playShuffled() =
+        viewModelScope.launch {
+            playerQueueAudioSourceManager.playSource(
+                AudioSource.Artist(id),
+                shuffled = true,
+            )
+        }
 
-    fun playAll() = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Artist(id))
-    }
+    fun playAll() =
+        viewModelScope.launch {
+            playerQueueAudioSourceManager.playSource(AudioSource.Artist(id))
+        }
 
     fun retry() {
         loadArtist()
     }
 
-    fun onFavoriteChange(isFavorite: Boolean) = viewModelScope.launch {
-        runCatching { artistFavoriteRepository.setFavorite(id, isFavorite) }.fold(
-            onSuccess = {
-                _state.update {
-                    it.copy(content = it.content?.copy(isFavorite = isFavorite))
-                }
-            },
-            onFailure = {
-                Logger.w(it) { "Filed to change artist favorite" }
-            }
-        )
-    }
-
-    private fun loadArtist() = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                progress = true,
-                error = false,
-                content = null
+    fun onFavoriteChange(isFavorite: Boolean) =
+        viewModelScope.launch {
+            runCatching {
+                artistFavoriteRepository.setFavorite(
+                    id,
+                    isFavorite,
+                )
+            }.fold(
+                onSuccess = {
+                    _state.update {
+                        it.copy(content = it.content?.copy(isFavorite = isFavorite))
+                    }
+                },
+                onFailure = {
+                    Logger.w(it) { "Filed to change artist favorite" }
+                },
             )
         }
 
-        runCatching { artistInfoRepository.getArtistInfo(id) }.fold(
-            onSuccess = { artistInfo ->
-                _state.update {
-                    it.copy(
-                        progress = false,
-                        error = false,
-                        content = artistInfo.toUi()
-                    )
-                }
-            },
-            onFailure = { throwable ->
-                Logger.w(throwable) { "Filed to load artist info" }
-                _state.update {
-                    it.copy(
-                        progress = false,
-                        error = true,
-                        content = null
-                    )
-                }
+    private fun loadArtist() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    progress = true,
+                    error = false,
+                    content = null,
+                )
             }
-        )
-    }
+
+            runCatching { artistInfoRepository.getArtistInfo(id) }.fold(
+                onSuccess = { artistInfo ->
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            error = false,
+                            content = artistInfo.toUi(),
+                        )
+                    }
+                },
+                onFailure = { throwable ->
+                    Logger.w(throwable) { "Filed to load artist info" }
+                    _state.update {
+                        it.copy(
+                            progress = false,
+                            error = true,
+                            content = null,
+                        )
+                    }
+                },
+            )
+        }
 }

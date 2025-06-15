@@ -43,21 +43,21 @@ import youamp.feature.search.generated.resources.play_title
 @Composable
 internal fun SongItem(
     item: Song,
-    onMoreClick: () -> Unit
+    onMoreClick: () -> Unit,
 ) {
     ListItem(
         leadingContent = {
             Artwork(
                 artworkUrl = item.artworkUrl,
                 placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(56.dp),
             )
         },
         headlineContent = {
             Text(
                 text = item.title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         supportingContent = {
@@ -65,24 +65,25 @@ internal fun SongItem(
                 Text(
                     text = it,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        ),
+        colors =
+            ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            ),
         trailingContent = {
             Box {
                 IconButton(onClick = onMoreClick) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(Res.string.more_action_description)
+                        contentDescription = stringResource(Res.string.more_action_description),
                     )
                 }
             }
         },
-        modifier = Modifier.clickable(onClick = onMoreClick)
+        modifier = Modifier.clickable(onClick = onMoreClick),
     )
 }
 
@@ -99,64 +100,65 @@ internal fun AlbumItem(
             Artwork(
                 artworkUrl = item.artworkUrl,
                 placeholder = Icons.Rounded.Album,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(56.dp),
             )
         },
         headlineContent = {
             Text(
                 text = item.title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         supportingContent = {
             Text(
                 text = item.artist,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        ),
+        colors =
+            ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            ),
         trailingContent = {
             Box {
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(Res.string.more_action_description)
+                        contentDescription = stringResource(Res.string.more_action_description),
                     )
                 }
                 DropdownMenu(
                     expanded = menuExpanded,
                     onDismissRequest = { menuExpanded = false },
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 ) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.play_title)) },
                         onClick = {
                             onPlay(item.id)
                             menuExpanded = false
-                        }
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.add_to_queue_title)) },
                         onClick = {
                             onAddToQueue(item.id)
                             menuExpanded = false
-                        }
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.album_info_title)) },
                         onClick = {
                             onOpenInfo(item.id)
                             menuExpanded = false
-                        }
+                        },
                     )
                 }
             }
         },
-        modifier = Modifier.clickable { menuExpanded = true }
+        modifier = Modifier.clickable { menuExpanded = true },
     )
 }
 
@@ -173,57 +175,58 @@ internal fun ArtistItem(
             CircleArtwork(
                 artworkUrl = item.artworkUrl,
                 placeholder = Icons.Rounded.Person,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(56.dp),
             )
         },
         headlineContent = {
             Text(
                 text = item.name,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        ),
+        colors =
+            ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            ),
         trailingContent = {
             Box {
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(Res.string.more_action_description)
+                        contentDescription = stringResource(Res.string.more_action_description),
                     )
                 }
                 DropdownMenu(
                     expanded = menuExpanded,
                     onDismissRequest = { menuExpanded = false },
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 ) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.play_title)) },
                         onClick = {
                             onPlay(item.id)
                             menuExpanded = false
-                        }
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.add_to_queue_title)) },
                         onClick = {
                             onAddToQueue(item.id)
                             menuExpanded = false
-                        }
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.artist_info_title)) },
                         onClick = {
                             onOpenInfo(item.id)
                             menuExpanded = false
-                        }
+                        },
                     )
                 }
             }
         },
-        modifier = Modifier.clickable { menuExpanded = true }
+        modifier = Modifier.clickable { menuExpanded = true },
     )
 }
 
@@ -234,31 +237,34 @@ private fun Preview() {
         Scaffold {
             Column(modifier = Modifier.padding(it)) {
                 SongItem(
-                    item = Song(
-                        id = "1",
-                        title = "Coolest song in the world",
-                        artist = "Coolest artist in the world",
-                        artworkUrl = null
-                    ),
-                    onMoreClick = {}
+                    item =
+                        Song(
+                            id = "1",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                    onMoreClick = {},
                 )
                 AlbumItem(
-                    item = Album(
-                        id = "1",
-                        title = "Coolest album in the world",
-                        artist = "Coolest artist in the world",
-                        artworkUrl = null
-                    ),
+                    item =
+                        Album(
+                            id = "1",
+                            title = "Coolest album in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
                     onPlay = {},
                     onAddToQueue = {},
-                    onOpenInfo = {}
+                    onOpenInfo = {},
                 )
                 ArtistItem(
-                    item = Artist(
-                        id = "1",
-                        name = "Coolest artist in the world with very long title",
-                        artworkUrl = null
-                    ),
+                    item =
+                        Artist(
+                            id = "1",
+                            name = "Coolest artist in the world with very long title",
+                            artworkUrl = null,
+                        ),
                     onPlay = {},
                     onAddToQueue = {},
                     onOpenInfo = {},

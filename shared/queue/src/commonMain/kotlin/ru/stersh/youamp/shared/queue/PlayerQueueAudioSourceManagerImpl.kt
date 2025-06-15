@@ -22,31 +22,41 @@ internal class PlayerQueueAudioSourceManagerImpl(
 
     override fun playingSource(): Flow<PlayingSource?> = playingSource
 
-    override suspend fun playSource(vararg source: AudioSource, shuffled: Boolean) = withContext(Dispatchers.IO) {
+    override suspend fun playSource(
+        vararg source: AudioSource,
+        shuffled: Boolean,
+    ) = withContext(Dispatchers.IO) {
         val newQueue = source.flatMap { getMediaItemsFromSource(it) }
-        val songId = source
-            .getOrNull(0)
-            ?.let { getPlaySongIdFromSource(it) }
-        val index = if (songId == null) {
-            -1
-        } else {
-            newQueue.indexOfFirst { it.id == songId }
-        }
+        val songId =
+            source
+                .getOrNull(0)
+                ?.let { getPlaySongIdFromSource(it) }
+        val index =
+            if (songId == null) {
+                -1
+            } else {
+                newQueue.indexOfFirst { it.id == songId }
+            }
         if (shuffled) {
             player.setMediaItems(newQueue.shuffled())
         } else {
             player.setMediaItems(newQueue)
         }
         if (index != -1) {
-            player.seekTo(index, 0)
+            player.seekTo(
+                index,
+                0,
+            )
         }
         player.prepare()
         player.play()
         setPlayingSource(source.first())
     }
 
-    override suspend fun addLast(vararg source: AudioSource, shuffled: Boolean) =
-        withContext(Dispatchers.IO) {
+    override suspend fun addLast(
+        vararg source: AudioSource,
+        shuffled: Boolean,
+    ) = withContext(Dispatchers.IO) {
         val newSongs = source.flatMap { getMediaItemsFromSource(it) }
         if (shuffled) {
             player.addMediaItems(newSongs.shuffled())
@@ -56,16 +66,27 @@ internal class PlayerQueueAudioSourceManagerImpl(
         clearPlayingSource()
     }
 
-    override suspend fun addNext(vararg source: AudioSource, shuffled: Boolean) =
-        withContext(Dispatchers.IO) {
+    override suspend fun addNext(
+        vararg source: AudioSource,
+        shuffled: Boolean,
+    ) = withContext(Dispatchers.IO) {
         val newSongs = source.flatMap { getMediaItemsFromSource(it) }
-        val index = (player
-            .getCurrentItemPosition()
-            .first() ?: -1) + 1
+        val index =
+            (
+                player
+                    .getCurrentItemPosition()
+                    .first() ?: -1
+            ) + 1
         if (shuffled) {
-            player.addMediaItems(index, newSongs.shuffled())
+            player.addMediaItems(
+                index,
+                newSongs.shuffled(),
+            )
         } else {
-            player.addMediaItems(index, newSongs)
+            player.addMediaItems(
+                index,
+                newSongs,
+            )
         }
         clearPlayingSource()
     }
@@ -80,30 +101,33 @@ internal class PlayerQueueAudioSourceManagerImpl(
         return null
     }
 
-    private suspend fun setPlayingSource(source: AudioSource) = withContext(Dispatchers.IO) {
-        val serverId = apiProvider.getApiId()
-        if (serverId == null) {
-            playingSource.update {
-                null
+    private suspend fun setPlayingSource(source: AudioSource) =
+        withContext(Dispatchers.IO) {
+            val serverId = apiProvider.getApiId()
+            if (serverId == null) {
+                playingSource.update {
+                    null
+                }
+                return@withContext
             }
-            return@withContext
-        }
-        val type = when (source) {
-            is AudioSource.RawSong,
-            is AudioSource.Song -> PlayingSource.Type.Song
+            val type =
+                when (source) {
+                    is AudioSource.RawSong,
+                    is AudioSource.Song,
+                    -> PlayingSource.Type.Song
 
-            is AudioSource.Album -> PlayingSource.Type.Album
-            is AudioSource.Artist -> PlayingSource.Type.Artist
-            is AudioSource.Playlist -> PlayingSource.Type.Playlist
+                    is AudioSource.Album -> PlayingSource.Type.Album
+                    is AudioSource.Artist -> PlayingSource.Type.Artist
+                    is AudioSource.Playlist -> PlayingSource.Type.Playlist
+                }
+            playingSource.update {
+                PlayingSource(
+                    serverId = serverId,
+                    id = source.id,
+                    type = type,
+                )
+            }
         }
-        playingSource.update {
-            PlayingSource(
-                serverId = serverId,
-                id = source.id,
-                type = type
-            )
-        }
-    }
 
     private fun clearPlayingSource() {
         playingSource.update {
@@ -122,24 +146,24 @@ internal class PlayerQueueAudioSourceManagerImpl(
             }
         }
 
-    private suspend fun getSong(source: AudioSource.Song): ru.stersh.youamp.core.player.MediaItem {
-        return apiProvider
+    private suspend fun getSong(source: AudioSource.Song): ru.stersh.youamp.core.player.MediaItem =
+        apiProvider
             .getApi()
             .getSong(source.id)
             .data
             .song
             .toMediaItem(apiProvider)
-    }
 
     private suspend fun getSongs(source: AudioSource.Album): List<ru.stersh.youamp.core.player.MediaItem> {
-        val songs = apiProvider
-            .getApi()
-            .getAlbum(source.id)
-            .data
-            .album
-            .song
-            ?.takeIf { it.isNotEmpty() }
-            ?: return emptyList()
+        val songs =
+            apiProvider
+                .getApi()
+                .getAlbum(source.id)
+                .data
+                .album
+                .song
+                ?.takeIf { it.isNotEmpty() }
+                ?: return emptyList()
 
         return songs.map { song ->
             song.toMediaItem(apiProvider)
@@ -148,20 +172,20 @@ internal class PlayerQueueAudioSourceManagerImpl(
 
     private suspend fun getSongs(source: AudioSource.Artist): List<ru.stersh.youamp.core.player.MediaItem> =
         coroutineScope {
-            val albums = apiProvider
-                .getApi()
-                .getArtist(source.id)
-                .data
-                .artist
-                .album
-                ?.takeIf { it.isNotEmpty() }
-                ?: return@coroutineScope emptyList()
+            val albums =
+                apiProvider
+                    .getApi()
+                    .getArtist(source.id)
+                    .data
+                    .artist
+                    .album
+                    ?.takeIf { it.isNotEmpty() }
+                    ?: return@coroutineScope emptyList()
 
             return@coroutineScope albums
                 .map {
                     async { getSongs(AudioSource.Album(it.id)) }
-                }
-                .awaitAll()
+                }.awaitAll()
                 .flatten()
         }
 
@@ -178,9 +202,10 @@ internal class PlayerQueueAudioSourceManagerImpl(
         }
 
     private suspend fun getSong(source: AudioSource.RawSong): ru.stersh.youamp.core.player.MediaItem {
-        val songUri = apiProvider
-            .getApi()
-            .streamUrl(source.id)
+        val songUri =
+            apiProvider
+                .getApi()
+                .streamUrl(source.id)
 
         return ru.stersh.youamp.core.player.MediaItem(
             id = source.id,
@@ -188,18 +213,20 @@ internal class PlayerQueueAudioSourceManagerImpl(
             url = songUri,
             artist = source.artist,
             album = source.album,
-            artworkUrl = source.artworkUrl
+            artworkUrl = source.artworkUrl,
         )
     }
 
     private suspend fun PlaylistEntry.toMediaItem(): ru.stersh.youamp.core.player.MediaItem {
-        val songUri = apiProvider
-            .getApi()
-            .streamUrl(id)
+        val songUri =
+            apiProvider
+                .getApi()
+                .streamUrl(id)
 
-        val artworkUri = apiProvider
-            .getApi()
-            .getCoverArtUrl(coverArt)
+        val artworkUri =
+            apiProvider
+                .getApi()
+                .getCoverArtUrl(coverArt)
 
         return ru.stersh.youamp.core.player.MediaItem(
             id = id,
@@ -207,7 +234,7 @@ internal class PlayerQueueAudioSourceManagerImpl(
             url = songUri,
             artist = artist,
             album = album,
-            artworkUrl = artworkUri
+            artworkUrl = artworkUri,
         )
     }
 }

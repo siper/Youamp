@@ -12,5 +12,5 @@ data class SubsonicServerDb(
     val username: String,
     val password: String,
     val isActive: Boolean,
-    val useLegacyAuth: Boolean
+    val useLegacyAuth: Boolean,
 )

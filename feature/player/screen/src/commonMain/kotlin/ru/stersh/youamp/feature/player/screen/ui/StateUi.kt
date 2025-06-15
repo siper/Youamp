@@ -10,5 +10,5 @@ internal data class StateUi(
     val totalTime: String? = "00:00",
     val repeatMode: RepeatModeUi = RepeatModeUi.Disabled,
     val shuffleMode: ShuffleModeUi = ShuffleModeUi.Disabled,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
 )

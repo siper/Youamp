@@ -20,19 +20,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun PlayButtonOutlined(
     isPlaying: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-                shape = CircleShape
-            )
-            .size(48.dp)
+        modifier =
+            modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    shape = CircleShape,
+                ).size(48.dp),
     ) {
         PlayButton(
             isPlaying = isPlaying,
-            onClick = onClick
+            onClick = onClick,
         )
     }
 }
@@ -41,22 +41,23 @@ fun PlayButtonOutlined(
 fun PlayButton(
     isPlaying: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onClick,
         colors = IconButtonDefaults.filledIconButtonColors(),
-        modifier = modifier
+        modifier = modifier,
     ) {
-        val icon = if (isPlaying) {
-            Icons.Rounded.Pause
-        } else {
-            Icons.Rounded.PlayArrow
-        }
+        val icon =
+            if (isPlaying) {
+                Icons.Rounded.Pause
+            } else {
+                Icons.Rounded.PlayArrow
+            }
         Icon(
             imageVector = icon,
             tint = MaterialTheme.colorScheme.onSecondary,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
@@ -67,7 +68,7 @@ private fun OutlinedPlayButtonPreview() {
     MaterialTheme {
         PlayButtonOutlined(
             isPlaying = true,
-            onClick = {}
+            onClick = {},
         )
     }
 }

@@ -6,7 +6,8 @@ import ru.stersh.youamp.feature.artist.list.data.ArtistsRepositoryImpl
 import ru.stersh.youamp.feature.artist.list.domain.ArtistsRepository
 import ru.stersh.youamp.feature.artist.list.ui.ArtistsViewModel
 
-val artistListModule = module {
-    single<ArtistsRepository> { ArtistsRepositoryImpl(get()) }
-    viewModel { ArtistsViewModel(get()) }
-}
+val artistListModule =
+    module {
+        single<ArtistsRepository> { ArtistsRepositoryImpl(get()) }
+        viewModel { ArtistsViewModel(get()) }
+    }

@@ -8,8 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-actual fun getColorScheme(darkTheme: Boolean, dynamicColor: Boolean): ColorScheme {
-    return when {
+actual fun getColorScheme(
+    darkTheme: Boolean,
+    dynamicColor: Boolean,
+): ColorScheme =
+    when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && dynamicColor -> {
             val context = LocalContext.current
             if (darkTheme) {
@@ -22,4 +25,3 @@ actual fun getColorScheme(darkTheme: Boolean, dynamicColor: Boolean): ColorSchem
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-}

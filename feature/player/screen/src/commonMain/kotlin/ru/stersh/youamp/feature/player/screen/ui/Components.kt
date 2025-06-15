@@ -35,15 +35,15 @@ import youamp.feature.player.screen.generated.resources.shuffle_mode_description
 @Composable
 internal fun PlayQueueButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
-            contentDescription = stringResource(Res.string.play_queue_description)
+            contentDescription = stringResource(Res.string.play_queue_description),
         )
     }
 }
@@ -52,22 +52,23 @@ internal fun PlayQueueButton(
 internal fun ShuffleButton(
     shuffleMode: ShuffleModeUi,
     onShuffleModeChanged: (newShuffleMode: ShuffleModeUi) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconToggleButton(
         checked = shuffleMode == ShuffleModeUi.Enabled,
         onCheckedChange = {
-            val newShuffleMode = when (shuffleMode) {
-                ShuffleModeUi.Enabled -> ShuffleModeUi.Disabled
-                ShuffleModeUi.Disabled -> ShuffleModeUi.Enabled
-            }
+            val newShuffleMode =
+                when (shuffleMode) {
+                    ShuffleModeUi.Enabled -> ShuffleModeUi.Disabled
+                    ShuffleModeUi.Disabled -> ShuffleModeUi.Enabled
+                }
             onShuffleModeChanged.invoke(newShuffleMode)
         },
-        modifier = modifier.size(64.dp)
+        modifier = modifier.size(64.dp),
     ) {
         Icon(
             imageVector = Icons.Rounded.Shuffle,
-            contentDescription = stringResource(Res.string.shuffle_mode_description)
+            contentDescription = stringResource(Res.string.shuffle_mode_description),
         )
     }
 }
@@ -76,29 +77,32 @@ internal fun ShuffleButton(
 internal fun RepeatButton(
     repeatMode: RepeatModeUi,
     onRepeatModeChanged: (newRepeatMode: RepeatModeUi) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconToggleButton(
         checked = repeatMode == RepeatModeUi.One || repeatMode == RepeatModeUi.All,
         onCheckedChange = {
-            val newRepeatMode = when (repeatMode) {
-                RepeatModeUi.All -> RepeatModeUi.One
-                RepeatModeUi.One -> RepeatModeUi.Disabled
-                RepeatModeUi.Disabled -> RepeatModeUi.All
-            }
+            val newRepeatMode =
+                when (repeatMode) {
+                    RepeatModeUi.All -> RepeatModeUi.One
+                    RepeatModeUi.One -> RepeatModeUi.Disabled
+                    RepeatModeUi.Disabled -> RepeatModeUi.All
+                }
             onRepeatModeChanged.invoke(newRepeatMode)
         },
-        modifier = modifier.size(64.dp)
+        modifier = modifier.size(64.dp),
     ) {
-        val imageVector = when (repeatMode) {
-            RepeatModeUi.All,
-            RepeatModeUi.Disabled -> Icons.Rounded.Repeat
+        val imageVector =
+            when (repeatMode) {
+                RepeatModeUi.All,
+                RepeatModeUi.Disabled,
+                -> Icons.Rounded.Repeat
 
-            RepeatModeUi.One -> Icons.Rounded.RepeatOne
-        }
+                RepeatModeUi.One -> Icons.Rounded.RepeatOne
+            }
         Icon(
             imageVector = imageVector,
-            contentDescription = stringResource(Res.string.repeat_mode_description)
+            contentDescription = stringResource(Res.string.repeat_mode_description),
         )
     }
 }
@@ -107,21 +111,22 @@ internal fun RepeatButton(
 internal fun FavoriteButton(
     isFavorite: Boolean,
     onFavoriteChanged: (isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconToggleButton(
         checked = isFavorite,
         onCheckedChange = onFavoriteChanged,
-        modifier = modifier.size(64.dp)
+        modifier = modifier.size(64.dp),
     ) {
-        val imageVector = if (isFavorite) {
-            Icons.Rounded.Favorite
-        } else {
-            Icons.Rounded.FavoriteBorder
-        }
+        val imageVector =
+            if (isFavorite) {
+                Icons.Rounded.Favorite
+            } else {
+                Icons.Rounded.FavoriteBorder
+            }
         Icon(
             imageVector = imageVector,
-            contentDescription = stringResource(Res.string.favorite_song_description)
+            contentDescription = stringResource(Res.string.favorite_song_description),
         )
     }
 }
@@ -130,22 +135,26 @@ internal fun FavoriteButton(
 internal fun PlayPauseButton(
     isPlayed: Boolean,
     onPlayedChanged: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FilledTonalIconButton(
         shape = remember { RoundedCornerShape(24.dp) },
         onClick = { onPlayedChanged() },
-        modifier = modifier.size(176.dp, 92.dp)
+        modifier =
+            modifier.size(
+                176.dp,
+                92.dp,
+            ),
     ) {
         if (isPlayed) {
             Icon(
                 imageVector = Icons.Rounded.Pause,
-                contentDescription = stringResource(Res.string.pause_button_description)
+                contentDescription = stringResource(Res.string.pause_button_description),
             )
         } else {
             Icon(
                 imageVector = Icons.Rounded.PlayArrow,
-                contentDescription = stringResource(Res.string.play_button_description)
+                contentDescription = stringResource(Res.string.play_button_description),
             )
         }
     }
@@ -155,7 +164,7 @@ internal fun PlayPauseButton(
 internal fun PlayerSlider(
     progress: Float,
     onSeek: (progress: Float) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val sliderPosition = remember(progress) { mutableFloatStateOf(progress) }
     val tempSliderPosition = remember { mutableFloatStateOf(progress) }
@@ -163,11 +172,12 @@ internal fun PlayerSlider(
     val isDragged = interactionSource.collectIsDraggedAsState()
 
     ProgressSlider(
-        value = if (isDragged.value) {
-            tempSliderPosition.floatValue
-        } else {
-            sliderPosition.floatValue
-        },
+        value =
+            if (isDragged.value) {
+                tempSliderPosition.floatValue
+            } else {
+                sliderPosition.floatValue
+            },
         onValueChange = {
             sliderPosition.floatValue = it
             tempSliderPosition.floatValue = it
@@ -177,6 +187,6 @@ internal fun PlayerSlider(
             onSeek(tempSliderPosition.floatValue)
         },
         interactionSource = interactionSource,
-        modifier = modifier
+        modifier = modifier,
     )
 }

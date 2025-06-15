@@ -17,12 +17,15 @@ import ru.stersh.youamp.feature.album.list.domain.AlbumsRepository
 
 internal class AlbumsViewModel(
     private val albumsRepository: AlbumsRepository,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
 ) : ViewModel() {
-
-    private val paginator = pageLoader { page, pageSize ->
-        albumsRepository.getAlbums(page, pageSize)
-    }
+    private val paginator =
+        pageLoader { page, pageSize ->
+            albumsRepository.getAlbums(
+                page,
+                pageSize,
+            )
+        }
 
     private val _state = MutableStateFlow(AlbumsStateUi())
     val state: StateFlow<AlbumsStateUi>
@@ -33,60 +36,64 @@ internal class AlbumsViewModel(
         subscribeState()
     }
 
-    fun loadMore() = viewModelScope.launch {
-        paginator.loadNextPage()
-    }
-
-    fun retry() = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                progress = true,
-                isRefreshing = false,
-                error = false,
-                items = persistentListOf()
-            )
+    fun loadMore() =
+        viewModelScope.launch {
+            paginator.loadNextPage()
         }
-        paginator.restart()
-    }
 
-    fun refresh() = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                isRefreshing = true,
-            )
-        }
-        paginator.restart()
-    }
-
-    private fun subscribeState() = viewModelScope.launch {
-        paginator
-            .result()
-            .collect { result ->
-                result.fold(
-                    onData = { albums ->
-                        _state.update {
-                            it.copy(
-                                progress = false,
-                                isRefreshing = false,
-                                error = false,
-                                items = albums.toUi()
-                            )
-                        }
-                    },
-                    onError = {
-                        Logger.w(it) { "Error albums fetch" }
-                        _state.update {
-                            it.copy(
-                                progress = false,
-                                isRefreshing = false,
-                                error = true,
-                                items = persistentListOf()
-                            )
-                        }
-                    }
+    fun retry() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    progress = true,
+                    isRefreshing = false,
+                    error = false,
+                    items = persistentListOf(),
                 )
             }
-    }
+            paginator.restart()
+        }
+
+    fun refresh() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isRefreshing = true,
+                )
+            }
+            paginator.restart()
+        }
+
+    private fun subscribeState() =
+        viewModelScope.launch {
+            paginator
+                .result()
+                .collect { result ->
+                    result.fold(
+                        onData = { albums ->
+                            _state.update {
+                                it.copy(
+                                    progress = false,
+                                    isRefreshing = false,
+                                    error = false,
+                                    items = albums.toUi(),
+                                )
+                            }
+                        },
+                        onError = {
+                            Logger.w(it) { "Error albums fetch" }
+                            _state.update {
+                                it.copy(
+                                    progress = false,
+                                    isRefreshing = false,
+                                    error = true,
+                                    items = persistentListOf(),
+                                )
+                            }
+                        },
+                    )
+                }
+        }
 
     private fun subscribeServerChange() {
         viewModelScope.launch {
@@ -99,7 +106,7 @@ internal class AlbumsViewModel(
                             progress = true,
                             isRefreshing = false,
                             error = false,
-                            items = persistentListOf()
+                            items = persistentListOf(),
                         )
                     }
                     paginator.restart()

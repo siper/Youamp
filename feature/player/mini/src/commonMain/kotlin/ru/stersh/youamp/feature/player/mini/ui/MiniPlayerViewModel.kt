@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.player.Player
 
 internal class MiniPlayerViewModel(
-    private val player: Player
+    private val player: Player,
 ) : ViewModel() {
     private val _state = MutableStateFlow<StateUi>(StateUi())
     val state: StateFlow<StateUi>
@@ -25,7 +25,7 @@ internal class MiniPlayerViewModel(
                 player.getIsPlaying(),
                 player
                     .getProgress()
-                    .mapNotNull { it?.percent }
+                    .mapNotNull { it?.percent },
             ) { currentMediaItem, isPlaying, progress ->
                 return@combine currentMediaItem?.let {
                     PlayerDataUi(
@@ -33,34 +33,39 @@ internal class MiniPlayerViewModel(
                         artist = currentMediaItem.artist,
                         artworkUrl = currentMediaItem.artworkUrl,
                         isPlaying = isPlaying,
-                        progress = progress
+                        progress = progress,
+                    )
+                }
+            }.collect { data ->
+                _state.update {
+                    it.copy(
+                        data = data,
+                        invisible = data == null,
                     )
                 }
             }
-                .collect { data ->
-                    _state.update {
-                        it.copy(data = data, invisible = data == null)
-                    }
-                }
         }
     }
 
-    fun playPause() = viewModelScope.launch {
-        if (player
-                .getIsPlaying()
-                .first()
-        ) {
-            player.pause()
-        } else {
-            player.play()
+    fun playPause() =
+        viewModelScope.launch {
+            if (player
+                    .getIsPlaying()
+                    .first()
+            ) {
+                player.pause()
+            } else {
+                player.play()
+            }
         }
-    }
 
-    fun next() = viewModelScope.launch {
-        player.next()
-    }
+    fun next() =
+        viewModelScope.launch {
+            player.next()
+        }
 
-    fun previous() = viewModelScope.launch {
-        player.previous()
-    }
+    fun previous() =
+        viewModelScope.launch {
+            player.previous()
+        }
 }

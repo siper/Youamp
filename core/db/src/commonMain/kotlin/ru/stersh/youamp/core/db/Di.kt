@@ -6,16 +6,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.koin.dsl.module
 
-val dbModule = module {
-    single {
-        get<RoomDatabase.Builder<AppDatabase>>()
-            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
-            .setQueryCoroutineContext(Dispatchers.IO)
-            .setDriver(BundledSQLiteDriver())
-            .build()
-    }
+val dbModule =
+    module {
+        single {
+            get<RoomDatabase.Builder<AppDatabase>>()
+                .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+                .setQueryCoroutineContext(Dispatchers.IO)
+                .setDriver(BundledSQLiteDriver())
+                .build()
+        }
 
-    single {
-        get<AppDatabase>().subsonicServerDao()
+        single {
+            get<AppDatabase>().subsonicServerDao()
+        }
     }
-}

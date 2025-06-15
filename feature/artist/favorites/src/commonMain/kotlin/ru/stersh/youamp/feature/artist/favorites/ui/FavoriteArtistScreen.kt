@@ -47,7 +47,7 @@ import youamp.feature.artist.favorites.generated.resources.favorite_artists_titl
 @Composable
 fun FavoriteArtistsScreen(
     onArtistClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val viewModel: FavoriteArtistViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -59,7 +59,7 @@ fun FavoriteArtistsScreen(
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onArtistClick = onArtistClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -72,7 +72,7 @@ private fun FavoriteArtistsScreen(
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onArtistClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -80,14 +80,14 @@ private fun FavoriteArtistsScreen(
                 title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) {
         PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             when {
                 state.progress -> {
@@ -100,55 +100,57 @@ private fun FavoriteArtistsScreen(
 
                 state.data != null && state.data.artists.isEmpty() -> {
                     EmptyLayout(
-                        modifier = Modifier.verticalScroll(
-                            state = rememberScrollState()
-                        )
+                        modifier =
+                            Modifier.verticalScroll(
+                                state = rememberScrollState(),
+                            ),
                     )
                 }
 
                 state.data?.artists != null -> {
                     LazyVerticalGrid(
-                        columns = if (isCompactWidth) {
-                            GridCells.Fixed(2)
-                        } else {
-                            GridCells.Adaptive(AlbumItemDefaults.Width)
-                        },
+                        columns =
+                            if (isCompactWidth) {
+                                GridCells.Fixed(2)
+                            } else {
+                                GridCells.Adaptive(AlbumItemDefaults.Width)
+                            },
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         item(
                             contentType = "header",
                             key = "header",
-                            span = { GridItemSpan(maxCurrentLineSpan) }
+                            span = { GridItemSpan(maxCurrentLineSpan) },
                         ) {
                             HeaderLayout(
                                 title = {
                                     Text(
                                         text = stringResource(Res.string.favorite_artists_title),
-                                        modifier = Modifier.singleHeader()
+                                        modifier = Modifier.singleHeader(),
                                     )
                                 },
                                 actions = {
                                     PlayAllButton(
-                                        onClick = onPlayAll
+                                        onClick = onPlayAll,
                                     )
                                     PlayShuffledButton(
-                                        onClick = onPlayShuffled
+                                        onClick = onPlayShuffled,
                                     )
-                                }
+                                },
                             )
                         }
                         items(
                             items = state.data.artists,
                             contentType = { "artist" },
-                            key = { "artist_${it.id}" }
+                            key = { "artist_${it.id}" },
                         ) { artist ->
                             ArtistItem(
                                 name = artist.name,
                                 onClick = { onArtistClick(artist.id) },
-                                artworkUrl = artist.artworkUrl
+                                artworkUrl = artist.artworkUrl,
                             )
                         }
                     }
@@ -162,54 +164,58 @@ private fun FavoriteArtistsScreen(
 private fun Progress() {
     SkeletonLayout(modifier = Modifier.fillMaxSize()) {
         LazyVerticalGrid(
-            columns = if (isCompactWidth) {
-                GridCells.Fixed(2)
-            } else {
-                GridCells.Adaptive(AlbumItemDefaults.Width)
-            },
+            columns =
+                if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(AlbumItemDefaults.Width)
+                },
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item(
-                span = { GridItemSpan(maxLineSpan) }
+                span = { GridItemSpan(maxLineSpan) },
             ) {
                 HeaderLayout(
                     title = {
                         Column(
                             modifier = Modifier.singleHeader(),
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        400.dp,
-                                        32.dp
-                                    )
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            400.dp,
+                                            32.dp,
+                                        ),
                             )
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        200.dp,
-                                        32.dp
-                                    )
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            200.dp,
+                                            32.dp,
+                                        ),
                             )
                         }
                     },
                     actions = {
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         )
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         )
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 24.dp),
                 )
             }
             repeat(10) {
@@ -230,7 +236,7 @@ private fun FavoriteArtistsScreenProgressPreview() {
             onRetry = {},
             onRefresh = {},
             onArtistClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -239,41 +245,44 @@ private fun FavoriteArtistsScreenProgressPreview() {
 @Composable
 private fun FavoriteArtistsScreenPreview() {
     MaterialTheme {
-        val albums = persistentListOf(
-            ArtistUi(
-                id = "1",
-                name = "Artist 1",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "2",
-                name = "Artist 2",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "3",
-                name = "Artist 3",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "4",
-                name = "Artist 4",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "5",
-                name = "Artist 5",
-                artworkUrl = null
-            ),
-        )
-        val state = StateUi(
-            progress = false,
-            isRefreshing = false,
-            error = false,
-            data = DataUi(
-                artists = albums
+        val albums =
+            persistentListOf(
+                ArtistUi(
+                    id = "1",
+                    name = "Artist 1",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "2",
+                    name = "Artist 2",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "3",
+                    name = "Artist 3",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "4",
+                    name = "Artist 4",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "5",
+                    name = "Artist 5",
+                    artworkUrl = null,
+                ),
             )
-        )
+        val state =
+            StateUi(
+                progress = false,
+                isRefreshing = false,
+                error = false,
+                data =
+                    DataUi(
+                        artists = albums,
+                    ),
+            )
         FavoriteArtistsScreen(
             state = state,
             onPlayAll = {},
@@ -281,7 +290,7 @@ private fun FavoriteArtistsScreenPreview() {
             onRetry = {},
             onRefresh = {},
             onArtistClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

@@ -10,20 +10,23 @@ import ru.stersh.youamp.feature.main.domain.ServerInfoRepository
 
 internal class ServerInfoRepositoryImpl(
     private val subsonicServerDao: SubsonicServerDao,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
 ) : ServerInfoRepository {
-
-    override fun getServerInfo(): Flow<ServerInfo> {
-        return combine(
+    override fun getServerInfo(): Flow<ServerInfo> =
+        combine(
             subsonicServerDao
                 .flowActive()
                 .filterNotNull(),
-            apiProvider.flowApi()
+            apiProvider.flowApi(),
         ) { active, api ->
             ServerInfo(
                 name = active.name,
-                avatarUrl = api.avatarUrl(active.username, true).toString()
+                avatarUrl =
+                    api
+                        .avatarUrl(
+                            active.username,
+                            true,
+                        ).toString(),
             )
         }
-    }
 }

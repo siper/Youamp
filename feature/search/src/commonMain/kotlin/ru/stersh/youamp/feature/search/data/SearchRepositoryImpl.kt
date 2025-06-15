@@ -1,5 +1,7 @@
 package ru.stersh.youamp.feature.search.data
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -13,12 +15,17 @@ import ru.stersh.youamp.core.utils.Paginator
 import ru.stersh.youamp.feature.search.domain.SearchRepository
 import ru.stersh.youamp.feature.search.domain.SearchResult
 
-internal class SearchRepositoryImpl(private val apiProvider: ApiProvider) : SearchRepository {
-
+internal class SearchRepositoryImpl(
+    private val apiProvider: ApiProvider,
+) : SearchRepository {
     private val searchQuery = MutableStateFlow("")
 
     private var paginator: Paginator<SearchPaginatorResult, SearchIdentifier>? = null
 
+    @OptIn(
+        ExperimentalCoroutinesApi::class,
+        FlowPreview::class,
+    )
     override fun searchResults(): Flow<SearchResult> {
         return searchQuery
             .debounce {
@@ -27,39 +34,52 @@ internal class SearchRepositoryImpl(private val apiProvider: ApiProvider) : Sear
                 } else {
                     300
                 }
-            }
-            .flatMapLatest { query ->
+            }.flatMapLatest { query ->
                 if (query.isEmpty()) {
                     return@flatMapLatest flowOf(SearchResult.Empty)
                 }
                 val api = apiProvider.getApi()
-                val paginator = searchPaginator(query) {
-                    search(
-                        query = it.query,
-                        songsOffset = it.songsPage.offset,
-                        albumsOffset = it.albumsPage.offset,
-                        artistsOffset = it.artistsPage.offset
-                    )
-                }
+                val paginator =
+                    searchPaginator(query) {
+                        search(
+                            query = it.query,
+                            songsOffset = it.songsPage.offset,
+                            albumsOffset = it.albumsPage.offset,
+                            artistsOffset = it.artistsPage.offset,
+                        )
+                    }
                 paginator.restart()
                 this.paginator = paginator
-                paginator.pages().map { pages ->
-                    val content = pages.filterIsInstance<Content<SearchPaginatorResult, SearchIdentifier>>()
-                    return@map SearchResult(
-                        songs = content
-                            .flatMap { it.content.searchResult3.song.toDomainSongs(api) }
-                            .distinctBy { it.id },
-                        albums = content
-                            .flatMap { it.content.searchResult3.album.toDomainAlbums(api) }
-                            .distinctBy { it.id },
-                        artists = content
-                            .flatMap { it.content.searchResult3.artist.toDomainArtists(api) }
-                            .distinctBy { it.id },
-                        hasMoreSongs = content.lastOrNull()?.content?.hasMoreSongs == true,
-                        hasMoreAlbums = content.lastOrNull()?.content?.hasMoreAlbums == true,
-                        hasMoreArtists = content.lastOrNull()?.content?.hasMoreArtists == true,
-                    )
-                }
+                paginator
+                    .pages()
+                    .map { pages ->
+                        val content =
+                            pages
+                                .filterIsInstance<Content<SearchPaginatorResult, SearchIdentifier>>()
+                        return@map SearchResult(
+                            songs =
+                                content
+                                    .flatMap {
+                                        it.content.searchResult3.song
+                                            .toDomainSongs(api)
+                                    }.distinctBy { it.id },
+                            albums =
+                                content
+                                    .flatMap {
+                                        it.content.searchResult3.album
+                                            .toDomainAlbums(api)
+                                    }.distinctBy { it.id },
+                            artists =
+                                content
+                                    .flatMap {
+                                        it.content.searchResult3.artist
+                                            .toDomainArtists(api)
+                                    }.distinctBy { it.id },
+                            hasMoreSongs = content.lastOrNull()?.content?.hasMoreSongs == true,
+                            hasMoreAlbums = content.lastOrNull()?.content?.hasMoreAlbums == true,
+                            hasMoreArtists = content.lastOrNull()?.content?.hasMoreArtists == true,
+                        )
+                    }
             }
     }
 
@@ -71,18 +91,19 @@ internal class SearchRepositoryImpl(private val apiProvider: ApiProvider) : Sear
         query: String,
         songsOffset: Int,
         albumsOffset: Int,
-        artistsOffset: Int
+        artistsOffset: Int,
     ): SearchResult3 {
         val api = apiProvider.getApi()
-        return api.search3(
-            query = query,
-            songCount = SearchIdentifier.Page.PAGE_SIZE,
-            songOffset = songsOffset,
-            albumCount = SearchIdentifier.Page.PAGE_SIZE,
-            albumOffset = albumsOffset,
-            artistCount = SearchIdentifier.Page.PAGE_SIZE,
-            artistOffset = artistsOffset
-        ).data.searchResult3
+        return api
+            .search3(
+                query = query,
+                songCount = SearchIdentifier.Page.PAGE_SIZE,
+                songOffset = songsOffset,
+                albumCount = SearchIdentifier.Page.PAGE_SIZE,
+                albumOffset = albumsOffset,
+                artistCount = SearchIdentifier.Page.PAGE_SIZE,
+                artistOffset = artistsOffset,
+            ).data.searchResult3
     }
 
     override suspend fun loadMoreSongs() {

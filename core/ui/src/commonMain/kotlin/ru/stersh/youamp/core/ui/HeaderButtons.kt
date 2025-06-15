@@ -34,27 +34,29 @@ import youamp.core.ui.generated.resources.shuffle_title
 fun FavoriteButton(
     isFavorite: Boolean,
     onChange: (isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val text = if (isFavorite) {
-        stringResource(Res.string.dislike_title)
-    } else {
-        stringResource(Res.string.like_title)
-    }
+    val text =
+        if (isFavorite) {
+            stringResource(Res.string.dislike_title)
+        } else {
+            stringResource(Res.string.like_title)
+        }
     ButtonLayout(
         button = {
             FilledTonalIconToggleButton(
                 checked = isFavorite,
                 onCheckedChange = onChange,
-                modifier = modifier.size(ButtonSize)
+                modifier = modifier.size(ButtonSize),
             ) {
                 Icon(
-                    imageVector = if (isFavorite) {
-                        Icons.Rounded.Favorite
-                    } else {
-                        Icons.Rounded.FavoriteBorder
-                    },
-                    contentDescription = text
+                    imageVector =
+                        if (isFavorite) {
+                            Icons.Rounded.Favorite
+                        } else {
+                            Icons.Rounded.FavoriteBorder
+                        },
+                    contentDescription = text,
                 )
             }
         },
@@ -63,27 +65,27 @@ fun FavoriteButton(
                 text = text,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun PlayAllButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ButtonLayout(
         button = {
             FilledTonalIconButton(
                 onClick = onClick,
-                modifier = modifier.size(ButtonSize)
+                modifier = modifier.size(ButtonSize),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.PlayArrow,
-                    contentDescription = stringResource(Res.string.play_all_title)
+                    contentDescription = stringResource(Res.string.play_all_title),
                 )
             }
         },
@@ -92,27 +94,27 @@ fun PlayAllButton(
                 text = stringResource(Res.string.play_all_title),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun PlayShuffledButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ButtonLayout(
         button = {
             FilledTonalIconButton(
                 onClick = onClick,
-                modifier = modifier.size(ButtonSize)
+                modifier = modifier.size(ButtonSize),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Shuffle,
-                    contentDescription = stringResource(Res.string.shuffle_title)
+                    contentDescription = stringResource(Res.string.shuffle_title),
                 )
             }
         },
@@ -121,10 +123,10 @@ fun PlayShuffledButton(
                 text = stringResource(Res.string.shuffle_title),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -135,12 +137,12 @@ private val ButtonSize = 64.dp
 private fun ButtonLayout(
     button: @Composable () -> Unit,
     title: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier.width(72.dp)
+        modifier = modifier.width(72.dp),
     ) {
         button()
         CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.labelSmall) {

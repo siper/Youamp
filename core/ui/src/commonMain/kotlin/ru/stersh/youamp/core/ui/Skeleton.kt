@@ -31,20 +31,22 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun SkeletonLayout(
     modifier: Modifier = Modifier,
-    content: @Composable SkeletonScope.() -> Unit
+    content: @Composable SkeletonScope.() -> Unit,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "skeleton_animation")
     val alphaAnimation by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 0.3f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1000,
-                easing = LinearEasing
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    tween(
+                        durationMillis = 1000,
+                        easing = LinearEasing,
+                    ),
+                repeatMode = RepeatMode.Reverse,
             ),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "skeleton_alpha_animation"
+        label = "skeleton_alpha_animation",
     )
     Box(modifier = modifier.graphicsLayer(alpha = alphaAnimation)) {
         content(SkeletonScope)
@@ -55,16 +57,18 @@ object SkeletonScope {
     @Composable
     fun SkeletonItem(
         modifier: Modifier = Modifier,
-        shape: Shape = remember {
-            RoundedCornerShape(16.dp)
-        },
-        color: Color = MaterialTheme.colorScheme.surfaceContainerHigh
+        shape: Shape =
+            remember {
+                RoundedCornerShape(16.dp)
+            },
+        color: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     ) {
         Box(
-            modifier = modifier.background(
-                color = color,
-                shape = shape
-            ),
+            modifier =
+                modifier.background(
+                    color = color,
+                    shape = shape,
+                ),
         )
     }
 }
@@ -73,7 +77,7 @@ object SkeletonScope {
 fun SkeletonScope.PlaylistSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         SkeletonItem(
             shape = MaterialTheme.shapes.medium,
@@ -81,10 +85,11 @@ fun SkeletonScope.PlaylistSkeleton(modifier: Modifier = Modifier) {
         )
         SkeletonItem(
             shape = MaterialTheme.shapes.medium,
-            modifier = Modifier.size(
-                120.dp,
-                24.dp
-            ),
+            modifier =
+                Modifier.size(
+                    120.dp,
+                    24.dp,
+                ),
         )
     }
 }
@@ -92,31 +97,33 @@ fun SkeletonScope.PlaylistSkeleton(modifier: Modifier = Modifier) {
 @Composable
 fun SkeletonScope.AlbumSkeleton(
     showArtist: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         SkeletonItem(
             shape = MaterialTheme.shapes.medium,
-            modifier = Modifier.size(AlbumItemDefaults.Width)
+            modifier = Modifier.size(AlbumItemDefaults.Width),
         )
         Column(
             modifier = Modifier.padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+            verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             SkeletonItem(
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.size(
-                    120.dp,
-                    24.dp
-                )
+                modifier =
+                    Modifier.size(
+                        120.dp,
+                        24.dp,
+                    ),
             )
             if (showArtist) {
                 SkeletonItem(
                     shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier.size(
-                        80.dp,
-                        20.dp
-                    )
+                    modifier =
+                        Modifier.size(
+                            80.dp,
+                            20.dp,
+                        ),
                 )
             }
         }
@@ -137,10 +144,11 @@ fun SkeletonScope.ArtistSkeleton(modifier: Modifier = Modifier) {
 
         SkeletonItem(
             shape = MaterialTheme.shapes.medium,
-            modifier = Modifier.size(
-                120.dp,
-                24.dp
-            )
+            modifier =
+                Modifier.size(
+                    120.dp,
+                    24.dp,
+                ),
         )
     }
 }
@@ -154,26 +162,29 @@ fun SkeletonScope.SongCardChunkSkeleton(modifier: Modifier = Modifier) {
     ) {
         SkeletonItem(
             shape = SongCardDefaults.TopShape,
-            modifier = Modifier.size(
-                SongCardDefaults.Width,
-                64.dp
-            ),
+            modifier =
+                Modifier.size(
+                    SongCardDefaults.Width,
+                    64.dp,
+                ),
         )
 
         SkeletonItem(
             shape = SongCardDefaults.CenterShape,
-            modifier = Modifier.size(
-                SongCardDefaults.Width,
-                64.dp
-            ),
+            modifier =
+                Modifier.size(
+                    SongCardDefaults.Width,
+                    64.dp,
+                ),
         )
 
         SkeletonItem(
             shape = SongCardDefaults.BottomShape,
-            modifier = Modifier.size(
-                SongCardDefaults.Width,
-                64.dp
-            ),
+            modifier =
+                Modifier.size(
+                    SongCardDefaults.Width,
+                    64.dp,
+                ),
         )
     }
 }
@@ -220,7 +231,7 @@ fun SkeletonScope.SectionSkeleton(modifier: Modifier = Modifier) {
                 .padding(vertical = 28.dp)
                 .size(
                     200.dp,
-                    32.dp
+                    32.dp,
                 ),
     )
 }
@@ -237,7 +248,7 @@ private fun SkeletonItemPreview() {
                             Modifier
                                 .size(
                                     width = 60.dp,
-                                    height = 48.dp
+                                    height = 48.dp,
                                 ),
                     )
                     SkeletonItem(
@@ -245,7 +256,7 @@ private fun SkeletonItemPreview() {
                             Modifier
                                 .size(
                                     width = 130.dp,
-                                    height = 20.dp
+                                    height = 20.dp,
                                 ),
                     )
                 }

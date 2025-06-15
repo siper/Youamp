@@ -30,12 +30,13 @@ fun SongCardItem(
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    val shape = when (type) {
-        SongCardType.Default -> MaterialTheme.shapes.large
-        SongCardType.Top -> SongCardDefaults.TopShape
-        SongCardType.Center -> SongCardDefaults.CenterShape
-        SongCardType.Bottom -> SongCardDefaults.BottomShape
-    }
+    val shape =
+        when (type) {
+            SongCardType.Default -> MaterialTheme.shapes.large
+            SongCardType.Top -> SongCardDefaults.TopShape
+            SongCardType.Center -> SongCardDefaults.CenterShape
+            SongCardType.Bottom -> SongCardDefaults.BottomShape
+        }
     Card(
         shape = shape,
         modifier = modifier,
@@ -65,14 +66,14 @@ fun SongItem(
     isPlaying: Boolean = false,
     modifier: Modifier = Modifier,
     trailingContent: @Composable () -> Unit = {},
-    colors: ListItemColors = ListItemDefaults.colors()
+    colors: ListItemColors = ListItemDefaults.colors(),
 ) {
     ListItem(
         headlineContent = {
             Text(
                 text = title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         supportingContent = {
@@ -80,7 +81,7 @@ fun SongItem(
                 Text(
                     text = it,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
@@ -88,47 +89,50 @@ fun SongItem(
             Artwork(
                 artworkUrl = artworkUrl,
                 placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
             )
             if (isCurrent) {
                 SongPlayAnimation(
                     isPlaying = isPlaying,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            color = ArtworkMaskColor,
-                            shape = MaterialTheme.shapes.large
-                        )
-                        .padding(12.dp)
+                    modifier =
+                        Modifier
+                            .size(48.dp)
+                            .background(
+                                color = ArtworkMaskColor,
+                                shape = MaterialTheme.shapes.large,
+                            ).padding(12.dp),
                 )
             }
         },
         trailingContent = trailingContent,
         modifier = modifier.clickable(onClick = onClick),
-        colors = colors
+        colors = colors,
     )
 }
 
 @Stable
 object SongCardDefaults {
-    val TopShape = RoundedCornerShape(
-        topStart = 16.dp,
-        topEnd = 16.dp,
-        bottomStart = 4.dp,
-        bottomEnd = 4.dp
-    )
-    val BottomShape = RoundedCornerShape(
-        topStart = 4.dp,
-        topEnd = 4.dp,
-        bottomStart = 16.dp,
-        bottomEnd = 16.dp
-    )
-    val CenterShape = RoundedCornerShape(
-        topStart = 4.dp,
-        topEnd = 4.dp,
-        bottomStart = 4.dp,
-        bottomEnd = 4.dp
-    )
+    val TopShape =
+        RoundedCornerShape(
+            topStart = 16.dp,
+            topEnd = 16.dp,
+            bottomStart = 4.dp,
+            bottomEnd = 4.dp,
+        )
+    val BottomShape =
+        RoundedCornerShape(
+            topStart = 4.dp,
+            topEnd = 4.dp,
+            bottomStart = 16.dp,
+            bottomEnd = 16.dp,
+        )
+    val CenterShape =
+        RoundedCornerShape(
+            topStart = 4.dp,
+            topEnd = 4.dp,
+            bottomStart = 4.dp,
+            bottomEnd = 4.dp,
+        )
 
     val Width = 336.dp
 }
@@ -140,8 +144,8 @@ private var songItemCardColorsDark: ListItemColors? = null
 private var songItemCardColorsLight: ListItemColors? = null
 
 @Composable
-private fun songItemCardColors(): ListItemColors {
-    return if (isSystemInDarkTheme()) {
+private fun songItemCardColors(): ListItemColors =
+    if (isSystemInDarkTheme()) {
         songItemCardColorsDark ?: ListItemDefaults
             .colors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
             .also { songItemCardColorsDark = it }
@@ -150,4 +154,3 @@ private fun songItemCardColors(): ListItemColors {
             .colors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
             .also { songItemCardColorsLight = it }
     }
-}

@@ -38,11 +38,10 @@ import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.artist.list.generated.resources.Res
 import youamp.feature.artist.list.generated.resources.artists_title
 
-
 @Composable
 fun ArtistsScreen(
     onArtistClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val viewModel: ArtistsViewModel = koinViewModel()
 
@@ -53,7 +52,7 @@ fun ArtistsScreen(
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onArtistClick = onArtistClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -64,7 +63,7 @@ private fun ArtistsScreen(
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onArtistClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -76,15 +75,15 @@ private fun ArtistsScreen(
                 title = {
                     Text(text = stringResource(Res.string.artists_title))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             when {
                 state.progress -> {
@@ -97,16 +96,17 @@ private fun ArtistsScreen(
 
                 state.items.isEmpty() -> {
                     EmptyLayout(
-                        modifier = Modifier.verticalScroll(
-                            state = rememberScrollState()
-                        )
+                        modifier =
+                            Modifier.verticalScroll(
+                                state = rememberScrollState(),
+                            ),
                     )
                 }
 
                 else -> {
                     Content(
                         items = state.items,
-                        onArtistClick = onArtistClick
+                        onArtistClick = onArtistClick,
                     )
                 }
             }
@@ -117,28 +117,29 @@ private fun ArtistsScreen(
 @Composable
 private fun Content(
     items: ImmutableList<ArtistUi>,
-    onArtistClick: (id: String) -> Unit
+    onArtistClick: (id: String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = if (isCompactWidth) {
-            GridCells.Fixed(2)
-        } else {
-            GridCells.Adaptive(ArtistItemDefaults.Width)
-        },
+        columns =
+            if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(ArtistItemDefaults.Width)
+            },
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         items(
-            items = items
+            items = items,
         ) { artist ->
             ArtistItem(
                 name = artist.name,
                 artworkUrl = artist.artworkUrl,
                 onClick = {
                     onArtistClick.invoke(artist.id)
-                }
+                },
             )
         }
     }
@@ -148,18 +149,19 @@ private fun Content(
 private fun Progress() {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = if (isCompactWidth) {
-                GridCells.Fixed(2)
-            } else {
-                GridCells.Adaptive(ArtistItemDefaults.Width)
-            },
+            columns =
+                if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(ArtistItemDefaults.Width)
+                },
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            userScrollEnabled = false
+            userScrollEnabled = false,
         ) {
             items(
-                items = (0..12).toList()
+                items = (0..12).toList(),
             ) {
                 ArtistSkeleton()
             }
@@ -176,7 +178,7 @@ private fun ArtistsScreenProgressPreview() {
             onRetry = {},
             onRefresh = {},
             onArtistClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -185,45 +187,47 @@ private fun ArtistsScreenProgressPreview() {
 @Preview
 private fun ArtistsScreenPreview() {
     YouampPlayerTheme {
-        val items = persistentListOf(
-            ArtistUi(
-                id = "1",
-                name = "Test",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "2",
-                name = "Test 2",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "3",
-                name = "Test 3",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "4",
-                name = "Test 4",
-                artworkUrl = null
-            ),
-            ArtistUi(
-                id = "5",
-                name = "Test 5",
-                artworkUrl = null
+        val items =
+            persistentListOf(
+                ArtistUi(
+                    id = "1",
+                    name = "Test",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "2",
+                    name = "Test 2",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "3",
+                    name = "Test 3",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "4",
+                    name = "Test 4",
+                    artworkUrl = null,
+                ),
+                ArtistUi(
+                    id = "5",
+                    name = "Test 5",
+                    artworkUrl = null,
+                ),
             )
-        )
-        val state = ArtistsStateUi(
-            progress = false,
-            isRefreshing = true,
-            error = false,
-            items = items
-        )
+        val state =
+            ArtistsStateUi(
+                progress = false,
+                isRefreshing = true,
+                error = false,
+                items = items,
+            )
         ArtistsScreen(
             state = state,
             onRetry = {},
             onRefresh = {},
             onArtistClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

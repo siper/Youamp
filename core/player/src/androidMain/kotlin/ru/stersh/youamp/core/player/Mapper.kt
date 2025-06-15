@@ -4,27 +4,26 @@ import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 
-internal fun MediaItem.toCommon(): ru.stersh.youamp.core.player.MediaItem {
-    return MediaItem(
+internal fun MediaItem.toCommon(): ru.stersh.youamp.core.player.MediaItem =
+    MediaItem(
         id = mediaId,
         title = mediaMetadata.title.toString(),
         url = requestMetadata.mediaUri.toString(),
         artist = mediaMetadata.artist?.toString(),
         album = mediaMetadata.albumTitle?.toString(),
-        artworkUrl = mediaMetadata.artworkUri?.toString()
+        artworkUrl = mediaMetadata.artworkUri?.toString(),
     )
-}
 
-internal fun ru.stersh.youamp.core.player.MediaItem.toPlatform(): MediaItem {
-    return MediaItem.Builder()
+internal fun ru.stersh.youamp.core.player.MediaItem.toPlatform(): MediaItem =
+    MediaItem
+        .Builder()
         .setUri(url)
         .setMediaId(id)
         .setMediaMetadata(
-            MediaMetadata.Builder()
+            MediaMetadata
+                .Builder()
                 .setTitle(title)
                 .setArtist(artist)
                 .setArtworkUri(artworkUrl?.toUri())
-                .build()
-        )
-        .build()
-}
+                .build(),
+        ).build()

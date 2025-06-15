@@ -7,8 +7,9 @@ import androidx.compose.ui.util.unpackInt2
 
 @Immutable
 @JvmInline
-value class MovePosition internal constructor(private val packedValue: Long) {
-
+value class MovePosition internal constructor(
+    private val packedValue: Long,
+) {
     val from: Int
         get() = unpackInt1(packedValue)
 
@@ -16,4 +17,12 @@ value class MovePosition internal constructor(private val packedValue: Long) {
         get() = unpackInt2(packedValue)
 }
 
-fun MovePosition(from: Int, to: Int) = MovePosition(packInts(from, to))
+fun MovePosition(
+    from: Int,
+    to: Int,
+) = MovePosition(
+    packInts(
+        from,
+        to,
+    ),
+)

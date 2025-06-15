@@ -76,11 +76,12 @@ import youamp.feature.server.create.generated.resources.user_icon_description
 fun ServerScreen(
     serverId: Long? = null,
     onBackClick: () -> Unit,
-    onCloseScreen: () -> Unit
+    onCloseScreen: () -> Unit,
 ) {
-    val viewModel: ServerCreateViewModel = koinViewModel {
-        parametersOf(serverId)
-    }
+    val viewModel: ServerCreateViewModel =
+        koinViewModel {
+            parametersOf(serverId)
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -92,8 +93,7 @@ fun ServerScreen(
             .exit
             .onEach {
                 onCloseScreen()
-            }
-            .launchIn(this)
+            }.launchIn(this)
     }
     LaunchedEffect(Unit) {
         viewModel
@@ -104,8 +104,7 @@ fun ServerScreen(
                 } else {
                     snackbarHostState.showSnackbar(errorTestMessage)
                 }
-            }
-            .launchIn(this)
+            }.launchIn(this)
     }
 
     ServerScreen(
@@ -115,7 +114,7 @@ fun ServerScreen(
         onValidateInput = viewModel::validateInput,
         onTest = viewModel::test,
         onAdd = viewModel::add,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -140,11 +139,12 @@ private fun ServerScreen(
             LargeTopAppBar(
                 title = {
                     Text(
-                        text = if (isNewServer) {
-                            stringResource(Res.string.new_server_title)
-                        } else {
-                            stringResource(Res.string.edit_server_title)
-                        }
+                        text =
+                            if (isNewServer) {
+                                stringResource(Res.string.new_server_title)
+                            } else {
+                                stringResource(Res.string.edit_server_title)
+                            },
                     )
                 },
                 navigationIcon = {
@@ -152,9 +152,9 @@ private fun ServerScreen(
                         BackNavigationButton(onClick = onBackClick)
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
-        }
+        },
     ) { padding ->
         if (!state.progress) {
             ContentState(
@@ -163,7 +163,7 @@ private fun ServerScreen(
                 padding = padding,
                 onValidateInput = onValidateInput,
                 onTest = onTest,
-                onAdd = onAdd
+                onAdd = onAdd,
             )
         }
     }
@@ -184,30 +184,59 @@ private fun ContentState(
     var password by rememberSaveable { mutableStateOf(state.serverInfo.password) }
     var useLegacyAuth by rememberSaveable { mutableStateOf(state.serverInfo.useLegacyAuth) }
 
-    val input = remember(name, url, username, password) {
-        ServerInputUi(name, url, username, password)
-    }
-    val server = remember(name, url, username, password, useLegacyAuth) {
-        ServerUi(name, url, username, password, useLegacyAuth)
-    }
+    val input =
+        remember(
+            name,
+            url,
+            username,
+            password,
+        ) {
+            ServerInputUi(
+                name,
+                url,
+                username,
+                password,
+            )
+        }
+    val server =
+        remember(
+            name,
+            url,
+            username,
+            password,
+            useLegacyAuth,
+        ) {
+            ServerUi(
+                name,
+                url,
+                username,
+                password,
+                useLegacyAuth,
+            )
+        }
 
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(
                     imageVector = Icons.Rounded.Dns,
                     contentDescription = stringResource(Res.string.server_icon_description),
-                    modifier = Modifier.padding(top = 8.dp, end = 16.dp)
+                    modifier =
+                        Modifier.padding(
+                            top = 8.dp,
+                            end = 16.dp,
+                        ),
                 )
                 OutlinedTextField(
                     value = name,
@@ -220,7 +249,7 @@ private fun ContentState(
                             onValidateInput(input)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
@@ -235,25 +264,31 @@ private fun ContentState(
                         onValidateInput(input)
                     }
                 },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Uri,
-                    autoCorrectEnabled = false
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 40.dp)
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Uri,
+                        autoCorrectEnabled = false,
+                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 40.dp),
             )
         }
 
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(
                     imageVector = Icons.Rounded.Person,
                     contentDescription = stringResource(Res.string.user_icon_description),
-                    modifier = Modifier.padding(top = 8.dp, end = 16.dp)
+                    modifier =
+                        Modifier.padding(
+                            top = 8.dp,
+                            end = 16.dp,
+                        ),
                 )
                 OutlinedTextField(
                     value = username,
@@ -266,8 +301,9 @@ private fun ContentState(
                             onValidateInput(input)
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                 )
             }
 
@@ -283,32 +319,36 @@ private fun ContentState(
                         onValidateInput(input)
                     }
                 },
-                visualTransformation = if (passwordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
+                visualTransformation =
+                    if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                 trailingIcon = {
                     IconButton(
-                        onClick = { passwordVisible = !passwordVisible }
+                        onClick = { passwordVisible = !passwordVisible },
                     ) {
                         Icon(
-                            imageVector = if (passwordVisible) {
-                                Icons.Rounded.Visibility
-                            } else {
-                                Icons.Rounded.VisibilityOff
-                            },
-                            contentDescription = if (passwordVisible) {
-                                stringResource(Res.string.hide_password_description)
-                            } else {
-                                stringResource(Res.string.show_password_description)
-                            }
+                            imageVector =
+                                if (passwordVisible) {
+                                    Icons.Rounded.Visibility
+                                } else {
+                                    Icons.Rounded.VisibilityOff
+                                },
+                            contentDescription =
+                                if (passwordVisible) {
+                                    stringResource(Res.string.hide_password_description)
+                                } else {
+                                    stringResource(Res.string.show_password_description)
+                                },
                         )
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 40.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 40.dp),
             )
         }
 
@@ -317,43 +357,45 @@ private fun ContentState(
                 text = stringResource(Res.string.additional_settings_title),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
 
             ListItem(
                 headlineContent = {
                     Text(
-                        text = stringResource(Res.string.server_use_legacy_auth_title)
+                        text = stringResource(Res.string.server_use_legacy_auth_title),
                     )
                 },
                 supportingContent = {
                     Text(
-                        text = stringResource(Res.string.use_legacy_auth_subtitle)
+                        text = stringResource(Res.string.use_legacy_auth_subtitle),
                     )
                 },
                 trailingContent = {
                     Switch(
                         checked = useLegacyAuth,
                         onCheckedChange = { useLegacyAuth = it },
-                        modifier = Modifier.padding(vertical = 20.dp)
+                        modifier = Modifier.padding(vertical = 20.dp),
                     )
-                }
+                },
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
             ) {
                 OutlinedButton(
                     onClick = {
                         onTest(server)
                     },
                     enabled = state.buttonsEnabled,
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .padding(end = 8.dp)
+                    modifier =
+                        Modifier
+                            .weight(0.5f)
+                            .padding(end = 8.dp),
                 ) {
                     Text(text = stringResource(Res.string.server_test_title))
                 }
@@ -362,16 +404,18 @@ private fun ContentState(
                         onAdd(server)
                     },
                     enabled = state.buttonsEnabled,
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .padding(start = 8.dp)
+                    modifier =
+                        Modifier
+                            .weight(0.5f)
+                            .padding(start = 8.dp),
                 ) {
                     Text(
-                        text = if (isNewServer) {
-                            stringResource(Res.string.server_add_action_title)
-                        } else {
-                            stringResource(Res.string.server_save_action_title)
-                        }
+                        text =
+                            if (isNewServer) {
+                                stringResource(Res.string.server_add_action_title)
+                            } else {
+                                stringResource(Res.string.server_save_action_title)
+                            },
                     )
                 }
             }
@@ -392,7 +436,7 @@ private fun ServerScreenContentPreview() {
             onValidateInput = {},
             onTest = {},
             onAdd = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

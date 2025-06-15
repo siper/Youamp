@@ -7,12 +7,14 @@ kotlin {
 
     androidLibrary {
         namespace = "ru.stresh.youamp.core.utils"
-        compileSdk = libs.versions.android.compileSdk
-            .get()
-            .toInt()
-        minSdk = libs.versions.android.minSdk
-            .get()
-            .toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
 
     jvm("desktop")

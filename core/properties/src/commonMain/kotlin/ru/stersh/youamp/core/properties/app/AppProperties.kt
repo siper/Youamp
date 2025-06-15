@@ -5,5 +5,5 @@ data class AppProperties(
     val version: String,
     val githubUrl: String,
     val fdroidUrl: String,
-    val crwodinUrl: String
+    val crwodinUrl: String,
 )

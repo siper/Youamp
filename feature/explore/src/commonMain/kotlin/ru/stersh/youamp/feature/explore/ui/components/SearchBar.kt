@@ -35,29 +35,31 @@ import youamp.feature.explore.generated.resources.search_title
 internal fun SearchBar(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WindowInsets.statusBars
+    windowInsets: WindowInsets = WindowInsets.statusBars,
 ) {
     Box(modifier = modifier.windowInsetsPadding(windowInsets)) {
         Box(
-            modifier = Modifier
-                .height(SearchBarHeight)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .fillMaxWidth()
-                .clickable(onClick = onClick)
+            modifier =
+                Modifier
+                    .height(SearchBarHeight)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .fillMaxWidth()
+                    .clickable(onClick = onClick),
         ) {
             Row(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(horizontal = HorizontalArrangement)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .align(Alignment.Center)
+                        .padding(horizontal = HorizontalArrangement)
+                        .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HorizontalArrangement)
+                horizontalArrangement = Arrangement.spacedBy(HorizontalArrangement),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Search,
                     contentDescription = stringResource(Res.string.search_title),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 Text(
@@ -84,12 +86,13 @@ private fun SearchBarPreview() {
             SearchBar(
                 onClick = {},
             )
-        }
+        },
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(it),
         )
     }
 }

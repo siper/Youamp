@@ -6,5 +6,5 @@ data class MediaItem(
     val url: String,
     val artist: String? = null,
     val album: String? = null,
-    val artworkUrl: String? = null
+    val artworkUrl: String? = null,
 )

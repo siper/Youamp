@@ -31,10 +31,11 @@ actual val playerCoreModule: Module =
                         .build()
                 }
 
-            val resolvingDataSource = ResolvingDataSource.Factory(
-                okHttpDataSource,
-                resolver
-            )
+            val resolvingDataSource =
+                ResolvingDataSource.Factory(
+                    okHttpDataSource,
+                    resolver,
+                )
 
             ExoPlayer
                 .Builder(get())
@@ -42,9 +43,8 @@ actual val playerCoreModule: Module =
                 .setMediaSourceFactory(DefaultMediaSourceFactory(resolvingDataSource))
                 .setAudioAttributes(
                     AudioAttributes.DEFAULT,
-                    true
-                )
-                .setWakeMode(C.WAKE_MODE_NETWORK)
+                    true,
+                ).setWakeMode(C.WAKE_MODE_NETWORK)
                 .build()
         }
         single<Player> { AndroidPlayer(get()) }

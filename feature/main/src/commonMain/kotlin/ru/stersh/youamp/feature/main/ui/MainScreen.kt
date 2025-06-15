@@ -25,12 +25,12 @@ import ru.stersh.youamp.core.ui.YouampPlayerTheme
 
 @Immutable
 internal data class MainStateUi(
-    val serverInfo: ServerInfo? = null
+    val serverInfo: ServerInfo? = null,
 ) {
     @Immutable
     data class ServerInfo(
         val name: String,
-        val avatarUrl: String?
+        val avatarUrl: String?,
     )
 }
 
@@ -41,7 +41,7 @@ fun MainScreen(
     explore: @Composable () -> Unit,
     library: @Composable () -> Unit,
     onAvatarClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
 ) {
     val viewModel: MainViewModel = koinViewModel()
     val state: MainStateUi by viewModel.state.collectAsState()
@@ -53,9 +53,10 @@ fun MainScreen(
         explore = explore,
         library = library,
         onAvatarClick = onAvatarClick,
-        onSettingsClick = onSettingsClick
+        onSettingsClick = onSettingsClick,
     )
 }
+
 @Composable
 internal fun MainScreen(
     state: MainStateUi,
@@ -64,7 +65,7 @@ internal fun MainScreen(
     explore: @Composable () -> Unit,
     library: @Composable () -> Unit,
     onAvatarClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
 ) {
     var currentDestination by rememberSaveable { mutableStateOf(MainDestination.PERSONAL) }
     NavigationSuiteScaffold(
@@ -74,7 +75,7 @@ internal fun MainScreen(
                     icon = {
                         Icon(
                             imageVector = dest.icon,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     },
                     label = {
@@ -83,17 +84,17 @@ internal fun MainScreen(
                     selected = currentDestination == dest,
                     onClick = {
                         currentDestination = dest
-                    }
+                    },
                 )
             }
-        }
+        },
     ) {
         Column {
             Toolbar(
                 serverName = state.serverInfo?.name,
                 avatarUrl = state.serverInfo?.avatarUrl,
                 onAvatarClick = onAvatarClick,
-                onSettingsClick = onSettingsClick
+                onSettingsClick = onSettingsClick,
             )
             Box(modifier = Modifier.weight(1f)) {
                 when (currentDestination) {
@@ -112,27 +113,30 @@ internal fun MainScreen(
 private fun MainScreenPreview() {
     YouampPlayerTheme {
         MainScreen(
-            state = MainStateUi(
-                serverInfo = MainStateUi.ServerInfo(
-                    name = "Gonic",
-                    avatarUrl = null
-                )
-            ),
+            state =
+                MainStateUi(
+                    serverInfo =
+                        MainStateUi.ServerInfo(
+                            name = "Gonic",
+                            avatarUrl = null,
+                        ),
+                ),
             miniPlayer = {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(90.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerHighest
-                        )
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                            ),
                 )
             },
             personal = { },
             explore = {},
             library = {},
             onAvatarClick = {},
-            onSettingsClick = {}
+            onSettingsClick = {},
         )
     }
 }

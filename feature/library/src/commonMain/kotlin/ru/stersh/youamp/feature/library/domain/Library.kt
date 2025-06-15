@@ -9,7 +9,7 @@ internal data class Artist(
     val id: String,
     val name: String,
     val artworkUrl: String?,
-    val isPlaying: Boolean
+    val isPlaying: Boolean,
 )
 
 internal data class Album(
@@ -17,5 +17,5 @@ internal data class Album(
     val title: String,
     val artist: String?,
     val artworkUrl: String?,
-    val isPlaying: Boolean
+    val isPlaying: Boolean,
 )

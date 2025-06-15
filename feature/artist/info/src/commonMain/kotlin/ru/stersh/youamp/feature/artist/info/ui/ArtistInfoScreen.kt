@@ -45,11 +45,12 @@ import ru.stersh.youamp.core.ui.isCompactWidth
 fun ArtistInfoScreen(
     id: String,
     onAlbumClick: (albumId: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
-    val viewModel = koinViewModel<ArtistInfoViewModel> {
-        parametersOf(id)
-    }
+    val viewModel =
+        koinViewModel<ArtistInfoViewModel> {
+            parametersOf(id)
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
     ArtistInfoScreen(
         state = state,
@@ -58,7 +59,7 @@ fun ArtistInfoScreen(
         onFavoriteChange = viewModel::onFavoriteChange,
         onAlbumClick = onAlbumClick,
         onRetry = viewModel::retry,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -71,7 +72,7 @@ private fun ArtistInfoScreen(
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
     onAlbumClick: (albumId: String) -> Unit,
     onRetry: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -79,9 +80,9 @@ private fun ArtistInfoScreen(
                 title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) { padding ->
 
         when {
@@ -92,7 +93,7 @@ private fun ArtistInfoScreen(
             state.error -> {
                 ErrorLayout(
                     onRetry = onRetry,
-                    modifier = Modifier.padding(padding)
+                    modifier = Modifier.padding(padding),
                 )
             }
 
@@ -103,7 +104,7 @@ private fun ArtistInfoScreen(
                     onPlayAll = onPlayAll,
                     onPlayShuffled = onPlayShuffled,
                     onFavoriteChange = onFavoriteChange,
-                    onAlbumClick = onAlbumClick
+                    onAlbumClick = onAlbumClick,
                 )
             }
         }
@@ -117,42 +118,43 @@ private fun Content(
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
-    onAlbumClick: (albumId: String) -> Unit
+    onAlbumClick: (albumId: String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = if (isCompactWidth) {
-            GridCells.Fixed(2)
-        } else {
-            GridCells.Adaptive(AlbumItemDefaults.Width)
-        },
+        columns =
+            if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(AlbumItemDefaults.Width)
+            },
         modifier = Modifier.padding(padding),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item(
             key = "header",
             span = { GridItemSpan(maxLineSpan) },
-            contentType = "header"
+            contentType = "header",
         ) {
             Header(
                 state = state,
                 onPlayAll = onPlayAll,
                 onPlayShuffled = onPlayShuffled,
-                onFavoriteChange = onFavoriteChange
+                onFavoriteChange = onFavoriteChange,
             )
         }
 
         items(
             items = state.albums,
             key = { "album_${it.id}" },
-            contentType = { "album" }
+            contentType = { "album" },
         ) {
             AlbumItem(
                 title = it.title,
                 artist = it.artist,
                 artworkUrl = it.artworkUrl,
-                onClick = { onAlbumClick(it.id) }
+                onClick = { onAlbumClick(it.id) },
             )
         }
     }
@@ -164,93 +166,99 @@ private fun Header(
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     HeaderLayout(
         image = {
             CircleArtwork(
                 artworkUrl = state.artworkUrl,
                 placeholder = Icons.Rounded.Person,
-                modifier = if (isCompactWidth) {
-                    Modifier.size(ArtistItemDefaults.Width)
-                } else {
-                    Modifier
-                }
+                modifier =
+                    if (isCompactWidth) {
+                        Modifier.size(ArtistItemDefaults.Width)
+                    } else {
+                        Modifier
+                    },
             )
         },
         title = {
             Text(
                 text = state.name,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         actions = {
             PlayAllButton(
-                onClick = onPlayAll
+                onClick = onPlayAll,
             )
             PlayShuffledButton(
-                onClick = onPlayShuffled
+                onClick = onPlayShuffled,
             )
             FavoriteButton(
                 isFavorite = state.isFavorite,
-                onChange = onFavoriteChange
+                onChange = onFavoriteChange,
             )
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 private fun Progress(padding: PaddingValues) {
     SkeletonLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(padding),
     ) {
         LazyVerticalGrid(
-            columns = if (isCompactWidth) {
-                GridCells.Fixed(2)
-            } else {
-                GridCells.Adaptive(AlbumItemDefaults.Width)
-            },
+            columns =
+                if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(AlbumItemDefaults.Width)
+                },
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item(
-                span = { GridItemSpan(maxLineSpan) }
+                span = { GridItemSpan(maxLineSpan) },
             ) {
                 HeaderLayout(
                     image = {
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = if (isCompactWidth) {
-                                Modifier.size(ArtistItemDefaults.Width)
-                            } else {
-                                Modifier
-                            }
+                            modifier =
+                                if (isCompactWidth) {
+                                    Modifier.size(ArtistItemDefaults.Width)
+                                } else {
+                                    Modifier
+                                },
                         )
                     },
                     title = {
                         SkeletonItem(
-                            modifier = Modifier
-                                .size(
-                                    400.dp,
-                                    40.dp
-                                )
+                            modifier =
+                                Modifier
+                                    .size(
+                                        400.dp,
+                                        40.dp,
+                                    ),
                         )
                     },
                     actions = {
                         repeat(3) {
                             SkeletonItem(
                                 shape = CircleShape,
-                                modifier = Modifier.size(64.dp)
+                                modifier = Modifier.size(64.dp),
                             )
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 24.dp),
                 )
             }
             repeat(10) {
@@ -271,7 +279,7 @@ private fun ArtistInfoScreenProgressPreview() {
             onPlayShuffled = {},
             onFavoriteChange = {},
             onRetry = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -279,44 +287,47 @@ private fun ArtistInfoScreenProgressPreview() {
 @Preview
 @Composable
 private fun ArtistInfoScreenPreview() {
-    val albums = persistentListOf(
-        AlbumUi(
-            id = "1",
-            title = "Test album",
-            artist = null,
-            artworkUrl = null
-        ),
-        AlbumUi(
-            id = "2",
-            title = "Test album 2",
-            artist = null,
-            artworkUrl = null
-        ),
-        AlbumUi(
-            id = "3",
-            title = "Test album 3",
-            artist = null,
-            artworkUrl = null
+    val albums =
+        persistentListOf(
+            AlbumUi(
+                id = "1",
+                title = "Test album",
+                artist = null,
+                artworkUrl = null,
+            ),
+            AlbumUi(
+                id = "2",
+                title = "Test album 2",
+                artist = null,
+                artworkUrl = null,
+            ),
+            AlbumUi(
+                id = "3",
+                title = "Test album 3",
+                artist = null,
+                artworkUrl = null,
+            ),
         )
-    )
     YouampPlayerTheme {
         ArtistInfoScreen(
-            state = ArtistInfoStateUi(
-                progress = false,
-                error = false,
-                content = ArtistInfoUi(
-                    artworkUrl = null,
-                    isFavorite = false,
-                    name = "Artist",
-                    albums = albums
-                )
-            ),
+            state =
+                ArtistInfoStateUi(
+                    progress = false,
+                    error = false,
+                    content =
+                        ArtistInfoUi(
+                            artworkUrl = null,
+                            isFavorite = false,
+                            name = "Artist",
+                            albums = albums,
+                        ),
+                ),
             onPlayAll = {},
             onAlbumClick = {},
             onPlayShuffled = {},
             onFavoriteChange = {},
             onRetry = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

@@ -20,7 +20,7 @@ import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
 
 internal class FavoriteArtistViewModel(
     private val favoriteArtistsRepository: FavoriteArtistsRepository,
-    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
+    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -32,13 +32,15 @@ internal class FavoriteArtistViewModel(
         retry()
     }
 
-    fun playAll() = viewModelScope.launch {
-        playFavorites()
-    }
+    fun playAll() =
+        viewModelScope.launch {
+            playFavorites()
+        }
 
-    fun playShuffled() = viewModelScope.launch {
-        playFavorites(true)
-    }
+    fun playShuffled() =
+        viewModelScope.launch {
+            playFavorites(true)
+        }
 
     fun refresh() {
         _state.update {
@@ -53,52 +55,61 @@ internal class FavoriteArtistViewModel(
                 progress = true,
                 isRefreshing = false,
                 error = false,
-                data = null
+                data = null,
             )
         }
         getFavorites()
     }
 
-    private suspend fun playFavorites(shuffled: Boolean = false) = withContext(Dispatchers.IO) {
-        val favorites = runCatching { favoriteArtistsRepository.getFavorites().first() }
-            .onFailure { Logger.w(it) { "Filed to get favorites" } }
-            .getOrNull()
-            ?: return@withContext
+    private suspend fun playFavorites(shuffled: Boolean = false) =
+        withContext(Dispatchers.IO) {
+            val favorites =
+                runCatching {
+                    favoriteArtistsRepository
+                        .getFavorites()
+                        .first()
+                }.onFailure { Logger.w(it) { "Filed to get favorites" } }
+                    .getOrNull()
+                    ?: return@withContext
 
-        val sources = favorites.artists.map {
-            AudioSource.Artist(id = it.id)
+            val sources =
+                favorites.artists.map {
+                    AudioSource.Artist(id = it.id)
+                }
+            playerQueueAudioSourceManager.playSource(
+                *sources.toTypedArray(),
+                shuffled = shuffled,
+            )
         }
-        playerQueueAudioSourceManager.playSource(*sources.toTypedArray(), shuffled = shuffled)
-    }
 
     private fun getFavorites() {
         getFavoritesJob?.cancel()
-        getFavoritesJob = viewModelScope.launch {
-            favoriteArtistsRepository
-                .getFavorites()
-                .map { it.toUi() }
-                .flowOn(Dispatchers.IO)
-                .catch { throwable ->
-                    Logger.w(throwable) { "Filed to load favorites" }
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            isRefreshing = false,
-                            error = true,
-                            data = null
-                        )
+        getFavoritesJob =
+            viewModelScope.launch {
+                favoriteArtistsRepository
+                    .getFavorites()
+                    .map { it.toUi() }
+                    .flowOn(Dispatchers.IO)
+                    .catch { throwable ->
+                        Logger.w(throwable) { "Filed to load favorites" }
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                isRefreshing = false,
+                                error = true,
+                                data = null,
+                            )
+                        }
+                    }.collect { favorites ->
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                isRefreshing = false,
+                                error = false,
+                                data = favorites,
+                            )
+                        }
                     }
-                }
-                .collect { favorites ->
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            isRefreshing = false,
-                            error = false,
-                            data = favorites
-                        )
-                    }
-                }
-        }
+            }
     }
 }

@@ -18,24 +18,22 @@ import youamp.core.ui.generated.resources.empty_state_title
 @Composable
 fun EmptyLayout(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         Empty(
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }
 
 @Composable
-fun Empty(
-    modifier: Modifier = Modifier
-) {
+fun Empty(modifier: Modifier = Modifier) {
     Text(
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.outline,
         textAlign = TextAlign.Center,
         text = stringResource(Res.string.empty_state_title),
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -45,7 +43,7 @@ private fun EmptyLayoutPreview() {
     YouampPlayerTheme {
         Scaffold {
             EmptyLayout(
-                modifier = Modifier.padding(it)
+                modifier = Modifier.padding(it),
             )
         }
     }

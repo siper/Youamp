@@ -67,19 +67,18 @@ fun YouampApp() {
             MainScreen.Main -> {
                 Content(
                     rootNavController = rootNavController,
-                    viewModelStoreOwner = viewModelStoreOwner
+                    viewModelStoreOwner = viewModelStoreOwner,
                 )
             }
 
             MainScreen.AddServer -> {
                 ServerScreen(
                     onBackClick = { rootNavController.popBackStack() },
-                    onCloseScreen = {}
+                    onCloseScreen = {},
                 )
             }
 
             MainScreen.Progress -> {
-
             }
         }
     }
@@ -89,14 +88,15 @@ fun YouampApp() {
 @Composable
 private fun Content(
     rootNavController: NavHostController,
-    viewModelStoreOwner: ViewModelStoreOwner
+    viewModelStoreOwner: ViewModelStoreOwner,
 ) {
     NavHost(
         navController = rootNavController,
         startDestination = Main,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
     ) {
         composable<Main>(
             popEnterTransition = {
@@ -112,7 +112,7 @@ private fun Content(
                         viewModelStoreOwner = viewModelStoreOwner,
                         onClick = {
                             rootNavController.navigate(Player)
-                        }
+                        },
                     )
                 },
                 personal = {
@@ -121,8 +121,8 @@ private fun Content(
                             rootNavController.navigate(
                                 SongInfo(
                                     songId = it,
-                                    showAlbum = true
-                                )
+                                    showAlbum = true,
+                                ),
                             )
                         },
                         onAlbumClick = { rootNavController.navigate(AlbumInfo(it)) },
@@ -131,7 +131,7 @@ private fun Content(
                         onPlaylistsClick = { rootNavController.navigate(Playlists) },
                         onFavoriteSongsClick = { rootNavController.navigate(FavoriteSongs) },
                         onFavoriteAlbumsClick = { rootNavController.navigate(FavoriteAlbums) },
-                        onFavoriteArtistsClick = { rootNavController.navigate(FavoriteArtists) }
+                        onFavoriteArtistsClick = { rootNavController.navigate(FavoriteArtists) },
                     )
                 },
                 explore = {
@@ -146,10 +146,10 @@ private fun Content(
                             rootNavController.navigate(
                                 SongInfo(
                                     songId = it,
-                                    showAlbum = true
-                                )
+                                    showAlbum = true,
+                                ),
                             )
-                        }
+                        },
                     )
                 },
                 library = {
@@ -165,7 +165,7 @@ private fun Content(
                         },
                         onAlbumsClick = {
                             rootNavController.navigate(Albums)
-                        }
+                        },
                     )
                 },
                 onSettingsClick = {
@@ -173,7 +173,7 @@ private fun Content(
                 },
                 onAvatarClick = {
                     rootNavController.navigate(ServerList)
-                }
+                },
             )
         }
         composable<AlbumInfo> { backStackEntry ->
@@ -181,60 +181,60 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 AlbumInfoScreen(
                     onOpenSongInfo = { songId ->
                         rootNavController.navigate(
                             SongInfo(
                                 songId = songId,
-                                showAlbum = false
-                            )
+                                showAlbum = false,
+                            ),
                         )
                     },
                     onBackClick = { rootNavController.popBackStack() },
-                    id = backStackEntry.toRoute<AlbumInfo>().albumId
+                    id = backStackEntry.toRoute<AlbumInfo>().albumId,
                 )
             }
         }
         composable<Player>(
             popEnterTransition = {
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
                 )
             },
             popExitTransition = {
                 slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down,
                 )
             },
             enterTransition = {
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Down
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down,
                 )
-            }
+            },
         ) {
             PlayerScreen(
                 onBackClick = { rootNavController.popBackStack() },
-                onPlayQueueClick = { rootNavController.navigate(PlayQueue) }
+                onPlayQueueClick = { rootNavController.navigate(PlayQueue) },
             )
         }
         composable<AddServer> {
             ServerScreen(
                 onBackClick = { rootNavController.popBackStack() },
-                onCloseScreen = { rootNavController.popBackStack() }
+                onCloseScreen = { rootNavController.popBackStack() },
             )
         }
         composable<ServerEditor> {
             ServerScreen(
                 serverId = it.toRoute<ServerEditor>().serverId,
                 onBackClick = { rootNavController.popBackStack() },
-                onCloseScreen = { rootNavController.popBackStack() }
+                onCloseScreen = { rootNavController.popBackStack() },
             )
         }
         composable<ServerList> {
@@ -243,7 +243,7 @@ private fun Content(
                 onAddServerClick = { rootNavController.navigate(AddServer) },
                 onEditServerClick = { serverId ->
                     rootNavController.navigate(ServerEditor(serverId))
-                }
+                },
             )
         }
         composable<Search> {
@@ -258,18 +258,18 @@ private fun Content(
                     rootNavController.navigate(
                         SongInfo(
                             songId = songId,
-                            showAlbum = true
-                        )
+                            showAlbum = true,
+                        ),
                     )
                 },
                 onOpenArtistInfo = { artistId ->
                     rootNavController.navigate(ArtistInfo(artistId))
-                }
+                },
             )
         }
         composable<PlayQueue> {
             PlayerQueueScreen(
-                onBackClick = { rootNavController.popBackStack() }
+                onBackClick = { rootNavController.popBackStack() },
             )
         }
         composable<ArtistInfo> {
@@ -277,7 +277,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 ArtistInfoScreen(
                     id = it.toRoute<ArtistInfo>().artistId,
@@ -286,7 +286,7 @@ private fun Content(
                     },
                     onBackClick = {
                         rootNavController.popBackStack()
-                    }
+                    },
                 )
             }
         }
@@ -295,13 +295,13 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 PlaylistInfoScreen(
                     id = it.toRoute<PlaylistInfo>().playlistId,
                     onBackClick = {
                         rootNavController.popBackStack()
-                    }
+                    },
                 )
             }
         }
@@ -310,7 +310,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 SettingsScreen(
                     onAboutClick = {
@@ -321,7 +321,7 @@ private fun Content(
                     },
                     onBackClick = {
                         rootNavController.popBackStack()
-                    }
+                    },
                 )
             }
         }
@@ -330,12 +330,12 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 AboutScreen(
                     onBackClick = {
                         rootNavController.popBackStack()
-                    }
+                    },
                 )
             }
         }
@@ -344,7 +344,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 AlbumsScreen(
                     onBackClick = {
@@ -352,7 +352,7 @@ private fun Content(
                     },
                     onAlbumClick = { albumId ->
                         rootNavController.navigate(AlbumInfo(albumId))
-                    }
+                    },
                 )
             }
         }
@@ -361,7 +361,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 ArtistsScreen(
                     onBackClick = {
@@ -369,7 +369,7 @@ private fun Content(
                     },
                     onArtistClick = { artistId ->
                         rootNavController.navigate(ArtistInfo(artistId))
-                    }
+                    },
                 )
             }
         }
@@ -378,7 +378,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 PlaylistsScreen(
                     onBackClick = {
@@ -386,7 +386,7 @@ private fun Content(
                     },
                     onPlaylistClick = {
                         rootNavController.navigate(PlaylistInfo(it))
-                    }
+                    },
                 )
             }
         }
@@ -395,7 +395,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 FavoriteSongsScreen(
                     onBackClick = {
@@ -405,10 +405,10 @@ private fun Content(
                         rootNavController.navigate(
                             SongInfo(
                                 songId = it,
-                                showAlbum = true
-                            )
+                                showAlbum = true,
+                            ),
                         )
-                    }
+                    },
                 )
             }
         }
@@ -417,7 +417,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 RandomSongsScreen(
                     onBackClick = {
@@ -427,10 +427,10 @@ private fun Content(
                         rootNavController.navigate(
                             SongInfo(
                                 songId = it,
-                                showAlbum = true
-                            )
+                                showAlbum = true,
+                            ),
                         )
-                    }
+                    },
                 )
             }
         }
@@ -439,7 +439,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 FavoriteAlbumsScreen(
                     onBackClick = {
@@ -447,7 +447,7 @@ private fun Content(
                     },
                     onAlbumClick = {
                         rootNavController.navigate(AlbumInfo(it))
-                    }
+                    },
                 )
             }
         }
@@ -456,7 +456,7 @@ private fun Content(
                 viewModelStoreOwner = viewModelStoreOwner,
                 onMiniPlayerClick = {
                     rootNavController.navigate(Player)
-                }
+                },
             ) {
                 FavoriteArtistsScreen(
                     onBackClick = {
@@ -464,7 +464,7 @@ private fun Content(
                     },
                     onArtistClick = {
                         rootNavController.navigate(ArtistInfo(it))
-                    }
+                    },
                 )
             }
         }
@@ -478,10 +478,10 @@ private fun Content(
                         0.dp,
                         0.dp,
                         0.dp,
-                        0.dp
+                        0.dp,
                     )
                 },
-                dragHandle = {}
+                dragHandle = {},
             ) {
                 SongInfoScreen(
                     id = songInfo.songId,
@@ -492,7 +492,7 @@ private fun Content(
                     },
                     onOpenArtist = { artistId ->
                         rootNavController.navigate(ArtistInfo(artistId))
-                    }
+                    },
                 )
             }
         }
@@ -503,20 +503,21 @@ private fun Content(
 internal fun ScreenWithMiniPlayer(
     viewModelStoreOwner: ViewModelStoreOwner,
     onMiniPlayerClick: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column {
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .consumeWindowInsets(WindowInsets.navigationBars)
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .consumeWindowInsets(WindowInsets.navigationBars),
         ) {
             content.invoke()
         }
         MiniPlayer(
             viewModelStoreOwner = viewModelStoreOwner,
             onClick = onMiniPlayerClick,
-            modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+            modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
         )
     }
 }

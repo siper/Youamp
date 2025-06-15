@@ -7,8 +7,14 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "ru.stresh.youamp.core.player"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
 
     jvm("desktop")
@@ -41,20 +47,21 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 val javafxVersion = "21.0.6"
-                val osSuffix = when (osdetector.classifier) {
-                    "linux-x86_64" -> "linux"
-                    "linux-aarch_64" -> "linux-aarch64"
-                    "windows-x86_64" -> "win"
-                    "osx-x86_64" -> "mac"
-                    "osx-aarch_64" -> "mac-aarch64"
-                    else -> throw IllegalStateException("Unknown OS: ${osdetector.classifier}")
-                }
-                implementation("org.openjfx:javafx-base:${javafxVersion}:${osSuffix}")
-                implementation("org.openjfx:javafx-media:${javafxVersion}:${osSuffix}")
-                implementation("org.openjfx:javafx-swing:${javafxVersion}:${osSuffix}")
-                implementation("org.openjfx:javafx-web:${javafxVersion}:${osSuffix}")
-                implementation("org.openjfx:javafx-controls:${javafxVersion}:${osSuffix}")
-                implementation("org.openjfx:javafx-graphics:${javafxVersion}:${osSuffix}")
+                val osSuffix =
+                    when (osdetector.classifier) {
+                        "linux-x86_64" -> "linux"
+                        "linux-aarch_64" -> "linux-aarch64"
+                        "windows-x86_64" -> "win"
+                        "osx-x86_64" -> "mac"
+                        "osx-aarch_64" -> "mac-aarch64"
+                        else -> throw IllegalStateException("Unknown OS: ${osdetector.classifier}")
+                    }
+                implementation("org.openjfx:javafx-base:$javafxVersion:$osSuffix")
+                implementation("org.openjfx:javafx-media:$javafxVersion:$osSuffix")
+                implementation("org.openjfx:javafx-swing:$javafxVersion:$osSuffix")
+                implementation("org.openjfx:javafx-web:$javafxVersion:$osSuffix")
+                implementation("org.openjfx:javafx-controls:$javafxVersion:$osSuffix")
+                implementation("org.openjfx:javafx-graphics:$javafxVersion:$osSuffix")
             }
         }
     }

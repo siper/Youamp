@@ -75,7 +75,7 @@ private fun ExploreScreen(
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onPlayPauseAudioSource: (source: AudioSource) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val layoutState by remember(state) {
         derivedStateOf {
@@ -88,7 +88,7 @@ private fun ExploreScreen(
     }
     PullToRefresh(
         isRefreshing = state.refreshing,
-        onRefresh = onRefresh
+        onRefresh = onRefresh,
     ) {
         StateLayout(
             state = layoutState,
@@ -99,7 +99,7 @@ private fun ExploreScreen(
                     onSearchClick = onSearchClick,
                     onSongClick = onSongClick,
                     onRandomSongsClick = onRandomSongsClick,
-                    onPlayPauseAudioSource = onPlayPauseAudioSource
+                    onPlayPauseAudioSource = onPlayPauseAudioSource,
                 )
             },
             progress = {
@@ -108,9 +108,10 @@ private fun ExploreScreen(
             error = {
                 ErrorLayout(onRetry = onRetry)
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background),
         )
     }
 }
@@ -125,14 +126,19 @@ private fun Content(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
     ) {
         item {
             SearchBar(
                 onClick = onSearchClick,
-                modifier = Modifier.padding(vertical = 98.dp, horizontal = 24.dp)
+                modifier =
+                    Modifier.padding(
+                        vertical = 98.dp,
+                        horizontal = 24.dp,
+                    ),
             )
         }
         state.data?.randomSongs?.let { randomSongs ->
@@ -145,20 +151,20 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(lazyListState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = lazyListState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         randomSongs.forEachIndexed { index, songChunk ->
                             item {
                                 Column(
                                     verticalArrangement = Arrangement.spacedBy(2.dp),
-                                    modifier = Modifier.requiredWidth(SongCardDefaults.Width)
+                                    modifier = Modifier.requiredWidth(SongCardDefaults.Width),
                                 ) {
                                     songChunk.forEachIndexed { index, item ->
                                         SongCardItem(
@@ -168,13 +174,14 @@ private fun Content(
                                             onClick = {
                                                 onSongClick(item.id)
                                             },
-                                            type = when (index) {
-                                                0 -> SongCardType.Top
-                                                1 -> SongCardType.Center
-                                                2 -> SongCardType.Bottom
-                                                else -> SongCardType.Default
-                                            },
-                                            modifier = Modifier.fillMaxWidth()
+                                            type =
+                                                when (index) {
+                                                    0 -> SongCardType.Top
+                                                    1 -> SongCardType.Center
+                                                    2 -> SongCardType.Bottom
+                                                    else -> SongCardType.Default
+                                                },
+                                            modifier = Modifier.fillMaxWidth(),
                                         )
                                     }
                                 }
@@ -192,30 +199,30 @@ private fun Content(
 }
 
 @Composable
-private fun Progress(
-    modifier: Modifier = Modifier
-) {
+private fun Progress(modifier: Modifier = Modifier) {
     SkeletonLayout(modifier = modifier) {
         LazyColumn(
-            modifier = Modifier.padding(
-                horizontal = 24.dp
-            ),
-            userScrollEnabled = false
+            modifier =
+                Modifier.padding(
+                    horizontal = 24.dp,
+                ),
+            userScrollEnabled = false,
         ) {
             item {
                 SkeletonItem(
                     shape = CircleShape,
-                    modifier = Modifier
-                        .padding(vertical = 98.dp)
-                        .requiredHeight(56.dp)
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .padding(vertical = 98.dp)
+                            .requiredHeight(56.dp)
+                            .fillMaxWidth(),
                 )
             }
             item { SectionSkeleton() }
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false
+                    userScrollEnabled = false,
                 ) {
                     repeat(2) {
                         item { SongCardChunkSkeleton() }
@@ -237,7 +244,7 @@ private fun ExploreScreenProgressPreview() {
             onSongClick = {},
             onRandomSongsClick = {},
             onPlayPauseAudioSource = {},
-            onSearchClick = {}
+            onSearchClick = {},
         )
     }
 }
@@ -247,43 +254,46 @@ private fun ExploreScreenProgressPreview() {
 private fun ExploreScreenPreview() {
     YouampPlayerTheme {
         ExploreScreen(
-            state = StateUi(
-                progress = false,
-                error = false,
-                data = DataUi(
-                    randomSongs = persistentListOf(
-                        persistentListOf(
-                            SongUi(
-                                id = "Julieta",
-                                title = "Tykia",
-                                artist = null,
-                                artworkUrl = null,
-                                isPlaying = false,
-                            ),
-                            SongUi(
-                                id = "Kofi",
-                                title = "Lyla",
-                                artist = null,
-                                artworkUrl = null,
-                                isPlaying = false,
-                            ),
-                            SongUi(
-                                id = "Kofi",
-                                title = "Lyla",
-                                artist = "Kofi",
-                                artworkUrl = null,
-                                isPlaying = false,
-                            )
-                        )
-                    )
-                )
-            ),
+            state =
+                StateUi(
+                    progress = false,
+                    error = false,
+                    data =
+                        DataUi(
+                            randomSongs =
+                                persistentListOf(
+                                    persistentListOf(
+                                        SongUi(
+                                            id = "Julieta",
+                                            title = "Tykia",
+                                            artist = null,
+                                            artworkUrl = null,
+                                            isPlaying = false,
+                                        ),
+                                        SongUi(
+                                            id = "Kofi",
+                                            title = "Lyla",
+                                            artist = null,
+                                            artworkUrl = null,
+                                            isPlaying = false,
+                                        ),
+                                        SongUi(
+                                            id = "Kofi",
+                                            title = "Lyla",
+                                            artist = "Kofi",
+                                            artworkUrl = null,
+                                            isPlaying = false,
+                                        ),
+                                    ),
+                                ),
+                        ),
+                ),
             onRetry = {},
             onRefresh = {},
             onSongClick = {},
             onRandomSongsClick = {},
             onPlayPauseAudioSource = {},
-            onSearchClick = {}
+            onSearchClick = {},
         )
     }
 }

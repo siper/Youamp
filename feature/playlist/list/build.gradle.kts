@@ -30,13 +30,15 @@ kotlin {
 
 android {
     namespace = "ru.stersh.youamp.feature.playlist.list"
-    compileSdk = libs.versions.android.compileSdk
-        .get()
-        .toInt()
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk
+    compileSdk =
+        libs.versions.android.compileSdk
             .get()
             .toInt()
+    defaultConfig {
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
     buildFeatures {
         compose = true

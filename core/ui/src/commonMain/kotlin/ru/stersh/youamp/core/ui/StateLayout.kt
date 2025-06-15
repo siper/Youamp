@@ -19,7 +19,7 @@ fun StateLayout(
     progress: @Composable () -> Unit = {},
     error: @Composable () -> Unit = {},
     empty: @Composable () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
         targetState = state,
@@ -28,7 +28,7 @@ fun StateLayout(
             fadeIn(animationSpec = tween(220))
                 .togetherWith(fadeOut(animationSpec = tween(220)))
         },
-        label = "animated_state"
+        label = "animated_state",
     ) {
         when (it) {
             LayoutStateUi.Content -> content()

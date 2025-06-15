@@ -2,7 +2,7 @@ package ru.stersh.youamp.feature.player.mini.ui
 
 internal data class StateUi(
     val data: PlayerDataUi? = null,
-    val invisible: Boolean = true
+    val invisible: Boolean = true,
 )
 
 internal data class PlayerDataUi(

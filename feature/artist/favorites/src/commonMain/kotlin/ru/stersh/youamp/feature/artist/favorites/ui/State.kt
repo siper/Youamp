@@ -6,15 +6,15 @@ internal data class StateUi(
     val progress: Boolean = true,
     val isRefreshing: Boolean = false,
     val error: Boolean = false,
-    val data: DataUi? = null
+    val data: DataUi? = null,
 )
 
 internal data class DataUi(
-    val artists: ImmutableList<ArtistUi>
+    val artists: ImmutableList<ArtistUi>,
 )
 
 internal class ArtistUi(
     val id: String,
     val name: String,
-    val artworkUrl: String?
+    val artworkUrl: String?,
 )

@@ -23,7 +23,7 @@ import youamp.core.ui.generated.resources.user_avatar_title
 fun AvatarImage(
     avatarUrl: String?,
     onAvatarClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     SubcomposeAsyncImage(
         model = avatarUrl,
@@ -34,16 +34,16 @@ fun AvatarImage(
         error = {
             AvatarPlaceholder()
         },
-        modifier = modifier
-            .size(AvatarSize)
-            .clip(CircleShape)
-            .background(
-                color = MaterialTheme.colorScheme.secondaryContainer,
-                shape = CircleShape
-            )
-            .clickable {
-                onAvatarClick()
-            }
+        modifier =
+            modifier
+                .size(AvatarSize)
+                .clip(CircleShape)
+                .background(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = CircleShape,
+                ).clickable {
+                    onAvatarClick()
+                },
     )
 }
 
@@ -54,7 +54,7 @@ private fun AvatarPlaceholder() {
             imageVector = Icons.Rounded.Person,
             contentDescription = stringResource(Res.string.user_avatar_title),
             tint = MaterialTheme.colorScheme.onSecondaryContainer,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }

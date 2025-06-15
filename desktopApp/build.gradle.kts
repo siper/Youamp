@@ -48,7 +48,11 @@ compose.desktop {
         mainClass = "ru.stersh.youamp.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Deb,
+            )
             packageName = "Youamp"
             packageVersion = AppBuildInfo.CLEAR_VERSION_NAME
         }

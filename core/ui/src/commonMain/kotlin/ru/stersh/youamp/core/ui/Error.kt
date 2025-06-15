@@ -21,16 +21,15 @@ import youamp.core.ui.generated.resources.error_button_title
 import youamp.core.ui.generated.resources.error_message
 import youamp.core.ui.generated.resources.error_title
 
-
 @Composable
 fun ErrorLayout(
     onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Error(
             onRetry = onRetry,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }
@@ -38,25 +37,25 @@ fun ErrorLayout(
 @Composable
 fun Error(
     onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 48.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
-            text = stringResource(Res.string.error_title)
+            text = stringResource(Res.string.error_title),
         )
 
         Text(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.outline,
-            text = stringResource(Res.string.error_message)
+            text = stringResource(Res.string.error_message),
         )
 
         Button(onClick = onRetry) {
@@ -72,7 +71,7 @@ private fun ErrorLayoutPreview() {
         Scaffold {
             ErrorLayout(
                 onRetry = {},
-                modifier = Modifier.padding(it)
+                modifier = Modifier.padding(it),
             )
         }
     }

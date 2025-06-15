@@ -25,72 +25,85 @@ import youamp.desktopapp.generated.resources.Res
 import youamp.desktopapp.generated.resources.ic_launcher_round
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-fun main() = application {
-    startKoin {
-        modules(diModules + desktopModule)
-    }
-    val apiProvider = KoinPlatform
-        .getKoin()
-        .get<ApiProvider>()
-    val appProperties = KoinPlatform
-        .getKoin()
-        .get<AppProperties>()
-    SingletonImageLoader.setSafe { context ->
-        ImageLoader
-            .Builder(context)
-            .crossfade(true)
-            .components {
-                add(
-                    OkHttpNetworkFetcherFactory(
-                        callFactory = {
-                            OkHttpClient
-                                .Builder()
-                                .addInterceptor { chain ->
-                                    chain
-                                        .proceed(chain.request())
-                                        .newBuilder()
-                                        .removeHeader("cache-control")
-                                        .removeHeader("expires")
-                                        .addHeader("cache-control", "public, max-age=604800, no-transform")
-                                        .build()
-                                }
-                                .addInterceptor { chain ->
-                                    val api = runBlocking { apiProvider.getApi() }
-
-                                    val request = chain.request()
-                                    val newUrlBuilder = request
-                                        .url
-                                        .newBuilder()
-
-                                    api
-                                        .getClientParams()
-                                        .forEach {
-                                            newUrlBuilder.addQueryParameter(it.key, it.value)
-                                        }
-
-                                    chain.proceed(
-                                        request
+fun main() =
+    application {
+        startKoin {
+            modules(diModules + desktopModule)
+        }
+        val apiProvider =
+            KoinPlatform
+                .getKoin()
+                .get<ApiProvider>()
+        val appProperties =
+            KoinPlatform
+                .getKoin()
+                .get<AppProperties>()
+        SingletonImageLoader.setSafe { context ->
+            ImageLoader
+                .Builder(context)
+                .crossfade(true)
+                .components {
+                    add(
+                        OkHttpNetworkFetcherFactory(
+                            callFactory = {
+                                OkHttpClient
+                                    .Builder()
+                                    .addInterceptor { chain ->
+                                        chain
+                                            .proceed(chain.request())
                                             .newBuilder()
-                                            .url(newUrlBuilder.build())
-                                            .build()
-                                    )
-                                }
-                                .build()
-                        },
+                                            .removeHeader("cache-control")
+                                            .removeHeader("expires")
+                                            .addHeader(
+                                                "cache-control",
+                                                "public, max-age=604800, no-transform",
+                                            ).build()
+                                    }.addInterceptor { chain ->
+                                        val api = runBlocking { apiProvider.getApi() }
+
+                                        val request = chain.request()
+                                        val newUrlBuilder =
+                                            request
+                                                .url
+                                                .newBuilder()
+
+                                        api
+                                            .getClientParams()
+                                            .forEach {
+                                                newUrlBuilder.addQueryParameter(
+                                                    it.key,
+                                                    it.value,
+                                                )
+                                            }
+
+                                        chain.proceed(
+                                            request
+                                                .newBuilder()
+                                                .url(newUrlBuilder.build())
+                                                .build(),
+                                        )
+                                    }.build()
+                            },
+                        ),
                     )
-                )
+                }.build()
+        }
+        val windowState =
+            rememberWindowState(
+                size =
+                    DpSize(
+                        1280.dp,
+                        800.dp,
+                    ),
+            )
+        Window(
+            onCloseRequest = ::exitApplication,
+            state = windowState,
+            title = appProperties.name,
+            icon = painterResource(Res.drawable.ic_launcher_round),
+        ) {
+            CompositionLocalProvider(LocalWindowSizeClass provides calculateWindowSizeClass()) {
+                YouampApp()
             }
-            .build()
-    }
-    val windowState = rememberWindowState(size = DpSize(1280.dp, 800.dp))
-    Window(
-        onCloseRequest = ::exitApplication,
-        state = windowState,
-        title = appProperties.name,
-        icon = painterResource(Res.drawable.ic_launcher_round)
-    ) {
-        CompositionLocalProvider(LocalWindowSizeClass provides calculateWindowSizeClass()) {
-            YouampApp()
         }
     }
-}
