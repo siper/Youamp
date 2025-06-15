@@ -5,5 +5,5 @@ internal data class AboutStateUi(
     val version: String,
     val githubUri: String,
     val fdroidUri: String,
-    val crwodinUri: String
+    val crwodinUri: String,
 )

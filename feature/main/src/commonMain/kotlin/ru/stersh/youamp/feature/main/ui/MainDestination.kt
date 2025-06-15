@@ -13,9 +13,18 @@ import youamp.feature.main.generated.resources.personal_title
 
 internal enum class MainDestination(
     val titleResId: StringResource,
-    val icon: ImageVector
+    val icon: ImageVector,
 ) {
-    PERSONAL(Res.string.personal_title, Icons.Rounded.Person),
-    EXPLORE(Res.string.explore_title, Icons.Rounded.Search),
-    LIBRARY(Res.string.library_title, Icons.Rounded.MusicNote),
+    PERSONAL(
+        Res.string.personal_title,
+        Icons.Rounded.Person,
+    ),
+    EXPLORE(
+        Res.string.explore_title,
+        Icons.Rounded.Search,
+    ),
+    LIBRARY(
+        Res.string.library_title,
+        Icons.Rounded.MusicNote,
+    ),
 }

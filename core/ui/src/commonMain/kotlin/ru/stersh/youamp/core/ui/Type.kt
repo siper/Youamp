@@ -14,21 +14,36 @@ import youamp.core.ui.generated.resources.montserrat_medium
 import youamp.core.ui.generated.resources.montserrat_regular
 
 @Composable
-private fun MontserratFontFamily() = FontFamily(
-    Font(Res.font.montserrat_light, FontWeight.Light),
-    Font(Res.font.montserrat_regular, FontWeight.Normal),
-    Font(Res.font.montserrat_italic, FontWeight.Normal, FontStyle.Italic),
-    Font(Res.font.montserrat_medium, FontWeight.Medium),
-    Font(Res.font.montserrat_bold, FontWeight.Bold)
-)
+private fun MontserratFontFamily() =
+    FontFamily(
+        Font(
+            Res.font.montserrat_light,
+            FontWeight.Light,
+        ),
+        Font(
+            Res.font.montserrat_regular,
+            FontWeight.Normal,
+        ),
+        Font(
+            Res.font.montserrat_italic,
+            FontWeight.Normal,
+            FontStyle.Italic,
+        ),
+        Font(
+            Res.font.montserrat_medium,
+            FontWeight.Medium,
+        ),
+        Font(
+            Res.font.montserrat_bold,
+            FontWeight.Bold,
+        ),
+    )
 
 @Composable
-internal fun Typography(): Typography {
-    return Typography().defaultFontFamily(fontFamily = MontserratFontFamily())
-}
+internal fun Typography(): Typography = Typography().defaultFontFamily(fontFamily = MontserratFontFamily())
 
-private fun Typography.defaultFontFamily(fontFamily: FontFamily): Typography {
-    return this.copy(
+private fun Typography.defaultFontFamily(fontFamily: FontFamily): Typography =
+    this.copy(
         displayLarge = this.displayLarge.copy(fontFamily = fontFamily),
         displayMedium = this.displayMedium.copy(fontFamily = fontFamily),
         displaySmall = this.displaySmall.copy(fontFamily = fontFamily),
@@ -43,6 +58,5 @@ private fun Typography.defaultFontFamily(fontFamily: FontFamily): Typography {
         bodySmall = this.bodySmall.copy(fontFamily = fontFamily),
         labelLarge = this.labelLarge.copy(fontFamily = fontFamily),
         labelMedium = this.labelMedium.copy(fontFamily = fontFamily),
-        labelSmall = this.labelSmall.copy(fontFamily = fontFamily)
+        labelSmall = this.labelSmall.copy(fontFamily = fontFamily),
     )
-}

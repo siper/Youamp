@@ -41,16 +41,16 @@ import ru.stersh.youamp.core.ui.SkeletonLayout
 import ru.stersh.youamp.core.ui.SongSkeleton
 import ru.stersh.youamp.core.ui.isCompactWidth
 
-
 @Composable
 fun AlbumInfoScreen(
     id: String,
     onOpenSongInfo: (songId: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
-    val viewModel = koinViewModel<AlbumInfoViewModel> {
-        parametersOf(id)
-    }
+    val viewModel =
+        koinViewModel<AlbumInfoViewModel> {
+            parametersOf(id)
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
     AlbumInfoScreen(
         state = state,
@@ -59,7 +59,7 @@ fun AlbumInfoScreen(
         onFavoriteChange = viewModel::onFavoriteChange,
         onPlaySong = onOpenSongInfo,
         onRetry = viewModel::retry,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -80,9 +80,9 @@ private fun AlbumInfoScreen(
                 title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) {
         when {
             state.progress -> {
@@ -92,7 +92,7 @@ private fun AlbumInfoScreen(
             state.error -> {
                 ErrorLayout(
                     onRetry = onRetry,
-                    modifier = Modifier.padding(it)
+                    modifier = Modifier.padding(it),
                 )
             }
 
@@ -103,7 +103,7 @@ private fun AlbumInfoScreen(
                     onPlayShuffled = onPlayShuffled,
                     onFavoriteChange = onFavoriteChange,
                     onPlaySong = onPlaySong,
-                    modifier = Modifier.padding(it)
+                    modifier = Modifier.padding(it),
                 )
             }
         }
@@ -117,30 +117,32 @@ private fun Progress(padding: PaddingValues) {
             HeaderLayout(
                 image = {
                     SkeletonItem(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .aspectRatio(1f)
+                                .fillMaxWidth(),
                     )
                 },
                 title = {
                     if (isCompactWidth) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        280.dp,
-                                        32.dp
-                                    )
-                                    .fillMaxWidth()
-                                    .align(Alignment.Center)
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            280.dp,
+                                            32.dp,
+                                        ).fillMaxWidth()
+                                        .align(Alignment.Center),
                             )
                         }
                     } else {
                         SkeletonItem(
-                            modifier = Modifier.size(
-                                300.dp,
-                                48.dp
-                            )
+                            modifier =
+                                Modifier.size(
+                                    300.dp,
+                                    48.dp,
+                                ),
                         )
                     }
                 },
@@ -148,40 +150,41 @@ private fun Progress(padding: PaddingValues) {
                     if (isCompactWidth) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        220.dp,
-                                        24.dp
-                                    )
-                                    .fillMaxWidth()
-                                    .padding(top = 4.dp)
-                                    .align(Alignment.Center)
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            220.dp,
+                                            24.dp,
+                                        ).fillMaxWidth()
+                                        .padding(top = 4.dp)
+                                        .align(Alignment.Center),
                             )
                         }
                     } else {
                         SkeletonItem(
-                            modifier = Modifier
-                                .size(
-                                    220.dp,
-                                    24.dp
-                                )
-                                .padding(top = 4.dp)
+                            modifier =
+                                Modifier
+                                    .size(
+                                        220.dp,
+                                        24.dp,
+                                    ).padding(top = 4.dp),
                         )
                     }
                 },
                 actions = {
                     repeat(3) {
                         SkeletonItem(
-                            modifier = Modifier
-                                .size(64.dp)
-                                .clip(CircleShape)
+                            modifier =
+                                Modifier
+                                    .size(64.dp)
+                                    .clip(CircleShape),
                         )
                     }
-                }
+                },
             )
             LazyColumn(
                 userScrollEnabled = false,
-                modifier = Modifier.padding(top = 28.dp)
+                modifier = Modifier.padding(top = 28.dp),
             ) {
                 repeat(5) {
                     item {
@@ -200,28 +203,28 @@ private fun Content(
     onPlayShuffled: () -> Unit,
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
     onPlaySong: (id: String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     LazyColumn(modifier = modifier) {
         item(
             key = "header",
-            contentType = "header"
+            contentType = "header",
         ) {
             Header(
                 state = state,
                 onPlayAll = onPlayAll,
                 onPlayShuffled = onPlayShuffled,
-                onFavoriteChange = onFavoriteChange
+                onFavoriteChange = onFavoriteChange,
             )
         }
         items(
             items = state.songs,
             contentType = { "song" },
-            key = { "song_${it.id}" }
+            key = { "song_${it.id}" },
         ) {
             AlbumSongItem(
                 song = it,
-                onClick = { onPlaySong(it.id) }
+                onClick = { onPlaySong(it.id) },
             )
         }
     }
@@ -232,15 +235,16 @@ private fun Header(
     state: AlbumInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
-    onFavoriteChange: (isFavorite: Boolean) -> Unit
+    onFavoriteChange: (isFavorite: Boolean) -> Unit,
 ) {
     HeaderLayout(
         image = {
             Artwork(
                 artworkUrl = state.artworkUrl,
                 placeholder = Icons.Rounded.Album,
-                modifier = Modifier
-                    .aspectRatio(1f)
+                modifier =
+                    Modifier
+                        .aspectRatio(1f),
             )
         },
         title = {
@@ -248,41 +252,42 @@ private fun Header(
                 text = state.title,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         subtitle = {
-            val subtitle = if (state.year != null) {
-                "${state.artist} · ${state.year}"
-            } else {
-                state.artist
-            }
+            val subtitle =
+                if (state.year != null) {
+                    "${state.artist} · ${state.year}"
+                } else {
+                    state.artist
+                }
             Text(
                 text = subtitle,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         actions = {
             PlayAllButton(
-                onClick = onPlayAll
+                onClick = onPlayAll,
             )
             PlayShuffledButton(
-                onClick = onPlayShuffled
+                onClick = onPlayShuffled,
             )
             FavoriteButton(
                 isFavorite = state.isFavorite,
-                onChange = onFavoriteChange
+                onChange = onFavoriteChange,
             )
-        }
+        },
     )
 }
 
 @Composable
 private fun AlbumSongItem(
     song: AlbumSongUi,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     ListItem(
         leadingContent = {
@@ -292,22 +297,22 @@ private fun AlbumSongItem(
             Text(
                 text = song.title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         supportingContent = {
-            song.artist?.let { 
+            song.artist?.let {
                 Text(
                     text = it,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
         trailingContent = {
             Text(text = song.duration)
         },
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier.clickable(onClick = onClick),
     )
 }
 
@@ -321,55 +326,57 @@ private fun AlbumInfoScreenProgressPreview() {
         onFavoriteChange = {},
         onPlaySong = {},
         onRetry = {},
-        onBackClick = {}
+        onBackClick = {},
     )
 }
 
 @Preview
 @Composable
 private fun AlbumInfoScreenPreview() {
-    val songs = persistentListOf(
-        AlbumSongUi(
-            id = "1",
-            track = 1,
-            title = "Test song",
-            duration = "2:11",
-            artist = "Test artist"
-
-        ),
-        AlbumSongUi(
-            id = "2",
-            track = 2,
-            title = "Test song 2",
-            artist = "Someone else",
-            duration = "6:23",
-        ),
-        AlbumSongUi(
-            id = "3",
-            track = 3,
-            title = "Test song 3",
-            artist = "Test artist",
-            duration = "5:11"
+    val songs =
+        persistentListOf(
+            AlbumSongUi(
+                id = "1",
+                track = 1,
+                title = "Test song",
+                duration = "2:11",
+                artist = "Test artist",
+            ),
+            AlbumSongUi(
+                id = "2",
+                track = 2,
+                title = "Test song 2",
+                artist = "Someone else",
+                duration = "6:23",
+            ),
+            AlbumSongUi(
+                id = "3",
+                track = 3,
+                title = "Test song 3",
+                artist = "Test artist",
+                duration = "5:11",
+            ),
         )
-    )
     AlbumInfoScreen(
-        state = AlbumInfoStateUi(
-            progress = false,
-            error = false,
-            content = AlbumInfoUi(
-                artworkUrl = null,
-                isFavorite = true,
-                title = "Test",
-                artist = "Test",
-                year = "2024",
-                songs = songs
-            )
-        ),
+        state =
+            AlbumInfoStateUi(
+                progress = false,
+                error = false,
+                content =
+                    AlbumInfoUi(
+                        artworkUrl = null,
+                        isFavorite = true,
+                        title = "Test",
+                        artist = "Test",
+                        year = "2024",
+                        songs = songs,
+                    ),
+            ),
         onPlayAll = {},
         onPlayShuffled = {},
         onFavoriteChange = {},
         onPlaySong = {},
         onRetry = {},
-        onBackClick = {}
+        onBackClick = {},
     )
 }

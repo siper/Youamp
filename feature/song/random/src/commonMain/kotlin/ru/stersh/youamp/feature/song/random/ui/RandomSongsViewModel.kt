@@ -18,7 +18,7 @@ import ru.stersh.youamp.shared.song.random.SongRandomStorage
 
 internal class RandomSongsViewModel(
     private val randomSongsRepository: SongRandomStorage,
-    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
+    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -30,87 +30,96 @@ internal class RandomSongsViewModel(
         retry()
     }
 
-    fun playAll() = viewModelScope.launch {
-        play()
-    }
+    fun playAll() =
+        viewModelScope.launch {
+            play()
+        }
 
-    fun playShuffled() = viewModelScope.launch {
-        play(true)
-    }
+    fun playShuffled() =
+        viewModelScope.launch {
+            play(true)
+        }
 
-    fun refresh() = viewModelScope.launch {
-        _state.update {
-            it.copy(isRefreshing = true)
+    fun refresh() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isRefreshing = true)
+            }
+            runCatching { randomSongsRepository.refresh() }.onFailure {
+                Logger.w(it) { "Filed to refresh random songs" }
+            }
+            _state.update {
+                it.copy(isRefreshing = false)
+            }
         }
-        runCatching { randomSongsRepository.refresh() }.onFailure {
-            Logger.w(it) { "Filed to refresh random songs" }
-        }
-        _state.update {
-            it.copy(isRefreshing = false)
-        }
-    }
 
-    fun retry() = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                progress = true,
-                isRefreshing = false,
-                error = false,
-                data = null
-            )
+    fun retry() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    progress = true,
+                    isRefreshing = false,
+                    error = false,
+                    data = null,
+                )
+            }
+            runCatching { randomSongsRepository.refresh() }.onFailure {
+                Logger.w(it) { "Filed to refresh random songs" }
+            }
+            getRandom()
         }
-        runCatching { randomSongsRepository.refresh() }.onFailure {
-            Logger.w(it) { "Filed to refresh random songs" }
-        }
-        getRandom()
-    }
 
     private suspend fun play(shuffled: Boolean = false) {
-        val random = runCatching { randomSongsRepository.getSongs() }
-            .onFailure { Logger.w(it) { "Filed to get random songs" } }
-            .getOrNull()
-            ?: return
+        val random =
+            runCatching { randomSongsRepository.getSongs() }
+                .onFailure { Logger.w(it) { "Filed to get random songs" } }
+                .getOrNull()
+                ?: return
 
-        val sources = random.map {
-            AudioSource.RawSong(
-                id = it.id,
-                title = it.title,
-                artist = it.artist,
-                album = it.album,
-                artworkUrl = it.artworkUrl
-            )
-        }
-        playerQueueAudioSourceManager.playSource(*sources.toTypedArray(), shuffled = shuffled)
+        val sources =
+            random.map {
+                AudioSource.RawSong(
+                    id = it.id,
+                    title = it.title,
+                    artist = it.artist,
+                    album = it.album,
+                    artworkUrl = it.artworkUrl,
+                )
+            }
+        playerQueueAudioSourceManager.playSource(
+            *sources.toTypedArray(),
+            shuffled = shuffled,
+        )
     }
 
     private fun getRandom() {
         getFavoritesJob?.cancel()
-        getFavoritesJob = viewModelScope.launch {
-            randomSongsRepository
-                .flowSongs()
-                .map { it.toUi() }
-                .flowOn(Dispatchers.IO)
-                .catch { throwable ->
-                    Logger.w(throwable) { "Filed to flow random songs" }
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            isRefreshing = false,
-                            error = true,
-                            data = null
-                        )
+        getFavoritesJob =
+            viewModelScope.launch {
+                randomSongsRepository
+                    .flowSongs()
+                    .map { it.toUi() }
+                    .flowOn(Dispatchers.IO)
+                    .catch { throwable ->
+                        Logger.w(throwable) { "Filed to flow random songs" }
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                isRefreshing = false,
+                                error = true,
+                                data = null,
+                            )
+                        }
+                    }.collect { favorites ->
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                isRefreshing = false,
+                                error = false,
+                                data = favorites,
+                            )
+                        }
                     }
-                }
-                .collect { favorites ->
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            isRefreshing = false,
-                            error = false,
-                            data = favorites
-                        )
-                    }
-                }
-        }
+            }
     }
 }

@@ -39,11 +39,10 @@ import ru.stersh.youamp.core.ui.isCompactWidth
 import youamp.feature.playlist.list.generated.resources.Res
 import youamp.feature.playlist.list.generated.resources.playlists_title
 
-
 @Composable
 fun PlaylistsScreen(
     onPlaylistClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val viewModel: PlaylistsViewModel = koinViewModel()
 
@@ -54,7 +53,7 @@ fun PlaylistsScreen(
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onPlaylistClick = onPlaylistClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -65,7 +64,7 @@ private fun PlaylistsScreen(
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onPlaylistClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -77,15 +76,15 @@ private fun PlaylistsScreen(
                 title = {
                     Text(text = stringResource(Res.string.playlists_title))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             when {
                 state.progress -> {
@@ -98,16 +97,17 @@ private fun PlaylistsScreen(
 
                 state.items.isEmpty() -> {
                     EmptyLayout(
-                        modifier = Modifier.verticalScroll(
-                            state = rememberScrollState()
-                        )
+                        modifier =
+                            Modifier.verticalScroll(
+                                state = rememberScrollState(),
+                            ),
                     )
                 }
 
                 else -> {
                     Content(
                         items = state.items,
-                        onPlaylistClick = onPlaylistClick
+                        onPlaylistClick = onPlaylistClick,
                     )
                 }
             }
@@ -118,27 +118,28 @@ private fun PlaylistsScreen(
 @Composable
 private fun Content(
     items: ImmutableList<PlaylistUi>,
-    onPlaylistClick: (id: String) -> Unit
+    onPlaylistClick: (id: String) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = if (isCompactWidth) {
-            GridCells.Fixed(2)
-        } else {
-            GridCells.Adaptive(PlaylistItemDefaults.Width)
-        },
+        columns =
+            if (isCompactWidth) {
+                GridCells.Fixed(2)
+            } else {
+                GridCells.Adaptive(PlaylistItemDefaults.Width)
+            },
         state = rememberLazyGridState(),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         items(
-            items = items
+            items = items,
         ) { playlist ->
             PlaylistItem(
                 title = playlist.name,
                 onClick = { onPlaylistClick.invoke(playlist.id) },
-                artworkUrl = playlist.artworkUrl
+                artworkUrl = playlist.artworkUrl,
             )
         }
     }
@@ -148,19 +149,20 @@ private fun Content(
 private fun Progress() {
     SkeletonLayout {
         LazyVerticalGrid(
-            columns = if (isCompactWidth) {
-                GridCells.Fixed(2)
-            } else {
-                GridCells.Adaptive(PlaylistItemDefaults.Width)
-            },
+            columns =
+                if (isCompactWidth) {
+                    GridCells.Fixed(2)
+                } else {
+                    GridCells.Adaptive(PlaylistItemDefaults.Width)
+                },
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            userScrollEnabled = false
+            userScrollEnabled = false,
         ) {
             items(
                 key = { it },
-                items = (0..20).toList()
+                items = (0..20).toList(),
             ) {
                 PlaylistSkeleton()
             }
@@ -177,7 +179,7 @@ private fun PlaylistsScreenProgressPreview() {
             onRetry = {},
             onRefresh = {},
             onPlaylistClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -186,35 +188,37 @@ private fun PlaylistsScreenProgressPreview() {
 @Preview
 private fun PlaylistsScreenPreview() {
     YouampPlayerTheme {
-        val items = persistentListOf(
-            PlaylistUi(
-                id = "1",
-                name = "Test",
-                artworkUrl = null
-            ),
-            PlaylistUi(
-                id = "2",
-                name = "Test 2",
-                artworkUrl = null
-            ),
-            PlaylistUi(
-                id = "3",
-                name = "Test 3",
-                artworkUrl = null
+        val items =
+            persistentListOf(
+                PlaylistUi(
+                    id = "1",
+                    name = "Test",
+                    artworkUrl = null,
+                ),
+                PlaylistUi(
+                    id = "2",
+                    name = "Test 2",
+                    artworkUrl = null,
+                ),
+                PlaylistUi(
+                    id = "3",
+                    name = "Test 3",
+                    artworkUrl = null,
+                ),
             )
-        )
-        val state = PlaylistsStateUi(
-            progress = false,
-            isRefreshing = true,
-            error = false,
-            items = items
-        )
+        val state =
+            PlaylistsStateUi(
+                progress = false,
+                isRefreshing = true,
+                error = false,
+                items = items,
+            )
         PlaylistsScreen(
             state = state,
             onRetry = {},
             onRefresh = {},
             onPlaylistClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

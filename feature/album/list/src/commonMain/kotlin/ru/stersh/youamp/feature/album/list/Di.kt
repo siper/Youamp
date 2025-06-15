@@ -6,7 +6,13 @@ import ru.stersh.youamp.feature.album.list.data.AlbumsRepositoryImpl
 import ru.stersh.youamp.feature.album.list.domain.AlbumsRepository
 import ru.stersh.youamp.feature.album.list.ui.AlbumsViewModel
 
-val albumListModule = module {
-    single<AlbumsRepository> { AlbumsRepositoryImpl(get()) }
-    viewModel { AlbumsViewModel(get(), get()) }
-}
+val albumListModule =
+    module {
+        single<AlbumsRepository> { AlbumsRepositoryImpl(get()) }
+        viewModel {
+            AlbumsViewModel(
+                get(),
+                get(),
+            )
+        }
+    }

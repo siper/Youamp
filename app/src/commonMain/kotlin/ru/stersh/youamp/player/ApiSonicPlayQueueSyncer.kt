@@ -16,9 +16,9 @@ import ru.stersh.youamp.shared.queue.toMediaItem
 
 class ApiSonicPlayQueueSyncer(
     private val player: Player,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
 ) {
-
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     suspend fun syncQueue() {
         apiProvider
             .flowApiId()
@@ -37,29 +37,32 @@ class ApiSonicPlayQueueSyncer(
                         delay(SYNC_QUEUE_PERIOD)
                     }
                 }
-            }
-            .collect()
+            }.collect()
     }
 
     private suspend fun loadPlayQueue(player: Player) {
-        val playQueue = withContext(Dispatchers.IO) {
-            runCatching {
-                apiProvider
-                    .getApi()
-                    .getPlayQueue()
-                    .data
-                    .playQueue
-            }
-                .onFailure { Logger.w(it) { "loadPlayQueue error" } }
-                .getOrNull()
-        } ?: return
+        val playQueue =
+            withContext(Dispatchers.IO) {
+                runCatching {
+                    apiProvider
+                        .getApi()
+                        .getPlayQueue()
+                        .data
+                        .playQueue
+                }.onFailure { Logger.w(it) { "loadPlayQueue error" } }
+                    .getOrNull()
+            } ?: return
 
         val items = playQueue.entry.map { it.toMediaItem(apiProvider) }
         val currentIndex = items.indexOfFirst { it.id == playQueue.current }
         val position = playQueue.position
 
         if (currentIndex != -1) {
-            player.setMediaItems(items, currentIndex, position ?: 0)
+            player.setMediaItems(
+                items,
+                currentIndex,
+                position ?: 0,
+            )
         } else {
             player.setMediaItems(items)
         }
@@ -67,42 +70,61 @@ class ApiSonicPlayQueueSyncer(
     }
 
     private suspend fun getPlayQueue(player: Player): PlayQueue {
-        val items = player
-            .getPlayQueue()
-            .first()
-            .map { it.id }
-        val current = player.getCurrentMediaItem().first()?.id
-        val position = player.getProgress().first()?.currentTimeMs ?: 0
+        val items =
+            player
+                .getPlayQueue()
+                .first()
+                .map { it.id }
+        val current =
+            player
+                .getCurrentMediaItem()
+                .first()
+                ?.id
+        val position =
+            player
+                .getProgress()
+                .first()
+                ?.currentTimeMs ?: 0
         return PlayQueue(
             items = items,
             current = current,
-            position = position
+            position = position,
         )
     }
 
     private suspend fun syncPlayQueue(player: Player) {
-        if (!player.getIsPlaying().first()) {
+        if (!player
+                .getIsPlaying()
+                .first()
+        ) {
             return
         }
 
-        val items = player
-            .getPlayQueue()
-            .first()
-            .map { it.id }
-        val current = player
-            .getCurrentMediaItem()
-            .first()
-            ?.id
-        val position = player
-            .getProgress()
-            .first()
-            ?.currentTimeMs ?: 0
+        val items =
+            player
+                .getPlayQueue()
+                .first()
+                .map { it.id }
+        val current =
+            player
+                .getCurrentMediaItem()
+                .first()
+                ?.id
+        val position =
+            player
+                .getProgress()
+                .first()
+                ?.currentTimeMs ?: 0
 
         withContext(Dispatchers.IO) {
             runCatching {
                 apiProvider
                     .getApi()
-                    .savePlayQueue(items, current, position)
+                    .savePlayQueue(
+                        items,
+                        current,
+                        position,
+                    )
             }.onFailure { Logger.e(it) { "syncPlayQueue error" } }
         }
     }
@@ -110,7 +132,7 @@ class ApiSonicPlayQueueSyncer(
     private data class PlayQueue(
         val items: List<String>,
         val current: String?,
-        val position: Long
+        val position: Long,
     )
 
     companion object {

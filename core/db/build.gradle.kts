@@ -7,14 +7,20 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "ru.stresh.youamp.db"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
 
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "dbKit"
@@ -38,13 +44,27 @@ kotlin {
             }
         }
     }
-
 }
 
 dependencies {
-    add("kspAndroid", libs.room.compiler)
-    add("kspIosSimulatorArm64", libs.room.compiler)
-    add("kspIosX64", libs.room.compiler)
-    add("kspIosArm64", libs.room.compiler)
-    add("kspDesktop", libs.room.compiler)
+    add(
+        "kspAndroid",
+        libs.room.compiler,
+    )
+    add(
+        "kspIosSimulatorArm64",
+        libs.room.compiler,
+    )
+    add(
+        "kspIosX64",
+        libs.room.compiler,
+    )
+    add(
+        "kspIosArm64",
+        libs.room.compiler,
+    )
+    add(
+        "kspDesktop",
+        libs.room.compiler,
+    )
 }

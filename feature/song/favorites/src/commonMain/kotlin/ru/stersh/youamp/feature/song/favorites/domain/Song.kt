@@ -6,5 +6,5 @@ internal data class Song(
     val artist: String?,
     val album: String?,
     val artworkUrl: String?,
-    val userRating: Int?
+    val userRating: Int?,
 )

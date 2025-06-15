@@ -11,9 +11,8 @@ import ru.stersh.youamp.app.domain.ServerExistRepository
 
 internal class MainViewModel(
     private val serverExistRepository: ServerExistRepository,
-    private val avatarUrlRepository: AvatarUrlRepository
+    private val avatarUrlRepository: AvatarUrlRepository,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
         get() = _state
@@ -22,20 +21,20 @@ internal class MainViewModel(
         viewModelScope.launch {
             combine(
                 serverExistRepository.hasServer(),
-                avatarUrlRepository.getAvatarUrl()
+                avatarUrlRepository.getAvatarUrl(),
             ) { hasServer, avatarUrl ->
                 return@combine StateUi(
-                    screen = if (hasServer) {
-                        MainScreen.Main
-                    } else {
-                        MainScreen.AddServer
-                    },
-                    avatarUrl = avatarUrl
+                    screen =
+                        if (hasServer) {
+                            MainScreen.Main
+                        } else {
+                            MainScreen.AddServer
+                        },
+                    avatarUrl = avatarUrl,
                 )
+            }.collect {
+                _state.value = it
             }
-                .collect {
-                    _state.value = it
-                }
         }
     }
 }

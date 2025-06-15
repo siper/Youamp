@@ -6,7 +6,13 @@ import ru.stersh.youamp.feature.main.data.ServerInfoRepositoryImpl
 import ru.stersh.youamp.feature.main.domain.ServerInfoRepository
 import ru.stersh.youamp.feature.main.ui.MainViewModel
 
-val mainModule = module {
-    single<ServerInfoRepository> { ServerInfoRepositoryImpl(get(), get()) }
-    viewModel { MainViewModel(get()) }
-}
+val mainModule =
+    module {
+        single<ServerInfoRepository> {
+            ServerInfoRepositoryImpl(
+                get(),
+                get(),
+            )
+        }
+        viewModel { MainViewModel(get()) }
+    }

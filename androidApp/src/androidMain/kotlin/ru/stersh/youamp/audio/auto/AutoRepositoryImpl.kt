@@ -2,13 +2,11 @@ package ru.stersh.youamp.audio.auto
 
 import ru.stersh.youamp.core.api.ApiProvider
 
-
 internal class AutoRepositoryImpl(
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
 ) : AutoRepository {
-
-    override suspend fun getPlaylists(): List<Auto.Playlist> {
-        return apiProvider
+    override suspend fun getPlaylists(): List<Auto.Playlist> =
+        apiProvider
             .getApi()
             .getPlaylists()
             .data
@@ -19,12 +17,15 @@ internal class AutoRepositoryImpl(
                 Auto.Playlist(
                     id = it.id,
                     title = it.name,
-                    coverUrl = apiProvider
-                        .getApi()
-                        .getCoverArtUrl(it.coverArt, auth = true)
+                    coverUrl =
+                        apiProvider
+                            .getApi()
+                            .getCoverArtUrl(
+                                it.coverArt,
+                                auth = true,
+                            ),
                 )
             }
-    }
 
     override suspend fun getPlaylistSongs(playlistId: String): List<Auto.Song> {
         val api = apiProvider.getApi()
@@ -41,13 +42,16 @@ internal class AutoRepositoryImpl(
                     id = it.id,
                     title = it.title,
                     artist = it.artist,
-                    streamUrl = api
-                        .streamUrl(it.id)
-                        .toString(),
-                    coverUrl = api.getCoverArtUrl(it.coverArt, auth = true)
+                    streamUrl =
+                        api
+                            .streamUrl(it.id),
+                    coverUrl =
+                        api.getCoverArtUrl(
+                            it.coverArt,
+                            auth = true,
+                        ),
                 )
-            }
-            .orEmpty()
+            }.orEmpty()
     }
 
     override suspend fun getSong(songId: String): Auto.Song {
@@ -61,10 +65,14 @@ internal class AutoRepositoryImpl(
                     id = song.id,
                     title = song.title,
                     artist = song.artist,
-                    streamUrl = api
-                        .streamUrl(song.id)
-                        .toString(),
-                    coverUrl = api.getCoverArtUrl(song.coverArt, auth = true)
+                    streamUrl =
+                        api
+                            .streamUrl(song.id),
+                    coverUrl =
+                        api.getCoverArtUrl(
+                            song.coverArt,
+                            auth = true,
+                        ),
                 )
             }
     }

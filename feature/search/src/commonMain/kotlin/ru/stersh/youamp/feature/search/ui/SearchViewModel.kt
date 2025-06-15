@@ -14,9 +14,8 @@ import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
 
 internal class SearchViewModel(
     private val searchRepository: SearchRepository,
-    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager
+    private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(SearchStateUi())
     val state: StateFlow<SearchStateUi>
         get() = _state
@@ -28,58 +27,68 @@ internal class SearchViewModel(
                 .flowOn(Dispatchers.IO)
                 .collect { searchResult ->
                     val currentState = _state.value
-                    _state.value = currentState.copy(
-                        progress = false,
-                        songs = searchResult
-                            .songs
-                            .map { it.toUi() }
-                            .toPersistentList(),
-                        hasMoreSongs = searchResult.hasMoreSongs,
-                        songsProgress = false,
-                        albums = searchResult
-                            .albums
-                            .map { it.toUi() }
-                            .toPersistentList(),
-                        hasMoreAlbums = searchResult.hasMoreAlbums,
-                        albumsProgress = false,
-                        artists = searchResult
-                            .artists
-                            .map { it.toUi() }
-                            .toPersistentList(),
-                        hasMoreArtists = searchResult.hasMoreArtists,
-                        artistsProgress = false
-                    )
+                    _state.value =
+                        currentState.copy(
+                            progress = false,
+                            songs =
+                                searchResult
+                                    .songs
+                                    .map { it.toUi() }
+                                    .toPersistentList(),
+                            hasMoreSongs = searchResult.hasMoreSongs,
+                            songsProgress = false,
+                            albums =
+                                searchResult
+                                    .albums
+                                    .map { it.toUi() }
+                                    .toPersistentList(),
+                            hasMoreAlbums = searchResult.hasMoreAlbums,
+                            albumsProgress = false,
+                            artists =
+                                searchResult
+                                    .artists
+                                    .map { it.toUi() }
+                                    .toPersistentList(),
+                            hasMoreArtists = searchResult.hasMoreArtists,
+                            artistsProgress = false,
+                        )
                 }
         }
     }
 
-    fun play(source: AudioSource) = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(source)
-    }
+    fun play(source: AudioSource) =
+        viewModelScope.launch {
+            playerQueueAudioSourceManager.playSource(source)
+        }
 
-    fun addToQueue(source: AudioSource) = viewModelScope.launch {
-        playerQueueAudioSourceManager.addLast(source)
-    }
+    fun addToQueue(source: AudioSource) =
+        viewModelScope.launch {
+            playerQueueAudioSourceManager.addLast(source)
+        }
 
-    fun onQueryChange(query: String) = viewModelScope.launch {
-        searchRepository.search(query)
-    }
+    fun onQueryChange(query: String) =
+        viewModelScope.launch {
+            searchRepository.search(query)
+        }
 
-    fun onLoadMoreSongs() = viewModelScope.launch {
-        val currentState = _state.value
-        _state.value = currentState.copy(songsProgress = true)
-        searchRepository.loadMoreSongs()
-    }
+    fun onLoadMoreSongs() =
+        viewModelScope.launch {
+            val currentState = _state.value
+            _state.value = currentState.copy(songsProgress = true)
+            searchRepository.loadMoreSongs()
+        }
 
-    fun onLoadMoreAlbums() = viewModelScope.launch {
-        val currentState = _state.value
-        _state.value = currentState.copy(albumsProgress = true)
-        searchRepository.loadMoreAlbums()
-    }
+    fun onLoadMoreAlbums() =
+        viewModelScope.launch {
+            val currentState = _state.value
+            _state.value = currentState.copy(albumsProgress = true)
+            searchRepository.loadMoreAlbums()
+        }
 
-    fun onLoadMoreArtists() = viewModelScope.launch {
-        val currentState = _state.value
-        _state.value = currentState.copy(artistsProgress = true)
-        searchRepository.loadMoreArtists()
-    }
+    fun onLoadMoreArtists() =
+        viewModelScope.launch {
+            val currentState = _state.value
+            _state.value = currentState.copy(artistsProgress = true)
+            searchRepository.loadMoreArtists()
+        }
 }

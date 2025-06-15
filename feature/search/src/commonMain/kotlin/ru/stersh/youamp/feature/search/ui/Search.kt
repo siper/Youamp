@@ -53,13 +53,12 @@ import youamp.feature.search.generated.resources.load_more_title
 import youamp.feature.search.generated.resources.search_hint_title
 import youamp.feature.search.generated.resources.songs_title
 
-
 @Composable
 fun SearchScreen(
     onBack: () -> Unit,
     onOpenSongInfo: (songId: String) -> Unit,
     onOpenAlbumInfo: (albumId: String) -> Unit,
-    onOpenArtistInfo: (albumId: String) -> Unit
+    onOpenArtistInfo: (albumId: String) -> Unit,
 ) {
     val viewModel: SearchViewModel = koinViewModel()
 
@@ -76,7 +75,7 @@ fun SearchScreen(
         onAddToQueue = viewModel::addToQueue,
         onOpenSongInfo = onOpenSongInfo,
         onOpenAlbumInfo = onOpenAlbumInfo,
-        onOpenArtistInfo = onOpenArtistInfo
+        onOpenArtistInfo = onOpenArtistInfo,
     )
 }
 
@@ -92,29 +91,29 @@ private fun SearchScreen(
     onAddToQueue: (source: AudioSource) -> Unit,
     onOpenSongInfo: (songId: String) -> Unit,
     onOpenAlbumInfo: (albumId: String) -> Unit,
-    onOpenArtistInfo: (albumId: String) -> Unit
+    onOpenArtistInfo: (albumId: String) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     LaunchedEffect(key1 = "request_focus") {
         focusRequester.requestFocus()
     }
     Surface(
-        color = MaterialTheme.colorScheme.surfaceContainerHigh
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
     ) {
         Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
             Row(
                 modifier = Modifier.height(72.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 IconButton(
                     onClick = {
                         onCloseClick()
-                    }
+                    },
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                         contentDescription = stringResource(Res.string.close_search_title),
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }
 
@@ -128,33 +127,37 @@ private fun SearchScreen(
                     },
                     cursorBrush = remember { SolidColor(cursorColor) },
                     singleLine = true,
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
-                    modifier = Modifier
-                        .weight(1f)
-                        .focusRequester(focusRequester),
+                    textStyle =
+                        MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .focusRequester(focusRequester),
                     decorationBox = { innerTextFiled ->
                         if (value.isEmpty()) {
                             Text(
                                 text = stringResource(Res.string.search_hint_title),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodyLarge
+                                style = MaterialTheme.typography.bodyLarge,
                             )
                         } else {
                             innerTextFiled()
                         }
-                    }
+                    },
                 )
 
                 IconButton(
                     onClick = {
                         value = ""
                         onSearchQueryChange("")
-                    }
+                    },
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Clear,
                         contentDescription = stringResource(Res.string.clear_search_title),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -164,9 +167,10 @@ private fun SearchScreen(
             when {
                 state.progress -> {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .windowInsetsPadding(WindowInsets.navigationBars)
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .windowInsetsPadding(WindowInsets.navigationBars),
                     ) {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
@@ -176,39 +180,40 @@ private fun SearchScreen(
                     val listState = rememberLazyListState()
                     LazyColumn(
                         state = listState,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .windowInsetsPadding(WindowInsets.navigationBars)
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .windowInsetsPadding(WindowInsets.navigationBars),
                     ) {
                         if (state.songs.isNotEmpty()) {
                             item(
                                 contentType = "title",
-                                key = "songs_title"
+                                key = "songs_title",
                             ) {
                                 Text(
                                     text = stringResource(Res.string.songs_title),
                                     style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(16.dp)
+                                    modifier = Modifier.padding(16.dp),
                                 )
                             }
                             items(
                                 items = state.songs,
                                 contentType = { "song" },
-                                key = { "song_${it.id}" }
+                                key = { "song_${it.id}" },
                             ) { result ->
                                 SongItem(
                                     item = result,
-                                    onMoreClick = { onOpenSongInfo(result.id) }
+                                    onMoreClick = { onOpenSongInfo(result.id) },
                                 )
                             }
                             if (state.hasMoreSongs) {
                                 item(
                                     key = "songs_load_more",
-                                    contentType = "load_more"
+                                    contentType = "load_more",
                                 ) {
                                     LoadMoreButton(
                                         onLoadMore = { onLoadMoreSongs() },
-                                        modifier = Modifier.fillParentMaxWidth()
+                                        modifier = Modifier.fillParentMaxWidth(),
                                     )
                                 }
                             }
@@ -216,18 +221,18 @@ private fun SearchScreen(
                         if (state.albums.isNotEmpty()) {
                             item(
                                 contentType = "title",
-                                key = "albums_title"
+                                key = "albums_title",
                             ) {
                                 Text(
                                     text = stringResource(Res.string.albums_title),
                                     style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(16.dp)
+                                    modifier = Modifier.padding(16.dp),
                                 )
                             }
                             items(
                                 items = state.albums,
                                 contentType = { "album" },
-                                key = { "album_${it.id}" }
+                                key = { "album_${it.id}" },
                             ) { result ->
                                 AlbumItem(
                                     item = result,
@@ -237,17 +242,17 @@ private fun SearchScreen(
                                     onAddToQueue = {
                                         onAddToQueue(AudioSource.Album(it))
                                     },
-                                    onOpenInfo = onOpenAlbumInfo
+                                    onOpenInfo = onOpenAlbumInfo,
                                 )
                             }
                             if (state.hasMoreAlbums) {
                                 item(
                                     key = "albums_load_more",
-                                    contentType = "load_more"
+                                    contentType = "load_more",
                                 ) {
                                     LoadMoreButton(
                                         onLoadMore = { onLoadMoreAlbums() },
-                                        modifier = Modifier.fillParentMaxWidth()
+                                        modifier = Modifier.fillParentMaxWidth(),
                                     )
                                 }
                             }
@@ -255,18 +260,18 @@ private fun SearchScreen(
                         if (state.artists.isNotEmpty()) {
                             item(
                                 contentType = "title",
-                                key = "artists_title"
+                                key = "artists_title",
                             ) {
                                 Text(
                                     text = stringResource(Res.string.artists_title),
                                     style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(16.dp)
+                                    modifier = Modifier.padding(16.dp),
                                 )
                             }
                             items(
                                 items = state.artists,
                                 contentType = { "artist" },
-                                key = { "artist_${it.id}" }
+                                key = { "artist_${it.id}" },
                             ) { result ->
                                 ArtistItem(
                                     item = result,
@@ -276,17 +281,17 @@ private fun SearchScreen(
                                     onAddToQueue = {
                                         onAddToQueue(AudioSource.Artist(it))
                                     },
-                                    onOpenInfo = onOpenArtistInfo
+                                    onOpenInfo = onOpenArtistInfo,
                                 )
                             }
                             if (state.hasMoreArtists) {
                                 item(
                                     key = "artists_load_more",
-                                    contentType = "load_more"
+                                    contentType = "load_more",
                                 ) {
                                     LoadMoreButton(
                                         onLoadMore = { onLoadMoreArtists() },
-                                        modifier = Modifier.fillParentMaxWidth()
+                                        modifier = Modifier.fillParentMaxWidth(),
                                     )
                                 }
                             }
@@ -301,7 +306,7 @@ private fun SearchScreen(
 @Composable
 private fun LoadMoreButton(
     onLoadMore: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Box(modifier = modifier) {
         SuggestionChip(
@@ -309,7 +314,7 @@ private fun LoadMoreButton(
             label = {
                 Text(text = stringResource(Res.string.load_more_title))
             },
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }
@@ -318,66 +323,70 @@ private fun LoadMoreButton(
 @Preview
 private fun SearchScreenPreview() {
     SearchScreen(
-        state = SearchStateUi(
-            progress = false,
-            songs = persistentListOf(
-                Song(
-                    id = "1",
-                    title = "Coolest song in the world",
-                    artist = "Coolest artist in the world",
-                    artworkUrl = null
-                ),
-                Song(
-                    id = "2",
-                    title = "Coolest song in the world",
-                    artist = "Coolest artist in the world",
-                    artworkUrl = null
-                ),
-                Song(
-                    id = "3",
-                    title = "Coolest song in the world",
-                    artist = "Coolest artist in the world",
-                    artworkUrl = null
-                )
+        state =
+            SearchStateUi(
+                progress = false,
+                songs =
+                    persistentListOf(
+                        Song(
+                            id = "1",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                        Song(
+                            id = "2",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                        Song(
+                            id = "3",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                    ),
+                albums =
+                    persistentListOf(
+                        Album(
+                            id = "1",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                        Album(
+                            id = "2",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                        Album(
+                            id = "3",
+                            title = "Coolest song in the world",
+                            artist = "Coolest artist in the world",
+                            artworkUrl = null,
+                        ),
+                    ),
+                artists =
+                    persistentListOf(
+                        Artist(
+                            id = "1",
+                            name = "Coolest song in the world",
+                            artworkUrl = null,
+                        ),
+                        Artist(
+                            id = "2",
+                            name = "Coolest song in the world",
+                            artworkUrl = null,
+                        ),
+                        Artist(
+                            id = "3",
+                            name = "Coolest song in the world",
+                            artworkUrl = null,
+                        ),
+                    ),
             ),
-            albums = persistentListOf(
-                Album(
-                    id = "1",
-                    title = "Coolest song in the world",
-                    artist = "Coolest artist in the world",
-                    artworkUrl = null
-                ),
-                Album(
-                    id = "2",
-                    title = "Coolest song in the world",
-                    artist = "Coolest artist in the world",
-                    artworkUrl = null
-                ),
-                Album(
-                    id = "3",
-                    title = "Coolest song in the world",
-                    artist = "Coolest artist in the world",
-                    artworkUrl = null
-                )
-            ),
-            artists = persistentListOf(
-                Artist(
-                    id = "1",
-                    name = "Coolest song in the world",
-                    artworkUrl = null
-                ),
-                Artist(
-                    id = "2",
-                    name = "Coolest song in the world",
-                    artworkUrl = null
-                ),
-                Artist(
-                    id = "3",
-                    name = "Coolest song in the world",
-                    artworkUrl = null
-                ),
-            )
-        ),
         onLoadMoreSongs = {},
         onLoadMoreAlbums = {},
         onLoadMoreArtists = {},
@@ -387,6 +396,6 @@ private fun SearchScreenPreview() {
         onAddToQueue = {},
         onOpenSongInfo = {},
         onOpenAlbumInfo = {},
-        onOpenArtistInfo = {}
+        onOpenArtistInfo = {},
     )
 }

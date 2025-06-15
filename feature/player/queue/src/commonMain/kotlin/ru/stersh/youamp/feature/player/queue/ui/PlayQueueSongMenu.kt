@@ -25,12 +25,12 @@ internal fun PlayQueueSongMenu(
     state: MenuSongStateUi,
     onPlaySong: (index: Int) -> Unit,
     onRemoveSong: (index: Int) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     ModalBottomSheet(
         dragHandle = {},
         containerColor = MaterialTheme.colorScheme.surface,
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
     ) {
         SongMenu(
             progress = false,
@@ -38,7 +38,7 @@ internal fun PlayQueueSongMenu(
                 Artwork(
                     artworkUrl = state.artworkUrl,
                     placeholder = Icons.Rounded.Album,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             },
             title = {
@@ -50,7 +50,7 @@ internal fun PlayQueueSongMenu(
                 state.artist?.let {
                     Text(text = it)
                 }
-            }
+            },
         ) {
             item(
                 icon = {
@@ -65,7 +65,7 @@ internal fun PlayQueueSongMenu(
                 onClick = {
                     onPlaySong(state.index)
                     onDismiss()
-                }
+                },
             )
 
             item(
@@ -81,7 +81,7 @@ internal fun PlayQueueSongMenu(
                 onClick = {
                     onRemoveSong(state.index)
                     onDismiss()
-                }
+                },
             )
         }
     }

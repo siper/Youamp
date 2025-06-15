@@ -5,5 +5,5 @@ internal data class AlbumSong(
     val track: Int?,
     val title: String,
     val artist: String?,
-    val duration: String
+    val duration: String,
 )

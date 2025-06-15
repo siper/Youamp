@@ -15,15 +15,15 @@ import youamp.core.ui.generated.resources.play_all_title
 @Composable
 fun PlayAllFabButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ExtendedFloatingActionButton(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Icon(
             imageVector = Icons.Rounded.PlayArrow,
-            contentDescription = stringResource(Res.string.play_all_title)
+            contentDescription = stringResource(Res.string.play_all_title),
         )
         Text(text = stringResource(Res.string.play_all_title))
     }
@@ -34,7 +34,7 @@ fun PlayAllFabButton(
 private fun PlayAllFabButtonPreview() {
     YouampPlayerTheme {
         PlayAllFabButton(
-            onClick = {}
+            onClick = {},
         )
     }
 }

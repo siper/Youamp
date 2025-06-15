@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.main.domain.ServerInfoRepository
 
 internal class MainViewModel(
-    private val serverInfoRepository: ServerInfoRepository
+    private val serverInfoRepository: ServerInfoRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(MainStateUi())
 
@@ -18,16 +18,19 @@ internal class MainViewModel(
 
     init {
         viewModelScope.launch {
-            serverInfoRepository.getServerInfo().collect { serverInfo ->
-                _state.update {
-                    it.copy(
-                        serverInfo = MainStateUi.ServerInfo(
-                            name = serverInfo.name,
-                            avatarUrl = serverInfo.avatarUrl
+            serverInfoRepository
+                .getServerInfo()
+                .collect { serverInfo ->
+                    _state.update {
+                        it.copy(
+                            serverInfo =
+                                MainStateUi.ServerInfo(
+                                    name = serverInfo.name,
+                                    avatarUrl = serverInfo.avatarUrl,
+                                ),
                         )
-                    )
+                    }
                 }
-            }
         }
     }
 }

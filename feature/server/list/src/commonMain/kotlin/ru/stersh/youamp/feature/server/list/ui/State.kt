@@ -5,12 +5,12 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal data class StateUi(
     val progress: Boolean = true,
-    val items: ImmutableList<ServerUi> = persistentListOf()
+    val items: ImmutableList<ServerUi> = persistentListOf(),
 )
 
 internal data class ServerUi(
     val id: Long,
     val title: String,
     val url: String,
-    val isActive: Boolean
+    val isActive: Boolean,
 )

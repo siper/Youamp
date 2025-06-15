@@ -7,11 +7,11 @@ internal data class ArtistsStateUi(
     val progress: Boolean = true,
     val isRefreshing: Boolean = false,
     val error: Boolean = false,
-    val items: ImmutableList<ArtistUi> = persistentListOf()
+    val items: ImmutableList<ArtistUi> = persistentListOf(),
 )
 
 internal data class ArtistUi(
     val id: String,
     val name: String,
-    val artworkUrl: String?
+    val artworkUrl: String?,
 )

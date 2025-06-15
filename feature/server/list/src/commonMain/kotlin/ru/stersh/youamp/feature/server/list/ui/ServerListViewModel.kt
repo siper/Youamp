@@ -14,7 +14,7 @@ import ru.stersh.youamp.core.utils.mapItems
 import ru.stersh.youamp.feature.server.list.domain.ServerListRepository
 
 internal class ServerListViewModel(
-    private val serverListRepository: ServerListRepository
+    private val serverListRepository: ServerListRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -29,17 +29,22 @@ internal class ServerListViewModel(
                 .flowOn(Dispatchers.IO)
                 .collect { servers ->
                     _state.update {
-                        it.copy(progress = false, items = servers)
+                        it.copy(
+                            progress = false,
+                            items = servers,
+                        )
                     }
                 }
         }
     }
 
-    fun deleteServer(serverId: Long) = viewModelScope.launch {
-        serverListRepository.deleteServer(serverId)
-    }
+    fun deleteServer(serverId: Long) =
+        viewModelScope.launch {
+            serverListRepository.deleteServer(serverId)
+        }
 
-    fun setActiveServer(serverId: Long) = viewModelScope.launch {
-        serverListRepository.setActiveServer(serverId)
-    }
+    fun setActiveServer(serverId: Long) =
+        viewModelScope.launch {
+            serverListRepository.setActiveServer(serverId)
+        }
 }

@@ -18,7 +18,6 @@ import ru.stersh.youamp.core.utils.swap
 internal class PlayerQueueViewModel(
     private val player: Player,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
         get() = _state
@@ -28,7 +27,7 @@ internal class PlayerQueueViewModel(
             combine(
                 player.getPlayQueue(),
                 player.getCurrentItemPosition(),
-                player.getIsPlaying()
+                player.getIsPlaying(),
             ) { queue, currentPlayingIndex, isPlaying ->
                 return@combine queue.mapIndexed { index, item ->
                     SongUi(
@@ -37,70 +36,94 @@ internal class PlayerQueueViewModel(
                         artist = item.artist,
                         artworkUrl = item.artworkUrl,
                         isCurrent = index == currentPlayingIndex,
-                        isPlaying = index == currentPlayingIndex && isPlaying
+                        isPlaying = index == currentPlayingIndex && isPlaying,
                     )
                 }
-            }
-                .map { it.toPersistentList() }
+            }.map { it.toPersistentList() }
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    _state.value = _state.value.copy(songs = it, progress = false)
+                    _state.value =
+                        _state.value.copy(
+                            songs = it,
+                            progress = false,
+                        )
                 }
         }
     }
 
-    fun playSong(index: Int) = viewModelScope.launch {
-        val currentPlayingIndex = player
-            .getCurrentItemPosition()
-            .first()
-        if (currentPlayingIndex == index) {
-            val isPlaying = player
-                .getIsPlaying()
-                .first()
+    fun playSong(index: Int) =
+        viewModelScope.launch {
+            val currentPlayingIndex =
+                player
+                    .getCurrentItemPosition()
+                    .first()
+            if (currentPlayingIndex == index) {
+                val isPlaying =
+                    player
+                        .getIsPlaying()
+                        .first()
 
-            if (isPlaying) {
-                player.pause()
+                if (isPlaying) {
+                    player.pause()
+                } else {
+                    player.play()
+                }
             } else {
-                player.play()
+                player.playMediaItem(index)
             }
-        } else {
-            player.playMediaItem(index)
         }
-    }
 
-    fun removeSong(index: Int) = viewModelScope.launch {
-        player.removeMediaItem(index)
-    }
+    fun removeSong(index: Int) =
+        viewModelScope.launch {
+            player.removeMediaItem(index)
+        }
 
-    fun openSongMenu(index: Int) = viewModelScope.launch {
-        val currentSong = player
-            .getPlayQueue()
-            .first()
-            .getOrNull(index)
-            ?: return@launch
+    fun openSongMenu(index: Int) =
+        viewModelScope.launch {
+            val currentSong =
+                player
+                    .getPlayQueue()
+                    .first()
+                    .getOrNull(index)
+                    ?: return@launch
 
+            _state.update {
+                it.copy(
+                    menuSongState =
+                        MenuSongStateUi(
+                            title = currentSong.title,
+                            artist = currentSong.artist,
+                            artworkUrl = currentSong.artworkUrl,
+                            index = index,
+                        ),
+                )
+            }
+        }
+
+    fun dismissSongMenu() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(menuSongState = null)
+            }
+        }
+
+    fun moveSong(
+        from: Int,
+        to: Int,
+    ) = viewModelScope.launch {
         _state.update {
             it.copy(
-                menuSongState = MenuSongStateUi(
-                    title = currentSong.title,
-                    artist = currentSong.artist,
-                    artworkUrl = currentSong.artworkUrl,
-                    index = index
-                )
+                songs =
+                    it.songs
+                        .swap(
+                            from,
+                            to,
+                        ).toPersistentList(),
             )
         }
-    }
-
-    fun dismissSongMenu() = viewModelScope.launch {
-        _state.update {
-            it.copy(menuSongState = null)
-        }
-    }
-
-    fun moveSong(from: Int, to: Int) = viewModelScope.launch {
-        _state.update {
-            it.copy(songs = it.songs.swap(from, to).toPersistentList())
-        }
-        player.moveMediaItem(from, to)
+        player.moveMediaItem(
+            from,
+            to,
+        )
     }
 }

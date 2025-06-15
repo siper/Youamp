@@ -58,7 +58,7 @@ fun PlayerQueueScreen(onBackClick: () -> Unit) {
         onSongClick = viewModel::playSong,
         onSongLongClick = viewModel::openSongMenu,
         onMoveSong = viewModel::moveSong,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 
     menuState?.let {
@@ -66,7 +66,7 @@ fun PlayerQueueScreen(onBackClick: () -> Unit) {
             state = it,
             onPlaySong = viewModel::playSong,
             onRemoveSong = viewModel::removeSong,
-            onDismiss = viewModel::dismissSongMenu
+            onDismiss = viewModel::dismissSongMenu,
         )
     }
 }
@@ -90,24 +90,28 @@ private fun PlayerQueueScreen(
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { padding ->
         if (state.progress) {
             Progress(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .padding(padding)
+                        .fillMaxSize(),
             )
         } else {
             DragAndDropLazyColumn(
                 items = state.songs,
                 onSwap = {
-                    onMoveSong(it.from, it.to)
+                    onMoveSong(
+                        it.from,
+                        it.to,
+                    )
                 },
-                modifier = Modifier.padding(padding)
+                modifier = Modifier.padding(padding),
             ) { index, item ->
                 SongItem(
                     song = item,
@@ -116,7 +120,7 @@ private fun PlayerQueueScreen(
                     },
                     onLongClick = {
                         onSongLongClick(index)
-                    }
+                    },
                 )
             }
         }
@@ -127,10 +131,11 @@ private fun PlayerQueueScreen(
 private fun Progress(modifier: Modifier = Modifier) {
     SkeletonLayout(modifier = modifier) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             ProgressItem()
             ProgressItem()
@@ -144,24 +149,40 @@ private fun SkeletonScope.ProgressItem() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         SkeletonItem(
             modifier = Modifier.size(48.dp),
-            shape = MaterialTheme.shapes.medium
+            shape = MaterialTheme.shapes.medium,
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(6.dp),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) {
-            SkeletonItem(modifier = Modifier.size(160.dp, 16.dp))
-            SkeletonItem(modifier = Modifier.size(100.dp, 16.dp))
+            SkeletonItem(
+                modifier =
+                    Modifier.size(
+                        160.dp,
+                        16.dp,
+                    ),
+            )
+            SkeletonItem(
+                modifier =
+                    Modifier.size(
+                        100.dp,
+                        16.dp,
+                    ),
+            )
         }
         SkeletonItem(
-            modifier = Modifier
-                .padding(end = 8.dp)
-                .size(24.dp, 12.dp),
-            shape = MaterialTheme.shapes.small
+            modifier =
+                Modifier
+                    .padding(end = 8.dp)
+                    .size(
+                        24.dp,
+                        12.dp,
+                    ),
+            shape = MaterialTheme.shapes.small,
         )
     }
 }
@@ -171,14 +192,14 @@ private fun SkeletonScope.ProgressItem() {
 private fun SongItem(
     song: SongUi,
     onClick: () -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
 ) {
     ListItem(
         headlineContent = {
             Text(
                 text = song.title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         supportingContent = {
@@ -186,7 +207,7 @@ private fun SongItem(
                 Text(
                     text = it,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
@@ -194,32 +215,33 @@ private fun SongItem(
             Artwork(
                 artworkUrl = song.artworkUrl,
                 placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
             )
             if (song.isCurrent) {
                 SongPlayAnimation(
                     isPlaying = song.isPlaying,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            color = ArtworkMaskColor,
-                            shape = MaterialTheme.shapes.large
-                        )
-                        .padding(12.dp)
+                    modifier =
+                        Modifier
+                            .size(48.dp)
+                            .background(
+                                color = ArtworkMaskColor,
+                                shape = MaterialTheme.shapes.large,
+                            ).padding(12.dp),
                 )
             }
         },
         trailingContent = {
             Icon(
                 imageVector = Icons.Rounded.DragHandle,
-                contentDescription = "Drag handle"
+                contentDescription = "Drag handle",
             )
         },
-        modifier = Modifier
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            )
+        modifier =
+            Modifier
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                ),
     )
 }
 
@@ -227,33 +249,35 @@ private fun SongItem(
 @Preview
 private fun PlayerQueueScreenPreview() {
     YouampPlayerTheme {
-        val state = StateUi(
-            progress = false,
-            songs = persistentListOf(
-                SongUi(
-                    id = "1",
-                    title = "Best song in the world with very long title",
-                    artist = "Best artist in the world",
-                    artworkUrl = null,
-                    isCurrent = false,
-                    isPlaying = false
-                ),
-                SongUi(
-                    id = "1",
-                    title = "Best song in the world",
-                    artist = null,
-                    artworkUrl = null,
-                    isCurrent = true,
-                    isPlaying = false
-                )
+        val state =
+            StateUi(
+                progress = false,
+                songs =
+                    persistentListOf(
+                        SongUi(
+                            id = "1",
+                            title = "Best song in the world with very long title",
+                            artist = "Best artist in the world",
+                            artworkUrl = null,
+                            isCurrent = false,
+                            isPlaying = false,
+                        ),
+                        SongUi(
+                            id = "1",
+                            title = "Best song in the world",
+                            artist = null,
+                            artworkUrl = null,
+                            isCurrent = true,
+                            isPlaying = false,
+                        ),
+                    ),
             )
-        )
         PlayerQueueScreen(
             state = state,
             onSongClick = {},
             onSongLongClick = {},
             onMoveSong = { from, to -> },
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -268,7 +292,7 @@ private fun PlayerQueueScreenProgressPreview() {
             onSongClick = {},
             onSongLongClick = {},
             onMoveSong = { from, to -> },
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

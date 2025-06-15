@@ -43,7 +43,7 @@ import youamp.feature.player.screen.generated.resources.previous_song_descriptio
 @Composable
 fun PlayerScreen(
     onBackClick: () -> Unit,
-    onPlayQueueClick: () -> Unit
+    onPlayQueueClick: () -> Unit,
 ) {
     val viewModel: PlayerScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -58,7 +58,7 @@ fun PlayerScreen(
         onPrevious = viewModel::previous,
         onNext = viewModel::next,
         onBackClick = onBackClick,
-        onPlayQueueClick = onPlayQueueClick
+        onPlayQueueClick = onPlayQueueClick,
     )
 }
 
@@ -74,7 +74,7 @@ private fun PlayerScreen(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     onBackClick: () -> Unit,
-    onPlayQueueClick: () -> Unit
+    onPlayQueueClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -85,27 +85,29 @@ private fun PlayerScreen(
                 },
                 actions = {
                     PlayQueueButton(
-                        onClick = onPlayQueueClick
+                        onClick = onPlayQueueClick,
                     )
-                }
+                },
             )
-        }
+        },
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             if (maxWidth > 600.dp) {
                 val height = maxHeight * 0.6f
                 Row(
-                    modifier = Modifier
-                        .padding(it)
-                        .align(Alignment.Center),
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier =
+                        Modifier
+                            .padding(it)
+                            .align(Alignment.Center),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Artwork(
                         artworkUrl = state.artworkUrl,
                         placeholder = Icons.Rounded.Album,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .size(height)
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .size(height),
                     )
                     PlayerLayout(
                         state = state,
@@ -116,23 +118,23 @@ private fun PlayerScreen(
                         onFavoriteChanged = onFavoriteChanged,
                         onPlayPause = onPlayPause,
                         onPrevious = onPrevious,
-                        onNext = onNext
+                        onNext = onNext,
                     )
                 }
             } else {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.padding(it)
+                    modifier = Modifier.padding(it),
                 ) {
-
                     Artwork(
                         artworkUrl = state.artworkUrl,
                         placeholder = Icons.Rounded.Album,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .fillMaxWidth()
-                            .aspectRatio(1f)
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
+                                .aspectRatio(1f),
                     )
 
                     PlayerLayout(
@@ -144,12 +146,11 @@ private fun PlayerScreen(
                         onFavoriteChanged = onFavoriteChanged,
                         onPlayPause = onPlayPause,
                         onPrevious = onPrevious,
-                        onNext = onNext
+                        onNext = onNext,
                     )
                 }
             }
         }
-
     }
 }
 
@@ -164,11 +165,11 @@ private fun PlayerLayout(
     onPlayPause: () -> Unit,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             text = state.title.orEmpty(),
@@ -176,43 +177,46 @@ private fun PlayerLayout(
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp),
         )
 
         Text(
             text = state.artist.orEmpty(),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier
-                .padding(bottom = 12.dp)
-                .padding(horizontal = 24.dp)
+            modifier =
+                Modifier
+                    .padding(bottom = 12.dp)
+                    .padding(horizontal = 24.dp),
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         Column(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             PlayerSlider(
                 progress = state.progress,
                 onSeek = onSeek,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                modifier =
+                    Modifier
+                        .padding(horizontal = 8.dp),
             )
             Row(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = state.currentTime.orEmpty(),
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = state.totalTime.orEmpty(),
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
         }
@@ -222,30 +226,30 @@ private fun PlayerLayout(
         Row(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             FilledTonalIconButton(
                 onClick = onPrevious,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(56.dp),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.SkipPrevious,
-                    contentDescription = stringResource(Res.string.previous_song_description)
+                    contentDescription = stringResource(Res.string.previous_song_description),
                 )
             }
 
             PlayPauseButton(
                 isPlayed = state.isPlaying,
-                onPlayedChanged = onPlayPause
+                onPlayedChanged = onPlayPause,
             )
 
             FilledTonalIconButton(
                 onClick = onNext,
-                modifier = Modifier.size(56.dp)
+                modifier = Modifier.size(56.dp),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.SkipNext,
-                    contentDescription = stringResource(Res.string.next_song_description)
+                    contentDescription = stringResource(Res.string.next_song_description),
                 )
             }
         }
@@ -256,19 +260,19 @@ private fun PlayerLayout(
 
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             ShuffleButton(
                 shuffleMode = state.shuffleMode,
-                onShuffleModeChanged = onShuffleModeChanged
+                onShuffleModeChanged = onShuffleModeChanged,
             )
             RepeatButton(
                 repeatMode = state.repeatMode,
-                onRepeatModeChanged = onRepeatModeChanged
+                onRepeatModeChanged = onRepeatModeChanged,
             )
             FavoriteButton(
                 isFavorite = state.isFavorite,
-                onFavoriteChanged = onFavoriteChanged
+                onFavoriteChanged = onFavoriteChanged,
             )
         }
     }
@@ -278,11 +282,12 @@ private fun PlayerLayout(
 @Preview
 private fun PlayerScreenPreview() {
     YouampPlayerTheme {
-        val state = StateUi(
-            title = "Best song in the world",
-            artist = "Best artist in the world",
-            isPlaying = false
-        )
+        val state =
+            StateUi(
+                title = "Best song in the world",
+                artist = "Best artist in the world",
+                isPlaying = false,
+            )
         PlayerScreen(
             state = state,
             onSeek = {},
@@ -293,7 +298,7 @@ private fun PlayerScreenPreview() {
             onPrevious = {},
             onNext = {},
             onBackClick = {},
-            onPlayQueueClick = {}
+            onPlayQueueClick = {},
         )
     }
 }

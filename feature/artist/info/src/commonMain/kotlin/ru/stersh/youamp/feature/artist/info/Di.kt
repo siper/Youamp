@@ -8,10 +8,21 @@ import ru.stersh.youamp.feature.artist.info.domain.ArtistFavoriteRepository
 import ru.stersh.youamp.feature.artist.info.domain.ArtistInfoRepository
 import ru.stersh.youamp.feature.artist.info.ui.ArtistInfoViewModel
 
-val artistInfoModule = module {
-    single<ArtistInfoRepository> { ArtistInfoRepositoryImpl(get(), get()) }
-    single<ArtistFavoriteRepository> { ArtistFavoriteRepositoryImpl(get()) }
-    viewModel { (id: String) ->
-        ArtistInfoViewModel(id, get(), get(), get())
+val artistInfoModule =
+    module {
+        single<ArtistInfoRepository> {
+            ArtistInfoRepositoryImpl(
+                get(),
+                get(),
+            )
+        }
+        single<ArtistFavoriteRepository> { ArtistFavoriteRepositoryImpl(get()) }
+        viewModel { (id: String) ->
+            ArtistInfoViewModel(
+                id,
+                get(),
+                get(),
+                get(),
+            )
+        }
     }
-}

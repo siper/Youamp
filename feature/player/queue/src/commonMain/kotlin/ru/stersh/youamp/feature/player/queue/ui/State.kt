@@ -6,14 +6,14 @@ import kotlinx.collections.immutable.persistentListOf
 internal data class StateUi(
     val songs: ImmutableList<SongUi> = persistentListOf(),
     val progress: Boolean = true,
-    val menuSongState: MenuSongStateUi? = null
+    val menuSongState: MenuSongStateUi? = null,
 )
 
 internal data class MenuSongStateUi(
     val title: String?,
     val artist: String?,
     val artworkUrl: String?,
-    val index: Int
+    val index: Int,
 )
 
 internal data class SongUi(
@@ -22,5 +22,5 @@ internal data class SongUi(
     val artist: String?,
     val isCurrent: Boolean,
     val isPlaying: Boolean,
-    val artworkUrl: String?
+    val artworkUrl: String?,
 )

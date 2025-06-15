@@ -13,42 +13,42 @@ import ru.stersh.youamp.feature.playlist.info.domain.PlaylistSong
 
 internal class PlaylistInfoRepositoryImpl(
     private val apiProvider: ApiProvider,
-    private val player: Player
+    private val player: Player,
 ) : PlaylistInfoRepository {
-
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     override fun getPlaylistInfo(playlistId: String): Flow<PlaylistInfo> {
         return flowPlaylist(playlistId).flatMapLatest { playlist ->
             combine(
                 player.getCurrentMediaItem(),
-                player.getIsPlaying()
+                player.getIsPlaying(),
             ) { currentMediaItem, isPlaying ->
                 val api = apiProvider.getApi()
                 return@combine PlaylistInfo(
                     title = playlist.name,
                     artworkUrl = api.getCoverArtUrl(playlist.coverArt),
-                    songs = playlist
-                        .entry
-                        .orEmpty()
-                        .map { entry ->
-                            val isCurrent = currentMediaItem?.id == entry.id
-                            PlaylistSong(
-                                id = entry.id,
-                                title = entry.title,
-                                artist = entry.artist,
-                                artworkUrl = api.getCoverArtUrl(entry.coverArt),
-                                isCurrent = isCurrent,
-                                isPlaying = isCurrent && isPlaying
-                            )
-                        }
+                    songs =
+                        playlist
+                            .entry
+                            .orEmpty()
+                            .map { entry ->
+                                val isCurrent = currentMediaItem?.id == entry.id
+                                PlaylistSong(
+                                    id = entry.id,
+                                    title = entry.title,
+                                    artist = entry.artist,
+                                    artworkUrl = api.getCoverArtUrl(entry.coverArt),
+                                    isCurrent = isCurrent,
+                                    isPlaying = isCurrent && isPlaying,
+                                )
+                            },
                 )
             }
         }
     }
 
-    private fun flowPlaylist(playlistId: String): Flow<Playlist> {
-        return flow {
+    private fun flowPlaylist(playlistId: String): Flow<Playlist> =
+        flow {
             val api = apiProvider.getApi()
             emit(api.getPlaylist(playlistId).data.playlist)
         }
-    }
 }

@@ -13,15 +13,15 @@ import youamp.core.ui.generated.resources.navigate_back_description
 @Composable
 fun BackNavigationButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-            contentDescription = stringResource(Res.string.navigate_back_description)
+            contentDescription = stringResource(Res.string.navigate_back_description),
         )
     }
 }

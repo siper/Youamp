@@ -58,7 +58,7 @@ import youamp.feature.server.list.generated.resources.server_screen_title
 fun ServerListScreen(
     onBackClick: () -> Unit,
     onAddServerClick: () -> Unit,
-    onEditServerClick: (serverId: Long) -> Unit
+    onEditServerClick: (serverId: Long) -> Unit,
 ) {
     val viewModel: ServerListViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -69,7 +69,7 @@ fun ServerListScreen(
         onAddServerClick = onAddServerClick,
         onEditServer = onEditServerClick,
         onActiveServer = viewModel::setActiveServer,
-        onDeleteServer = viewModel::deleteServer
+        onDeleteServer = viewModel::deleteServer,
     )
 }
 
@@ -94,38 +94,39 @@ private fun ServerListScreen(
                     IconButton(onClick = { onAddServerClick() }) {
                         Icon(
                             imageVector = Icons.Rounded.Add,
-                            contentDescription = stringResource(Res.string.add_server_title)
+                            contentDescription = stringResource(Res.string.add_server_title),
                         )
                     }
                 },
                 title = {
                     Text(text = stringResource(Res.string.server_screen_title))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         if (state.progress) {
             Progress(
-                modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .padding(it)
+                        .fillMaxSize(),
             )
         } else {
             LazyColumn(
-                modifier = Modifier.padding(it)
+                modifier = Modifier.padding(it),
             ) {
                 items(
                     items = state.items,
                     key = { "server_${it.id}" },
-                    contentType = { "server" }
+                    contentType = { "server" },
                 ) { server ->
                     ServerItem(
                         item = server,
                         onActive = onActiveServer,
                         onDelete = onDeleteServer,
-                        onEdit = onEditServer
+                        onEdit = onEditServer,
                     )
                 }
             }
@@ -137,10 +138,11 @@ private fun ServerListScreen(
 private fun Progress(modifier: Modifier = Modifier) {
     SkeletonLayout(modifier = modifier) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             ProgressItem()
             ProgressItem()
@@ -154,24 +156,37 @@ private fun SkeletonScope.ProgressItem() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         SkeletonItem(
             modifier = Modifier.size(48.dp),
-            shape = CircleShape
+            shape = CircleShape,
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(6.dp),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) {
-            SkeletonItem(modifier = Modifier.size(100.dp, 16.dp))
-            SkeletonItem(modifier = Modifier.size(160.dp, 16.dp))
+            SkeletonItem(
+                modifier =
+                    Modifier.size(
+                        100.dp,
+                        16.dp,
+                    ),
+            )
+            SkeletonItem(
+                modifier =
+                    Modifier.size(
+                        160.dp,
+                        16.dp,
+                    ),
+            )
         }
         SkeletonItem(
-            modifier = Modifier
-                .padding(end = 8.dp)
-                .size(24.dp),
-            shape = CircleShape
+            modifier =
+                Modifier
+                    .padding(end = 8.dp)
+                    .size(24.dp),
+            shape = CircleShape,
         )
     }
 }
@@ -189,47 +204,49 @@ private fun ServerItem(
             Text(
                 text = item.title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         supportingContent = {
             Text(
                 text = item.url,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         leadingContent = {
             Icon(
                 imageVector = Icons.Rounded.Dns,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                        shape = CircleShape
-                    )
-                    .padding(8.dp)
+                modifier =
+                    Modifier
+                        .size(48.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = CircleShape,
+                        ).padding(8.dp),
             )
         },
         trailingContent = {
             Box {
                 RadioButton(
                     selected = item.isActive,
-                    onClick = { onActive(item.id) }
+                    onClick = { onActive(item.id) },
                 )
                 DropdownMenu(
                     expanded = menuExpanded,
                     onDismissRequest = { menuExpanded = false },
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 ) {
                     if (!item.isActive) {
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(Res.string.activate_server_title)) },
+                            text = {
+                                Text(text = stringResource(Res.string.activate_server_title))
+                            },
                             onClick = {
                                 menuExpanded = false
                                 onActive(item.id)
-                            }
+                            },
                         )
                     }
                     DropdownMenuItem(
@@ -237,7 +254,7 @@ private fun ServerItem(
                         onClick = {
                             menuExpanded = false
                             onEdit(item.id)
-                        }
+                        },
                     )
                     if (!item.isActive) {
                         DropdownMenuItem(
@@ -245,38 +262,41 @@ private fun ServerItem(
                             onClick = {
                                 menuExpanded = false
                                 onDelete(item.id)
-                            }
+                            },
                         )
                     }
                 }
             }
         },
-        modifier = Modifier.clickable {
-            menuExpanded = true
-        }
+        modifier =
+            Modifier.clickable {
+                menuExpanded = true
+            },
     )
 }
 
 @Composable
 @Preview
 private fun ServerListScreenPreview() {
-    val state = StateUi(
-        progress = false,
-        items = persistentListOf(
-            ServerUi(
-                id = 1,
-                title = "Test server with very long name",
-                url = "http://myserver.very.long.address.com:4040/",
-                isActive = true
-            ),
-            ServerUi(
-                id = 2,
-                title = "Other server",
-                url = "http://otherserver.com:4040/",
-                isActive = false
-            )
+    val state =
+        StateUi(
+            progress = false,
+            items =
+                persistentListOf(
+                    ServerUi(
+                        id = 1,
+                        title = "Test server with very long name",
+                        url = "http://myserver.very.long.address.com:4040/",
+                        isActive = true,
+                    ),
+                    ServerUi(
+                        id = 2,
+                        title = "Other server",
+                        url = "http://otherserver.com:4040/",
+                        isActive = false,
+                    ),
+                ),
         )
-    )
     YouampPlayerTheme {
         ServerListScreen(
             state = state,
@@ -284,7 +304,7 @@ private fun ServerListScreenPreview() {
             onEditServer = {},
             onAddServerClick = {},
             onActiveServer = {},
-            onDeleteServer = {}
+            onDeleteServer = {},
         )
     }
 }
@@ -300,7 +320,7 @@ private fun ServerListScreenProgressPreview() {
             onEditServer = {},
             onAddServerClick = {},
             onActiveServer = {},
-            onDeleteServer = {}
+            onDeleteServer = {},
         )
     }
 }

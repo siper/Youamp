@@ -41,21 +41,24 @@ kotlin {
 
 android {
     namespace = AppBuildInfo.PACKAGE_NAME
-    compileSdk = libs.versions.android.compileSdk
-        .get()
-        .toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = AppBuildInfo.PACKAGE_NAME
-        minSdk = libs.versions.android.minSdk
-            .get()
-            .toInt()
-        targetSdk = libs.versions.android.targetSdk
-            .get()
-            .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = AppBuildInfo.VERSION_CODE
         versionName = AppBuildInfo.VERSION_NAME
-        base.archivesName = "Youamp-${versionName}"
+        base.archivesName = "Youamp-$versionName"
     }
 
     packaging {
@@ -80,7 +83,10 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
         debug {
             isMinifyEnabled = false

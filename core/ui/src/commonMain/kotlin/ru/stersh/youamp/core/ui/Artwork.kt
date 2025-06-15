@@ -34,25 +34,26 @@ fun Artwork(
     placeholder: ImageVector,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
-    shape: CornerBasedShape = MaterialTheme.shapes.large
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
 ) {
     SubcomposeAsyncImage(
         model = artworkUrl,
         contentDescription = stringResource(Res.string.placeholder_image_description),
-        modifier = modifier
-            .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+        modifier =
+            modifier
+                .clip(shape)
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest),
         contentScale = contentScale,
         loading = {
             ArtworkPlaceholder(
-                placeholder = placeholder
+                placeholder = placeholder,
             )
         },
         error = {
             ArtworkPlaceholder(
-                placeholder = placeholder
+                placeholder = placeholder,
             )
-        }
+        },
     )
 }
 
@@ -60,31 +61,31 @@ fun Artwork(
 fun CircleArtwork(
     artworkUrl: String?,
     placeholder: ImageVector,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Artwork(
         artworkUrl = artworkUrl,
         placeholder = placeholder,
         contentScale = ContentScale.Crop,
         shape = CircleShape,
-        modifier = modifier.aspectRatio(1f)
+        modifier = modifier.aspectRatio(1f),
     )
 }
 
 @Composable
 fun ArtworkPlaceholder(
     placeholder: ImageVector,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = placeholder,
             contentDescription = "placeholder",
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.fillMaxSize(0.75f)
+            modifier = Modifier.fillMaxSize(0.75f),
         )
     }
 }
@@ -98,22 +99,22 @@ private fun ArtworkPreview() {
                 Artwork(
                     artworkUrl = "https://placehold.co/400",
                     placeholder = Icons.Rounded.MusicNote,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
                 )
                 Artwork(
                     artworkUrl = "https://placehold.co/400",
                     placeholder = Icons.Rounded.Person,
-                    modifier = Modifier.size(60.dp)
+                    modifier = Modifier.size(60.dp),
                 )
                 Artwork(
                     artworkUrl = "https://placehold.co/400",
                     placeholder = Icons.Rounded.Album,
-                    modifier = Modifier.size(80.dp)
+                    modifier = Modifier.size(80.dp),
                 )
                 CircleArtwork(
                     artworkUrl = "https://placehold.co/400",
                     placeholder = Icons.Rounded.Person,
-                    modifier = Modifier.size(80.dp)
+                    modifier = Modifier.size(80.dp),
                 )
             }
         }

@@ -39,37 +39,36 @@ import youamp.feature.song.info.generated.resources.go_to_artist_title
 import youamp.feature.song.info.generated.resources.play_title
 import youamp.feature.song.info.generated.resources.remove_from_favorites
 
-
 @Composable
 fun SongInfoScreen(
     id: String,
     showAlbum: Boolean = true,
     onOpenAlbum: (albumId: String) -> Unit,
     onOpenArtist: (artistId: String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
-    val viewModel: SongInfoViewModel = koinViewModel<SongInfoViewModel> {
-        parametersOf(
-            id,
-            showAlbum
-        )
-    }
+    val viewModel: SongInfoViewModel =
+        koinViewModel<SongInfoViewModel> {
+            parametersOf(
+                id,
+                showAlbum,
+            )
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel
-            .dismiss
-            .collect {
-                onDismiss()
-            }
+        viewModel.dismiss.collect {
+            onDismiss()
+        }
     }
 
     if (state.error) {
         Error(
             onRetry = viewModel::retry,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .windowInsetsPadding(WindowInsets.navigationBars)
+            modifier =
+                Modifier
+                    .padding(top = 16.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
         )
     } else {
         SongInfoScreen(
@@ -104,7 +103,7 @@ private fun SongInfoScreen(
     onAddToQueueNext: () -> Unit,
     onAddToQueueLast: () -> Unit,
     onAddToFavorites: () -> Unit,
-    onRemoveFromFavorites: () -> Unit
+    onRemoveFromFavorites: () -> Unit,
 ) {
     SongMenu(
         progress = state.progress,
@@ -112,7 +111,7 @@ private fun SongInfoScreen(
             Artwork(
                 artworkUrl = state.artworkUrl,
                 placeholder = Icons.Rounded.Album,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
         },
         title = {
@@ -124,7 +123,7 @@ private fun SongInfoScreen(
             state.artist?.let {
                 Text(text = it)
             }
-        }
+        },
     ) {
         item(
             icon = {
@@ -138,7 +137,7 @@ private fun SongInfoScreen(
             },
             onClick = {
                 onPlay()
-            }
+            },
         )
         item(
             icon = {
@@ -150,7 +149,7 @@ private fun SongInfoScreen(
             title = {
                 Text(text = stringResource(Res.string.add_to_queue_last_title))
             },
-            onClick = onAddToQueueLast
+            onClick = onAddToQueueLast,
         )
         item(
             icon = {
@@ -162,7 +161,7 @@ private fun SongInfoScreen(
             title = {
                 Text(text = stringResource(Res.string.add_to_queue_next_title))
             },
-            onClick = onAddToQueueNext
+            onClick = onAddToQueueNext,
         )
 
         if (state.showAlbum && state.albumId != null) {
@@ -170,7 +169,7 @@ private fun SongInfoScreen(
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.MusicVideo,
-                        contentDescription = stringResource(Res.string.go_to_album_title)
+                        contentDescription = stringResource(Res.string.go_to_album_title),
                     )
                 },
                 title = {
@@ -178,7 +177,7 @@ private fun SongInfoScreen(
                 },
                 onClick = {
                     onOpenAlbum(state.albumId)
-                }
+                },
             )
         }
 
@@ -187,7 +186,7 @@ private fun SongInfoScreen(
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.PersonSearch,
-                        contentDescription = stringResource(Res.string.go_to_artist_title)
+                        contentDescription = stringResource(Res.string.go_to_artist_title),
                     )
                 },
                 title = {
@@ -195,7 +194,7 @@ private fun SongInfoScreen(
                 },
                 onClick = {
                     onOpenArtist(artistId)
-                }
+                },
             )
         }
 
@@ -210,7 +209,7 @@ private fun SongInfoScreen(
                 title = {
                     Text(text = stringResource(Res.string.remove_from_favorites))
                 },
-                onClick = onRemoveFromFavorites
+                onClick = onRemoveFromFavorites,
             )
         } else {
             item(
@@ -223,7 +222,7 @@ private fun SongInfoScreen(
                 title = {
                     Text(text = stringResource(Res.string.add_to_favorites))
                 },
-                onClick = onAddToFavorites
+                onClick = onAddToFavorites,
             )
         }
     }
@@ -234,13 +233,14 @@ private fun SongInfoScreen(
 private fun AlbumInfoScreenPreview() {
     YouampPlayerTheme {
         SongInfoScreen(
-            state = StateUi(
-                title = "Test song",
-                artistId = "1",
-                albumId = "1",
-                artist = "Test artist",
-                progress = false
-            ),
+            state =
+                StateUi(
+                    title = "Test song",
+                    artistId = "1",
+                    albumId = "1",
+                    artist = "Test artist",
+                    progress = false,
+                ),
             onPlay = {},
             onOpenAlbum = {},
             onOpenArtist = {},

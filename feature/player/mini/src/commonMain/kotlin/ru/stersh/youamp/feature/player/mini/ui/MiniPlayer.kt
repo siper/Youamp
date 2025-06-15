@@ -49,7 +49,7 @@ import youamp.feature.player.mini.generated.resources.play_button_description
 fun MiniPlayer(
     viewModelStoreOwner: ViewModelStoreOwner,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val viewModel: MiniPlayerViewModel = koinViewModel(viewModelStoreOwner = viewModelStoreOwner)
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -60,7 +60,7 @@ fun MiniPlayer(
         onNext = viewModel::next,
         onPrevious = viewModel::previous,
         onPlayPauseClick = viewModel::playPause,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -72,53 +72,61 @@ private fun MiniPlayer(
     onPlayPauseClick: () -> Unit,
     onClick: () -> Unit,
     windowWidthSizeClass: WindowWidthSizeClass = LocalWindowSizeClass.current.widthSizeClass,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val containerColor = when (windowWidthSizeClass) {
-        WindowWidthSizeClass.Compact -> MaterialTheme.colorScheme.secondaryContainer
-        else -> MaterialTheme.colorScheme.surface
-    }
+    val containerColor =
+        when (windowWidthSizeClass) {
+            WindowWidthSizeClass.Compact -> MaterialTheme.colorScheme.secondaryContainer
+            else -> MaterialTheme.colorScheme.surface
+        }
     AnimatedVisibility(
-        enter = expandVertically(
-            animationSpec = tween(
-                durationMillis = 100
-            )
-        ),
-        exit = shrinkVertically(
-            animationSpec = tween(
-                durationMillis = 100
-            )
-        ),
+        enter =
+            expandVertically(
+                animationSpec =
+                    tween(
+                        durationMillis = 100,
+                    ),
+            ),
+        exit =
+            shrinkVertically(
+                animationSpec =
+                    tween(
+                        durationMillis = 100,
+                    ),
+            ),
         visible = !state.invisible,
-        modifier = Modifier
-            .background(color = containerColor)
-            .then(modifier)
+        modifier =
+            Modifier
+                .background(color = containerColor)
+                .then(modifier),
     ) {
         if (state.data == null) {
             return@AnimatedVisibility
         }
         Surface(
-            modifier = Modifier
-                .fillMaxWidth(),
-            color = containerColor
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            color = containerColor,
         ) {
             when (windowWidthSizeClass) {
                 WindowWidthSizeClass.Compact -> {
                     PlayerCompact(
                         data = state.data,
                         onClick = onClick,
-                        onPlayPauseClick = onPlayPauseClick
+                        onPlayPauseClick = onPlayPauseClick,
                     )
                 }
 
                 WindowWidthSizeClass.Medium,
-                WindowWidthSizeClass.Expanded -> {
+                WindowWidthSizeClass.Expanded,
+                -> {
                     PlayerExpanded(
                         data = state.data,
                         onClick = onClick,
                         onNext = onNext,
                         onPrevious = onPrevious,
-                        onPlayPauseClick = onPlayPauseClick
+                        onPlayPauseClick = onPlayPauseClick,
                     )
                 }
             }
@@ -130,43 +138,44 @@ private fun MiniPlayer(
 private fun PlayerCompact(
     data: PlayerDataUi,
     onClick: () -> Unit,
-    onPlayPauseClick: () -> Unit
+    onPlayPauseClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier.clickable(onClick = onClick),
     ) {
         Artwork(
             artworkUrl = data.artworkUrl,
             placeholder = Icons.Rounded.Album,
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .padding(start = 24.dp)
-                .size(56.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .padding(start = 24.dp)
+                    .size(56.dp),
         )
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) {
             SingleLineText(
                 text = data.title.orEmpty(),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             SingleLineText(
                 text = data.artist.orEmpty(),
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.secondary,
             )
         }
         Box(contentAlignment = Alignment.Center) {
             CircularProgressIndicator(
                 progress = { data.progress },
-                strokeCap = StrokeCap.Round
+                strokeCap = StrokeCap.Round,
             )
             PlayPauseButton(
                 modifier = Modifier.size(72.dp),
                 isPlaying = data.isPlaying,
-                onIsPlayedChanged = { onPlayPauseClick() }
+                onIsPlayedChanged = { onPlayPauseClick() },
             )
         }
     }
@@ -178,65 +187,66 @@ private fun PlayerExpanded(
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onClick: () -> Unit,
-    onPlayPauseClick: () -> Unit
+    onPlayPauseClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(16.dp)
-            .clip(MaterialTheme.shapes.medium)
-            .background(
-                MaterialTheme.colorScheme.secondaryContainer,
-                shape = MaterialTheme.shapes.medium
-            )
-            .clickable(onClick = onClick)
+        modifier =
+            Modifier
+                .padding(16.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .background(
+                    MaterialTheme.colorScheme.secondaryContainer,
+                    shape = MaterialTheme.shapes.medium,
+                ).clickable(onClick = onClick),
     ) {
         Artwork(
             artworkUrl = data.artworkUrl,
             placeholder = Icons.Rounded.Album,
-            modifier = Modifier
-                .size(88.dp)
-                .padding(12.dp)
+            modifier =
+                Modifier
+                    .size(88.dp)
+                    .padding(12.dp),
         )
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) {
             SingleLineText(
                 text = data.title.orEmpty(),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             SingleLineText(
                 text = data.artist.orEmpty(),
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.secondary,
             )
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
-                onClick = onPrevious
+                onClick = onPrevious,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.SkipPrevious,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
             Box(contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(
                     progress = { data.progress },
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
                 PlayPauseButton(
                     modifier = Modifier.size(72.dp),
                     isPlaying = data.isPlaying,
-                    onIsPlayedChanged = { onPlayPauseClick() }
+                    onIsPlayedChanged = { onPlayPauseClick() },
                 )
             }
             IconButton(
-                onClick = onNext
+                onClick = onNext,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.SkipNext,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }
@@ -247,22 +257,22 @@ private fun PlayerExpanded(
 private fun PlayPauseButton(
     isPlaying: Boolean,
     onIsPlayedChanged: (isPlayed: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconToggleButton(
         checked = isPlaying,
         onCheckedChange = onIsPlayedChanged,
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (isPlaying) {
             Icon(
                 imageVector = Icons.Rounded.Pause,
-                contentDescription = stringResource(Res.string.pause_button_description)
+                contentDescription = stringResource(Res.string.pause_button_description),
             )
         } else {
             Icon(
                 imageVector = Icons.Rounded.PlayArrow,
-                contentDescription = stringResource(Res.string.play_button_description)
+                contentDescription = stringResource(Res.string.play_button_description),
             )
         }
     }
@@ -271,22 +281,24 @@ private fun PlayPauseButton(
 @Composable
 @Preview
 private fun MiniPlayerPreview() {
-    val state = StateUi(
-        data = PlayerDataUi(
-            title = "Test title",
-            artist = "Test artist",
-            artworkUrl = "",
-            isPlaying = true,
-            progress = 0.5f
-        ),
-        invisible = false
-    )
+    val state =
+        StateUi(
+            data =
+                PlayerDataUi(
+                    title = "Test title",
+                    artist = "Test artist",
+                    artworkUrl = "",
+                    isPlaying = true,
+                    progress = 0.5f,
+                ),
+            invisible = false,
+        )
     MiniPlayer(
         state = state,
         windowWidthSizeClass = WindowWidthSizeClass.Compact,
         onClick = {},
         onNext = {},
         onPrevious = {},
-        onPlayPauseClick = {}
+        onPlayPauseClick = {},
     )
 }

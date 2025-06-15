@@ -9,17 +9,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 
 @Composable
-fun LazyGridState.OnBottomReached(
-    loadMore: () -> Unit
-) {
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
+fun LazyGridState.OnBottomReached(loadMore: () -> Unit) {
+    val shouldLoadMore =
+        remember {
+            derivedStateOf {
+                val lastVisibleItem =
+                    layoutInfo.visibleItemsInfo.lastOrNull()
+                        ?: return@derivedStateOf true
 
-            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
+                lastVisibleItem.index == layoutInfo.totalItemsCount - 1
+            }
         }
-    }
 
     LaunchedEffect(shouldLoadMore) {
         snapshotFlow { shouldLoadMore.value }
@@ -32,17 +32,17 @@ fun LazyGridState.OnBottomReached(
 }
 
 @Composable
-fun LazyListState.OnBottomReached(
-    loadMore: () -> Unit
-) {
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
+fun LazyListState.OnBottomReached(loadMore: () -> Unit) {
+    val shouldLoadMore =
+        remember {
+            derivedStateOf {
+                val lastVisibleItem =
+                    layoutInfo.visibleItemsInfo.lastOrNull()
+                        ?: return@derivedStateOf true
 
-            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
+                lastVisibleItem.index == layoutInfo.totalItemsCount - 1
+            }
         }
-    }
 
     LaunchedEffect(shouldLoadMore) {
         snapshotFlow { shouldLoadMore.value }

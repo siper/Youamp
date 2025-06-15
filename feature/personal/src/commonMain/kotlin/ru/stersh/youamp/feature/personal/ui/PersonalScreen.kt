@@ -76,7 +76,7 @@ fun PersonalScreen(
         onPlaylistsClick = onPlaylistsClick,
         onFavoriteSongsClick = onFavoriteSongsClick,
         onFavoriteAlbumsClick = onFavoriteAlbumsClick,
-        onFavoriteArtistsClick = onFavoriteArtistsClick
+        onFavoriteArtistsClick = onFavoriteArtistsClick,
     )
 }
 
@@ -94,15 +94,16 @@ private fun PersonalScreen(
     onArtistClick: (id: String) -> Unit,
     onPlaylistClick: (id: String) -> Unit,
 ) {
-    val layoutState = when {
-        state.progress -> LayoutStateUi.Progress
-        state.error -> LayoutStateUi.Error
-        state.data?.isEmpty == true -> LayoutStateUi.Empty
-        else -> LayoutStateUi.Content
-    }
+    val layoutState =
+        when {
+            state.progress -> LayoutStateUi.Progress
+            state.error -> LayoutStateUi.Error
+            state.data?.isEmpty == true -> LayoutStateUi.Empty
+            else -> LayoutStateUi.Content
+        }
     PullToRefresh(
         isRefreshing = state.refreshing,
-        onRefresh = onRefresh
+        onRefresh = onRefresh,
     ) {
         StateLayout(
             state = layoutState,
@@ -116,7 +117,7 @@ private fun PersonalScreen(
                     onPlaylistsClick = onPlaylistsClick,
                     onFavoriteSongsClick = onFavoriteSongsClick,
                     onFavoriteAlbumsClick = onFavoriteAlbumsClick,
-                    onFavoriteArtistsClick = onFavoriteArtistsClick
+                    onFavoriteArtistsClick = onFavoriteArtistsClick,
                 )
             },
             progress = {
@@ -128,9 +129,10 @@ private fun PersonalScreen(
             empty = {
                 EmptyLayout()
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background),
         )
     }
 }
@@ -139,10 +141,11 @@ private fun PersonalScreen(
 private fun Progress(modifier: Modifier = Modifier) {
     SkeletonLayout(modifier = modifier) {
         LazyColumn(
-            modifier = Modifier.padding(
-                horizontal = 24.dp
-            ),
-            userScrollEnabled = false
+            modifier =
+                Modifier.padding(
+                    horizontal = 24.dp,
+                ),
+            userScrollEnabled = false,
         ) {
             item {
                 SectionSkeleton()
@@ -150,7 +153,7 @@ private fun Progress(modifier: Modifier = Modifier) {
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false
+                    userScrollEnabled = false,
                 ) {
                     repeat(3) {
                         item { PlaylistSkeleton() }
@@ -163,7 +166,7 @@ private fun Progress(modifier: Modifier = Modifier) {
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false
+                    userScrollEnabled = false,
                 ) {
                     repeat(2) {
                         item { SongCardChunkSkeleton() }
@@ -176,7 +179,7 @@ private fun Progress(modifier: Modifier = Modifier) {
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false
+                    userScrollEnabled = false,
                 ) {
                     repeat(3) {
                         item { AlbumSkeleton() }
@@ -208,7 +211,7 @@ private fun Content(
     onAlbumClick: (id: String) -> Unit,
     onArtistClick: (id: String) -> Unit,
     onPlaylistClick: (id: String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (data == null) {
         return
@@ -218,7 +221,7 @@ private fun Content(
             modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background),
-        contentPadding = PaddingValues(bottom = 24.dp)
+        contentPadding = PaddingValues(bottom = 24.dp),
     ) {
         if (data.playlists.isNotEmpty()) {
             item {
@@ -230,7 +233,7 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(playlistsState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = playlistsState,
@@ -244,7 +247,7 @@ private fun Content(
                                     onClick = {
                                         onPlaylistClick(it.id)
                                     },
-                                    modifier = Modifier.requiredWidth(PlaylistItemDefaults.Width)
+                                    modifier = Modifier.requiredWidth(PlaylistItemDefaults.Width),
                                 )
                             }
                         }
@@ -262,14 +265,14 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(lazyListState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = lazyListState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         data.songs.forEach { songChunk ->
                             item {
@@ -312,13 +315,13 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(lazyListState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = lazyListState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         data.albums.forEach {
                             item {
@@ -329,7 +332,7 @@ private fun Content(
                                     onClick = {
                                         onAlbumClick(it.id)
                                     },
-                                    modifier = Modifier.requiredWidth(AlbumItemDefaults.Width)
+                                    modifier = Modifier.requiredWidth(AlbumItemDefaults.Width),
                                 )
                             }
                         }
@@ -347,13 +350,13 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(lazyListState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = lazyListState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         data.artists.forEach {
                             item {
@@ -362,7 +365,7 @@ private fun Content(
                                     artworkUrl = it.artworkUrl,
                                     onClick = {
                                         onArtistClick(it.id)
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -377,109 +380,102 @@ private fun Content(
 @Preview
 private fun PersonalScreenPreview() {
     YouampPlayerTheme {
-        val state = StateUi(
-            progress = false,
-            error = false,
-            data = PersonalDataUi(
-                playlists = persistentListOf(
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = false
+        val state =
+            StateUi(
+                progress = false,
+                error = false,
+                data =
+                    PersonalDataUi(
+                        playlists =
+                            persistentListOf(
+                                PlaylistUi(
+                                    id = "Verna",
+                                    title = "Sedric",
+                                    artworkUrl = null,
+                                ),
+                                PlaylistUi(
+                                    id = "Verna",
+                                    title = "Sedric",
+                                    artworkUrl = null,
+                                ),
+                                PlaylistUi(
+                                    id = "Verna",
+                                    title = "Sedric",
+                                    artworkUrl = null,
+                                ),
+                                PlaylistUi(
+                                    id = "Verna",
+                                    title = "Sedric",
+                                    artworkUrl = null,
+                                ),
+                            ),
+                        songs =
+                            persistentListOf(
+                                persistentListOf(
+                                    SongUi(
+                                        id = "Indra",
+                                        title = "Britanny",
+                                        artist = null,
+                                        artworkUrl = null,
+                                    ),
+                                    SongUi(
+                                        id = "Raffaele",
+                                        title = "Brittny",
+                                        artist = null,
+                                        artworkUrl = null,
+                                    ),
+                                    SongUi(
+                                        id = "Patsy",
+                                        title = "Brittiney",
+                                        artist = null,
+                                        artworkUrl = null,
+                                    ),
+                                ),
+                                persistentListOf(
+                                    SongUi(
+                                        id = "Julieta",
+                                        title = "Tykia",
+                                        artist = null,
+                                        artworkUrl = null,
+                                    ),
+                                    SongUi(
+                                        id = "Kofi",
+                                        title = "Lyla",
+                                        artist = null,
+                                        artworkUrl = null,
+                                    ),
+                                    SongUi(
+                                        id = "Kofi",
+                                        title = "Lyla",
+                                        artist = null,
+                                        artworkUrl = null,
+                                    ),
+                                ),
+                            ),
+                        albums =
+                            persistentListOf(
+                                AlbumUi(
+                                    id = "Kashif",
+                                    title = "Tremaine",
+                                    artist = "Slipknot",
+                                    artworkUrl = null,
+                                ),
+                            ),
+                        artists =
+                            persistentListOf(
+                                ArtistUi(
+                                    id = "Soloman",
+                                    name = "Eliana",
+                                    artworkUrl = null,
+                                ),
+                                ArtistUi(
+                                    id = "Tari",
+                                    name = "Shamir",
+                                    artworkUrl = null,
+                                ),
+                            ),
                     ),
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    PlaylistUi(
-                        id = "Verna",
-                        title = "Sedric",
-                        artworkUrl = null,
-                        isPlaying = true
-                    ),
-                ),
-                songs = persistentListOf(
-                    persistentListOf(
-                        SongUi(
-                            id = "Indra",
-                            title = "Britanny",
-                            artist = null,
-                            artworkUrl = null,
-                            isPlaying = false
-                        ),
-                        SongUi(
-                            id = "Raffaele",
-                            title = "Brittny",
-                            artist = null,
-                            artworkUrl = null,
-                            isPlaying = false
-                        ),
-                        SongUi(
-                            id = "Patsy",
-                            title = "Brittiney",
-                            artist = null,
-                            artworkUrl = null,
-                            isPlaying = false
-                        )
-                    ),
-                    persistentListOf(
-                        SongUi(
-                            id = "Julieta",
-                            title = "Tykia",
-                            artist = null,
-                            artworkUrl = null,
-                            isPlaying = false
-                        ),
-                        SongUi(
-                            id = "Kofi",
-                            title = "Lyla",
-                            artist = null,
-                            artworkUrl = null,
-                            isPlaying = false
-                        ),
-                        SongUi(
-                            id = "Kofi",
-                            title = "Lyla",
-                            artist = null,
-                            artworkUrl = null,
-                            isPlaying = false,
-                        )
-                    )
-                ),
-                albums = persistentListOf(
-                    AlbumUi(
-                        id = "Kashif",
-                        title = "Tremaine",
-                        artist = "Slipknot",
-                        artworkUrl = null,
-                        isPlaying = false
-                    )
-                ),
-                artists = persistentListOf(
-                    ArtistUi(
-                        id = "Soloman",
-                        name = "Eliana",
-                        artworkUrl = null,
-                        isPlaying = false
-                    ),
-                    ArtistUi(
-                        id = "Tari",
-                        name = "Shamir",
-                        artworkUrl = null,
-                        isPlaying = false
-                    )
-                )
             )
-        )
         PersonalScreen(
             state = state,
             onRetry = {},
@@ -491,7 +487,7 @@ private fun PersonalScreenPreview() {
             onPlaylistsClick = {},
             onFavoriteSongsClick = {},
             onFavoriteAlbumsClick = {},
-            onFavoriteArtistsClick = {}
+            onFavoriteArtistsClick = {},
         )
     }
 }

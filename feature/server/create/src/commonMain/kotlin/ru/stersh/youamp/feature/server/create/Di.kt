@@ -6,9 +6,13 @@ import ru.stersh.youamp.feature.server.create.data.ServerRepositoryImpl
 import ru.stersh.youamp.feature.server.create.domain.ServerRepository
 import ru.stersh.youamp.feature.server.create.ui.ServerCreateViewModel
 
-val serverCreateModule = module {
-    factory<ServerRepository> { ServerRepositoryImpl(get()) }
-    viewModel { (serverId: Long?) ->
-        ServerCreateViewModel(serverId, get())
+val serverCreateModule =
+    module {
+        factory<ServerRepository> { ServerRepositoryImpl(get()) }
+        viewModel { (serverId: Long?) ->
+            ServerCreateViewModel(
+                serverId,
+                get(),
+            )
+        }
     }
-}

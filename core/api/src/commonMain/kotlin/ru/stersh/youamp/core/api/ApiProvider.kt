@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import ru.stersh.subsonic.api.SubsonicApi
 
 interface ApiProvider {
-
     suspend fun getApi(): SubsonicApi
 
     suspend fun getApiId(): Long?

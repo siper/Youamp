@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import ru.stersh.youamp.feature.personal.domain.PersonalRepository
 
 internal class PersonalViewModel(
-    private val personalRepository: PersonalRepository
+    private val personalRepository: PersonalRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -43,8 +43,7 @@ internal class PersonalViewModel(
                                 error = true,
                             )
                         }
-                    }
-                    .collect { personal ->
+                    }.collect { personal ->
                         _state.update {
                             it.copy(
                                 progress = false,
@@ -62,7 +61,7 @@ internal class PersonalViewModel(
             it.copy(
                 progress = true,
                 error = false,
-                data = null
+                data = null,
             )
         }
         subscribeState()

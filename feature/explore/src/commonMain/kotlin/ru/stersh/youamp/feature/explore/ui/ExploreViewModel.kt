@@ -24,7 +24,7 @@ internal class ExploreViewModel(
     private val repository: ExploreRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
     private val player: Player,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -37,42 +37,43 @@ internal class ExploreViewModel(
     }
 
     private fun subscribeState() {
-        stateJob = viewModelScope.launch {
-            repository
-                .getExplore()
-                .map { it.toUi() }
-                .flowOn(Dispatchers.IO)
-                .catch {
-                    Logger.w(it) { "Error subscribing state" }
-                    _state.update {
-                        it.copy(
-                            refreshing = false,
-                            progress = false,
-                            error = true
-                        )
+        stateJob =
+            viewModelScope.launch {
+                repository
+                    .getExplore()
+                    .map { it.toUi() }
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        Logger.w(it) { "Error subscribing state" }
+                        _state.update {
+                            it.copy(
+                                refreshing = false,
+                                progress = false,
+                                error = true,
+                            )
+                        }
+                    }.collect { explore ->
+                        _state.update {
+                            it.copy(
+                                refreshing = false,
+                                progress = false,
+                                data = explore,
+                            )
+                        }
                     }
-                }
-                .collect { explore ->
-                    _state.update {
-                        it.copy(
-                            refreshing = false,
-                            progress = false,
-                            data = explore
-                        )
-                    }
-                }
-        }
+            }
     }
 
-    fun refresh() = viewModelScope.launch {
-        _state.update {
-            it.copy(refreshing = true)
+    fun refresh() =
+        viewModelScope.launch {
+            _state.update {
+                it.copy(refreshing = true)
+            }
+            runCatching { repository.refresh() }
+                .onFailure { Logger.w(it) { "Filed to refresh" } }
+            stateJob?.cancel()
+            subscribeState()
         }
-        runCatching { repository.refresh() }
-            .onFailure { Logger.w(it) { "Filed to refresh" } }
-        stateJob?.cancel()
-        subscribeState()
-    }
 
     fun retry() {
         stateJob?.cancel()
@@ -80,7 +81,7 @@ internal class ExploreViewModel(
             it.copy(
                 progress = true,
                 error = false,
-                data = null
+                data = null,
             )
         }
         subscribeState()
@@ -88,17 +89,20 @@ internal class ExploreViewModel(
 
     fun onPlayPauseAudioSource(source: AudioSource) {
         viewModelScope.launch {
-            val playingSource = playerQueueAudioSourceManager
-                .playingSource()
-                .first()
+            val playingSource =
+                playerQueueAudioSourceManager
+                    .playingSource()
+                    .first()
             val serverId = apiProvider.requireApiId()
-            val isPlaying = player
-                .getIsPlaying()
-                .first()
-            val isSourcePlaying = playingSource?.equals(
-                serverId,
-                source
-            ) == true
+            val isPlaying =
+                player
+                    .getIsPlaying()
+                    .first()
+            val isSourcePlaying =
+                playingSource?.equals(
+                    serverId,
+                    source,
+                ) == true
             if (isSourcePlaying && isPlaying) {
                 player.pause()
                 return@launch

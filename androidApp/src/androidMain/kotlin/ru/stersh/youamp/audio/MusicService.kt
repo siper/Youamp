@@ -22,7 +22,6 @@ import ru.stersh.youamp.core.player.PlayerHandler
 import co.touchlab.kermit.Logger as Log
 
 class MusicService : MediaLibraryService() {
-
     private val autoRepository: AutoRepository by inject()
 
     private val player: Player by inject()
@@ -30,33 +29,48 @@ class MusicService : MediaLibraryService() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    private val playerListener = object : Player.Listener {
-        override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-            Handler(Looper.getMainLooper()).post {
-                onUpdateNotification(mediaSession, true)
+    private val playerListener =
+        object : Player.Listener {
+            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                Handler(Looper.getMainLooper()).post {
+                    onUpdateNotification(
+                        mediaSession,
+                        true,
+                    )
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                Log.e(error) { "Player error" }
             }
         }
-
-        override fun onPlayerError(error: PlaybackException) {
-            Log.e(error) { "Player error" }
-        }
-    }
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
 
-        val autoCallback = AutoMediaSessionCallback(
-            scope = scope,
-            autoRepository = autoRepository
-        )
+        val autoCallback =
+            AutoMediaSessionCallback(
+                scope = scope,
+                autoRepository = autoRepository,
+            )
 
-        mediaSession = MediaLibrarySession
-            .Builder(this, player, autoCallback)
-            .build()
+        mediaSession =
+            MediaLibrarySession
+                .Builder(
+                    this,
+                    player,
+                    autoCallback,
+                ).build()
 
         val intent = packageManager.getLaunchIntentForPackage(packageName)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
+            )
 
         mediaSession.setSessionActivity(pendingIntent)
 

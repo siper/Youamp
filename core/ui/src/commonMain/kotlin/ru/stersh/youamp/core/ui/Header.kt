@@ -28,7 +28,7 @@ fun HeaderLayout(
     title: @Composable HeaderTitleScope.() -> Unit = {},
     subtitle: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (isExpandedWidth) {
         HeaderLayoutExpanded(
@@ -36,7 +36,7 @@ fun HeaderLayout(
             title = title,
             subtitle = subtitle,
             actions = actions,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         HeaderLayoutCompact(
@@ -44,7 +44,7 @@ fun HeaderLayout(
             title = title,
             subtitle = subtitle,
             actions = actions,
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -61,22 +61,27 @@ private fun HeaderLayoutExpanded(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(24.dp),
-        modifier = modifier
-            .padding(start = 48.dp, end = 48.dp, bottom = 24.dp)
-            .requiredHeight(HeaderDefaults.ExpandedImageSize)
+        modifier =
+            modifier
+                .padding(
+                    start = 48.dp,
+                    end = 48.dp,
+                    bottom = 24.dp,
+                ).requiredHeight(HeaderDefaults.ExpandedImageSize),
     ) {
         image?.let {
             Box(
-                modifier = Modifier
-                    .size(HeaderDefaults.ExpandedImageSize)
-                    .aspectRatio(1f)
+                modifier =
+                    Modifier
+                        .size(HeaderDefaults.ExpandedImageSize)
+                        .aspectRatio(1f),
             ) {
                 image()
             }
         }
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier.fillMaxHeight(),
         ) {
             Column {
                 ProvideTextStyle(style.titleStyle) {
@@ -87,7 +92,7 @@ private fun HeaderLayoutExpanded(
                 }
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(24.dp)
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 actions()
             }
@@ -107,10 +112,11 @@ private fun HeaderLayoutCompact(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 12.dp)
-            .fillMaxWidth()
+        modifier =
+            modifier
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 12.dp)
+                .fillMaxWidth(),
     ) {
         image?.invoke()
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -123,7 +129,7 @@ private fun HeaderLayoutCompact(
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             actions()
         }
@@ -132,60 +138,56 @@ private fun HeaderLayoutCompact(
 
 @Immutable
 interface HeaderTitleScope {
-
     @Stable
     fun Modifier.singleHeader(): Modifier
 }
 
 private object HeaderTitleCompactScopeInstance : HeaderTitleScope {
-
     @Stable
-    override fun Modifier.singleHeader(): Modifier {
-        return this
-            .padding(horizontal = 40.dp, vertical = 80.dp)
-            .fillMaxWidth()
-    }
+    override fun Modifier.singleHeader(): Modifier =
+        this
+            .padding(
+                horizontal = 40.dp,
+                vertical = 80.dp,
+            ).fillMaxWidth()
 }
 
 private object HeaderTitleExpandedScopeInstance : HeaderTitleScope {
-
     @Stable
-    override fun Modifier.singleHeader(): Modifier {
-        return this
+    override fun Modifier.singleHeader(): Modifier =
+        this
             .fillMaxWidth()
-    }
 }
 
 @Immutable
 data class HeaderStyle(
     val titleStyle: TextStyle,
-    val subtitleStyle: TextStyle
+    val subtitleStyle: TextStyle,
 )
 
 @Stable
 object HeaderDefaults {
-
     val ExpandedImageSize = 200.dp
 
     @Composable
-    fun expanded(): HeaderStyle {
-        return HeaderStyle(
+    fun expanded(): HeaderStyle =
+        HeaderStyle(
             titleStyle = MaterialTheme.typography.displayMedium.merge(textAlign = TextAlign.Start),
-            subtitleStyle = MaterialTheme.typography.titleMedium.merge(
-                textAlign = TextAlign.Start,
-                color = MaterialTheme.colorScheme.secondary
-            )
+            subtitleStyle =
+                MaterialTheme.typography.titleMedium.merge(
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.secondary,
+                ),
         )
-    }
 
     @Composable
-    fun compact(): HeaderStyle {
-        return HeaderStyle(
+    fun compact(): HeaderStyle =
+        HeaderStyle(
             titleStyle = MaterialTheme.typography.headlineLarge.merge(textAlign = TextAlign.Center),
-            subtitleStyle = MaterialTheme.typography.bodyLarge.merge(
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.secondary
-            )
+            subtitleStyle =
+                MaterialTheme.typography.bodyLarge.merge(
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.secondary,
+                ),
         )
-    }
 }

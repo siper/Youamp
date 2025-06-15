@@ -40,15 +40,15 @@ import ru.stersh.youamp.core.ui.SongItem
 import ru.stersh.youamp.core.ui.SongSkeleton
 import ru.stersh.youamp.core.ui.isCompactWidth
 
-
 @Composable
 fun PlaylistInfoScreen(
     id: String,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
-    val viewModel = koinViewModel<PlaylistInfoViewModel> {
-        parametersOf(id)
-    }
+    val viewModel =
+        koinViewModel<PlaylistInfoViewModel> {
+            parametersOf(id)
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
     PlaylistInfoScreen(
         state = state,
@@ -56,7 +56,7 @@ fun PlaylistInfoScreen(
         onPlayAll = viewModel::playAll,
         onPlayShuffled = viewModel::playShuffled,
         onPlaySong = viewModel::onPlaySong,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -76,9 +76,9 @@ private fun PlaylistInfoScreen(
                 title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         when {
             state.progress -> {
@@ -95,7 +95,7 @@ private fun PlaylistInfoScreen(
                     info = state.playlistInfo,
                     onPlayAll = onPlayAll,
                     onPlayShuffled = onPlayShuffled,
-                    onPlaySong = onPlaySong
+                    onPlaySong = onPlaySong,
                 )
             }
         }
@@ -108,34 +108,34 @@ private fun Content(
     info: PlaylistInfoUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
-    onPlaySong: (id: String) -> Unit
+    onPlaySong: (id: String) -> Unit,
 ) {
     if (info.songs.isEmpty()) {
         Column(modifier = Modifier.padding(padding)) {
             Header(
                 info = info,
                 onPlayAll = onPlayAll,
-                onPlayShuffled = onPlayShuffled
+                onPlayShuffled = onPlayShuffled,
             )
             EmptyLayout(modifier = Modifier.weight(1f))
         }
     } else {
         LazyColumn(
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
         ) {
             item(
                 key = "header",
-                contentType = "header"
+                contentType = "header",
             ) {
                 Header(
                     info = info,
                     onPlayAll = onPlayAll,
-                    onPlayShuffled = onPlayShuffled
+                    onPlayShuffled = onPlayShuffled,
                 )
             }
             items(
                 items = info.songs,
-                contentType = { "song" }
+                contentType = { "song" },
             ) {
                 SongItem(
                     title = it.title,
@@ -143,7 +143,7 @@ private fun Content(
                     artworkUrl = it.artworkUrl,
                     isCurrent = it.isCurrent,
                     isPlaying = it.isPlaying,
-                    onClick = { onPlaySong(it.id) }
+                    onClick = { onPlaySong(it.id) },
                 )
             }
         }
@@ -154,40 +154,40 @@ private fun Content(
 private fun Header(
     info: PlaylistInfoUi,
     onPlayAll: () -> Unit,
-    onPlayShuffled: () -> Unit
+    onPlayShuffled: () -> Unit,
 ) {
     HeaderLayout(
         image = {
             Artwork(
                 artworkUrl = info.artworkUrl,
                 placeholder = Icons.Rounded.MusicNote,
-                modifier = Modifier
-                    .then(
-                        if (isCompactWidth) {
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(48.dp)
-                        } else {
-                            Modifier
-                        }
-                    )
-                    .aspectRatio(1f)
+                modifier =
+                    Modifier
+                        .then(
+                            if (isCompactWidth) {
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(48.dp)
+                            } else {
+                                Modifier
+                            },
+                        ).aspectRatio(1f),
             )
         },
         title = {
             Text(
                 text = info.title,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         actions = {
             PlayAllButton(
-                onClick = onPlayAll
+                onClick = onPlayAll,
             )
             PlayShuffledButton(
-                onClick = onPlayShuffled
+                onClick = onPlayShuffled,
             )
-        }
+        },
     )
 }
 
@@ -198,51 +198,53 @@ private fun Progress(padding: PaddingValues) {
             HeaderLayout(
                 image = {
                     SkeletonItem(
-                        modifier = if (isCompactWidth) {
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(48.dp)
-                        } else {
-                            Modifier
-                        }
-                            .aspectRatio(1f)
+                        modifier =
+                            if (isCompactWidth) {
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(48.dp)
+                            } else {
+                                Modifier
+                            }.aspectRatio(1f),
                     )
                 },
                 title = {
                     if (isCompactWidth) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        280.dp,
-                                        40.dp
-                                    )
-                                    .fillMaxWidth()
-                                    .align(Alignment.Center)
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            280.dp,
+                                            40.dp,
+                                        ).fillMaxWidth()
+                                        .align(Alignment.Center),
                             )
                         }
                     } else {
                         SkeletonItem(
-                            modifier = Modifier.size(
-                                300.dp,
-                                48.dp
-                            )
+                            modifier =
+                                Modifier.size(
+                                    300.dp,
+                                    48.dp,
+                                ),
                         )
                     }
                 },
                 actions = {
                     repeat(2) {
                         SkeletonItem(
-                            modifier = Modifier
-                                .size(64.dp)
-                                .clip(CircleShape)
+                            modifier =
+                                Modifier
+                                    .size(64.dp)
+                                    .clip(CircleShape),
                         )
                     }
-                }
+                },
             )
             LazyColumn(
                 userScrollEnabled = false,
-                modifier = Modifier.padding(top = 24.dp)
+                modifier = Modifier.padding(top = 24.dp),
             ) {
                 repeat(5) {
                     item {
@@ -264,7 +266,7 @@ private fun PlaylistInfoScreenProgressPreview() {
             onPlayAll = {},
             onPlayShuffled = {},
             onPlaySong = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -272,47 +274,50 @@ private fun PlaylistInfoScreenProgressPreview() {
 @Preview
 @Composable
 private fun PlaylistInfoScreenPreview() {
-    val songs = persistentListOf(
-        PlaylistSongUi(
-            id = "1",
-            title = "Test song with veeeeeeeeeeeeery long title",
-            artist = "Cool artist",
-            artworkUrl = null,
-            isCurrent = false,
-            isPlaying = false
-        ),
-        PlaylistSongUi(
-            id = "2",
-            title = "Test song 2",
-            artist = "Cool artist",
-            artworkUrl = null,
-            isCurrent = false,
-            isPlaying = false
-        ),
-        PlaylistSongUi(
-            id = "3",
-            title = "Test song 3",
-            artist = null,
-            artworkUrl = null,
-            isCurrent = true,
-            isPlaying = false
+    val songs =
+        persistentListOf(
+            PlaylistSongUi(
+                id = "1",
+                title = "Test song with veeeeeeeeeeeeery long title",
+                artist = "Cool artist",
+                artworkUrl = null,
+                isCurrent = false,
+                isPlaying = false,
+            ),
+            PlaylistSongUi(
+                id = "2",
+                title = "Test song 2",
+                artist = "Cool artist",
+                artworkUrl = null,
+                isCurrent = false,
+                isPlaying = false,
+            ),
+            PlaylistSongUi(
+                id = "3",
+                title = "Test song 3",
+                artist = null,
+                artworkUrl = null,
+                isCurrent = true,
+                isPlaying = false,
+            ),
         )
-    )
     MaterialTheme {
         PlaylistInfoScreen(
-            state = PlaylistInfoScreenStateUi(
-                progress = false,
-                playlistInfo = PlaylistInfoUi(
-                    artworkUrl = null,
-                    title = "Test",
-                    songs = songs
-                )
-            ),
+            state =
+                PlaylistInfoScreenStateUi(
+                    progress = false,
+                    playlistInfo =
+                        PlaylistInfoUi(
+                            artworkUrl = null,
+                            title = "Test",
+                            songs = songs,
+                        ),
+                ),
             onRetry = {},
             onPlayAll = {},
             onPlayShuffled = {},
             onPlaySong = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

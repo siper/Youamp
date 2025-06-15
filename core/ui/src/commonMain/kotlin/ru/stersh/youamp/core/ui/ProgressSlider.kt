@@ -41,79 +41,116 @@ fun ProgressSlider(
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onValueChangeFinished: (() -> Unit)? = null
+    onValueChangeFinished: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
 
     val height = with(density) { 20.dp.roundToPx() }
     var width by remember { mutableIntStateOf(0) }
 
-    var valueState by remember(value, valueRange) {
+    var valueState by remember(
+        value,
+        valueRange,
+    ) {
         mutableFloatStateOf(value)
     }
 
-    val state = rememberDraggableState { delta ->
-        val currentThumbX = valueToXPositionPx(valueState, valueRange, width.toFloat())
-        val newThumbX = currentThumbX + delta
-        valueState = calculateNewValue(valueState, valueRange, currentThumbX, newThumbX)
-        onValueChange(valueState)
-    }
-
-    val draggable = Modifier.draggable(
-        state = state,
-        orientation = Orientation.Horizontal,
-        enabled = enabled,
-        interactionSource = interactionSource,
-        onDragStopped = { onValueChangeFinished?.invoke() }
-    )
-    val clicks = Modifier.pointerInput(Unit) {
-        detectTapGestures { offset ->
-            val currentThumbX = valueToXPositionPx(valueState, valueRange, width.toFloat())
-            val newThumbX = offset.x
-            valueState = calculateNewValue(valueState, valueRange, currentThumbX, newThumbX)
+    val state =
+        rememberDraggableState { delta ->
+            val currentThumbX =
+                valueToXPositionPx(
+                    valueState,
+                    valueRange,
+                    width.toFloat(),
+                )
+            val newThumbX = currentThumbX + delta
+            valueState =
+                calculateNewValue(
+                    valueState,
+                    valueRange,
+                    currentThumbX,
+                    newThumbX,
+                )
             onValueChange(valueState)
-            onValueChangeFinished?.invoke()
         }
-    }
+
+    val draggable =
+        Modifier.draggable(
+            state = state,
+            orientation = Orientation.Horizontal,
+            enabled = enabled,
+            interactionSource = interactionSource,
+            onDragStopped = { onValueChangeFinished?.invoke() },
+        )
+    val clicks =
+        Modifier.pointerInput(Unit) {
+            detectTapGestures { offset ->
+                val currentThumbX =
+                    valueToXPositionPx(
+                        valueState,
+                        valueRange,
+                        width.toFloat(),
+                    )
+                val newThumbX = offset.x
+                valueState =
+                    calculateNewValue(
+                        valueState,
+                        valueRange,
+                        currentThumbX,
+                        newThumbX,
+                    )
+                onValueChange(valueState)
+                onValueChangeFinished?.invoke()
+            }
+        }
     Layout(
         content = {
             Track(
                 value = valueState,
                 valueRange = valueRange,
-                modifier = clicks
+                modifier = clicks,
             )
             Thumb(
-                modifier = draggable
+                modifier = draggable,
             )
         },
-        modifier = modifier.onGloballyPositioned {
-            width = it.size.width
-        },
+        modifier =
+            modifier.onGloballyPositioned {
+                width = it.size.width
+            },
     ) { measurables, constraints ->
 
         val trackMeasurable = measurables[0]
         val thumbMeasurable = measurables[1]
 
-        val newConstraints = constraints.copy(
-            maxHeight = height,
-            minHeight = height
-        )
+        val newConstraints =
+            constraints.copy(
+                maxHeight = height,
+                minHeight = height,
+            )
 
         val thumbPlaceable = thumbMeasurable.measure(newConstraints)
         val trackPlaceable = trackMeasurable.measure(newConstraints)
 
         val thumbX =
-            valueToXPositionPx(valueState, valueRange, newConstraints.maxWidth.toFloat()) - thumbPlaceable.width / 2
+            valueToXPositionPx(
+                valueState,
+                valueRange,
+                newConstraints.maxWidth.toFloat(),
+            ) - thumbPlaceable.width / 2
 
-        layout(newConstraints.maxWidth, newConstraints.maxHeight) {
+        layout(
+            newConstraints.maxWidth,
+            newConstraints.maxHeight,
+        ) {
             trackPlaceable.placeRelative(
                 x = 0,
-                y = 0
+                y = 0,
             )
             if (!thumbX.isNaN()) {
                 thumbPlaceable.placeRelative(
                     x = thumbX.roundToInt(),
-                    y = newConstraints.maxHeight / 2 - thumbPlaceable.height / 2
+                    y = newConstraints.maxHeight / 2 - thumbPlaceable.height / 2,
                 )
             }
         }
@@ -124,23 +161,21 @@ private fun calculateNewValue(
     currentValue: Float,
     valueRange: ClosedFloatingPointRange<Float>,
     currentThumbX: Float,
-    newThumbX: Float
-): Float {
-    return if (newThumbX > 0) {
+    newThumbX: Float,
+): Float =
+    if (newThumbX > 0) {
         val newValue = currentValue / currentThumbX * newThumbX
         valueRange.normalize(newValue)
     } else {
         currentValue
     }
-}
 
-private fun ClosedFloatingPointRange<Float>.normalize(value: Float): Float {
-    return when {
+private fun ClosedFloatingPointRange<Float>.normalize(value: Float): Float =
+    when {
         value < this.start -> this.start
         value > this.endInclusive -> this.endInclusive
         else -> value
     }
-}
 
 @Composable
 private fun Track(
@@ -148,30 +183,51 @@ private fun Track(
     modifier: Modifier = Modifier,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
 ) {
-
     val trackInactiveColor = MaterialTheme.colorScheme.secondaryContainer
     val trackActiveColor = MaterialTheme.colorScheme.primary
     val progressWidth = with(LocalDensity.current) { 4.dp.toPx() }
 
     Canvas(
-        modifier = modifier
-            .height(20.dp)
-            .fillMaxWidth()
+        modifier =
+            modifier
+                .height(20.dp)
+                .fillMaxWidth(),
     ) {
-        val thumbX = valueToXPositionPx(value, valueRange, size.width)
+        val thumbX =
+            valueToXPositionPx(
+                value,
+                valueRange,
+                size.width,
+            )
         drawLine(
             color = trackInactiveColor,
             strokeWidth = progressWidth,
             cap = StrokeCap.Round,
-            start = Offset(0f, center.y),
-            end = Offset(size.width, center.y)
+            start =
+                Offset(
+                    0f,
+                    center.y,
+                ),
+            end =
+                Offset(
+                    size.width,
+                    center.y,
+                ),
         )
         drawLine(
             color = trackActiveColor,
             strokeWidth = progressWidth,
             cap = StrokeCap.Round,
-            start = Offset(0f, center.y),
-            end = Offset(thumbX, center.y)
+            start =
+                Offset(
+                    0f,
+                    center.y,
+                ),
+            end =
+                Offset(
+                    thumbX,
+                    center.y,
+                ),
         )
     }
 }
@@ -179,23 +235,24 @@ private fun Track(
 private fun valueToXPositionPx(
     value: Float,
     valueRange: ClosedFloatingPointRange<Float>,
-    trackWidth: Float
+    trackWidth: Float,
 ): Float {
     val raw = (value - valueRange.start) / (valueRange.endInclusive - valueRange.start)
-    return raw.coerceIn(0f, 1f) * trackWidth
+    return raw.coerceIn(
+        0f,
+        1f,
+    ) * trackWidth
 }
 
 @Composable
-private fun Thumb(
-    modifier: Modifier = Modifier
-) {
+private fun Thumb(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.primary,
-                shape = CircleShape
-            )
-            .size(20.dp)
+        modifier =
+            modifier
+                .background(
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = CircleShape,
+                ).size(20.dp),
     )
 }
 
@@ -206,7 +263,7 @@ private fun ProgressSliderPreview() {
         Surface {
             ProgressSlider(
                 value = 0.2f,
-                onValueChange = {}
+                onValueChange = {},
             )
         }
     }

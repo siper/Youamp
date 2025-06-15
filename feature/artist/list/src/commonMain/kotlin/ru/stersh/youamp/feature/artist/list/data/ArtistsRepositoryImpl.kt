@@ -7,10 +7,11 @@ import ru.stersh.youamp.core.api.ApiProvider
 import ru.stersh.youamp.feature.artist.list.domain.Artist
 import ru.stersh.youamp.feature.artist.list.domain.ArtistsRepository
 
-internal class ArtistsRepositoryImpl(private val apiProvider: ApiProvider) : ArtistsRepository {
-
-    override suspend fun getArtists(): Flow<List<Artist>> {
-        return apiProvider
+internal class ArtistsRepositoryImpl(
+    private val apiProvider: ApiProvider,
+) : ArtistsRepository {
+    override suspend fun getArtists(): Flow<List<Artist>> =
+        apiProvider
             .flowApi()
             .map { api ->
                 api
@@ -24,13 +25,10 @@ internal class ArtistsRepositoryImpl(private val apiProvider: ApiProvider) : Art
                     }
             }
 
-    }
-
-    private fun ru.stersh.subsonic.api.model.Artist.toDomain(api: SubsonicApi): Artist {
-        return Artist(
+    private fun ru.stersh.subsonic.api.model.Artist.toDomain(api: SubsonicApi): Artist =
+        Artist(
             id = id,
             name = name,
-            artworkUrl = api.getCoverArtUrl(coverArt)
+            artworkUrl = api.getCoverArtUrl(coverArt),
         )
-    }
 }

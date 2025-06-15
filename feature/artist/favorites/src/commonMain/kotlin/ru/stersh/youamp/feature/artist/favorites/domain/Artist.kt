@@ -4,5 +4,5 @@ internal data class Artist(
     val id: String,
     val name: String,
     val artworkUrl: String?,
-    val userRating: Int?
+    val userRating: Int?,
 )

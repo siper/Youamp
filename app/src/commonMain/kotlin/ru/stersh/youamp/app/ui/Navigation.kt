@@ -2,18 +2,21 @@ package ru.stersh.youamp.app.ui
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 object Main
 
 @Serializable
-data class AlbumInfo(val albumId: String)
+data class AlbumInfo(
+    val albumId: String,
+)
 
 @Serializable
 object Player
 
 @Serializable
-data class ArtistInfo(val artistId: String)
+data class ArtistInfo(
+    val artistId: String,
+)
 
 @Serializable
 object PlayQueue
@@ -28,15 +31,19 @@ object AddServer
 object ServerList
 
 @Serializable
-data class ServerEditor(val serverId: Long)
+data class ServerEditor(
+    val serverId: Long,
+)
 
 @Serializable
-data class PlaylistInfo(val playlistId: String)
+data class PlaylistInfo(
+    val playlistId: String,
+)
 
 @Serializable
 data class SongInfo(
     val songId: String,
-    val showAlbum: Boolean
+    val showAlbum: Boolean,
 )
 
 @Serializable

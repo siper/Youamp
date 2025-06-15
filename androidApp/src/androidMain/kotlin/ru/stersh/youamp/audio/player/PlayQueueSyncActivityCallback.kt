@@ -9,10 +9,12 @@ import ru.stersh.youamp.MainActivity
 import ru.stersh.youamp.player.ApiSonicPlayQueueSyncer
 
 internal class PlayQueueSyncActivityCallback(
-    private val apiSonicPlayQueueSyncer: ApiSonicPlayQueueSyncer
+    private val apiSonicPlayQueueSyncer: ApiSonicPlayQueueSyncer,
 ) : EmptyActivityLifecycleCallback() {
-
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+    override fun onActivityCreated(
+        activity: Activity,
+        savedInstanceState: Bundle?,
+    ) {
         if (activity !is MainActivity) {
             return
         }

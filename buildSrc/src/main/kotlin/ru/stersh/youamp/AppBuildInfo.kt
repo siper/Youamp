@@ -1,7 +1,6 @@
 package ru.stersh.youamp
 
 object AppBuildInfo {
-
     const val VERSION_NAME = "2.0.0-beta10"
     const val VERSION_CODE = 27
     const val PACKAGE_NAME = "ru.stersh.youamp"
@@ -13,7 +12,10 @@ object AppBuildInfo {
         return if (index == -1) {
             VERSION_NAME
         } else {
-            VERSION_NAME.substring(0, index)
+            VERSION_NAME.substring(
+                0,
+                index,
+            )
         }
     }
 }

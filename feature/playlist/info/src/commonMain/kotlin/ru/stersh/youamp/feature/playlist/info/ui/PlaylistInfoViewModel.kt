@@ -22,9 +22,8 @@ internal class PlaylistInfoViewModel(
     private val id: String,
     private val playlistInfoRepository: PlaylistInfoRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val player: Player
+    private val player: Player,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(PlaylistInfoScreenStateUi())
     val state: StateFlow<PlaylistInfoScreenStateUi>
         get() = _state
@@ -35,31 +34,44 @@ internal class PlaylistInfoViewModel(
         loadPlaylist()
     }
 
-    fun playShuffled() = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id), shuffled = true)
-    }
-
-    fun playAll() = viewModelScope.launch {
-        playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id))
-    }
-
-    fun onPlaySong(songId: String) = viewModelScope.launch {
-        val currentMediaItem = player
-            .getCurrentMediaItem()
-            .first()
-        if (currentMediaItem == null || currentMediaItem.id != songId) {
-            playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id, songId))
-            return@launch
+    fun playShuffled() =
+        viewModelScope.launch {
+            playerQueueAudioSourceManager.playSource(
+                AudioSource.Playlist(id),
+                shuffled = true,
+            )
         }
-        val isPlaying = player
-            .getIsPlaying()
-            .first()
-        if (isPlaying) {
-            player.pause()
-        } else {
-            player.play()
+
+    fun playAll() =
+        viewModelScope.launch {
+            playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id))
         }
-    }
+
+    fun onPlaySong(songId: String) =
+        viewModelScope.launch {
+            val currentMediaItem =
+                player
+                    .getCurrentMediaItem()
+                    .first()
+            if (currentMediaItem == null || currentMediaItem.id != songId) {
+                playerQueueAudioSourceManager.playSource(
+                    AudioSource.Playlist(
+                        id,
+                        songId,
+                    ),
+                )
+                return@launch
+            }
+            val isPlaying =
+                player
+                    .getIsPlaying()
+                    .first()
+            if (isPlaying) {
+                player.pause()
+            } else {
+                player.play()
+            }
+        }
 
     fun retry() {
         loadPlaylist()
@@ -71,32 +83,32 @@ internal class PlaylistInfoViewModel(
             it.copy(
                 playlistInfo = null,
                 progress = true,
-                error = false
+                error = false,
             )
         }
-        playlistInfoJob = viewModelScope.launch {
-            playlistInfoRepository
-                .getPlaylistInfo(id)
-                .map { it.toUi() }
-                .flowOn(Dispatchers.IO)
-                .catch { throwable ->
-                    Logger.w(throwable) { "Filed to load playlist info" }
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            error = true
-                        )
+        playlistInfoJob =
+            viewModelScope.launch {
+                playlistInfoRepository
+                    .getPlaylistInfo(id)
+                    .map { it.toUi() }
+                    .flowOn(Dispatchers.IO)
+                    .catch { throwable ->
+                        Logger.w(throwable) { "Filed to load playlist info" }
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                error = true,
+                            )
+                        }
+                    }.collect { playlistInfo ->
+                        _state.update {
+                            it.copy(
+                                progress = false,
+                                error = false,
+                                playlistInfo = playlistInfo,
+                            )
+                        }
                     }
-                }
-                .collect { playlistInfo ->
-                    _state.update {
-                        it.copy(
-                            progress = false,
-                            error = false,
-                            playlistInfo = playlistInfo
-                        )
-                    }
-                }
-        }
+            }
     }
 }

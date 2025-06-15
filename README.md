@@ -15,7 +15,8 @@
 
 ## About
 
-Youamp music player with Material You design for subsonic/airsonic music stream servers. Written with kotlin, jetpack
+Youamp music player with Material You design for subsonic/airsonic music stream servers. Written
+with kotlin, jetpack
 compose,
 media3 and other modern android libraries.
 
@@ -50,7 +51,8 @@ If you want help to make Youamp better, you can:
 * Star project
 * Help with translation on [crowdin](https://crowdin.com/project/youamp)
 * Test new features on your Subsonic server, or use
-  public [test servers](https://github.com/siper/Youamp/wiki/Servers-for-test). And than submit feature request or bug
+  public [test servers](https://github.com/siper/Youamp/wiki/Servers-for-test). And than submit
+  feature request or bug
   report
 * Make pull request with new feature or bugfix
 

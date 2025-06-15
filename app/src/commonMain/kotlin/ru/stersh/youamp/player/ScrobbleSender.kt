@@ -14,18 +14,19 @@ class ScrobbleSender(
 
     private val sendMutex = Mutex()
 
-    suspend fun trySendScrobble() = sendMutex.withLock {
-        if (scrobbleSent) {
-            return@withLock
+    suspend fun trySendScrobble() =
+        sendMutex.withLock {
+            if (scrobbleSent) {
+                return@withLock
+            }
+            runCatching {
+                apiProvider
+                    .getApi()
+                    .scrobble(
+                        id = id,
+                        time = System.currentTimeMillis(),
+                    )
+                scrobbleSent = true
+            }.onFailure { Logger.w(it) { "trySendScrobble error" } }
         }
-        runCatching {
-            apiProvider
-                .getApi()
-                .scrobble(
-                    id = id,
-                    time = System.currentTimeMillis(),
-                )
-            scrobbleSent = true
-        }.onFailure { Logger.w(it) { "trySendScrobble error" } }
-    }
 }

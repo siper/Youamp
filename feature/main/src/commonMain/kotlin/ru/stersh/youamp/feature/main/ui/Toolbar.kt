@@ -14,14 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.stersh.youamp.core.ui.AvatarImage
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun Toolbar(
     serverName: String?,
     avatarUrl: String?,
     onAvatarClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -33,18 +32,19 @@ internal fun Toolbar(
             AvatarImage(
                 avatarUrl = avatarUrl,
                 onAvatarClick = onAvatarClick,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(30.dp)
+                modifier =
+                    Modifier
+                        .padding(start = 16.dp)
+                        .size(30.dp),
             )
         },
         actions = {
             IconButton(onClick = onSettingsClick) {
                 Icon(
                     imageVector = Icons.Rounded.Settings,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
-        }
+        },
     )
 }

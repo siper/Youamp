@@ -18,29 +18,30 @@ import ru.stersh.youamp.shared.queue.PlayingSource
 internal class LibraryRepositoryImpl(
     private val apiProvider: ApiProvider,
     private val queueAudioSourceManager: PlayerQueueAudioSourceManager,
-    private val player: Player
+    private val player: Player,
 ) : LibraryRepository {
-
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     override fun getLibrary(): Flow<Library> {
         return combine(
             apiProvider
                 .flowApi()
                 .map { api ->
                     ApiLibrary(
-                        albums = api
-                            .getAlbumList2(
-                                type = ListType.ALPHABETICAL_BY_NAME
-                            )
-                            .data
-                            .albumList2
-                            .album
-                            .orEmpty(),
-                        artists = api
-                            .getArtists()
-                            .data
-                            .artists
-                            .index
-                            .flatMap { it.artist }
+                        albums =
+                            api
+                                .getAlbumList2(
+                                    type = ListType.ALPHABETICAL_BY_NAME,
+                                ).data
+                                .albumList2
+                                .album
+                                .orEmpty(),
+                        artists =
+                            api
+                                .getArtists()
+                                .data
+                                .artists
+                                .index
+                                .flatMap { it.artist },
                     )
                 },
             queueAudioSourceManager
@@ -51,56 +52,86 @@ internal class LibraryRepositoryImpl(
                         .map { isPlaying ->
                             source.takeIf { isPlaying }
                         }
-                }
+                },
         ) { library, playingSource ->
             val serverId = apiProvider.requireApiId()
             val api = apiProvider.getApi()
             return@combine Library(
-                albums = library.albums.map {
-                    it.toDomain(isPlaying = playingSource.isAlbumPlaying(serverId, it.id), api)
-                },
-                artists = library.artists.map {
-                    it.toDomain(isPlaying = playingSource.isArtistPlaying(serverId, it.id), api)
-                }
+                albums =
+                    library.albums.map {
+                        it.toDomain(
+                            isPlaying =
+                                playingSource.isAlbumPlaying(
+                                    serverId,
+                                    it.id,
+                                ),
+                            api,
+                        )
+                    },
+                artists =
+                    library.artists.map {
+                        it.toDomain(
+                            isPlaying =
+                                playingSource.isArtistPlaying(
+                                    serverId,
+                                    it.id,
+                                ),
+                            api,
+                        )
+                    },
             )
         }
     }
 
-    private fun PlayingSource?.isAlbumPlaying(serverId: Long, albumId: String): Boolean {
+    private fun PlayingSource?.isAlbumPlaying(
+        serverId: Long,
+        albumId: String,
+    ): Boolean {
         if (this == null) {
             return false
         }
-        return this.serverId == serverId && this.id == albumId && this.type == PlayingSource.Type.Album
+        return this.serverId == serverId &&
+            this.id == albumId &&
+            this.type == PlayingSource.Type.Album
     }
 
-    private fun PlayingSource?.isArtistPlaying(serverId: Long, artistId: String): Boolean {
+    private fun PlayingSource?.isArtistPlaying(
+        serverId: Long,
+        artistId: String,
+    ): Boolean {
         if (this == null) {
             return false
         }
-        return this.serverId == serverId && this.id == artistId && this.type == PlayingSource.Type.Artist
+        return this.serverId == serverId &&
+            this.id == artistId &&
+            this.type == PlayingSource.Type.Artist
     }
 
-    private fun Album.toDomain(isPlaying: Boolean, api: SubsonicApi): ru.stersh.youamp.feature.library.domain.Album {
-        return ru.stersh.youamp.feature.library.domain.Album(
+    private fun Album.toDomain(
+        isPlaying: Boolean,
+        api: SubsonicApi,
+    ): ru.stersh.youamp.feature.library.domain.Album =
+        ru.stersh.youamp.feature.library.domain.Album(
             id = id,
             title = requireNotNull(name ?: album),
             artist = artist,
             artworkUrl = api.getCoverArtUrl(coverArt),
-            isPlaying = isPlaying
+            isPlaying = isPlaying,
         )
-    }
 
-    private fun Artist.toDomain(isPlaying: Boolean, api: SubsonicApi): ru.stersh.youamp.feature.library.domain.Artist {
-        return ru.stersh.youamp.feature.library.domain.Artist(
+    private fun Artist.toDomain(
+        isPlaying: Boolean,
+        api: SubsonicApi,
+    ): ru.stersh.youamp.feature.library.domain.Artist =
+        ru.stersh.youamp.feature.library.domain.Artist(
             id = id,
             name = name,
             artworkUrl = api.getCoverArtUrl(coverArt),
-            isPlaying = isPlaying
+            isPlaying = isPlaying,
         )
-    }
 
     private data class ApiLibrary(
         val albums: List<Album>,
-        val artists: List<Artist>
+        val artists: List<Artist>,
     )
 }

@@ -18,11 +18,14 @@ import ru.stersh.youamp.player.ScrobbleSender
 
 internal class ProgressSyncActivityCallback(
     private val player: Player,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
 ) : EmptyActivityLifecycleCallback() {
     private var scrobbleSender: ScrobbleSender? = null
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+    override fun onActivityCreated(
+        activity: Activity,
+        savedInstanceState: Bundle?,
+    ) {
         if (activity !is MainActivity) {
             return
         }
@@ -30,13 +33,18 @@ internal class ProgressSyncActivityCallback(
             .getProgress()
             .filterNotNull()
             .onEach { progress ->
-                val currentItemId = player
-                    .getCurrentMediaItem()
-                    .first()
-                    ?.id
-                    ?: return@onEach
+                val currentItemId =
+                    player
+                        .getCurrentMediaItem()
+                        .first()
+                        ?.id
+                        ?: return@onEach
                 if (currentItemId != scrobbleSender?.id) {
-                    scrobbleSender = ScrobbleSender(currentItemId, apiProvider)
+                    scrobbleSender =
+                        ScrobbleSender(
+                            currentItemId,
+                            apiProvider,
+                        )
                 }
                 val sender = scrobbleSender ?: return@onEach
                 if (progress.currentTimeMs >= (progress.totalTimeMs / 2) && !sender.scrobbleSent) {
@@ -44,8 +52,7 @@ internal class ProgressSyncActivityCallback(
                         sender.trySendScrobble()
                     }
                 }
-            }
-            .flowOn(Dispatchers.IO)
+            }.flowOn(Dispatchers.IO)
             .launchIn(activity.lifecycleScope)
     }
 }

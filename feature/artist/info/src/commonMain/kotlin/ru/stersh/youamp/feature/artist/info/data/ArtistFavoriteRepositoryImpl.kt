@@ -4,10 +4,15 @@ import ru.stersh.youamp.feature.artist.info.domain.ArtistFavoriteRepository
 import ru.stersh.youamp.shared.favorites.ArtistFavoritesStorage
 
 internal class ArtistFavoriteRepositoryImpl(
-    private val artistFavoritesStorage: ArtistFavoritesStorage
+    private val artistFavoritesStorage: ArtistFavoritesStorage,
 ) : ArtistFavoriteRepository {
-
-    override suspend fun setFavorite(id: String, isFavorite: Boolean) {
-        artistFavoritesStorage.setArtistFavorite(id, isFavorite)
+    override suspend fun setFavorite(
+        id: String,
+        isFavorite: Boolean,
+    ) {
+        artistFavoritesStorage.setArtistFavorite(
+            id,
+            isFavorite,
+        )
     }
 }

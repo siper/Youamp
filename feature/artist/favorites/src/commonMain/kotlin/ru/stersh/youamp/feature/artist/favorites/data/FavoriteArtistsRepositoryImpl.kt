@@ -8,25 +8,22 @@ import ru.stersh.youamp.feature.artist.favorites.domain.Favorites
 import ru.stersh.youamp.shared.favorites.ArtistFavoritesStorage
 
 internal class FavoriteArtistsRepositoryImpl(
-    private val artistFavoritesStorage: ArtistFavoritesStorage
+    private val artistFavoritesStorage: ArtistFavoritesStorage,
 ) : FavoriteArtistsRepository {
-
-    override fun getFavorites(): Flow<Favorites> {
-        return artistFavoritesStorage
+    override fun getFavorites(): Flow<Favorites> =
+        artistFavoritesStorage
             .flowArtists()
             .map { favoriteAlbums ->
                 Favorites(
-                    artists = favoriteAlbums.map { it.toDomain() }
+                    artists = favoriteAlbums.map { it.toDomain() },
                 )
             }
-    }
 
-    private fun ru.stersh.youamp.shared.favorites.Artist.toDomain(): Artist {
-        return Artist(
+    private fun ru.stersh.youamp.shared.favorites.Artist.toDomain(): Artist =
+        Artist(
             id = id,
             name = name,
             artworkUrl = artworkUrl,
-            userRating = userRating
+            userRating = userRating,
         )
-    }
 }

@@ -22,19 +22,20 @@ fun VerticalGrid(
     column: Int = 2,
     horizontalSpacing: Dp = 0.dp,
     verticalSpacing: Dp = 0.dp,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Layout(
         modifier = modifier,
-        content = content
+        content = content,
     ) { measurables, constraints ->
         val horizontalSpacingPx = horizontalSpacing.roundToPx()
         val totalHorizontalSpace = (column - 1) * horizontalSpacingPx
         val itemWidth = (constraints.maxWidth - totalHorizontalSpace) / column
-        val itemConstraints = constraints.copy(
-            minWidth = itemWidth,
-            maxWidth = itemWidth
-        )
+        val itemConstraints =
+            constraints.copy(
+                minWidth = itemWidth,
+                maxWidth = itemWidth,
+            )
         val placeables = measurables.map { it.measure(itemConstraints) }
         val width = constraints.maxWidth
         val gridHeights = mutableMapOf<Int, Int>()
@@ -47,13 +48,23 @@ fun VerticalGrid(
 
         val verticalSpacingPx = verticalSpacing.roundToPx()
         val totalVerticalSpace = (gridHeights.size - 1) * verticalSpacingPx
-        val height = max(0, gridHeights.values.sum() + totalVerticalSpace)
+        val height =
+            max(
+                0,
+                gridHeights.values.sum() + totalVerticalSpace,
+            )
 
-        layout(width, height) {
+        layout(
+            width,
+            height,
+        ) {
             var x = 0
             var y = 0
             placeables.forEachIndexed { index, placeable ->
-                placeable.placeRelative(x = x, y = y)
+                placeable.placeRelative(
+                    x = x,
+                    y = y,
+                )
                 val lastCellInRow = index % column == (column - 1)
                 if (!lastCellInRow) {
                     x += itemWidth + horizontalSpacingPx
@@ -73,13 +84,15 @@ private fun VerticalGridPreview() {
         VerticalGrid {
             repeat(10) {
                 Box(
-                    modifier = Modifier.background(
-                        color = if (it % 2 == 0) {
-                            Color.Red
-                        } else {
-                            Color.Blue
-                        }
-                    )
+                    modifier =
+                        Modifier.background(
+                            color =
+                                if (it % 2 == 0) {
+                                    Color.Red
+                                } else {
+                                    Color.Blue
+                                },
+                        ),
                 ) {
                     Text(text = "$it")
                 }
@@ -89,13 +102,15 @@ private fun VerticalGridPreview() {
         VerticalGrid {
             repeat(3) {
                 Box(
-                    modifier = Modifier.background(
-                        color = if (it % 2 == 0) {
-                            Color.Red
-                        } else {
-                            Color.Blue
-                        }
-                    )
+                    modifier =
+                        Modifier.background(
+                            color =
+                                if (it % 2 == 0) {
+                                    Color.Red
+                                } else {
+                                    Color.Blue
+                                },
+                        ),
                 ) {
                     Text(text = "$it")
                 }

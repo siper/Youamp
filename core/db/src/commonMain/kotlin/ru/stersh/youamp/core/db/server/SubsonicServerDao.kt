@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SubsonicServerDao {
-
     @Query("SELECT * FROM server_subsonic WHERE isActive = 1")
     fun flowActive(): Flow<SubsonicServerDb?>
 

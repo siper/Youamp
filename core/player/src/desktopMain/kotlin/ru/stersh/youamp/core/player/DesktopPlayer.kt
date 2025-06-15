@@ -16,9 +16,7 @@ import kotlinx.coroutines.sync.withLock
 import ru.stersh.youamp.core.utils.formatSongDuration
 import ru.stersh.youamp.core.utils.swap
 
-
 internal class DesktopPlayer : Player {
-
     init {
         Platform.startup {}
     }
@@ -33,35 +31,38 @@ internal class DesktopPlayer : Player {
     private val shuffleMode = MutableStateFlow(ShuffleMode.Disabled)
     private val isPlaying = MutableStateFlow(false)
 
-    private val onPlayingRunnable = Runnable {
-        isPlaying.value = true
-    }
-    private val onStoppedRunnable = Runnable {
-        isPlaying.value = false
-    }
-    private val onEndPlay = Runnable {
-        if (repeatMode.value == RepeatMode.One) {
-            currentPlayer?.seek(Duration.ZERO)
-            currentPlayer?.play()
-        } else {
-            val currentIndex = currentItemIndex.value
-            if (currentIndex != null) {
-                val newIndex = currentIndex + 1
-                val newItem = playQueue.value.getOrNull(newIndex)
-                if (newItem != null) {
-                    currentItemIndex.value = newIndex
-                    prepareCurrentPlayer()
-                    currentPlayer?.play()
-                } else {
-                    if (repeatMode.value == RepeatMode.All) {
-                        currentItemIndex.value = 0
+    private val onPlayingRunnable =
+        Runnable {
+            isPlaying.value = true
+        }
+    private val onStoppedRunnable =
+        Runnable {
+            isPlaying.value = false
+        }
+    private val onEndPlay =
+        Runnable {
+            if (repeatMode.value == RepeatMode.One) {
+                currentPlayer?.seek(Duration.ZERO)
+                currentPlayer?.play()
+            } else {
+                val currentIndex = currentItemIndex.value
+                if (currentIndex != null) {
+                    val newIndex = currentIndex + 1
+                    val newItem = playQueue.value.getOrNull(newIndex)
+                    if (newItem != null) {
+                        currentItemIndex.value = newIndex
                         prepareCurrentPlayer()
                         currentPlayer?.play()
+                    } else {
+                        if (repeatMode.value == RepeatMode.All) {
+                            currentItemIndex.value = 0
+                            prepareCurrentPlayer()
+                            currentPlayer?.play()
+                        }
                     }
                 }
             }
         }
-    }
 
     override suspend fun play() {
         mutex.withLock {
@@ -119,7 +120,10 @@ internal class DesktopPlayer : Player {
         }
     }
 
-    override suspend fun seekTo(index: Int, time: Long) {
+    override suspend fun seekTo(
+        index: Int,
+        time: Long,
+    ) {
         mutex.withLock {
             currentItemIndex.value = index
             prepareCurrentPlayer()
@@ -134,26 +138,26 @@ internal class DesktopPlayer : Player {
 
     override fun getCurrentItemPosition(): Flow<Int?> = currentItemIndex
 
-    override fun getCurrentMediaItem(): Flow<MediaItem?> {
-        return currentItemIndex.flatMapLatest { index ->
+    override fun getCurrentMediaItem(): Flow<MediaItem?> =
+        currentItemIndex.flatMapLatest { index ->
             if (index == null) {
                 flowOf(null)
             } else {
                 playQueue.map { it.getOrNull(index) }
             }
         }
-    }
 
     override suspend fun getPlayQueue(): Flow<List<MediaItem>> = playQueue
 
     override suspend fun setMediaItems(items: List<MediaItem>) {
         mutex.withLock {
             playQueue.value = items
-            currentItemIndex.value = if (items.isNotEmpty()) {
-                0
-            } else {
-                null
-            }
+            currentItemIndex.value =
+                if (items.isNotEmpty()) {
+                    0
+                } else {
+                    null
+                }
             prepareCurrentPlayer()
         }
     }
@@ -172,14 +176,19 @@ internal class DesktopPlayer : Player {
         currentPlayer = newPlayer
     }
 
-    override suspend fun setMediaItems(items: List<MediaItem>, index: Int, position: Long) {
+    override suspend fun setMediaItems(
+        items: List<MediaItem>,
+        index: Int,
+        position: Long,
+    ) {
         mutex.withLock {
             playQueue.value = items
-            currentItemIndex.value = if (items.isNotEmpty()) {
-                index
-            } else {
-                null
-            }
+            currentItemIndex.value =
+                if (items.isNotEmpty()) {
+                    index
+                } else {
+                    null
+                }
             prepareCurrentPlayer()
             seek(position)
         }
@@ -196,10 +205,16 @@ internal class DesktopPlayer : Player {
         }
     }
 
-    override suspend fun addMediaItems(index: Int, items: List<MediaItem>) {
+    override suspend fun addMediaItems(
+        index: Int,
+        items: List<MediaItem>,
+    ) {
         mutex.withLock {
             val newItems = playQueue.value.toMutableList()
-            newItems.addAll(index, items)
+            newItems.addAll(
+                index,
+                items,
+            )
             playQueue.value = newItems
             val currentIndex = currentItemIndex.value
             if (currentIndex == null && items.isNotEmpty()) {
@@ -227,7 +242,10 @@ internal class DesktopPlayer : Player {
         }
     }
 
-    override suspend fun moveMediaItem(from: Int, to: Int) {
+    override suspend fun moveMediaItem(
+        from: Int,
+        to: Int,
+    ) {
         mutex.withLock {
             val currentQueue = playQueue.value
             if (currentQueue.isEmpty()) {
@@ -235,7 +253,11 @@ internal class DesktopPlayer : Player {
             }
             val currentIndex = currentItemIndex.value ?: return@withLock
             val currentItem = currentQueue.getOrNull(currentIndex) ?: return@withLock
-            val newQueue = currentQueue.swap(from, to)
+            val newQueue =
+                currentQueue.swap(
+                    from,
+                    to,
+                )
             val newCurrentIndex = newQueue.indexOf(currentItem)
             playQueue.value = newQueue
             currentItemIndex.value = newCurrentIndex
@@ -250,22 +272,27 @@ internal class DesktopPlayer : Player {
             val currentItem = currentIndex?.let { newPlayQueue.getOrNull(it) }
             val deletedItem = newPlayQueue.removeAt(position)
 
-            val newCurrentIndex = when {
-                newPlayQueue.isEmpty() -> null
-                currentItem != null && currentItem != deletedItem -> newPlayQueue.indexOf(currentItem)
-                currentItem != null && currentItem == deletedItem -> {
-                    var result: Int? = null
-                    for (i in position downTo 0) {
-                        if (newPlayQueue.getOrNull(i) != null) {
-                            result = i
-                            break
-                        }
-                    }
-                    result
-                }
+            val newCurrentIndex =
+                when {
+                    newPlayQueue.isEmpty() -> null
+                    currentItem != null && currentItem != deletedItem ->
+                        newPlayQueue.indexOf(
+                            currentItem,
+                        )
 
-                else -> null
-            }
+                    currentItem != null && currentItem == deletedItem -> {
+                        var result: Int? = null
+                        for (i in position downTo 0) {
+                            if (newPlayQueue.getOrNull(i) != null) {
+                                result = i
+                                break
+                            }
+                        }
+                        result
+                    }
+
+                    else -> null
+                }
             playQueue.value = newPlayQueue.toList()
             currentItemIndex.value = newCurrentIndex
         }
@@ -283,8 +310,8 @@ internal class DesktopPlayer : Player {
         this.repeatMode.value = repeatMode
     }
 
-    override fun getProgress(): Flow<PlayerProgress?> {
-        return currentItemIndex
+    override fun getProgress(): Flow<PlayerProgress?> =
+        currentItemIndex
             .flatMapLatest {
                 if (it == null) {
                     flowOf(null)
@@ -296,26 +323,27 @@ internal class DesktopPlayer : Player {
                                 delay(1000)
                                 continue
                             }
-                            val currentTimeMs = currentPlayer.currentTime
-                                .toMillis()
-                                .toLong()
-                            val totalTimeMs = currentPlayer.totalDuration
-                                .toMillis()
-                                .toLong()
+                            val currentTimeMs =
+                                currentPlayer.currentTime
+                                    .toMillis()
+                                    .toLong()
+                            val totalTimeMs =
+                                currentPlayer.totalDuration
+                                    .toMillis()
+                                    .toLong()
                             emit(
                                 PlayerProgress(
                                     currentTimeMs = currentTimeMs,
                                     totalTimeMs = totalTimeMs,
                                     currentTime = formatSongDuration(currentTimeMs),
-                                    totalTime = formatSongDuration(totalTimeMs)
-                                )
+                                    totalTime = formatSongDuration(totalTimeMs),
+                                ),
                             )
                             delay(1000)
                         }
                     }
                 }
             }
-    }
 
     override fun getIsPlaying(): Flow<Boolean> = isPlaying
 }

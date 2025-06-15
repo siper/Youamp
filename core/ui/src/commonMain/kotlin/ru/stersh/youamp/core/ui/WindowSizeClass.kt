@@ -10,21 +10,30 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-val DesktopWindowClassSize = WindowSizeClass.calculateFromSize(DpSize(1280.dp, 800.dp))
+val DesktopWindowClassSize =
+    WindowSizeClass.calculateFromSize(
+        DpSize(
+            1280.dp,
+            800.dp,
+        ),
+    )
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-val MobileWindowClassSize = WindowSizeClass.calculateFromSize(
-    size = DpSize(
-        1080.dp,
-        2400.dp
-    ),
-    supportedWidthSizeClasses = setOf(WindowWidthSizeClass.Compact),
-    supportedHeightSizeClasses = setOf(WindowHeightSizeClass.Medium)
-)
+val MobileWindowClassSize =
+    WindowSizeClass.calculateFromSize(
+        size =
+            DpSize(
+                1080.dp,
+                2400.dp,
+            ),
+        supportedWidthSizeClasses = setOf(WindowWidthSizeClass.Compact),
+        supportedHeightSizeClasses = setOf(WindowHeightSizeClass.Medium),
+    )
 
-val LocalWindowSizeClass = compositionLocalOf<WindowSizeClass> {
-    MobileWindowClassSize
-}
+val LocalWindowSizeClass =
+    compositionLocalOf<WindowSizeClass> {
+        MobileWindowClassSize
+    }
 
 val isCompactWidth: Boolean
     @Composable

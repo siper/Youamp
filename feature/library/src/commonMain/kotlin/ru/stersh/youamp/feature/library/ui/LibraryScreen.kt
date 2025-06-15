@@ -60,7 +60,7 @@ fun LibraryScreen(
         onAlbumsClick = onAlbumsClick,
         onArtistsClick = onArtistsClick,
         onRetry = viewModel::retry,
-        onRefresh = viewModel::refresh
+        onRefresh = viewModel::refresh,
     )
 }
 
@@ -85,7 +85,7 @@ internal fun LibraryScreen(
     }
     PullToRefresh(
         isRefreshing = state.refreshing,
-        onRefresh = onRefresh
+        onRefresh = onRefresh,
     ) {
         StateLayout(
             state = layoutState,
@@ -104,9 +104,10 @@ internal fun LibraryScreen(
             error = {
                 ErrorLayout(onRetry = onRetry)
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background),
         )
     }
 }
@@ -118,16 +119,17 @@ private fun Content(
     onArtistClick: (id: String) -> Unit,
     onAlbumsClick: () -> Unit,
     onArtistsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (data == null) {
         return
     }
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background),
-        contentPadding = PaddingValues(bottom = 24.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
+        contentPadding = PaddingValues(bottom = 24.dp),
     ) {
         if (data.albums.isNotEmpty()) {
             item {
@@ -139,14 +141,14 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(albumsListState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = albumsListState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         flingBehavior = rememberSnapFlingBehavior(lazyListState = albumsListState),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         items(data.albums) {
                             AlbumItem(
@@ -156,7 +158,7 @@ private fun Content(
                                 onClick = {
                                     onAlbumClick(it.id)
                                 },
-                                modifier = Modifier.requiredWidth(AlbumItemDefaults.Width)
+                                modifier = Modifier.requiredWidth(AlbumItemDefaults.Width),
                             )
                         }
                     }
@@ -173,14 +175,14 @@ private fun Content(
                         if (!currentPlatform.mobile) {
                             SectionScrollActions(lazyListState)
                         }
-                    }
+                    },
                 ) {
                     LazyRow(
                         state = lazyListState,
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         items(data.artists) {
                             ArtistItem(
@@ -189,7 +191,7 @@ private fun Content(
                                 onClick = {
                                     onArtistClick(it.id)
                                 },
-                                modifier = Modifier.requiredWidth(160.dp)
+                                modifier = Modifier.requiredWidth(160.dp),
                             )
                         }
                     }
@@ -200,19 +202,17 @@ private fun Content(
 }
 
 @Composable
-private fun Progress(
-    modifier: Modifier = Modifier
-) {
+private fun Progress(modifier: Modifier = Modifier) {
     SkeletonLayout(modifier = modifier) {
         LazyColumn(
             modifier = Modifier.padding(horizontal = 24.dp),
-            userScrollEnabled = false
+            userScrollEnabled = false,
         ) {
             item { SectionSkeleton() }
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false
+                    userScrollEnabled = false,
                 ) {
                     repeat(3) {
                         item { AlbumSkeleton() }
@@ -223,7 +223,7 @@ private fun Progress(
             item {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false
+                    userScrollEnabled = false,
                 ) {
                     repeat(3) {
                         item { ArtistSkeleton() }
@@ -245,7 +245,7 @@ private fun LibraryScreenProgressPreview() {
             onAlbumClick = {},
             onArtistClick = {},
             onArtistsClick = {},
-            onAlbumsClick = {}
+            onAlbumsClick = {},
         )
     }
 }
@@ -255,40 +255,44 @@ private fun LibraryScreenProgressPreview() {
 private fun LibraryScreenPreview() {
     YouampPlayerTheme {
         LibraryScreen(
-            state = StateUi(
-                progress = false,
-                data = DataUi(
-                    albums = persistentListOf(
-                        AlbumUi(
-                            id = "Kashif",
-                            title = "Tremaine",
-                            artist = "Slipknot",
-                            artworkUrl = null,
-                            isPlaying = false,
+            state =
+                StateUi(
+                    progress = false,
+                    data =
+                        DataUi(
+                            albums =
+                                persistentListOf(
+                                    AlbumUi(
+                                        id = "Kashif",
+                                        title = "Tremaine",
+                                        artist = "Slipknot",
+                                        artworkUrl = null,
+                                        isPlaying = false,
+                                    ),
+                                ),
+                            artists =
+                                persistentListOf(
+                                    ArtistUi(
+                                        id = "Soloman",
+                                        name = "Eliana",
+                                        artworkUrl = null,
+                                        isPlaying = false,
+                                    ),
+                                    ArtistUi(
+                                        id = "Tari",
+                                        name = "Shamir",
+                                        artworkUrl = null,
+                                        isPlaying = false,
+                                    ),
+                                ),
                         ),
-                    ),
-                    artists = persistentListOf(
-                        ArtistUi(
-                            id = "Soloman",
-                            name = "Eliana",
-                            artworkUrl = null,
-                            isPlaying = false,
-                        ),
-                        ArtistUi(
-                            id = "Tari",
-                            name = "Shamir",
-                            artworkUrl = null,
-                            isPlaying = false,
-                        ),
-                    )
-                )
-            ),
+                ),
             onRetry = {},
             onRefresh = {},
             onAlbumClick = {},
             onArtistClick = {},
             onArtistsClick = {},
-            onAlbumsClick = {}
+            onAlbumsClick = {},
         )
     }
 }

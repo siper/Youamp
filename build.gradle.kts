@@ -9,6 +9,9 @@ plugins {
     alias(libs.plugins.android.kotlinMultiplatformLibrary) apply false
 }
 
-tasks.register("clean", Delete::class) {
+tasks.register(
+    "clean",
+    Delete::class,
+) {
     delete(rootProject.buildDir)
 }

@@ -3,7 +3,6 @@ package ru.stersh.youamp.feature.search.domain
 import kotlinx.coroutines.flow.Flow
 
 internal interface SearchRepository {
-
     fun searchResults(): Flow<SearchResult>
 
     suspend fun search(query: String)

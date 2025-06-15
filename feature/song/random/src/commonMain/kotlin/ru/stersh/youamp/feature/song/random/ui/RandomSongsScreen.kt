@@ -43,7 +43,7 @@ import youamp.feature.song.random.generated.resources.random_songs_title
 @Composable
 fun RandomSongsScreen(
     onSongClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val viewModel: RandomSongsViewModel = koinViewModel()
 
@@ -56,7 +56,7 @@ fun RandomSongsScreen(
         onRetry = viewModel::retry,
         onRefresh = viewModel::refresh,
         onSongClick = onSongClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
     )
 }
 
@@ -69,7 +69,7 @@ private fun RandomSongsScreen(
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
     onSongClick: (id: String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -77,14 +77,14 @@ private fun RandomSongsScreen(
                 title = {},
                 navigationIcon = {
                     BackNavigationButton(onClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) {
         PullToRefresh(
             isRefreshing = state.isRefreshing,
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             when {
                 state.progress -> {
@@ -97,9 +97,10 @@ private fun RandomSongsScreen(
 
                 state.data != null && state.data.songs.isEmpty() -> {
                     EmptyLayout(
-                        modifier = Modifier.verticalScroll(
-                            state = rememberScrollState()
-                        )
+                        modifier =
+                            Modifier.verticalScroll(
+                                state = rememberScrollState(),
+                            ),
                     )
                 }
 
@@ -108,7 +109,7 @@ private fun RandomSongsScreen(
                         data = state.data,
                         onPlayAll = onPlayAll,
                         onPlayShuffled = onPlayShuffled,
-                        onSongClick = onSongClick
+                        onSongClick = onSongClick,
                     )
                 }
             }
@@ -121,44 +122,45 @@ private fun Content(
     data: DataUi,
     onPlayAll: () -> Unit,
     onPlayShuffled: () -> Unit,
-    onSongClick: (id: String) -> Unit
+    onSongClick: (id: String) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
     ) {
         item(
             contentType = "header",
-            key = "header"
+            key = "header",
         ) {
             HeaderLayout(
                 title = {
                     Text(
                         text = stringResource(Res.string.random_songs_title),
-                        modifier = Modifier.singleHeader()
+                        modifier = Modifier.singleHeader(),
                     )
                 },
                 actions = {
                     PlayAllButton(
-                        onClick = onPlayAll
+                        onClick = onPlayAll,
                     )
                     PlayShuffledButton(
-                        onClick = onPlayShuffled
+                        onClick = onPlayShuffled,
                     )
-                }
+                },
             )
         }
         items(
             items = data.songs,
             contentType = { "song" },
-            key = { "song_${it.id}" }
+            key = { "song_${it.id}" },
         ) { song ->
             SongItem(
                 title = song.title,
                 artist = song.artist,
                 artworkUrl = song.artworkUrl,
-                onClick = { onSongClick(song.id) }
+                onClick = { onSongClick(song.id) },
             )
         }
     }
@@ -168,7 +170,7 @@ private fun Content(
 private fun Progress() {
     SkeletonLayout(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             item {
                 HeaderLayout(
@@ -176,37 +178,40 @@ private fun Progress() {
                         Column(
                             modifier = Modifier.singleHeader(),
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        400.dp,
-                                        32.dp
-                                    )
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            400.dp,
+                                            32.dp,
+                                        ),
                             )
                             SkeletonItem(
-                                modifier = Modifier
-                                    .size(
-                                        200.dp,
-                                        32.dp
-                                    )
+                                modifier =
+                                    Modifier
+                                        .size(
+                                            200.dp,
+                                            32.dp,
+                                        ),
                             )
                         }
                     },
                     actions = {
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         )
                         SkeletonItem(
                             shape = CircleShape,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.size(64.dp),
                         )
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 24.dp),
                 )
             }
             repeat(10) {
@@ -227,7 +232,7 @@ private fun RandomSongsScreenProgressPreview() {
             onRetry = {},
             onRefresh = {},
             onSongClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }
@@ -236,46 +241,49 @@ private fun RandomSongsScreenProgressPreview() {
 @Composable
 private fun RandomSongsScreenPreview() {
     MaterialTheme {
-        val songs = persistentListOf(
-            SongUi(
-                id = "1",
-                title = "Best song in the world 1",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            SongUi(
-                id = "2",
-                title = "Best song in the world 2",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            SongUi(
-                id = "3",
-                title = "Best song in the world 3",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            SongUi(
-                id = "4",
-                title = "Best song in the world 4",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-            SongUi(
-                id = "5",
-                title = "Best song in the world 5",
-                artist = "Best artist in the world 1",
-                artworkUrl = null
-            ),
-        )
-        val state = StateUi(
-            progress = false,
-            isRefreshing = false,
-            error = false,
-            data = DataUi(
-                songs = songs
+        val songs =
+            persistentListOf(
+                SongUi(
+                    id = "1",
+                    title = "Best song in the world 1",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                SongUi(
+                    id = "2",
+                    title = "Best song in the world 2",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                SongUi(
+                    id = "3",
+                    title = "Best song in the world 3",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                SongUi(
+                    id = "4",
+                    title = "Best song in the world 4",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
+                SongUi(
+                    id = "5",
+                    title = "Best song in the world 5",
+                    artist = "Best artist in the world 1",
+                    artworkUrl = null,
+                ),
             )
-        )
+        val state =
+            StateUi(
+                progress = false,
+                isRefreshing = false,
+                error = false,
+                data =
+                    DataUi(
+                        songs = songs,
+                    ),
+            )
         RandomSongsScreen(
             state = state,
             onPlayAll = {},
@@ -283,7 +291,7 @@ private fun RandomSongsScreenPreview() {
             onRetry = {},
             onRefresh = {},
             onSongClick = {},
-            onBackClick = {}
+            onBackClick = {},
         )
     }
 }

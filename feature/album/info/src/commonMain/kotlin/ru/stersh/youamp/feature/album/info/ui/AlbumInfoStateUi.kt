@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 internal data class AlbumInfoStateUi(
     val progress: Boolean = true,
     val content: AlbumInfoUi? = null,
-    val error: Boolean = false
+    val error: Boolean = false,
 )
 
 internal data class AlbumInfoUi(
@@ -14,7 +14,7 @@ internal data class AlbumInfoUi(
     val artist: String,
     val year: String?,
     val isFavorite: Boolean,
-    val songs: ImmutableList<AlbumSongUi>
+    val songs: ImmutableList<AlbumSongUi>,
 )
 
 internal data class AlbumSongUi(
@@ -22,5 +22,5 @@ internal data class AlbumSongUi(
     val title: String,
     val track: Int?,
     val artist: String?,
-    val duration: String
+    val duration: String,
 )

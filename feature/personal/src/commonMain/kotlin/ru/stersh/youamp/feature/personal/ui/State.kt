@@ -3,12 +3,11 @@ package ru.stersh.youamp.feature.personal.ui
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-
 internal data class StateUi(
     val progress: Boolean = true,
     val refreshing: Boolean = false,
     val error: Boolean = false,
-    val data: PersonalDataUi? = null
+    val data: PersonalDataUi? = null,
 )
 
 internal data class PersonalDataUi(
@@ -17,7 +16,6 @@ internal data class PersonalDataUi(
     val albums: ImmutableList<AlbumUi> = persistentListOf(),
     val artists: ImmutableList<ArtistUi> = persistentListOf(),
 ) {
-
     val isEmpty: Boolean
         get() = songs.isEmpty() && playlists.isEmpty() && albums.isEmpty() && artists.isEmpty()
 }
@@ -27,14 +25,12 @@ internal data class SongUi(
     val title: String,
     val artist: String?,
     val artworkUrl: String?,
-    val isPlaying: Boolean
 )
 
 internal data class PlaylistUi(
     val id: String,
     val title: String,
     val artworkUrl: String?,
-    val isPlaying: Boolean
 )
 
 internal data class AlbumUi(
@@ -42,12 +38,10 @@ internal data class AlbumUi(
     val title: String,
     val artist: String?,
     val artworkUrl: String?,
-    val isPlaying: Boolean
 )
 
 internal data class ArtistUi(
     val id: String,
     val name: String,
     val artworkUrl: String?,
-    val isPlaying: Boolean
 )

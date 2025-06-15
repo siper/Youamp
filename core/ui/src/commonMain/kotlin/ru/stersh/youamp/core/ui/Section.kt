@@ -36,19 +36,20 @@ fun Section(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column {
         Row(
-            modifier = modifier.padding(
-                vertical = 24.dp,
-                horizontal = 24.dp
-            ),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                modifier.padding(
+                    vertical = 24.dp,
+                    horizontal = 24.dp,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Title(
                 title = title,
-                onClick = onClick
+                onClick = onClick,
             )
             Spacer(modifier = Modifier.weight(1f))
             Row {
@@ -63,37 +64,42 @@ fun Section(
 private fun Title(
     title: String,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
-    val clickable = if (onClick != null) {
-        modifier.clickable(
-            enabled = true,
-            onClick = onClick
-        )
-    } else {
-        modifier
-    }
+    val clickable =
+        if (onClick != null) {
+            modifier.clickable(
+                enabled = true,
+                onClick = onClick,
+            )
+        } else {
+            modifier
+        }
     Box(
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.medium)
-            .then(clickable)
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+        modifier =
+            Modifier
+                .clip(MaterialTheme.shapes.medium)
+                .then(clickable)
+                .padding(
+                    horizontal = 8.dp,
+                    vertical = 4.dp,
+                ),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
             if (onClick != null) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.requiredSize(18.dp)
+                    modifier = Modifier.requiredSize(18.dp),
                 )
             }
         }
@@ -117,7 +123,7 @@ private const val SCROLL_ITEMS_COUNT = 3
 @Composable
 fun SectionScrollActions(
     listState: LazyListState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val allItemsVisible by remember(listState) {
         derivedStateOf {
@@ -130,7 +136,8 @@ fun SectionScrollActions(
     val scrollForwardButtonEnabled by remember(listState) {
         derivedStateOf {
             listState.lastVisibleItemIndex != listState.lastItemIndex ||
-                    listState.lastVisibleItemOffset + listState.lastVisibleItemSize > listState.layoutInfo.viewportEndOffset
+                listState.lastVisibleItemOffset + listState.lastVisibleItemSize >
+                listState.layoutInfo.viewportEndOffset
         }
     }
     val scope = rememberCoroutineScope()
@@ -150,7 +157,7 @@ fun SectionScrollActions(
         ) {
             Icon(
                 imageVector = Icons.Rounded.ArrowBackIosNew,
-                contentDescription = null
+                contentDescription = null,
             )
         }
         FilledTonalIconButton(
@@ -166,7 +173,7 @@ fun SectionScrollActions(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     }
@@ -178,7 +185,7 @@ private fun SectionTitlePreview() {
     YouampPlayerTheme {
         Column(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Section(
                 title = "Test with actions",
@@ -188,7 +195,7 @@ private fun SectionTitlePreview() {
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBackIosNew,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                     FilledTonalIconButton(
@@ -196,12 +203,11 @@ private fun SectionTitlePreview() {
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
-                }
+                },
             ) {
-
             }
         }
     }

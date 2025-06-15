@@ -7,59 +7,54 @@ import ru.stersh.youamp.feature.personal.domain.Personal
 import ru.stersh.youamp.feature.personal.domain.Playlist
 import ru.stersh.youamp.feature.personal.domain.Song
 
-internal fun Song.toUi(): SongUi {
-    return SongUi(
+internal fun Song.toUi(): SongUi =
+    SongUi(
         id = id,
         title = title,
         artist = artist,
         artworkUrl = artworkUrl,
-        isPlaying = isPlaying
     )
-}
 
-internal fun Album.toUi(): AlbumUi {
-    return AlbumUi(
+internal fun Album.toUi(): AlbumUi =
+    AlbumUi(
         id = id,
         title = title,
         artist = artist,
         artworkUrl = artworkUrl,
-        isPlaying = isPlaying
     )
-}
 
-internal fun Playlist.toUi(): PlaylistUi {
-    return PlaylistUi(
+internal fun Playlist.toUi(): PlaylistUi =
+    PlaylistUi(
         id = id,
         title = name,
         artworkUrl = artworkUrl,
-        isPlaying = isPlaying
     )
-}
 
-internal fun Artist.toUi(): ArtistUi {
-    return ArtistUi(
+internal fun Artist.toUi(): ArtistUi =
+    ArtistUi(
         id = id,
         name = name,
         artworkUrl = artworkUrl,
-        isPlaying = isPlaying
     )
-}
 
-internal fun Personal.toUi(): PersonalDataUi {
-    return PersonalDataUi(
-        songs = songs
-            .map { it.toUi() }
-            .chunked(3)
-            .map { it.toPersistentList() }
-            .toPersistentList(),
-        playlists = playlists
-            .map { it.toUi() }
-            .toPersistentList(),
-        albums = albums
-            .map { it.toUi() }
-            .toPersistentList(),
-        artists = artists
-            .map { it.toUi() }
-            .toPersistentList()
+internal fun Personal.toUi(): PersonalDataUi =
+    PersonalDataUi(
+        songs =
+            songs
+                .map { it.toUi() }
+                .chunked(3)
+                .map { it.toPersistentList() }
+                .toPersistentList(),
+        playlists =
+            playlists
+                .map { it.toUi() }
+                .toPersistentList(),
+        albums =
+            albums
+                .map { it.toUi() }
+                .toPersistentList(),
+        artists =
+            artists
+                .map { it.toUi() }
+                .toPersistentList(),
     )
-}

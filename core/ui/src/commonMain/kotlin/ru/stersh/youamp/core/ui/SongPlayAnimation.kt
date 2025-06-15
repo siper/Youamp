@@ -26,118 +26,127 @@ import androidx.compose.ui.unit.dp
 fun SongPlayAnimation(
     isPlaying: Boolean,
     modifier: Modifier = Modifier,
-    barColor: Color = MaterialTheme.colorScheme.primary
+    barColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     if (isPlaying) {
         AnimatingBars(
             barColor = barColor,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         StaticBars(
             barColor = barColor,
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
 
 @Composable
 private fun StaticBars(
-    barColor: Color, modifier: Modifier
+    barColor: Color,
+    modifier: Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         Bar(
             fraction = 0.2f,
-            color = barColor
+            color = barColor,
         )
         Bar(
             fraction = 0.2f,
-            color = barColor
+            color = barColor,
         )
         Bar(
             fraction = 0.2f,
-            color = barColor
+            color = barColor,
         )
     }
 }
 
 @Composable
 private fun AnimatingBars(
-    barColor: Color, modifier: Modifier = Modifier
+    barColor: Color,
+    modifier: Modifier = Modifier,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite_play_animation")
     val firstBar by infiniteTransition.animateFloat(
         initialValue = 0.3f,
         targetValue = 0.6f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 500,
-                easing = EaseOut
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    tween(
+                        durationMillis = 500,
+                        easing = EaseOut,
+                    ),
+                repeatMode = RepeatMode.Reverse,
             ),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "first_bar"
+        label = "first_bar",
     )
     val secondBar by infiniteTransition.animateFloat(
         initialValue = 0.5f,
         targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 700,
-                easing = EaseOut
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    tween(
+                        durationMillis = 700,
+                        easing = EaseOut,
+                    ),
+                repeatMode = RepeatMode.Reverse,
             ),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "second_bar"
+        label = "second_bar",
     )
     val thirdBar by infiniteTransition.animateFloat(
         initialValue = 0.4f,
         targetValue = 0.7f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 600,
-                easing = EaseOut
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    tween(
+                        durationMillis = 600,
+                        easing = EaseOut,
+                    ),
+                repeatMode = RepeatMode.Reverse,
             ),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "third_bar"
+        label = "third_bar",
     )
     Row(
         modifier = modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         Bar(
             fraction = firstBar,
-            color = barColor
+            color = barColor,
         )
         Bar(
             fraction = secondBar,
-            color = barColor
+            color = barColor,
         )
         Bar(
             fraction = thirdBar,
-            color = barColor
+            color = barColor,
         )
     }
 }
 
-
 @Composable
 private fun RowScope.Bar(
-    fraction: Float, color: Color
+    fraction: Float,
+    color: Color,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxHeight(fraction = fraction)
-            .weight(1f)
-            .background(
-                color = color,
-                shape = CircleShape
-            )
+        modifier =
+            Modifier
+                .fillMaxHeight(fraction = fraction)
+                .weight(1f)
+                .background(
+                    color = color,
+                    shape = CircleShape,
+                ),
     )
 }
