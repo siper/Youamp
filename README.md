@@ -170,6 +170,15 @@ If you want help to make Youamp better, you can:
         <sub><b>13 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/Mickael81"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16589059/medium/65fcdfc7892c0e034a5b24fcba44b471_default.png" />
+          <br />
+          <sub><b>Mickael81</b></sub></a>
+        <br />
+        <sub><b>4 words</b></sub>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
           <br />
           <sub><b>January Mara (januarymara185)</b></sub></a>
