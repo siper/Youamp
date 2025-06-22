@@ -2,6 +2,7 @@
 <resources>
     <string name="play_title">Lire</string>
     <string name="add_to_queue_next_title">Jouer le suivant dans la file d’attente</string>
+    <string name="add_to_queue_last_title">Ajouter à la fin de la file d\'attente</string>
     <string name="go_to_album_title">Aller à l’album</string>
     <string name="go_to_artist_title">Aller à l’artiste</string>
     <string name="add_to_favorites">Ajouter aux favoris</string>
