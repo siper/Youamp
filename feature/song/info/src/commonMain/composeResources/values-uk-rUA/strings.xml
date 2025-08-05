@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_title">Відтворити</string>
+    <string name="add_to_queue_next_title">Додати наступним у чергу</string>
+    <string name="add_to_queue_last_title">Додати останнім у чергу</string>
+    <string name="go_to_album_title">Перейти до альбому</string>
+    <string name="go_to_artist_title">Перейти до виконавця</string>
+    <string name="add_to_favorites">Додати до улюблених</string>
+    <string name="remove_from_favorites">Видалити з улюблених</string>
+</resources>
