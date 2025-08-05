@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_queue_title">Черга відтворення</string>
+    <string name="play_song_title">Відтворити пісню</string>
+    <string name="remove_from_queue_title">Видалити з черги</string>
+</resources>
