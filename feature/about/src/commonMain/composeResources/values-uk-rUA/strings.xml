@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github_icon_description">Іконка GitHub</string>
+    <string name="github_subtitle">Поставте зірочку або повідомте про проблему</string>
+    <string name="f_droid_icon_description">Іконка F-Droid</string>
+    <string name="f_droid_subtitle">Перевірити наявність оновлень</string>
+    <string name="crowdin_icon_description">Іконка Crowdin</string>
+    <string name="crowdin_subtitle">Допомогти з перекладом</string>
+    <string name="about_title">Про додаток</string>
+    <string name="app_icon_description">Іконка додатку</string>
+</resources>
