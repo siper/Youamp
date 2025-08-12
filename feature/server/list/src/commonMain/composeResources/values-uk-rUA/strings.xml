@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_screen_title">Сервери</string>
+    <string name="add_server_title">Додати</string>
+    <string name="activate_server_title">Активувати</string>
+    <string name="edit_server_title">Редагувати</string>
+    <string name="delete_server_title">Видалити</string>
+</resources>

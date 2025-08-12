@@ -6,7 +6,7 @@
     <string name="placeholder_image_description">Platzhalter-Bild</string>
     <string name="error_button_title">Erneut versuchen</string>
     <string name="error_message">Versuchen Sie es erneut. Wenn der Fehler mehrmals auftritt, wenden Sie sich an den Entwickler.</string>
-    <string name="error_title">Hoppla, etwas ist schief gelaufen</string>
+    <string name="error_title">Ups, etwas ist schiefgelaufen</string>
     <string name="empty_state_title">Hier gibt es noch nichts…</string>
     <string name="user_avatar_title">Benutzer Avatar</string>
     <string name="dislike_title">Gefällt mir nicht</string>

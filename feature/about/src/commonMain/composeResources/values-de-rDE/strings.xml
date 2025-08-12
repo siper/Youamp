@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="github_icon_description">GitHub icon</string>
+    <string name="github_icon_description">Github Icon</string>
     <string name="github_subtitle">Stern oder Problem melden</string>
     <string name="f_droid_icon_description">F-Droid Icon</string>
     <string name="f_droid_subtitle">Nach Updates suchen</string>

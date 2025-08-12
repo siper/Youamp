@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_title">Відтворити</string>
+    <string name="add_to_queue_title">Додати до черги</string>
+    <string name="artist_info_title">Інформація про виконавця</string>
+    <string name="album_info_title">Інформація про альбом</string>
+    <string name="songs_title">Пісні</string>
+    <string name="load_more_title">Завантажити ще</string>
+    <string name="albums_title">Альбоми</string>
+    <string name="artists_title">Виконавці</string>
+    <string name="close_search_title">Закрити пошук</string>
+    <string name="clear_search_title">Очистити пошуковий запит</string>
+    <string name="search_hint_title">Шукайте пісні, альбоми, виконавців…</string>
+    <string name="search_title">Пошук</string>
+    <string name="more_action_description">Більше</string>
+</resources>

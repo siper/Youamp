@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_title">Про додаток</string>
+    <string name="about_subtitle">Інформація про додаток, посилання для відгуків</string>
+    <string name="servers_title">Сервери</string>
+    <string name="servers_subtitle">Керуйте своїми серверами Subsonic</string>
+    <string name="about_icon_description">Іконка «Про додаток»</string>
+    <string name="servers_icon_description">Іконка серверів</string>
+    <string name="settings_title">Налаштування</string>
+</resources>

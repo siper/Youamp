@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="personal_title">Особисте</string>
+    <string name="explore_title">Огляд</string>
+    <string name="library_title">Бібліотека</string>
+</resources>

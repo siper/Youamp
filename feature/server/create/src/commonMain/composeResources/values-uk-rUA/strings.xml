@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_test_success_message">Тест успішний</string>
+    <string name="server_test_error_message">Помилка тестування</string>
+    <string name="new_server_title">Новий сервер Subsonic</string>
+    <string name="edit_server_title">Редагувати сервер</string>
+    <string name="server_name_title">Назва</string>
+    <string name="server_address_title">Адреса</string>
+    <string name="server_username_title">Ім\'я користувача</string>
+    <string name="server_password_title">Пароль</string>
+    <string name="server_use_legacy_auth_title">Використовувати застарілу автентифікацію</string>
+    <string name="server_test_title">Тест</string>
+    <string name="server_add_action_title">Додати</string>
+    <string name="server_save_action_title">Зберегти</string>
+    <string name="hide_password_description">Приховати пароль</string>
+    <string name="show_password_description">Показати пароль</string>
+    <string name="server_icon_description">Іконка сервера</string>
+    <string name="user_icon_description">Іконка користувача</string>
+    <string name="use_legacy_auth_subtitle">Деякі сервери не підтримують salt-автентифікацію. Якщо у вас виникають проблеми з підключенням, увімкніть цю опцію</string>
+    <string name="additional_settings_title">Додаткові налаштування</string>
+</resources>
