@@ -37,7 +37,7 @@ navigation-compose = "org.jetbrains.androidx.navigation:navigation-compose:2.9.0
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
-androidx-core = { module = "androidx.core:core-ktx", version = "1.16.0" }
+androidx-core = { module = "androidx.core:core-ktx", version = "1.17.0" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.10.1" }
 media-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media" }
 media-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "media" }
