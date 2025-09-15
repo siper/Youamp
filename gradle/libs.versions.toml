@@ -84,5 +84,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.3" }
 osdetector = { id = "com.google.osdetector", version = "1.7.3" }
