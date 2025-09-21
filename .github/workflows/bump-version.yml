@@ -1,0 +1,77 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version (e.g., 2.1.0)'
+        required: true
+        type: string
+
+jobs:
+  bump-version:
+    name: Bump version and create MR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Calculate version code
+        id: version-code
+        run: |
+          # Get current version code from AppBuildInfo.kt
+          CURRENT_CODE=$(grep "VERSION_CODE = " buildSrc/src/main/kotlin/ru/stersh/youamp/AppBuildInfo.kt | sed 's/.*VERSION_CODE = \([0-9]*\).*/\1/')
+          NEW_CODE=$((CURRENT_CODE + 1))
+          echo "new_code=$NEW_CODE" >> $GITHUB_OUTPUT
+          echo "Current version code: $CURRENT_CODE"
+          echo "New version code: $NEW_CODE"
+
+      - name: Create feature branch
+        run: |
+          BRANCH_NAME="chore/release-${{ github.event.inputs.version }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Update version in AppBuildInfo.kt
+        run: |
+          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ github.event.inputs.version }}"/' buildSrc/src/main/kotlin/ru/stersh/youamp/AppBuildInfo.kt
+          sed -i 's/const val VERSION_CODE = [0-9]*/const val VERSION_CODE = ${{ steps.version-code.outputs.new_code }}/' buildSrc/src/main/kotlin/ru/stersh/youamp/AppBuildInfo.kt
+
+      - name: Commit changes
+        run: |
+          git add buildSrc/src/main/kotlin/ru/stersh/youamp/AppBuildInfo.kt
+          git commit -m "chore: release ${{ github.event.inputs.version }}"
+
+      - name: Push branch
+        run: |
+          git push origin "${{ env.branch_name }}"
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: ${{ env.branch_name }}
+          destination_branch: master
+          pr_title: "chore: release ${{ github.event.inputs.version }}"
+          pr_body: |
+            ## Release ${{ github.event.inputs.version }}
+
+            This PR bumps the application version to `${{ github.event.inputs.version }}`.
+
+            ### Changes
+            - Updated `VERSION_NAME` to `${{ github.event.inputs.version }}`
+            - Incremented `VERSION_CODE` to `${{ steps.version-code.outputs.new_code }}`
+
+            🤖 *This PR was created automatically by GitHub Actions*
+          github_token: ${{ secrets.GITHUB_TOKEN }}
