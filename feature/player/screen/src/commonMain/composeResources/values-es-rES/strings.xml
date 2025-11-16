@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_queue_description">Reproducir cola</string>
+    <string name="shuffle_mode_description">Modo aleatorio</string>
+    <string name="repeat_mode_description">Modo repetición</string>
+    <string name="favorite_song_description">Canción favorita</string>
+    <string name="pause_button_description">Botón de pausa</string>
+    <string name="play_button_description">Botón de reproducción</string>
+    <string name="previous_song_description">Canción anterior</string>
+    <string name="next_song_description">Siguiente canción</string>
+</resources>
