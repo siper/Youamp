@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_hint_title">Buscar canciones, álbumes, artistas…</string>
+    <string name="search_title">Buscar</string>
+    <string name="random_songs_title">Canciones aleatorias</string>
+</resources>

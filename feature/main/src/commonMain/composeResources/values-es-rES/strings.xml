@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="personal_title">Personal</string>
+    <string name="explore_title">Explorar</string>
+    <string name="library_title">Biblioteca</string>
+</resources>

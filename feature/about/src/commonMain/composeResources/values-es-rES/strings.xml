@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github_icon_description">Icono de GitHub</string>
+    <string name="github_subtitle">Destacar o enviar una incidencia</string>
+    <string name="f_droid_icon_description">Icono de F-Droid</string>
+    <string name="f_droid_subtitle">Comprobar actualizaciones</string>
+    <string name="crowdin_icon_description">Icono de Crowdin</string>
+    <string name="crowdin_subtitle">Ayuda a traducir</string>
+    <string name="about_title">Acerca de</string>
+    <string name="app_icon_description">Icono de la aplicación</string>
+</resources>
