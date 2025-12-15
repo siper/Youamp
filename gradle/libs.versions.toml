@@ -1,5 +1,5 @@
 [versions]
-android-plugin = "8.13.1"
+android-plugin = "8.13.2"
 koin = "4.1.1"
 kotlin = "2.2.21"
 kotlin-coroutines = "1.10.2"
