@@ -149,7 +149,7 @@ If you want help to make Youamp better, you can:
         <sub><b>72 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/SortingFarmer"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17044906/medium/96921de630db584b78c475a33091111d.png" />
+        <a href="https://crowdin.com/profile/SortingFarmer"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17044906/medium/e865d68b5583ac349d41eda7e32e9125.png" />
           <br />
           <sub><b>SortingFarmer</b></sub></a>
         <br />
