@@ -184,20 +184,6 @@ private fun ContentState(
     var password by rememberSaveable { mutableStateOf(state.serverInfo.password) }
     var useLegacyAuth by rememberSaveable { mutableStateOf(state.serverInfo.useLegacyAuth) }
 
-    val input =
-        remember(
-            name,
-            url,
-            username,
-            password,
-        ) {
-            ServerInputUi(
-                name,
-                url,
-                username,
-                password,
-            )
-        }
     val server =
         remember(
             name,
@@ -246,7 +232,7 @@ private fun ContentState(
                     onValueChange = {
                         if (name != it) {
                             name = it
-                            onValidateInput(input)
+                            onValidateInput(ServerInputUi(it, url, username, password))
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -261,7 +247,7 @@ private fun ContentState(
                 onValueChange = {
                     if (url != it) {
                         url = it
-                        onValidateInput(input)
+                        onValidateInput(ServerInputUi(name, it, username, password))
                     }
                 },
                 keyboardOptions =
@@ -298,7 +284,7 @@ private fun ContentState(
                     onValueChange = {
                         if (username != it) {
                             username = it
-                            onValidateInput(input)
+                            onValidateInput(ServerInputUi(name, url, it, password))
                         }
                     },
                     modifier =
@@ -316,7 +302,7 @@ private fun ContentState(
                 onValueChange = {
                     if (password != it) {
                         password = it
-                        onValidateInput(input)
+                        onValidateInput(ServerInputUi(name, url, username, it))
                     }
                 },
                 visualTransformation =
