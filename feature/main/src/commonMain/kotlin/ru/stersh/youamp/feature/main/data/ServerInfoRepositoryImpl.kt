@@ -22,11 +22,10 @@ internal class ServerInfoRepositoryImpl(
             ServerInfo(
                 name = active.name,
                 avatarUrl =
-                    api
-                        .avatarUrl(
-                            active.username,
-                            true,
-                        ).toString(),
+                    api.avatarUrl(
+                        active.username,
+                        true,
+                    ),
             )
         }
 }

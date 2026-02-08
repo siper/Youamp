@@ -2,11 +2,22 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlin.composeCompiler)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.android.kotlinMultiplatformLibrary)
 }
 
 kotlin {
-    androidTarget()
+    androidLibrary {
+        namespace = "ru.stersh.youamp.feature.library"
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        androidResources.enable = true
+    }
 
     jvm("desktop")
 
@@ -18,7 +29,7 @@ kotlin {
                 implementation(project(":core:player"))
                 implementation(project(":shared:queue"))
                 implementation(libs.koin.core)
-                implementation(compose.components.resources)
+                implementation(libs.compose.resources)
                 implementation(libs.coil.compose)
                 implementation(libs.koin.compose)
                 implementation(libs.bundles.lifecycle)
@@ -26,26 +37,5 @@ kotlin {
                 implementation(libs.kermit)
             }
         }
-    }
-}
-
-android {
-    namespace = "ru.stersh.youamp.feature.library"
-    compileSdk =
-        libs.versions.android.compileSdk
-            .get()
-            .toInt()
-    defaultConfig {
-        minSdk =
-            libs.versions.android.minSdk
-                .get()
-                .toInt()
-    }
-    buildFeatures {
-        compose = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
     }
 }

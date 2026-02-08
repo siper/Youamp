@@ -1,5 +1,5 @@
 [versions]
-android-plugin = "8.13.2"
+android-plugin = "9.0.0"
 koin = "4.1.1"
 kotlin = "2.3.0"
 kotlin-coroutines = "1.10.2"
@@ -16,7 +16,7 @@ runner = "1.7.0"
 core = "1.7.0"
 sqlite = "2.6.2"
 coil = "3.3.0"
-compose-multiplatform = "1.9.0"
+compose-multiplatform = "1.10.0"
 android-minSdk = "24"
 android-compileSdk = "36"
 android-targetSdk = "36"
@@ -33,12 +33,12 @@ kotlin-serialization-core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.
 lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 kermit = { module = "co.touchlab:kermit", version = "2.0.8" }
-navigation-compose = "org.jetbrains.androidx.navigation:navigation-compose:2.9.0-rc01"
+navigation-compose = "org.jetbrains.androidx.navigation:navigation-compose:2.9.1"
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 androidx-core = { module = "androidx.core:core-ktx", version = "1.17.0" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.12.2" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.12.3" }
 media-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media" }
 media-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "media" }
 media-session = { module = "androidx.media3:media3-session", version.ref = "media" }
@@ -59,7 +59,17 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", versio
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
-compose-material3-windowSizeClass = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-multiplatform" }
+compose-material3-windowSizeClass = { module = "org.jetbrains.compose.material3:material3-window-size-class", version = "1.9.0" }
+compose-material3-material3 = { module = "org.jetbrains.compose.material3:material3", version = "1.9.0" }
+compose-material-materialIconsExtended = { module = "org.jetbrains.compose.material:material-icons-extended", version = "1.7.3" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+compose-foundation-layout = { module = "org.jetbrains.compose.foundation:foundation-layout", version.ref = "compose-multiplatform" }
+compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
+compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
+compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-multiplatform" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+compose-material3AdaptiveNavigationSuite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version = "1.9.0" }
 compose-icons-simple = { module = "br.com.devsrsouza.compose.icons:simple-icons", version.ref = "compose-icons" }
 material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-version" }

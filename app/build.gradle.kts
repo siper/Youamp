@@ -1,25 +1,36 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlinMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlin.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.android.library)
 }
 
 kotlin {
-    androidTarget()
+    android {
+        namespace = "ru.stersh.youamp.app"
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        androidResources.enable = true
+    }
 
     jvm("desktop")
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.material3AdaptiveNavigationSuite)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.resources)
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compose.material3AdaptiveNavigationSuite)
             implementation(libs.kermit)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -61,26 +72,5 @@ kotlin {
             api(project(":feature:library"))
             api(project(":feature:song:random"))
         }
-    }
-}
-
-android {
-    namespace = "ru.stersh.youamp"
-    compileSdk =
-        libs.versions.android.compileSdk
-            .get()
-            .toInt()
-    defaultConfig {
-        minSdk =
-            libs.versions.android.minSdk
-                .get()
-                .toInt()
-    }
-    buildFeatures {
-        compose = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
     }
 }
