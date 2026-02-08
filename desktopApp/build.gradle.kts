@@ -15,12 +15,12 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.material3AdaptiveNavigationSuite)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.resources)
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compose.material3AdaptiveNavigationSuite)
             implementation(libs.kermit)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -34,7 +34,7 @@ kotlin {
 
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(compose.components.resources)
+            implementation(libs.compose.resources)
             implementation(libs.kotlin.coroutines.swing)
             implementation(libs.coil.network.okhttp)
             implementation(libs.sl4j)

@@ -1,44 +1,10 @@
 import ru.stersh.youamp.AppBuildInfo
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.application)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlin.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
-}
-
-kotlin {
-    androidTarget()
-
-    sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.material)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.koin.android)
-            implementation(libs.media.exoplayer)
-            implementation(libs.media.session)
-            implementation(libs.kotlin.coroutines.core)
-            implementation(libs.kotlin.coroutines.guava)
-            implementation(libs.kotlin.coroutines.android)
-            implementation(libs.coil.network.okhttp)
-            implementation(libs.media.datasource)
-            implementation(libs.media.datasource.okhttp)
-        }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.koin.core)
-            implementation(libs.coil.compose)
-            implementation(libs.kermit)
-
-            implementation(project(":app"))
-        }
-    }
 }
 
 android {
@@ -73,13 +39,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
     dependenciesInfo {
-        // Disables dependency metadata when building APKs.
         includeInApk = false
-        // Disables dependency metadata when building Android App Bundles.
         includeInBundle = false
     }
     buildFeatures {
         buildConfig = true
+        compose = true
     }
     buildTypes {
         release {
@@ -98,5 +63,28 @@ android {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    implementation(project(":app"))
+
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.resources)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.material)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.core)
+    implementation(libs.media.exoplayer)
+    implementation(libs.media.session)
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.kotlin.coroutines.guava)
+    implementation(libs.kotlin.coroutines.android)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.media.datasource)
+    implementation(libs.media.datasource.okhttp)
+    implementation(libs.kermit)
+
+    debugImplementation(libs.compose.ui.tooling)
 }
