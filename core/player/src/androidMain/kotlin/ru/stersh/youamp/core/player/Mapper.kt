@@ -4,7 +4,7 @@ import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 
-internal fun MediaItem.toCommon(): ru.stersh.youamp.core.player.MediaItem =
+fun MediaItem.toCommon(): ru.stersh.youamp.core.player.MediaItem =
     MediaItem(
         id = mediaId,
         title = mediaMetadata.title.toString(),
@@ -14,7 +14,7 @@ internal fun MediaItem.toCommon(): ru.stersh.youamp.core.player.MediaItem =
         artworkUrl = mediaMetadata.artworkUri?.toString(),
     )
 
-internal fun ru.stersh.youamp.core.player.MediaItem.toPlatform(): MediaItem =
+fun ru.stersh.youamp.core.player.MediaItem.toPlatform(): MediaItem =
     MediaItem
         .Builder()
         .setUri(url)
