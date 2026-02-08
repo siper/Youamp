@@ -23,6 +23,8 @@ kotlin {
             implementation(libs.kotlin.coroutines.guava)
             implementation(libs.kotlin.coroutines.android)
             implementation(libs.coil.network.okhttp)
+            implementation(libs.media.datasource)
+            implementation(libs.media.datasource.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
