@@ -5,5 +5,11 @@ internal data class ServerUi(
     val url: String,
     val username: String,
     val password: String,
-    val useLegacyAuth: Boolean,
+    val authType: AuthTypeUi,
 )
+
+internal enum class AuthTypeUi {
+    Token,
+    Unsecure,
+    EncodedPassword,
+}

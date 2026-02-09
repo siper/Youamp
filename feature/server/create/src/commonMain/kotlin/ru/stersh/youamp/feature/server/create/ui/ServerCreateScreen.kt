@@ -1,5 +1,6 @@
 package ru.stersh.youamp.feature.server.create.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,10 +25,10 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -54,6 +55,13 @@ import org.koin.core.parameter.parametersOf
 import ru.stersh.youamp.core.ui.BackNavigationButton
 import youamp.feature.server.create.generated.resources.Res
 import youamp.feature.server.create.generated.resources.additional_settings_title
+import youamp.feature.server.create.generated.resources.auth_type_encoded_password_description
+import youamp.feature.server.create.generated.resources.auth_type_encoded_password_title
+import youamp.feature.server.create.generated.resources.auth_type_title
+import youamp.feature.server.create.generated.resources.auth_type_token_description
+import youamp.feature.server.create.generated.resources.auth_type_token_title
+import youamp.feature.server.create.generated.resources.auth_type_unsecure_description
+import youamp.feature.server.create.generated.resources.auth_type_unsecure_title
 import youamp.feature.server.create.generated.resources.edit_server_title
 import youamp.feature.server.create.generated.resources.hide_password_description
 import youamp.feature.server.create.generated.resources.new_server_title
@@ -66,10 +74,8 @@ import youamp.feature.server.create.generated.resources.server_save_action_title
 import youamp.feature.server.create.generated.resources.server_test_error_message
 import youamp.feature.server.create.generated.resources.server_test_success_message
 import youamp.feature.server.create.generated.resources.server_test_title
-import youamp.feature.server.create.generated.resources.server_use_legacy_auth_title
 import youamp.feature.server.create.generated.resources.server_username_title
 import youamp.feature.server.create.generated.resources.show_password_description
-import youamp.feature.server.create.generated.resources.use_legacy_auth_subtitle
 import youamp.feature.server.create.generated.resources.user_icon_description
 
 @Composable
@@ -182,7 +188,7 @@ private fun ContentState(
     var url by rememberSaveable { mutableStateOf(state.serverInfo.url) }
     var username by rememberSaveable { mutableStateOf(state.serverInfo.username) }
     var password by rememberSaveable { mutableStateOf(state.serverInfo.password) }
-    var useLegacyAuth by rememberSaveable { mutableStateOf(state.serverInfo.useLegacyAuth) }
+    var authType by rememberSaveable { mutableStateOf(state.serverInfo.authType) }
 
     val server =
         remember(
@@ -190,14 +196,14 @@ private fun ContentState(
             url,
             username,
             password,
-            useLegacyAuth,
+            authType,
         ) {
             ServerUi(
                 name,
                 url,
                 username,
                 password,
-                useLegacyAuth,
+                authType,
             )
         }
 
@@ -338,7 +344,7 @@ private fun ContentState(
             )
         }
 
-        Column {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(
                 text = stringResource(Res.string.additional_settings_title),
                 style = MaterialTheme.typography.bodyMedium,
@@ -346,25 +352,48 @@ private fun ContentState(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
 
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(Res.string.server_use_legacy_auth_title),
+            Column {
+                Text(
+                    text = stringResource(Res.string.auth_type_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                )
+
+                AuthTypeUi.entries.forEach { type ->
+                    ListItem(
+                        headlineContent = {
+                            Text(
+                                text =
+                                    when (type) {
+                                        AuthTypeUi.Unsecure -> stringResource(Res.string.auth_type_unsecure_title)
+                                        AuthTypeUi.EncodedPassword -> stringResource(Res.string.auth_type_encoded_password_title)
+                                        AuthTypeUi.Token -> stringResource(Res.string.auth_type_token_title)
+                                    },
+                            )
+                        },
+                        supportingContent = {
+                            Text(
+                                text =
+                                    when (type) {
+                                        AuthTypeUi.Unsecure -> stringResource(Res.string.auth_type_unsecure_description)
+                                        AuthTypeUi.EncodedPassword -> stringResource(Res.string.auth_type_encoded_password_description)
+                                        AuthTypeUi.Token -> stringResource(Res.string.auth_type_token_description)
+                                    },
+                            )
+                        },
+                        trailingContent = {
+                            RadioButton(
+                                selected = authType == type,
+                                onClick = { authType = type },
+                            )
+                        },
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable { authType = type },
                     )
-                },
-                supportingContent = {
-                    Text(
-                        text = stringResource(Res.string.use_legacy_auth_subtitle),
-                    )
-                },
-                trailingContent = {
-                    Switch(
-                        checked = useLegacyAuth,
-                        onCheckedChange = { useLegacyAuth = it },
-                        modifier = Modifier.padding(vertical = 20.dp),
-                    )
-                },
-            )
+                }
+            }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,

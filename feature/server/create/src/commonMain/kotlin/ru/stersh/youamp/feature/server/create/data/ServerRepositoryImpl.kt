@@ -27,7 +27,7 @@ internal class ServerRepositoryImpl(
                     url = server.url,
                     username = server.username,
                     password = server.password,
-                    useLegacyAuth = server.useLegacyAuth,
+                    authType = server.authType.name,
                 )
                 ?: return
         serverDao.insert(newServer)
@@ -42,9 +42,16 @@ internal class ServerRepositoryImpl(
                     url = it.url,
                     username = it.username,
                     password = it.password,
-                    useLegacyAuth = it.useLegacyAuth,
+                    authType = authTypeFromString(it.authType),
                 )
             }
+
+    private fun authTypeFromString(value: String): Server.AuthType =
+        when (value) {
+            "Unsecure" -> Server.AuthType.Unsecure
+            "EncodedPassword" -> Server.AuthType.EncodedPassword
+            else -> Server.AuthType.Token
+        }
 
     override suspend fun hasActiveServer(): Boolean = serverDao.getActive() != null
 
@@ -56,7 +63,7 @@ internal class ServerRepositoryImpl(
                 password = server.password,
                 apiVersion = ApiDefaults.API_VERSION,
                 clientId = ApiDefaults.CLIENT_ID,
-                useLegacyAuth = server.useLegacyAuth,
+                authType = server.authType.toSubsonicApiAuthType(),
             ).ping().data
 
         if (pingResponse.status != "ok") {
@@ -70,7 +77,23 @@ internal class ServerRepositoryImpl(
             url = url,
             username = username,
             password = password,
-            useLegacyAuth = useLegacyAuth,
+            authType = authType.name,
             isActive = isActive,
         )
+
+    private fun Server.AuthType.toSubsonicApiAuthType(): ru.stersh.subsonic.api.AuthType =
+        when (this) {
+            Server.AuthType.Unsecure -> {
+                ru.stersh.subsonic.api.AuthType.Unsecure
+            }
+
+            Server.AuthType.EncodedPassword -> {
+                ru.stersh.subsonic.api.AuthType.EncodedPassword
+            }
+
+            Server.AuthType.Token -> {
+                ru.stersh.subsonic.api.AuthType
+                    .Token()
+            }
+        }
 }

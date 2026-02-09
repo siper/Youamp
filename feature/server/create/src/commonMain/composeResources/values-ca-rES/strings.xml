@@ -6,16 +6,22 @@
     <string name="edit_server_title">Edita el servidor</string>
     <string name="server_name_title">Nom</string>
     <string name="server_address_title">Adreça</string>
-    <string name="server_username_title">Nom d’usuari</string>
+    <string name="server_username_title">Nom d'usuari</string>
     <string name="server_password_title">Contrasenya</string>
-    <string name="server_use_legacy_auth_title">Fes servir l\'autenticació antiga</string>
     <string name="server_test_title">Prova</string>
     <string name="server_add_action_title">Afegeix</string>
     <string name="server_save_action_title">Desa</string>
     <string name="hide_password_description">Amaga la contrasenya</string>
     <string name="show_password_description">Mostra la contrasenya</string>
     <string name="server_icon_description">Icona del servidor</string>
-    <string name="user_icon_description">Icona d\'usuari</string>
-    <string name="use_legacy_auth_subtitle">Alguns servidors no suporten l\'autenticació de tipus sal. Si teniu problemes amb la connexió, activeu aquesta opció</string>
+    <string name="user_icon_description">Icona d'usuari</string>
     <string name="additional_settings_title">Més opcions</string>
+    <string name="auth_type_title">Tipus d'autenticació</string>
+    <string name="auth_type_description">Trieu el mètode d'autenticació per connectar-vos al servidor</string>
+    <string name="auth_type_unsecure_title">No segur</string>
+    <string name="auth_type_unsecure_description">La contrasenya s'envia en text net. Utilitzeu-lo només si el servidor no admet mètodes d'autenticació més nous</string>
+    <string name="auth_type_encoded_password_title">Contrasenya codificada</string>
+    <string name="auth_type_encoded_password_description">La contrasenya es codifica en hex abans d'enviar-la. Més segur que el mètode no segur</string>
+    <string name="auth_type_token_title">Token (recomanat)</string>
+    <string name="auth_type_token_description">Utilitza autenticació basada en tokens amb salt. Mètode més segur</string>
 </resources>

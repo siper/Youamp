@@ -12,7 +12,7 @@ internal data class ServerInfoUi(
     val url: String = "http://",
     val username: String = "",
     val password: String = "",
-    val useLegacyAuth: Boolean = false,
+    val authType: AuthTypeUi = AuthTypeUi.Token,
 ) {
     val isValid: Boolean =
         name.isNotEmpty() && url.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()

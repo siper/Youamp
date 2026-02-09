@@ -5,6 +5,7 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
+import io.ktor.http.URLBuilder
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.koin.android.ext.android.get
@@ -70,25 +71,22 @@ class App : Application() {
                                         val api = runBlocking { apiProvider.getApi() }
 
                                         val request = chain.request()
-                                        val newUrlBuilder =
-                                            request
-                                                .url
-                                                .newBuilder()
 
-                                        api
-                                            .getClientParams()
-                                            .forEach {
-                                                newUrlBuilder.addQueryParameter(
-                                                    it.key,
-                                                    it.value,
-                                                )
-                                            }
+                                        val newUrlBuilder = URLBuilder(request.url.toString())
+
+                                        with(api) {
+                                            newUrlBuilder.appendAuth(api.authType)
+                                            newUrlBuilder.appendClientParameters()
+                                        }
 
                                         chain.proceed(
                                             request
                                                 .newBuilder()
-                                                .url(newUrlBuilder.build())
-                                                .build(),
+                                                .url(
+                                                    newUrlBuilder
+                                                        .build()
+                                                        .toString(),
+                                                ).build(),
                                         )
                                     }.build()
                             },

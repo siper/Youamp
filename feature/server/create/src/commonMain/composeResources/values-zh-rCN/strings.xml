@@ -8,7 +8,6 @@
     <string name="server_address_title">网址</string>
     <string name="server_username_title">用户名</string>
     <string name="server_password_title">密码</string>
-    <string name="server_use_legacy_auth_title">使用旧版认证</string>
     <string name="server_test_title">测试</string>
     <string name="server_add_action_title">添加</string>
     <string name="server_save_action_title">保存</string>
@@ -16,6 +15,13 @@
     <string name="show_password_description">显示密码</string>
     <string name="server_icon_description">服务器图标</string>
     <string name="user_icon_description">用户图标</string>
-    <string name="use_legacy_auth_subtitle">部分服务器不支持加盐的验证方式。若你遇到连接问题，启用此项。</string>
     <string name="additional_settings_title">附加设置</string>
+    <string name="auth_type_title">认证类型</string>
+    <string name="auth_type_description">选择连接到服务器的身份验证方法</string>
+    <string name="auth_type_unsecure_title">不安全</string>
+    <string name="auth_type_unsecure_description">密码以明文形式发送。仅当服务器不支持较新的身份验证方法时使用</string>
+    <string name="auth_type_encoded_password_title">编码密码</string>
+    <string name="auth_type_encoded_password_description">密码在发送前进行十六进制编码。比不安全的方法更安全</string>
+    <string name="auth_type_token_title">令牌（推荐）</string>
+    <string name="auth_type_token_description">使用基于盐的令牌身份验证。最安全的方法</string>
 </resources>
