@@ -73,6 +73,8 @@ internal class ApiProviderImpl(
             password = subsonicServer.password,
             apiVersion = ApiDefaults.API_VERSION,
             clientId = ApiDefaults.CLIENT_ID,
+            readTimeout = ApiDefaults.ReadTimeout,
+            connectTimeout = ApiDefaults.ConnectTimeout,
             authType =
                 when (subsonicServer.authType) {
                     "Unsecure" -> {
