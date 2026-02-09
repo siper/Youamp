@@ -4,6 +4,7 @@ koin = "4.1.1"
 kotlin = "2.3.0"
 kotlin-coroutines = "1.10.2"
 lifecycle = "2.9.6"
+okhttp = "5.3.2"
 room = "2.8.4"
 media = "1.9.2"
 google-material = "1.13.0"
@@ -45,6 +46,7 @@ media-session = { module = "androidx.media3:media3-session", version.ref = "medi
 media-extractor = { module = "androidx.media3:media3-extractor", version.ref = "media" }
 media-datasource = { module = "androidx.media3:media3-datasource", version.ref = "media" }
 media-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "media" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 room-core = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
@@ -54,7 +56,7 @@ paging-common = { module = "androidx.paging:paging-common", version.ref = "pagin
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 kotlinx-collectionsImmutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.4.0" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.7.1" }
-subsonicApi = { module = "ru.stersh:subsonic-api", version = "1.0.11" }
+subsonicApi = { module = "ru.stersh:subsonic-api", version = "1.2.0" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

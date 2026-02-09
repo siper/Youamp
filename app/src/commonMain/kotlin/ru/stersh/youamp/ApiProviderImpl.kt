@@ -73,6 +73,20 @@ internal class ApiProviderImpl(
             password = subsonicServer.password,
             apiVersion = ApiDefaults.API_VERSION,
             clientId = ApiDefaults.CLIENT_ID,
-            useLegacyAuth = subsonicServer.useLegacyAuth,
+            authType =
+                when (subsonicServer.authType) {
+                    "Unsecure" -> {
+                        ru.stersh.subsonic.api.AuthType.Unsecure
+                    }
+
+                    "EncodedPassword" -> {
+                        ru.stersh.subsonic.api.AuthType.EncodedPassword
+                    }
+
+                    else -> {
+                        ru.stersh.subsonic.api.AuthType
+                            .Token()
+                    }
+                },
         )
 }

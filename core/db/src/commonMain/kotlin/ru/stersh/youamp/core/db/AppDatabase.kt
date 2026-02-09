@@ -9,7 +9,7 @@ import ru.stersh.youamp.core.db.server.SubsonicServerDb
 
 @Database(
     entities = [SubsonicServerDb::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 @ConstructedBy(AppDatabaseConstructor::class)

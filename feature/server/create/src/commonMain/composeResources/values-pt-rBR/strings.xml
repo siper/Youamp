@@ -8,7 +8,6 @@
     <string name="server_address_title">Endereço</string>
     <string name="server_username_title">Nome de usuário</string>
     <string name="server_password_title">Senha</string>
-    <string name="server_use_legacy_auth_title">Usar autenticação legada</string>
     <string name="server_test_title">Teste</string>
     <string name="server_add_action_title">Adicionar</string>
     <string name="server_save_action_title">Salvar</string>
@@ -16,6 +15,13 @@
     <string name="show_password_description">Mostrar a senha</string>
     <string name="server_icon_description">Ícone do servidor</string>
     <string name="user_icon_description">Ícone de usuário</string>
-    <string name="use_legacy_auth_subtitle">Alguns servidores não suportam a autenticação sal. Se você tiver problemas com a conexão, ative esta opção</string>
     <string name="additional_settings_title">Configurações adicionais</string>
+    <string name="auth_type_title">Tipo de autenticação</string>
+    <string name="auth_type_description">Escolha o método de autenticação para conectar ao seu servidor</string>
+    <string name="auth_type_unsecure_title">Inseguro</string>
+    <string name="auth_type_unsecure_description">A senha é enviada em texto simples. Use apenas se seu servidor não suportar métodos de autenticação mais recentes</string>
+    <string name="auth_type_encoded_password_title">Senha codificada</string>
+    <string name="auth_type_encoded_password_description">A senha é codificada em hex antes de ser enviada. Mais seguro que o método inseguro</string>
+    <string name="auth_type_token_title">Token (recomendado)</string>
+    <string name="auth_type_token_description">Usa autenticação baseada em token com salt. Método mais seguro</string>
 </resources>

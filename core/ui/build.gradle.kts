@@ -30,8 +30,8 @@ kotlin {
             api(libs.compose.ui.tooling)
             api(libs.compose.ui.tooling.preview)
             api(libs.compose.material3.windowSizeClass)
+            api(libs.coil.compose)
             implementation(libs.compose.resources)
-            implementation(libs.coil.compose)
             implementation(libs.kotlinx.collectionsImmutable)
         }
     }

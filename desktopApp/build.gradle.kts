@@ -37,6 +37,7 @@ kotlin {
             implementation(libs.compose.resources)
             implementation(libs.kotlin.coroutines.swing)
             implementation(libs.coil.network.okhttp)
+            implementation(libs.okhttp)
             implementation(libs.sl4j)
             implementation(libs.sl4j.simple)
         }

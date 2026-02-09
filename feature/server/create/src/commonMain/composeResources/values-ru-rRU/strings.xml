@@ -8,7 +8,6 @@
     <string name="server_address_title">Адрес</string>
     <string name="server_username_title">Имя пользователя</string>
     <string name="server_password_title">Пароль</string>
-    <string name="server_use_legacy_auth_title">Использовать устаревшую аутентификацию</string>
     <string name="server_test_title">Тестирование</string>
     <string name="server_add_action_title">Добавить</string>
     <string name="server_save_action_title">Сохранить</string>
@@ -16,6 +15,13 @@
     <string name="show_password_description">Показать пароль</string>
     <string name="server_icon_description">Иконка сервера</string>
     <string name="user_icon_description">Иконка пользователя</string>
-    <string name="use_legacy_auth_subtitle">Некоторые серверы не поддерживают аутентификацию с помощью токена. Если у вас есть проблемы с подключением, включите эту опцию</string>
     <string name="additional_settings_title">Дополнительные настройки</string>
+    <string name="auth_type_title">Тип аутентификации</string>
+    <string name="auth_type_description">Выберите метод аутентификации для подключения к серверу</string>
+    <string name="auth_type_unsecure_title">Незащищенный</string>
+    <string name="auth_type_unsecure_description">Пароль передается в открытом виде. Используйте только если сервер не поддерживает новые методы аутентификации</string>
+    <string name="auth_type_encoded_password_title">Кодированный пароль</string>
+    <string name="auth_type_encoded_password_description">Пароль кодируется в hex перед отправкой. Более безопасно, чем незащищенный метод</string>
+    <string name="auth_type_token_title">Токен (рекомендуется)</string>
+    <string name="auth_type_token_description">Использует аутентификацию на основе токена с солью. Самый безопасный метод</string>
 </resources>

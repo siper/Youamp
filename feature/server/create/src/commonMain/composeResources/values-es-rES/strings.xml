@@ -8,7 +8,6 @@
     <string name="server_address_title">Dirección</string>
     <string name="server_username_title">Nombre de usuario</string>
     <string name="server_password_title">Contraseña</string>
-    <string name="server_use_legacy_auth_title">Usar método de autenticación antiguo</string>
     <string name="server_test_title">Comprobar</string>
     <string name="server_add_action_title">Añadir</string>
     <string name="server_save_action_title">Guardar</string>
@@ -16,6 +15,13 @@
     <string name="show_password_description">Mostrar contraseña</string>
     <string name="server_icon_description">Icono del servidor</string>
     <string name="user_icon_description">Icono del usuario</string>
-    <string name="use_legacy_auth_subtitle">Algunos servidores no soportan la autenticación salt. Si tienes problemas con la conexión, habilita esta opción</string>
     <string name="additional_settings_title">Configuración adicional</string>
+    <string name="auth_type_title">Tipo de autenticación</string>
+    <string name="auth_type_description">Elige el método de autenticación para conectarte a tu servidor</string>
+    <string name="auth_type_unsecure_title">Inseguro</string>
+    <string name="auth_type_unsecure_description">La contraseña se envía en texto plano. Úsalo solo si tu servidor no admite métodos de autenticación más recientes</string>
+    <string name="auth_type_encoded_password_title">Contraseña codificada</string>
+    <string name="auth_type_encoded_password_description">La contraseña se codifica en hexadecimal antes de enviarla. Más seguro que el método inseguro</string>
+    <string name="auth_type_token_title">Token (recomendado)</string>
+    <string name="auth_type_token_description">Utiliza autenticación basada en tokens con salt. Método más seguro</string>
 </resources>

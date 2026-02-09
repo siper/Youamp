@@ -7,6 +7,7 @@ import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
+@OptIn(ExperimentalForeignApi::class)
 fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
     val dbFilePath = documentDirectory() + "/app.db"
     return Room.databaseBuilder<AppDatabase>(

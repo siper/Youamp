@@ -10,6 +10,7 @@ val dbModule =
     module {
         single {
             get<RoomDatabase.Builder<AppDatabase>>()
+                .addMigrations(MIGRATION_1_2)
                 .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
                 .setQueryCoroutineContext(Dispatchers.IO)
                 .setDriver(BundledSQLiteDriver())

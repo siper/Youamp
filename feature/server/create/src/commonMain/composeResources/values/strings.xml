@@ -8,7 +8,6 @@
     <string name="server_address_title">Address</string>
     <string name="server_username_title">Username</string>
     <string name="server_password_title">Password</string>
-    <string name="server_use_legacy_auth_title">Use legacy authentication</string>
     <string name="server_test_title">Test</string>
     <string name="server_add_action_title">Add</string>
     <string name="server_save_action_title">Save</string>
@@ -16,6 +15,13 @@
     <string name="show_password_description">Show password</string>
     <string name="server_icon_description">Server icon</string>
     <string name="user_icon_description">User icon</string>
-    <string name="use_legacy_auth_subtitle">Some servers not support salt authentication. If you have problems with connection, enable this option</string>
     <string name="additional_settings_title">Additional settings</string>
+    <string name="auth_type_title">Authentication type</string>
+    <string name="auth_type_description">Choose the authentication method for connecting to your server</string>
+    <string name="auth_type_unsecure_title">Unsecure</string>
+    <string name="auth_type_unsecure_description">Password is sent in plain text. Use only if your server doesn't support newer authentication methods</string>
+    <string name="auth_type_encoded_password_title">Encoded password</string>
+    <string name="auth_type_encoded_password_description">Password is hex-encoded before sending. More secure than unsecure method</string>
+    <string name="auth_type_token_title">Token (recommended)</string>
+    <string name="auth_type_token_description">Uses salt-based token authentication. Most secure method</string>
 </resources>

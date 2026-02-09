@@ -12,6 +12,7 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
+import io.ktor.http.URLBuilder
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.jetbrains.compose.resources.painterResource
@@ -38,56 +39,7 @@ fun main() =
             KoinPlatform
                 .getKoin()
                 .get<AppProperties>()
-        SingletonImageLoader.setSafe { context ->
-            ImageLoader
-                .Builder(context)
-                .crossfade(true)
-                .components {
-                    add(
-                        OkHttpNetworkFetcherFactory(
-                            callFactory = {
-                                OkHttpClient
-                                    .Builder()
-                                    .addInterceptor { chain ->
-                                        chain
-                                            .proceed(chain.request())
-                                            .newBuilder()
-                                            .removeHeader("cache-control")
-                                            .removeHeader("expires")
-                                            .addHeader(
-                                                "cache-control",
-                                                "public, max-age=604800, no-transform",
-                                            ).build()
-                                    }.addInterceptor { chain ->
-                                        val api = runBlocking { apiProvider.getApi() }
-
-                                        val request = chain.request()
-                                        val newUrlBuilder =
-                                            request
-                                                .url
-                                                .newBuilder()
-
-                                        api
-                                            .getClientParams()
-                                            .forEach {
-                                                newUrlBuilder.addQueryParameter(
-                                                    it.key,
-                                                    it.value,
-                                                )
-                                            }
-
-                                        chain.proceed(
-                                            request
-                                                .newBuilder()
-                                                .url(newUrlBuilder.build())
-                                                .build(),
-                                        )
-                                    }.build()
-                            },
-                        ),
-                    )
-                }.build()
-        }
+        setupCoil(apiProvider)
         val windowState =
             rememberWindowState(
                 size =
@@ -107,3 +59,53 @@ fun main() =
             }
         }
     }
+
+private fun setupCoil(apiProvider: ApiProvider) {
+    SingletonImageLoader.setSafe { context ->
+        ImageLoader
+            .Builder(context)
+            .crossfade(true)
+            .components {
+                add(
+                    OkHttpNetworkFetcherFactory(
+                        callFactory = {
+                            OkHttpClient
+                                .Builder()
+                                .addInterceptor { chain ->
+                                    chain
+                                        .proceed(chain.request())
+                                        .newBuilder()
+                                        .removeHeader("cache-control")
+                                        .removeHeader("expires")
+                                        .addHeader(
+                                            "cache-control",
+                                            "public, max-age=604800, no-transform",
+                                        ).build()
+                                }.addInterceptor { chain ->
+                                    val api = runBlocking { apiProvider.getApi() }
+
+                                    val request = chain.request()
+
+                                    val newUrlBuilder = URLBuilder(request.url.toString())
+
+                                    with(api) {
+                                        newUrlBuilder.appendAuth(api.authType)
+                                        newUrlBuilder.appendClientParameters()
+                                    }
+
+                                    chain.proceed(
+                                        request
+                                            .newBuilder()
+                                            .url(
+                                                newUrlBuilder
+                                                    .build()
+                                                    .toString(),
+                                            ).build(),
+                                    )
+                                }.build()
+                        },
+                    ),
+                )
+            }.build()
+    }
+}
