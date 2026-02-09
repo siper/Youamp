@@ -1,0 +1,66 @@
+name: Create Tag on Release Merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [master]
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.title, 'chore: release')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Extract version from PR title
+        id: extract-version
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          VERSION=$(echo "$PR_TITLE" | sed -n 's/^chore: release \([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p')
+
+          if [ -z "$VERSION" ]; then
+            echo "❌ Could not extract version from PR title: $PR_TITLE"
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "✅ Extracted version: $VERSION"
+
+      - name: Verify version in AppBuildInfo.kt
+        id: verify-version
+        run: |
+          FILE="buildSrc/src/main/kotlin/ru/stersh/youamp/AppBuildInfo.kt"
+          EXPECTED_VERSION="${{ steps.extract-version.outputs.version }}"
+
+          ACTUAL_VERSION=$(grep 'VERSION_NAME' "$FILE" | sed 's/.*VERSION_NAME = "\(.*\)".*/\1/')
+
+          if [ "$ACTUAL_VERSION" != "$EXPECTED_VERSION" ]; then
+            echo "❌ Version mismatch!"
+            echo "Expected: $EXPECTED_VERSION"
+            echo "Actual: $ACTUAL_VERSION"
+            exit 1
+          fi
+
+          echo "✅ Version verified in AppBuildInfo.kt: $ACTUAL_VERSION"
+
+      - name: Create and push tag
+        run: |
+          TAG="${{ steps.extract-version.outputs.tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+          echo "✅ Tag $TAG created and pushed successfully"
