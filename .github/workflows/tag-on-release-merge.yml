@@ -26,7 +26,7 @@ jobs:
         id: extract-version
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
-          VERSION=$(echo "$PR_TITLE" | sed -n 's/^chore: release \([0-9]*\.[0-9]*\.[0-9]*\).*/\1/p')
+          VERSION=$(echo "$PR_TITLE" | grep -oP 'chore: release \K[0-9]+\.[0-9]+\.[0-9]+')
 
           if [ -z "$VERSION" ]; then
             echo "❌ Could not extract version from PR title: $PR_TITLE"
@@ -35,30 +35,58 @@ jobs:
 
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=v$VERSION" >> $GITHUB_OUTPUT
-          echo "✅ Extracted version: $VERSION"
+          echo "✅ Extracted version from PR title: $VERSION"
 
-      - name: Verify version in AppBuildInfo.kt
-        id: verify-version
+      - name: Extract version from AppBuildInfo.kt
+        id: extract-from-file
         run: |
           FILE="buildSrc/src/main/kotlin/ru/stersh/youamp/AppBuildInfo.kt"
-          EXPECTED_VERSION="${{ steps.extract-version.outputs.version }}"
 
-          ACTUAL_VERSION=$(grep 'VERSION_NAME' "$FILE" | sed 's/.*VERSION_NAME = "\(.*\)".*/\1/')
+          VERSION_LINE=$(grep -E '^\s*const val VERSION_NAME\s*=' "$FILE" | head -n1)
 
-          if [ "$ACTUAL_VERSION" != "$EXPECTED_VERSION" ]; then
-            echo "❌ Version mismatch!"
-            echo "Expected: $EXPECTED_VERSION"
-            echo "Actual: $ACTUAL_VERSION"
+          if [ -z "$VERSION_LINE" ]; then
+            echo "❌ Could not find VERSION_NAME declaration in $FILE"
+            cat "$FILE"
             exit 1
           fi
 
-          echo "✅ Version verified in AppBuildInfo.kt: $ACTUAL_VERSION"
+          ACTUAL_VERSION=$(echo "$VERSION_LINE" | grep -oP 'VERSION_NAME\s*=\s*"\K[^"]+')
+
+          if [ -z "$ACTUAL_VERSION" ]; then
+            echo "❌ Could not parse version from line: $VERSION_LINE"
+            exit 1
+          fi
+
+          echo "actual_version=$ACTUAL_VERSION" >> $GITHUB_OUTPUT
+          echo "✅ Extracted version from file: $ACTUAL_VERSION"
+
+      - name: Verify version consistency
+        run: |
+          EXPECTED="${{ steps.extract-version.outputs.version }}"
+          ACTUAL="${{ steps.extract-from-file.outputs.actual_version }}"
+
+          echo "Expected version: $EXPECTED"
+          echo "Actual version: $ACTUAL"
+
+          if [ "$EXPECTED" != "$ACTUAL" ]; then
+            echo "❌ Version mismatch!"
+            echo "PR title says: $EXPECTED"
+            echo "File contains: $ACTUAL"
+            exit 1
+          fi
+
+          echo "✅ Versions match!"
 
       - name: Create and push tag
         run: |
           TAG="${{ steps.extract-version.outputs.tag }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "⚠️ Tag $TAG already exists, skipping creation"
+            exit 0
+          fi
 
           git tag -a "$TAG" -m "Release $TAG"
           git push origin "$TAG"
