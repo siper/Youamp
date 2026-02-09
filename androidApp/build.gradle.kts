@@ -65,7 +65,9 @@ android {
 dependencies {
     implementation(project(":app"))
 
+    implementation(project.dependencies.platform(libs.okhttp.bom))
     implementation(libs.okhttp)
+    implementation(libs.okhttp.sse)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.runtime)
     implementation(libs.compose.foundation)

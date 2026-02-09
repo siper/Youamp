@@ -35,7 +35,6 @@ kotlin {
                 api(libs.room.core)
                 implementation(libs.androidx.sqlite.bundled)
                 implementation(libs.koin.core)
-                implementation(project(":core:api"))
             }
         }
 
