@@ -19,9 +19,9 @@
     <string name="auth_type_title">Type d’authentification</string>
     <string name="auth_type_description">Choisissez la méthode d’authentification pour vous connecter à votre serveur</string>
     <string name="auth_type_unsecure_title">Non sécurisé</string>
-    <string name="auth_type_unsecure_description">Le mot de passe est envoyé en clair. Utilisez uniquement si votre serveur ne prend pas en charge les nouvelles méthodes d’authentification</string>
+    <string name="auth_type_unsecure_description">Le mot de passe est envoyé en clair. À utiliser uniquement si votre serveur ne prend pas en charge les méthodes d\'authentification plus récentes</string>
     <string name="auth_type_encoded_password_title">Mot de passe codé</string>
-    <string name="auth_type_encoded_password_description">Le mot de passe est codé en hexadécimal avant l’envoi. Plus sécurisé que la méthode non sécurisée</string>
+    <string name="auth_type_encoded_password_description">Le mot de passe est encodé en hexadécimal avant l\'envoi. Méthode plus sûre qu\'une méthode non sécurisée</string>
     <string name="auth_type_token_title">Jeton (recommandé)</string>
     <string name="auth_type_token_description">Utilise l’authentification par jeton basée sur le sel. Méthode la plus sécurisée</string>
 </resources>
