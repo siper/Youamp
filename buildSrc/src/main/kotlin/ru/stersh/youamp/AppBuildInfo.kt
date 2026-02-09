@@ -1,8 +1,8 @@
 package ru.stersh.youamp
 
 object AppBuildInfo {
-    const val VERSION_NAME = "2.1.1"
-    const val VERSION_CODE = 32
+    const val VERSION_NAME = "2.1.2"
+    const val VERSION_CODE = 33
     const val PACKAGE_NAME = "ru.stersh.youamp"
 
     val CLEAR_VERSION_NAME = clearVersionName()
