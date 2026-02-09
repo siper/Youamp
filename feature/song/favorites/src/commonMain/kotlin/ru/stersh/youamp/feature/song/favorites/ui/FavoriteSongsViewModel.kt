@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.player.Player
+import ru.stersh.youamp.core.player.ShuffleMode
 import ru.stersh.youamp.feature.song.favorites.domain.FavoriteSongsRepository
 import ru.stersh.youamp.shared.queue.AudioSource
 import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
@@ -20,6 +22,7 @@ import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
 internal class FavoriteSongsViewModel(
     private val favoriteSongsRepository: FavoriteSongsRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
+    private val player: Player,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -38,7 +41,8 @@ internal class FavoriteSongsViewModel(
 
     fun playShuffled() =
         viewModelScope.launch {
-            playFavorites(true)
+            playFavorites()
+            player.setShuffleMode(ShuffleMode.Enabled)
         }
 
     fun refresh() {
@@ -60,7 +64,7 @@ internal class FavoriteSongsViewModel(
         getFavorites()
     }
 
-    private suspend fun playFavorites(shuffled: Boolean = false) {
+    private suspend fun playFavorites() {
         val favorites =
             runCatching {
                 favoriteSongsRepository
@@ -80,10 +84,7 @@ internal class FavoriteSongsViewModel(
                     artworkUrl = it.artworkUrl,
                 )
             }
-        playerQueueAudioSourceManager.playSource(
-            *sources.toTypedArray(),
-            shuffled = shuffled,
-        )
+        playerQueueAudioSourceManager.playSource(*sources.toTypedArray())
     }
 
     private fun getFavorites() {

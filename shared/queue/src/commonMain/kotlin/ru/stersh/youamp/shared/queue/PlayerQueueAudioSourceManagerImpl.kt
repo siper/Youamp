@@ -1,7 +1,6 @@
 package ru.stersh.youamp.shared.queue
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -22,74 +21,53 @@ internal class PlayerQueueAudioSourceManagerImpl(
 
     override fun playingSource(): Flow<PlayingSource?> = playingSource
 
-    override suspend fun playSource(
-        vararg source: AudioSource,
-        shuffled: Boolean,
-    ) = withContext(Dispatchers.IO) {
-        val newQueue = source.flatMap { getMediaItemsFromSource(it) }
-        val songId =
-            source
-                .getOrNull(0)
-                ?.let { getPlaySongIdFromSource(it) }
-        val index =
-            if (songId == null) {
-                -1
-            } else {
-                newQueue.indexOfFirst { it.id == songId }
-            }
-        if (shuffled) {
-            player.setMediaItems(newQueue.shuffled())
-        } else {
+    override suspend fun playSource(vararg source: AudioSource) =
+        withContext(Dispatchers.IO) {
+            val newQueue = source.flatMap { getMediaItemsFromSource(it) }
+            val songId =
+                source
+                    .getOrNull(0)
+                    ?.let { getPlaySongIdFromSource(it) }
+            val index =
+                if (songId == null) {
+                    -1
+                } else {
+                    newQueue.indexOfFirst { it.id == songId }
+                }
             player.setMediaItems(newQueue)
+            if (index != -1) {
+                player.seekTo(
+                    index,
+                    0,
+                )
+            }
+            player.prepare()
+            player.play()
+            setPlayingSource(source.first())
         }
-        if (index != -1) {
-            player.seekTo(
-                index,
-                0,
-            )
-        }
-        player.prepare()
-        player.play()
-        setPlayingSource(source.first())
-    }
 
-    override suspend fun addLast(
-        vararg source: AudioSource,
-        shuffled: Boolean,
-    ) = withContext(Dispatchers.IO) {
-        val newSongs = source.flatMap { getMediaItemsFromSource(it) }
-        if (shuffled) {
-            player.addMediaItems(newSongs.shuffled())
-        } else {
+    override suspend fun addLast(vararg source: AudioSource) =
+        withContext(Dispatchers.IO) {
+            val newSongs = source.flatMap { getMediaItemsFromSource(it) }
             player.addMediaItems(newSongs)
+            clearPlayingSource()
         }
-        clearPlayingSource()
-    }
 
-    override suspend fun addNext(
-        vararg source: AudioSource,
-        shuffled: Boolean,
-    ) = withContext(Dispatchers.IO) {
-        val newSongs = source.flatMap { getMediaItemsFromSource(it) }
-        val index =
-            (
-                player
-                    .getCurrentItemPosition()
-                    .first() ?: -1
-            ) + 1
-        if (shuffled) {
-            player.addMediaItems(
-                index,
-                newSongs.shuffled(),
-            )
-        } else {
+    override suspend fun addNext(vararg source: AudioSource) =
+        withContext(Dispatchers.IO) {
+            val newSongs = source.flatMap { getMediaItemsFromSource(it) }
+            val index =
+                (
+                    player
+                        .getCurrentItemPosition()
+                        .first() ?: -1
+                ) + 1
             player.addMediaItems(
                 index,
                 newSongs,
             )
+            clearPlayingSource()
         }
-        clearPlayingSource()
-    }
 
     private fun getPlaySongIdFromSource(source: AudioSource): String? {
         if (source is AudioSource.Album) {
@@ -117,7 +95,9 @@ internal class PlayerQueueAudioSourceManagerImpl(
                     -> PlayingSource.Type.Song
 
                     is AudioSource.Album -> PlayingSource.Type.Album
+
                     is AudioSource.Artist -> PlayingSource.Type.Artist
+
                     is AudioSource.Playlist -> PlayingSource.Type.Playlist
                 }
             playingSource.update {

@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.player.Player
+import ru.stersh.youamp.core.player.ShuffleMode
 import ru.stersh.youamp.shared.queue.AudioSource
 import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
 import ru.stersh.youamp.shared.song.random.SongRandomStorage
@@ -19,6 +21,7 @@ import ru.stersh.youamp.shared.song.random.SongRandomStorage
 internal class RandomSongsViewModel(
     private val randomSongsRepository: SongRandomStorage,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
+    private val player: Player,
 ) : ViewModel() {
     private val _state = MutableStateFlow(StateUi())
     val state: StateFlow<StateUi>
@@ -37,7 +40,8 @@ internal class RandomSongsViewModel(
 
     fun playShuffled() =
         viewModelScope.launch {
-            play(true)
+            play()
+            player.setShuffleMode(ShuffleMode.Enabled)
         }
 
     fun refresh() =
@@ -69,7 +73,7 @@ internal class RandomSongsViewModel(
             getRandom()
         }
 
-    private suspend fun play(shuffled: Boolean = false) {
+    private suspend fun play() {
         val random =
             runCatching { randomSongsRepository.getSongs() }
                 .onFailure { Logger.w(it) { "Filed to get random songs" } }
@@ -86,10 +90,7 @@ internal class RandomSongsViewModel(
                     artworkUrl = it.artworkUrl,
                 )
             }
-        playerQueueAudioSourceManager.playSource(
-            *sources.toTypedArray(),
-            shuffled = shuffled,
-        )
+        playerQueueAudioSourceManager.playSource(*sources.toTypedArray())
     }
 
     private fun getRandom() {

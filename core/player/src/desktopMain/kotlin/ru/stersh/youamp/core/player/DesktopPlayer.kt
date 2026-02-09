@@ -15,6 +15,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import ru.stersh.youamp.core.utils.formatSongDuration
 import ru.stersh.youamp.core.utils.swap
+import kotlin.random.Random
 
 internal class DesktopPlayer : Player {
     init {
@@ -30,6 +31,7 @@ internal class DesktopPlayer : Player {
     private val repeatMode = MutableStateFlow(RepeatMode.Disabled)
     private val shuffleMode = MutableStateFlow(ShuffleMode.Disabled)
     private val isPlaying = MutableStateFlow(false)
+    private val shuffleHistory = ArrayDeque<Int>()
 
     private val onPlayingRunnable =
         Runnable {
@@ -44,23 +46,12 @@ internal class DesktopPlayer : Player {
             if (repeatMode.value == RepeatMode.One) {
                 currentPlayer?.seek(Duration.ZERO)
                 currentPlayer?.play()
-            } else {
-                val currentIndex = currentItemIndex.value
-                if (currentIndex != null) {
-                    val newIndex = currentIndex + 1
-                    val newItem = playQueue.value.getOrNull(newIndex)
-                    if (newItem != null) {
-                        currentItemIndex.value = newIndex
-                        prepareCurrentPlayer()
-                        currentPlayer?.play()
-                    } else {
-                        if (repeatMode.value == RepeatMode.All) {
-                            currentItemIndex.value = 0
-                            prepareCurrentPlayer()
-                            currentPlayer?.play()
-                        }
-                    }
-                }
+                return@Runnable
+            }
+            val currentIndex = currentItemIndex.value ?: return@Runnable
+            val nextIndex = calculateNextIndex(currentIndex)
+            if (nextIndex != null) {
+                playAtIndex(nextIndex)
             }
         }
 
@@ -79,38 +70,16 @@ internal class DesktopPlayer : Player {
     override suspend fun next() {
         mutex.withLock {
             val currentIndex = currentItemIndex.value ?: return@withLock
-            val nextIndex = currentIndex + 1
-            val nextItem = playQueue.value.getOrNull(nextIndex)
-            if (nextItem != null) {
-                currentItemIndex.value = nextIndex
-            } else {
-                if (repeatMode.value == RepeatMode.All) {
-                    currentItemIndex.value = 0
-                } else {
-                    return
-                }
-            }
-            prepareCurrentPlayer()
-            currentPlayer?.play()
+            val nextIndex = calculateNextIndex(currentIndex) ?: return@withLock
+            playAtIndex(nextIndex)
         }
     }
 
     override suspend fun previous() {
         mutex.withLock {
             val currentIndex = currentItemIndex.value ?: return@withLock
-            val nextIndex = currentIndex - 1
-            val nextItem = playQueue.value.getOrNull(nextIndex)
-            if (nextItem != null) {
-                currentItemIndex.value = nextIndex
-            } else {
-                if (repeatMode.value == RepeatMode.All) {
-                    currentItemIndex.value = playQueue.value.lastIndex
-                } else {
-                    return
-                }
-            }
-            prepareCurrentPlayer()
-            currentPlayer?.play()
+            val prevIndex = calculatePreviousIndex(currentIndex) ?: return@withLock
+            playAtIndex(prevIndex)
         }
     }
 
@@ -125,6 +94,10 @@ internal class DesktopPlayer : Player {
         time: Long,
     ) {
         mutex.withLock {
+            val currentIndex = currentItemIndex.value
+            if (currentIndex != index) {
+                clearShuffleHistory()
+            }
             currentItemIndex.value = index
             prepareCurrentPlayer()
             currentPlayer?.seek(Duration(time.toDouble()))
@@ -152,12 +125,8 @@ internal class DesktopPlayer : Player {
     override suspend fun setMediaItems(items: List<MediaItem>) {
         mutex.withLock {
             playQueue.value = items
-            currentItemIndex.value =
-                if (items.isNotEmpty()) {
-                    0
-                } else {
-                    null
-                }
+            currentItemIndex.value = if (items.isNotEmpty()) 0 else null
+            clearShuffleHistory()
             prepareCurrentPlayer()
         }
     }
@@ -183,12 +152,8 @@ internal class DesktopPlayer : Player {
     ) {
         mutex.withLock {
             playQueue.value = items
-            currentItemIndex.value =
-                if (items.isNotEmpty()) {
-                    index
-                } else {
-                    null
-                }
+            currentItemIndex.value = if (items.isNotEmpty()) index else null
+            clearShuffleHistory()
             prepareCurrentPlayer()
             seek(position)
         }
@@ -227,6 +192,7 @@ internal class DesktopPlayer : Player {
         mutex.withLock {
             playQueue.value = emptyList()
             currentItemIndex.value = null
+            clearShuffleHistory()
             currentPlayer?.dispose()
             currentPlayer = null
         }
@@ -234,10 +200,12 @@ internal class DesktopPlayer : Player {
 
     override suspend fun playMediaItem(position: Int) {
         mutex.withLock {
-            currentItemIndex.value = position
-            prepareCurrentPlayer()
+            clearShuffleHistory()
             if (isPlaying.value) {
-                currentPlayer?.play()
+                playAtIndex(position)
+            } else {
+                currentItemIndex.value = position
+                prepareCurrentPlayer()
             }
         }
     }
@@ -261,41 +229,46 @@ internal class DesktopPlayer : Player {
             val newCurrentIndex = newQueue.indexOf(currentItem)
             playQueue.value = newQueue
             currentItemIndex.value = newCurrentIndex
+            clearShuffleHistory()
         }
     }
 
     override suspend fun removeMediaItem(position: Int) {
         mutex.withLock {
             val newPlayQueue = playQueue.value.toMutableList()
-
-            val currentIndex = currentItemIndex.value
-            val currentItem = currentIndex?.let { newPlayQueue.getOrNull(it) }
             val deletedItem = newPlayQueue.removeAt(position)
 
-            val newCurrentIndex =
-                when {
-                    newPlayQueue.isEmpty() -> null
-                    currentItem != null && currentItem != deletedItem ->
-                        newPlayQueue.indexOf(
-                            currentItem,
-                        )
-
-                    currentItem != null && currentItem == deletedItem -> {
-                        var result: Int? = null
-                        for (i in position downTo 0) {
-                            if (newPlayQueue.getOrNull(i) != null) {
-                                result = i
-                                break
-                            }
-                        }
-                        result
-                    }
-
-                    else -> null
-                }
+            val newCurrentIndex = calculateNewIndexAfterRemoval(newPlayQueue, deletedItem)
             playQueue.value = newPlayQueue.toList()
             currentItemIndex.value = newCurrentIndex
+            clearShuffleHistory()
         }
+    }
+
+    private fun calculateNewIndexAfterRemoval(
+        newPlayQueue: MutableList<MediaItem>,
+        deletedItem: MediaItem,
+    ): Int? {
+        if (newPlayQueue.isEmpty()) return null
+
+        val currentIndex = currentItemIndex.value
+        val currentItem = currentIndex?.let { newPlayQueue.getOrNull(it) }
+
+        return when {
+            currentItem != null && currentItem != deletedItem -> newPlayQueue.indexOf(currentItem)
+            currentItem == deletedItem -> findIndexBeforePosition(newPlayQueue, currentIndex)
+            else -> null
+        }
+    }
+
+    private fun findIndexBeforePosition(
+        playQueue: List<MediaItem>,
+        position: Int,
+    ): Int? {
+        for (i in position downTo 0) {
+            if (playQueue.getOrNull(i) != null) return i
+        }
+        return null
     }
 
     override fun getShuffleMode(): Flow<ShuffleMode> = shuffleMode
@@ -344,6 +317,64 @@ internal class DesktopPlayer : Player {
                     }
                 }
             }
+
+    private fun calculateNextIndex(currentIndex: Int): Int? {
+        val queueSize = playQueue.value.size
+        if (queueSize <= 1) return null
+
+        return when {
+            shuffleMode.value == ShuffleMode.Enabled -> {
+                shuffleHistory.addLast(currentIndex)
+                getRandomIndex(queueSize, currentIndex)
+            }
+
+            currentIndex + 1 < queueSize -> {
+                currentIndex + 1
+            }
+
+            repeatMode.value == RepeatMode.All -> {
+                0
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
+
+    private fun calculatePreviousIndex(currentIndex: Int): Int? {
+        val queueSize = playQueue.value.size
+        if (queueSize <= 1) return null
+
+        return when {
+            shuffleMode.value == ShuffleMode.Enabled && shuffleHistory.isNotEmpty() -> shuffleHistory.removeLast()
+            currentIndex - 1 >= 0 -> currentIndex - 1
+            repeatMode.value == RepeatMode.All -> queueSize - 1
+            else -> null
+        }
+    }
+
+    private fun playAtIndex(index: Int) {
+        currentItemIndex.value = index
+        prepareCurrentPlayer()
+        currentPlayer?.play()
+    }
+
+    private fun getRandomIndex(
+        queueSize: Int,
+        currentIndex: Int,
+    ): Int {
+        if (queueSize <= 1) return 0
+        var randomIndex: Int
+        do {
+            randomIndex = Random.nextInt(queueSize)
+        } while (randomIndex == currentIndex)
+        return randomIndex
+    }
+
+    private fun clearShuffleHistory() {
+        shuffleHistory.clear()
+    }
 
     override fun getIsPlaying(): Flow<Boolean> = isPlaying
 }
