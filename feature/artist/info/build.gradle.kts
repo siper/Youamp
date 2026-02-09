@@ -26,6 +26,7 @@ kotlin {
                 implementation(project(":core:ui"))
                 implementation(project(":core:api"))
                 implementation(project(":core:utils"))
+                implementation(project(":core:player"))
                 implementation(project(":shared:queue"))
                 implementation(project(":shared:favorites"))
                 implementation(libs.koin.core)

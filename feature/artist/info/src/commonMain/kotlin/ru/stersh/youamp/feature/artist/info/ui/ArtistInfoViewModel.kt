@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.stersh.youamp.core.player.Player
+import ru.stersh.youamp.core.player.ShuffleMode
 import ru.stersh.youamp.feature.artist.info.domain.ArtistFavoriteRepository
 import ru.stersh.youamp.feature.artist.info.domain.ArtistInfoRepository
 import ru.stersh.youamp.shared.queue.AudioSource
@@ -17,6 +19,7 @@ internal class ArtistInfoViewModel(
     private val artistInfoRepository: ArtistInfoRepository,
     private val artistFavoriteRepository: ArtistFavoriteRepository,
     private val playerQueueAudioSourceManager: PlayerQueueAudioSourceManager,
+    private val player: Player,
 ) : ViewModel() {
     private val _state = MutableStateFlow(ArtistInfoStateUi())
     val state: StateFlow<ArtistInfoStateUi>
@@ -28,10 +31,8 @@ internal class ArtistInfoViewModel(
 
     fun playShuffled() =
         viewModelScope.launch {
-            playerQueueAudioSourceManager.playSource(
-                AudioSource.Artist(id),
-                shuffled = true,
-            )
+            playerQueueAudioSourceManager.playSource(AudioSource.Artist(id))
+            player.setShuffleMode(ShuffleMode.Enabled)
         }
 
     fun playAll() =

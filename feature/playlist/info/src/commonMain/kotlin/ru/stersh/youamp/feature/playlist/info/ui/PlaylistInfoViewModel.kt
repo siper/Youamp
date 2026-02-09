@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.stersh.youamp.core.player.Player
+import ru.stersh.youamp.core.player.ShuffleMode
 import ru.stersh.youamp.feature.playlist.info.domain.PlaylistInfoRepository
 import ru.stersh.youamp.shared.queue.AudioSource
 import ru.stersh.youamp.shared.queue.PlayerQueueAudioSourceManager
@@ -36,10 +37,8 @@ internal class PlaylistInfoViewModel(
 
     fun playShuffled() =
         viewModelScope.launch {
-            playerQueueAudioSourceManager.playSource(
-                AudioSource.Playlist(id),
-                shuffled = true,
-            )
+            playerQueueAudioSourceManager.playSource(AudioSource.Playlist(id))
+            player.setShuffleMode(ShuffleMode.Enabled)
         }
 
     fun playAll() =
