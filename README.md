@@ -67,7 +67,7 @@ If you want help to make Youamp better, you can:
           <br />
           <sub><b>Kirill Zhukov (Stersh)</b></sub></a>
         <br />
-        <sub><b>5126 words</b></sub>
+        <sub><b>5519 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/isard"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13454728/medium/1f78b7124b3c962bc4ae55e8d701fc91_default.png" />
@@ -149,6 +149,13 @@ If you want help to make Youamp better, you can:
         <sub><b>72 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/Mickael81"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16589059/medium/65fcdfc7892c0e034a5b24fcba44b471_default.png" />
+          <br />
+          <sub><b>Mickael81</b></sub></a>
+        <br />
+        <sub><b>30 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/SortingFarmer"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17044906/medium/e865d68b5583ac349d41eda7e32e9125.png" />
           <br />
           <sub><b>SortingFarmer</b></sub></a>
@@ -169,6 +176,8 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>17 words</b></sub>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/eckad158"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17195058/medium/e0487f0f4f4ba96fbe366ad52be4a72e.png" />
           <br />
@@ -176,8 +185,6 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>17 words</b></sub>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/gfreak70"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/13415218/medium/0b6ea6c0fa230d9069a08c28fed8a6b8.jpg" />
           <br />
@@ -191,13 +198,6 @@ If you want help to make Youamp better, you can:
           <sub><b>Eli Minator (Smashterix)</b></sub></a>
         <br />
         <sub><b>13 words</b></sub>
-      </td>
-      <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/Mickael81"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16589059/medium/65fcdfc7892c0e034a5b24fcba44b471_default.png" />
-          <br />
-          <sub><b>Mickael81</b></sub></a>
-        <br />
-        <sub><b>4 words</b></sub>
       </td>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/januarymara185"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16531231/medium/e6a94413ab10028e20daf228e934c4c8.png" />
