@@ -5,11 +5,12 @@ on:
     types: [closed]
     branches: [master]
 
+permissions:
+  contents: write
+
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     if: |
       github.event.pull_request.merged == true &&
@@ -21,6 +22,7 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract version from PR title
         id: extract-version
@@ -89,6 +91,8 @@ jobs:
           fi
 
           git tag -a "$TAG" -m "Release $TAG"
+          # Use PAT to push tag and trigger release workflow
+          git remote set-url origin https://x-access-token:${{ secrets.RELEASE_PAT }}@github.com/siper/Youamp.git
           git push origin "$TAG"
 
           echo "✅ Tag $TAG created and pushed successfully"
