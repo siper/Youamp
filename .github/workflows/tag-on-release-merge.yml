@@ -5,11 +5,12 @@ on:
     types: [closed]
     branches: [master]
 
+permissions:
+  contents: write
+
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     if: |
       github.event.pull_request.merged == true &&
@@ -21,6 +22,7 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract version from PR title
         id: extract-version
