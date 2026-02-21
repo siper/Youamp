@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
