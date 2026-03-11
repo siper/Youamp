@@ -135,6 +135,13 @@ If you want help to make Youamp better, you can:
         <sub><b>165 words</b></sub>
       </td>
       <td align="center" valign="top">
+        <a href="https://crowdin.com/profile/WisteriaZy"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15405766/medium/f0f7e66a638576bdce64b1293b69d4fb.png" />
+          <br />
+          <sub><b>大触紫衣WisteriaZy (WisteriaZy)</b></sub></a>
+        <br />
+        <sub><b>104 words</b></sub>
+      </td>
+      <td align="center" valign="top">
         <a href="https://crowdin.com/profile/ctrlVnt"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16872155/medium/5d6936a3ed5809ea8d6898f3f49b247c.png" />
           <br />
           <sub><b>Riccardo Venturini (ctrlVnt)</b></sub></a>
@@ -169,6 +176,8 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>26 words</b></sub>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/John_Ethan"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16850011/medium/beb9b59e234ff94a96b8e0ab3485f8a8_default.png" />
           <br />
@@ -176,8 +185,6 @@ If you want help to make Youamp better, you can:
         <br />
         <sub><b>17 words</b></sub>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="top">
         <a href="https://crowdin.com/profile/eckad158"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/17195058/medium/e0487f0f4f4ba96fbe366ad52be4a72e.png" />
           <br />
