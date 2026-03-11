@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_queue_title">播放队列</string>
+    <string name="play_song_title">播放歌曲</string>
+    <string name="remove_from_queue_title">从队列中删除</string>
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_hint_title">搜索歌曲、专辑、艺术家…</string>
+    <string name="search_title">搜索</string>
+    <string name="random_songs_title">随机歌曲</string>
+</resources>
