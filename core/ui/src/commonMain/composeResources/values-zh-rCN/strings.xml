@@ -8,4 +8,7 @@
     <string name="error_message">请重试。如果该错误多次发生，请联系开发人员。</string>
     <string name="error_title">哦豁，出错了</string>
     <string name="empty_state_title">这里什么都还没有……</string>
+    <string name="user_avatar_title">用户头像</string>
+    <string name="dislike_title">不喜欢</string>
+    <string name="like_title">喜欢</string>
 </resources>
