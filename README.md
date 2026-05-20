@@ -135,7 +135,7 @@ If you want help to make Youamp better, you can:
         <sub><b>165 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/WisteriaZy"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15405766/medium/f0f7e66a638576bdce64b1293b69d4fb.png" />
+        <a href="https://crowdin.com/profile/WisteriaZy"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/15405766/medium/21fe211dbf0b04a583486cd044e4d113.png" />
           <br />
           <sub><b>大触紫衣WisteriaZy (WisteriaZy)</b></sub></a>
         <br />
