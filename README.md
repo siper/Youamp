@@ -156,7 +156,7 @@ If you want help to make Youamp better, you can:
         <sub><b>72 words</b></sub>
       </td>
       <td align="center" valign="top">
-        <a href="https://crowdin.com/profile/Mickael81"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16589059/medium/65fcdfc7892c0e034a5b24fcba44b471_default.png" />
+        <a href="https://crowdin.com/profile/Mickael81"><img alt="logo" style="width: 64px" src="https://crowdin-static.cf-downloads.crowdin.com/avatar/16589059/medium/3fdc3e38f404a03db338badfeb0bb6b0.jpeg" />
           <br />
           <sub><b>Mickael81</b></sub></a>
         <br />
